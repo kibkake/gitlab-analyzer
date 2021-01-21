@@ -25,7 +25,8 @@ application {
     mainClassName = javaMainPointer
 }
 
-test {
+
+test{
     useJUnit()
     testLogging.showStandardStreams = true
     failFast = true
