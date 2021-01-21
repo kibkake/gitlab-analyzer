@@ -15,4 +15,18 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-mainClassName = 'Main'
+apply plugin : "java"
+
+ext {
+    javaMainPointer = "Main"
+}
+
+application {
+    mainClassName = javaMainPointer
+}
+
+test {
+    useJUnit()
+    testLogging.showStandardStreams = true
+    failFast = true
+}
