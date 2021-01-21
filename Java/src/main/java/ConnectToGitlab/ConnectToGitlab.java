@@ -1,4 +1,4 @@
-package ConnectToGitlab;
+package main.java.ConnectToGitlab;
 
 public class ConnectToGitlab {
 }
