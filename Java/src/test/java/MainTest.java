@@ -8,7 +8,6 @@ public class MainTest{
     @Test
     public void testCase1(){
         // nothing to test for now
-        //assertEquals("test","test");
         System.out.println("passed");
     }
 }
