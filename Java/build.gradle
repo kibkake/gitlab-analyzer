@@ -13,12 +13,14 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.gitlab:java-gitlab-api:4.0.0'
 }
 
 apply plugin : "java"
 
 ext {
-    javaMainPointer = "Main"
+    // package was renamed, so fix run task build by naming package main.java with Main
+    javaMainPointer = "main.java.Main"
 }
 
 application {
