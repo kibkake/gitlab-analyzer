@@ -52,8 +52,17 @@ public class ConnectToGitlab {
         }
 
         //Get changes from the first commit of the first merge request
-        if (gitlabCommitsFirstMerge.size() > 1) {
+        if (gitlabCommitsFirstMerge.size() > 0) {
             System.out.println(api.getCommitDiffs(projects.get(0).getId(), gitlabCommitsFirstMerge.get(0).getId()).get(0).getDiff());
+        }
+
+        //Get the commit diffs between two specific commits (newest and second newest)
+        if (gitlabCommitsFirstMerge.size() > 1) {
+            List<GitlabCommitDiff> gitlabCommitDiffs = api.compareCommits(projects.get(0).getId(),gitlabCommitsFirstMerge.get(1).getId(), gitlabCommitsFirstMerge.get(0).getId()).getDiffs();
+
+            for (int i = 0; i < gitlabCommitDiffs.size(); i++) {
+                System.out.println(gitlabCommitDiffs.get(i).getDiff());
+            }
         }
 
 
