@@ -10,11 +10,12 @@ import java.io.IOException;
 import java.util.List;
 
 public class ConnectToGitlab {
+    public static final String GITLAB_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/";
 
     public static void connectGitlab(String token) throws IOException {
-        GitlabAPI api = GitlabAPI.connect("https://csil-git1.cs.surrey.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
+        GitlabAPI api = GitlabAPI.connect(GITLAB_URL, token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
         GitlabUser user = api.getUser();
-        System.out.println("name: " + user.getName() + ".  email: " + user.getEmail());
+        System.out.println("Name: " + user.getName() + ",  Email: " + user.getEmail()+"\nProjects:");
 
         List<GitlabProject> projects = api.getMembershipProjects();
 
