@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
 version '1.0-SNAPSHOT'
@@ -25,6 +26,11 @@ ext {
 
 application {
     mainClassName = javaMainPointer
+}
+
+javafx {
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    version = '11.0.2'
 }
 
 

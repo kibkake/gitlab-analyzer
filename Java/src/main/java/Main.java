@@ -1,5 +1,6 @@
 package main.java;
 import main.java.ConnectToGitlab.ConnectToGitlab;
+import main.java.UI.UI;
 
 import java.io.IOException;
 
@@ -14,5 +15,10 @@ public class Main {
             System.out.println(exception.getMessage());
         }
 
+        try {
+            UI.start_UI(args);
+        } catch(Exception exception) {
+            System.out.println(exception.getMessage());
+        }
     }
 }
