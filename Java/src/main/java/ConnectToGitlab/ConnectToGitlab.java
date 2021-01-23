@@ -64,6 +64,14 @@ public class ConnectToGitlab {
                 System.out.println(gitlabCommitDiffs.get(i).getDiff());
             }
         }
+        System.out.println();
+
+        //Get issues titles
+        List <GitlabIssue> gitlabIssues = api.getIssues(projects.get(0).getId());
+        for (int i = 0; i < gitlabIssues.size(); i++) {
+            System.out.println(gitlabIssues.get(i).getTitle());
+        }
+
 
 
 
