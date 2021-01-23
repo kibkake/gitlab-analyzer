@@ -10,9 +10,8 @@ public class Main {
         System.out.println("\nGitLab Instance: "+ConnectToGitlab.GITLAB_URL);
 
         try {
-            //Create an access token on your gitlab account and pass it in. Remove when pushing to avoid extra conflicts
-            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");//access token for the test server
-            System.out.println("\nSuccessfully Connected to GitLab API with Access Token!");
+            // default access token for the test server
+            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
         }catch(IOException exception){
             System.out.println(exception.getMessage());
         }
