@@ -16,7 +16,7 @@ public class ConnectToGitlab {
     public static void connectGitlab(String token) throws IOException {
         GitlabAPI api = GitlabAPI.connect("https://cmpt373-1211-10.cmpt.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
         GitlabUser user = api.getUser();
-        System.out.println("name: " + user.getName() + ".  email: " + user.getEmail());
+        System.out.println("name: " + user.getName());
 
         List<GitlabProject> projects = api.getMembershipProjects();
         if(projects.size() == 0){
