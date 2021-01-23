@@ -14,13 +14,18 @@ import java.util.List;
 public class ConnectToGitlab {
 
     public static void connectGitlab(String token) throws IOException {
-        GitlabAPI api = GitlabAPI.connect("https://csil-git1.cs.surrey.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
+        GitlabAPI api = GitlabAPI.connect("https://cmpt373-1211-10.cmpt.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
         GitlabUser user = api.getUser();
         System.out.println("name: " + user.getName() + ".  email: " + user.getEmail());
 
         List<GitlabProject> projects = api.getMembershipProjects();
+        if(projects.size() == 0){
+            System.out.println("No projects!");
+            return;
+        }
 
         //List all projects
+        System.out.println("List of projects:");
         for (int i = 0; i < projects.size(); i++) {
             System.out.print(i + 1 + ". " + projects.get(i).getName());
             System.out.println("  " + projects.get(i).getDefaultBranch());
@@ -32,11 +37,18 @@ public class ConnectToGitlab {
         System.out.println(api.getProject(projects.get(0).getId()).getHttpUrl());
 
         //Get a list of merge requests
+        System.out.println("List of merge requests:");
         List<GitlabMergeRequest> mergeRequests = api.getMergeRequests(api.getProject(projects.get(0).getId()));
         for (int i = 0; i < mergeRequests.size(); i++) {
             System.out.print(i + 1 + ". " + mergeRequests.get(i).getTitle() + "   ");
         }
         System.out.println("\n");
+
+        //Exit if not merge requests to show
+        if (mergeRequests.size() == 0) {
+            System.out.println("No merge requests!");
+            return;
+        }
 
         //Get the changes from latest merge request
         List<GitlabCommitDiff> gitlabCommitDiffsFromMerge = api.getMergeRequestChanges(projects.get(0).getId(), mergeRequests.get(0).getIid()).getChanges();
