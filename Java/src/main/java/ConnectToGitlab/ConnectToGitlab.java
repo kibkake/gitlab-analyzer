@@ -5,6 +5,8 @@ import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.Pagination;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.*;
+import org.gitlab.api.models.GitlabMergeRequest;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -37,11 +39,25 @@ public class ConnectToGitlab {
         System.out.println("\n");
 
         //Get the changes from latest merge request
-        System.out.println("Changes:  \n" + api.getMergeRequestChanges(projects.get(0).getId(), mergeRequests.get(0).getIid()).getChanges().get(0).getDiff().toUpperCase());
+        System.out.println("Changes:  \n" + api.getMergeRequestChanges(projects.get(0).getId(), mergeRequests.get(0).getIid()).getChanges().get(0).getDiff());
         System.out.println();
 
         //Get the number of all commits from the project
-        System.out.print("Number of commits: " + api.getAllCommits(projects.get(0).getId()).size());
+        System.out.println("Number of commits: " + api.getAllCommits(projects.get(0).getId()).size());
+
+        //Get the title of the first commit of the first merge request
+        List <GitlabCommit> gitlabCommitsFirstMerge = api.getCommits(mergeRequests.get(mergeRequests.size()-1));
+        if (gitlabCommitsFirstMerge.size() > 0) {
+            System.out.println(gitlabCommitsFirstMerge.get(api.getCommits(mergeRequests.get(mergeRequests.size() - 1)).size() - 1).getTitle());
+        }
+
+        //Get changes from the first commit of the first merge request
+        if (gitlabCommitsFirstMerge.size() > 1) {
+            System.out.println(api.getCommitDiffs(projects.get(0).getId(), gitlabCommitsFirstMerge.get(0).getId()).get(0).getDiff());
+        }
+
+
+
 
     }
 }
