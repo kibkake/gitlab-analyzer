@@ -2,9 +2,11 @@ package main.java.ConnectToGitlab;
 
 import org.gitlab.api.AuthMethod;
 import org.gitlab.api.GitlabAPI;
+import org.gitlab.api.Pagination;
 import org.gitlab.api.TokenType;
-import org.gitlab.api.models.GitlabProject;
-import org.gitlab.api.models.GitlabUser;
+import org.gitlab.api.models.*;
+import org.gitlab.api.models.GitlabMergeRequest;
+
 
 import java.io.IOException;
 import java.util.List;
