@@ -39,7 +39,10 @@ public class ConnectToGitlab {
         System.out.println("\n");
 
         //Get the changes from latest merge request
-        System.out.println("Changes:  \n" + api.getMergeRequestChanges(projects.get(0).getId(), mergeRequests.get(0).getIid()).getChanges().get(0).getDiff());
+        List<GitlabCommitDiff> gitlabCommitDiffsFromMerge = api.getMergeRequestChanges(projects.get(0).getId(), mergeRequests.get(0).getIid()).getChanges();
+        for (int i = 0; i < gitlabCommitDiffsFromMerge.size(); i++) {
+            System.out.println(gitlabCommitDiffsFromMerge.get(i).getDiff());
+        }
         System.out.println();
 
         //Get the number of all commits from the project
@@ -58,22 +61,26 @@ public class ConnectToGitlab {
 
         //Get the commit diffs between two specific commits (newest and second newest)
         if (gitlabCommitsFirstMerge.size() > 1) {
-            List<GitlabCommitDiff> gitlabCommitDiffs = api.compareCommits(projects.get(0).getId(),gitlabCommitsFirstMerge.get(1).getId(), gitlabCommitsFirstMerge.get(0).getId()).getDiffs();
+            List<GitlabCommitDiff> gitlabCommitDiffsFromCommits = api.compareCommits(projects.get(0).getId(),gitlabCommitsFirstMerge.get(1).getId(), gitlabCommitsFirstMerge.get(0).getId()).getDiffs();
 
-            for (int i = 0; i < gitlabCommitDiffs.size(); i++) {
-                System.out.println(gitlabCommitDiffs.get(i).getDiff());
+            for (int i = 0; i < gitlabCommitDiffsFromCommits.size(); i++) {
+                System.out.println(gitlabCommitDiffsFromCommits.get(i).getDiff());
             }
         }
         System.out.println();
 
-        //Get issues titles
+        //Get issue titles
         List <GitlabIssue> gitlabIssues = api.getIssues(projects.get(0).getId());
         for (int i = 0; i < gitlabIssues.size(); i++) {
             System.out.println(gitlabIssues.get(i).getTitle());
         }
 
-
-
+        //Check which commits from a merge request are from the current user
+        for(int i = 0; i < gitlabCommitsFirstMerge.size(); i++){
+            if(gitlabCommitsFirstMerge.get(0).getAuthorName().equals(user.getName())){
+                System.out.println("commit " + gitlabCommitsFirstMerge.get(i).getId() + "  belongs to current user");
+            }
+        }
 
 
     }
