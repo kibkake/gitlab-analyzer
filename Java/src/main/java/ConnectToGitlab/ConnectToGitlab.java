@@ -33,8 +33,9 @@ public class ConnectToGitlab {
         System.out.println();
 
         //Get name and url of newest project
-        System.out.println(api.getProject(projects.get(0).getId()).getName());
-        System.out.println(api.getProject(projects.get(0).getId()).getHttpUrl());
+        System.out.println("Newest project name : " + api.getProject(projects.get(0).getId()).getName());
+        System.out.println("Newest project name : " + api.getProject(projects.get(0).getId()).getHttpUrl());
+        System.out.println();
 
         //Get a list of merge requests
         System.out.println("List of merge requests:");
@@ -51,6 +52,7 @@ public class ConnectToGitlab {
         }
 
         //Get the changes from latest merge request
+        System.out.println("Changes from latest marge request:");
         List<GitlabCommitDiff> gitlabCommitDiffsFromMerge = api.getMergeRequestChanges(projects.get(0).getId(), mergeRequests.get(0).getIid()).getChanges();
         for (int i = 0; i < gitlabCommitDiffsFromMerge.size(); i++) {
             System.out.println(gitlabCommitDiffsFromMerge.get(i).getDiff());
@@ -58,20 +60,23 @@ public class ConnectToGitlab {
         System.out.println();
 
         //Get the number of all commits from the project
-        System.out.println("Number of commits: " + api.getAllCommits(projects.get(0).getId()).size());
+        System.out.println("Number of TOTAL commits: " + api.getAllCommits(projects.get(0).getId()).size());
 
         //Get the title of the first commit of the first merge request
         List <GitlabCommit> gitlabCommitsFirstMerge = api.getCommits(mergeRequests.get(mergeRequests.size()-1));
         if (gitlabCommitsFirstMerge.size() > 0) {
-            System.out.println(gitlabCommitsFirstMerge.get(api.getCommits(mergeRequests.get(mergeRequests.size() - 1)).size() - 1).getTitle());
+            System.out.println("Commit message of the first commit of first merge request: " +
+                    gitlabCommitsFirstMerge.get(api.getCommits(mergeRequests.get(mergeRequests.size() - 1)).size() - 1).getTitle());
         }
 
         //Get changes from the first commit of the first merge request
         if (gitlabCommitsFirstMerge.size() > 0) {
+            System.out.println("First commit of first merge request changes: ");
             System.out.println(api.getCommitDiffs(projects.get(0).getId(), gitlabCommitsFirstMerge.get(0).getId()).get(0).getDiff());
         }
 
         //Get the commit diffs between two specific commits (newest and second newest)
+        System.out.println("commit diff between first and second commit of first merge request:");
         if (gitlabCommitsFirstMerge.size() > 1) {
             List<GitlabCommitDiff> gitlabCommitDiffsFromCommits = api.compareCommits(projects.get(0).getId(),gitlabCommitsFirstMerge.get(1).getId(), gitlabCommitsFirstMerge.get(0).getId()).getDiffs();
 
