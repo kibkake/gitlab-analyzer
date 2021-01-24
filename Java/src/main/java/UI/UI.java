@@ -3,7 +3,9 @@ package main.java.UI;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class UI extends Application {
@@ -14,15 +16,41 @@ public class UI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Button testButton = new Button("Please click");
 
-        StackPane layout = new StackPane();
-        layout.getChildren().add(testButton);
+        Scene homeScene;
 
-        Scene scene = new Scene(layout, 500, 500);
+        Scene databaseScene;
 
-        primaryStage.setScene(scene);
+        Scene gitlabScene;
+
+        // Primary stage is the entire window of the application.
+        // The Scenes are different scenes that can be showed on this window.
+
+        primaryStage.setTitle("GitLab Analyzer");
+
+        Button databaseButton = new Button("Access/Modify the Database");
+
+        databaseButton.setOnAction(e -> System.out.println("Switch to DB scene"));
+
+        StackPane layout = new StackPane(new VBox(databaseButton));
+
+        homeScene = new Scene(layout, 500, 500);
+
+        primaryStage.setScene(homeScene);
 
         primaryStage.show();
+    }
+
+    private void createHomeScene(Scene homeScene, VBox homeLayout) {
+
+
+    }
+
+    private void createDatabaseScene(Scene databaseScene, VBox databaseLayout) {
+
+    }
+
+    private void createGitLabScene(Scene GitLabScene, VBox gitlabLayout) {
+
     }
 }
