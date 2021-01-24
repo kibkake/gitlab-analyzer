@@ -62,7 +62,7 @@ public class ConnectToGitlab {
             //System.out.println(printCommitMessage(gitlabCommitsFirstMerge.get(gitlabCommitDiffsFromMerge.size()-1)));
         }
 
-        //Get a list of a user's merge requests
+        //Get a list of a user's merge requests (where user has atleast one commit)
         List<GitlabMergeRequest> userGitlabMergeRequests = new ArrayList<>();
         for(int i = 0; i < gitlabMergeRequests.size(); i++){
             if(isUserPartOfMerge(api, "arahilin", gitlabMergeRequests.get(i))){
@@ -73,29 +73,14 @@ public class ConnectToGitlab {
         //Get changes from the first commit of the first merge request
         List<GitlabCommitDiff> gitlabCommitDiffsSingleCommit = getSingleCommitDiff(api, gitlabProject, gitlabCommitsFirstMerge.get(gitlabCommitsFirstMerge.size()-1));
         String [] commitDiffStringSingleCommit = new String[gitlabCommitDiffsSingleCommit.size()];
-        Pattern addedLines = Pattern.compile("\n\\+");
-        Pattern deletedLines = Pattern.compile("\n-");
-
-
 
         for(int i = 0; i < gitlabCommitDiffsSingleCommit.size(); i++){
             commitDiffStringSingleCommit[i] = gitlabCommitDiffsSingleCommit.get(i).getDiff();
             //System.out.println(gitlabCommitDiffsSingleCommit.get(i).getNewPath());
             //System.out.println(commitDiffStringSingleCommit[i]);
-            Matcher added = addedLines.matcher(commitDiffStringSingleCommit[i]);
-            Matcher deleted = deletedLines.matcher(commitDiffStringSingleCommit[i]);
-
-            double countOfAddedLines = 0;
-            double countOfDeletedLines = 0;
-            while (added.find()){
-                countOfAddedLines +=1;
-            }
-
-            while (deleted.find()){
-                countOfDeletedLines +=0.2;
-            }
-            //System.out.println(countOfAddedLines + countOfDeletedLines);
+            //System.out.println(calculateCommitScoreSingleDiff(gitlabCommitDiffsSingleCommit.get(i)));
         }
+        //System.out.println(calculateCommitScoreTotal(gitlabCommitDiffsSingleCommit));
 
         //Get the commit diffs between two specific commits (newest and second newest)
         if (gitlabCommitsFirstMerge.size() > 1) {
@@ -258,4 +243,42 @@ public class ConnectToGitlab {
         }
         return false;
     }
+
+    public static double calculateCommitScoreSingleDiff(GitlabCommitDiff gitlabCommitDiff){
+        double score = 0.0;
+        for(int j = 0; j < gitlabCommitDiff.getDiff().length(); j++){
+            if(gitlabCommitDiff.getDiff().charAt(j) == '\n' && j < gitlabCommitDiff.getDiff().length()-2){
+                j++;
+                if(gitlabCommitDiff.getDiff().charAt(j) == '+'){
+                    j++;
+                    while(gitlabCommitDiff.getDiff().charAt(j) == ' ' || gitlabCommitDiff.getDiff().charAt(j) == '\t'){
+                        j++;
+                    }
+                    if(gitlabCommitDiff.getDiff().charAt(j) == '\n'){
+                        j--;
+                    }else if(gitlabCommitDiff.getDiff().charAt(j) == '/'){
+                        score += 0.0;
+
+                    }else if(gitlabCommitDiff.getDiff().charAt(j) == '}' || gitlabCommitDiff.getDiff().charAt(j) == '{'){
+                        score += 0.2;
+                    }else{
+                        score += 1.0;
+                    }
+                }
+                if(gitlabCommitDiff.getDiff().charAt(j) == '-'){
+                    score += 0.2;
+                }
+            }
+        }
+        return Math.round(score * 100.0) / 100.0;
+    }
+
+    public static double calculateCommitScoreTotal(List <GitlabCommitDiff> gitlabCommitDiffs){
+        double score = 0.0;
+        for(int i = 0; i < gitlabCommitDiffs.size(); i++) {
+            score += calculateCommitScoreSingleDiff(gitlabCommitDiffs.get(i));
+        }
+        return Math.round(score * 100.0) / 100.0;
+    }
+
 }
