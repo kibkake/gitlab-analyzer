@@ -47,13 +47,10 @@ public class ConnectToGitlab {
         }
 
         //Get the changes from latest merge request
-        System.out.println("Changes from latest marge request:");
-        List<GitlabCommitDiff> gitlabCommitDiffsFromMerge = api.getMergeRequestChanges(projects.get(0).getId(), gitlabMergeRequests.get(0).getIid()).getChanges();
-        for (int i = 0; i < gitlabCommitDiffsFromMerge.size(); i++) {
-            System.out.println(gitlabCommitDiffsFromMerge.get(i).getDiff());
-        }
-        System.out.println();
+        List<GitlabCommitDiff> gitlabCommitDiffsFromMerge = getMergeRequestDiff(api, gitlabProject, gitlabMergeRequests.get(0));
+        //printMergeRequestChanges(gitlabCommitDiffsFromMerge);
 
+/*
         //Get the number of all commits from the project
         System.out.println("Number of TOTAL commits: " + api.getAllCommits(projects.get(0).getId()).size());
 
@@ -92,7 +89,7 @@ public class ConnectToGitlab {
             if(gitlabCommitsFirstMerge.get(0).getAuthorName().equals(user.getName())){
                 System.out.println("commit " + gitlabCommitsFirstMerge.get(i).getId() + "  belongs to current user");
             }
-        }
+        }*/
     }
     public static GitlabAPI makeConnectionToGitlab(String token){
         return GitlabAPI.connect("https://cmpt373-1211-10.cmpt.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
@@ -160,5 +157,15 @@ public class ConnectToGitlab {
         System.out.println("\n");
     }
 
+    public static List<GitlabCommitDiff> getMergeRequestDiff(GitlabAPI api, GitlabProject gitLabProject, GitlabMergeRequest gitlabMergeRequest) throws IOException {
+        return api.getMergeRequestChanges(gitLabProject.getId(), gitlabMergeRequest.getIid()).getChanges();
+    }
+
+    public static void printMergeRequestChanges(List<GitlabCommitDiff> gitlabCommitDiffs){
+        for (int i = 0; i < gitlabCommitDiffs.size(); i++) {
+            System.out.println(gitlabCommitDiffs.get(i).getDiff());
+        }
+        System.out.println();
+    }
 
 }
