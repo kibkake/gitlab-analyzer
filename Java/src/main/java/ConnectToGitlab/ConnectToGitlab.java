@@ -47,11 +47,11 @@ public class ConnectToGitlab {
         }
 
         //Get the changes from latest merge request
-        List<GitlabCommitDiff> gitlabCommitDiffsFromMerge = getMergeRequestDiff(api, gitlabProject, gitlabMergeRequests.get(0));
+        List<GitlabCommitDiff> gitlabCommitDiffsFromMerge = getMergeRequestDiff(api, gitlabProject, gitlabMergeRequests.get(gitlabMergeRequests.size()-1));
         //printMergeRequestChanges(gitlabCommitDiffsFromMerge);
 
         //Get the title of the first commit of the first merge request
-        List <GitlabCommit> gitlabCommitsFirstMerge = getMergeCommits(api, gitlabMergeRequests.get(0));
+        List <GitlabCommit> gitlabCommitsFirstMerge = getMergeCommits(api, gitlabMergeRequests.get(gitlabMergeRequests.size()-1));
         if (gitlabCommitsFirstMerge.size() > 0) {
             //System.out.println(printCommitMessage(gitlabCommitsFirstMerge.get(gitlabCommitDiffsFromMerge.size()-1)));
         }
@@ -86,6 +86,13 @@ public class ConnectToGitlab {
             }
         }
 
+        //Get parent commit of a merge request
+        String mergeParentHash = getParentCommitHashOfMergeRequest(api, gitlabProject, gitlabCommitsFirstMerge.get(0));
+        List<GitlabCommitDiff> gitlabCommitDiffCommitAndMergeCommit = getCommitDiffFromTwoCommits(api, gitlabProject, gitlabCommitsFirstMerge.get(gitlabCommitsFirstMerge.size()-1), mergeParentHash);
+
+        for(int i = 0; i < gitlabCommitDiffCommitAndMergeCommit.size(); i++){
+            System.out.println(gitlabCommitDiffCommitAndMergeCommit.get(i).getDiff());
+        }
 
     }
     public static GitlabAPI makeConnectionToGitlab(String token){
@@ -181,12 +188,28 @@ public class ConnectToGitlab {
         return api.getCommitDiffs(gitlabProject.getId(), gitlabCommit.getId());
     }
 
-    public static List<GitlabCommitDiff> getCommitDiffFromTwoCommits(GitlabAPI api, GitlabProject gitlabProject, GitlabCommit newGitlabCommit, GitlabCommit oldGitlabCommit) throws IOException {
-            return api.compareCommits(gitlabProject.getId(), newGitlabCommit.getId(), oldGitlabCommit.getId()).getDiffs();
+    public static List<GitlabCommitDiff> getCommitDiffFromTwoCommits(GitlabAPI api, GitlabProject gitlabProject,  GitlabCommit oldGitlabCommit, GitlabCommit newGitlabCommit) throws IOException {
+        return api.compareCommits(gitlabProject.getId(), oldGitlabCommit.getId(), newGitlabCommit.getId()).getDiffs();
+    }
+
+    public static List<GitlabCommitDiff> getCommitDiffFromTwoCommits(GitlabAPI api, GitlabProject gitlabProject,  GitlabCommit oldGitlabCommit, String newGitlabCommit) throws IOException {
+        return api.compareCommits(gitlabProject.getId(),  oldGitlabCommit.getId(), newGitlabCommit).getDiffs();
     }
 
     public static List<GitlabIssue> getGitlabIssues(GitlabAPI api, GitlabProject gitlabProject){
         return api.getIssues(gitlabProject);
     }
 
+    public static String getParentCommitHashOfMergeRequest(GitlabAPI api, GitlabProject gitlabProject, GitlabCommit gitlabCommit) throws IOException {
+        List <GitlabCommit> gitlabMasterCommits = api.getAllCommits(gitlabProject.getId(), "master");
+        for(int i = 0; i < gitlabMasterCommits.size(); i++){
+            List<String> gitParentHashes = gitlabMasterCommits.get(i).getParentIds();
+            for(int j = 0; j < gitParentHashes.size(); j++){
+                if(gitParentHashes.get(j).equals(gitlabCommit.getId())){
+                    return gitlabMasterCommits.get(i).getId();
+                }
+            }
+        }
+        return null;
+    }
 }
