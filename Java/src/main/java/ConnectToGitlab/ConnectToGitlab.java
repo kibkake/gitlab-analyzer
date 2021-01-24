@@ -89,9 +89,10 @@ public class ConnectToGitlab {
         //Get parent commit of a merge request
         String mergeParentHash = getParentCommitHashOfMergeRequest(api, gitlabProject, gitlabCommitsFirstMerge.get(0));
         List<GitlabCommitDiff> gitlabCommitDiffCommitAndMergeCommit = getCommitDiffFromTwoCommits(api, gitlabProject, gitlabCommitsFirstMerge.get(gitlabCommitsFirstMerge.size()-1), mergeParentHash);
+        String [] commitDiffCommitAndMerge = new String[gitlabCommitDiffCommitAndMergeCommit.size()];
 
         for(int i = 0; i < gitlabCommitDiffCommitAndMergeCommit.size(); i++){
-            System.out.println(gitlabCommitDiffCommitAndMergeCommit.get(i).getDiff());
+            commitDiffCommitAndMerge [i] = gitlabCommitDiffCommitAndMergeCommit.get(i).getDiff();
         }
 
     }
