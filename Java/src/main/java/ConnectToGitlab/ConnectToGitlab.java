@@ -14,9 +14,10 @@ import java.util.List;
 public class ConnectToGitlab {
 
     public static void connectGitlab(String token) throws IOException {
-        GitlabAPI api = GitlabAPI.connect("https://cmpt373-1211-10.cmpt.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
-        GitlabUser user = api.getUser();
-        System.out.println("name: " + user.getName());
+
+        GitlabAPI api = makeConnectionToGitlab(token);
+        GitlabUser user = getUserFromApi(api);
+        System.out.println("Welcome " + user.getName() + "!");
 
         List<GitlabProject> projects = api.getMembershipProjects();
         if(projects.size() == 0){
@@ -98,7 +99,13 @@ public class ConnectToGitlab {
                 System.out.println("commit " + gitlabCommitsFirstMerge.get(i).getId() + "  belongs to current user");
             }
         }
-
-
     }
+    public static GitlabAPI makeConnectionToGitlab(String token){
+        return GitlabAPI.connect("https://cmpt373-1211-10.cmpt.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
+    }
+    public static GitlabUser getUserFromApi(GitlabAPI api) throws IOException {
+        return api.getUser();
+    }
+
+
 }
