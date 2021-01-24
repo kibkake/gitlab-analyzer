@@ -9,4 +9,3 @@ CALL gradle test
 @ECHO:
 ECHO "Running Application: Main.class ..."
 CALL gradle run
-PAUSE
