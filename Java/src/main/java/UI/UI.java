@@ -13,6 +13,16 @@ public class UI extends Application {
     public static final int WIDTH_SIZE = 500;
     public static final int HEIGHT_SIZE = 500;
 
+    VBox empty_layout = new VBox(20);
+    VBox empty_layout2 = new VBox(20);
+    VBox empty_layout3 = new VBox(20);
+
+    Scene homeScene = new Scene(empty_layout,500, 500);
+
+    Scene databaseScene = new Scene(empty_layout2, WIDTH_SIZE, HEIGHT_SIZE);
+
+    Scene gitlabScene = new Scene(empty_layout3,WIDTH_SIZE, HEIGHT_SIZE);
+
     public static void start_UI(String[] args) {
         launch(args);
     }
@@ -24,24 +34,15 @@ public class UI extends Application {
         // Primary stage is the entire window of the application.
         // The Scenes are different scenes that can be showed on this window.
 
-        VBox empty_layout = new VBox(20);
-        VBox empty_layout2 = new VBox(20);
-        VBox empty_layout3 = new VBox(20);
+        createHomeScene(primaryStage);
 
-        Scene homeScene = new Scene(empty_layout,500, 500);
+        createDatabaseScene(primaryStage);
 
-        Scene databaseScene = new Scene(empty_layout2, WIDTH_SIZE, HEIGHT_SIZE);
-
-        Scene gitlabScene = new Scene(empty_layout3,WIDTH_SIZE, HEIGHT_SIZE);
-
-        homeScene = createHomeScene(primaryStage, databaseScene, gitlabScene);
-
-        primaryStage.setScene(homeScene); // The screen initally shown when starting the app.
+        primaryStage.setScene(homeScene); // The screen initially shown when starting the app.
         primaryStage.show();
     }
 
-    private Scene createHomeScene(Stage primaryStage, Scene databaseScene,
-                                  Scene gitlabScene) {
+    private void createHomeScene(Stage primaryStage) {
         // Button functionality will be added for the home scene here.
         // Using lambdas, the action when clicking one of the buttons is to
         // switch to another screen (for now, just the DB and Gitlab screens).
@@ -56,11 +57,10 @@ public class UI extends Application {
         layout.getChildren().addAll(databaseButton, gitlabButton);
         // Can add more stuff (buttons, labels, etc) here.
 
-        return (new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE));
+        homeScene = new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE);
     }
 
-    private Scene createDatabaseScene(Stage primaryStage, Scene homeScene,
-                                      Scene gitlabScene) {
+    private void createDatabaseScene(Stage primaryStage) {
 
         // CONTINUE HERE - This DB scene with buttons isn't showing up
         // when pressing the DB button in home.
@@ -79,7 +79,7 @@ public class UI extends Application {
         VBox layout = new VBox(20);
         layout.getChildren().addAll(homeButton, gitlabButton); // Add more buttons here.
 
-        return (new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE));
+        databaseScene = new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE);
     }
 
     private void createGitLabScene(Stage primaryStage, Scene GitLabScene,
