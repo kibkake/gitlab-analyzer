@@ -8,7 +8,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String args[]) {
         try {
-            ConnectToGitlab.connectGitlab("");//Create an access token on your gitlab account and pass it in. Remove when pushing to avoid extra conflicts
+            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");//access token for the test server
         }catch(IOException exception){
             System.out.println("Problem in ConnectToGitLab:\n" + exception.getMessage());
         }
