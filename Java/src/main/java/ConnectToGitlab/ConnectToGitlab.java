@@ -57,26 +57,26 @@ public class ConnectToGitlab {
         }
 
         //Get changes from the first commit of the first merge request
-        if (gitlabCommitsFirstMerge.size() > 0) {
-            System.out.println("First commit of first merge request changes: ");
-            System.out.println(api.getCommitDiffs(projects.get(0).getId(), gitlabCommitsFirstMerge.get(0).getId()).get(0).getDiff());
+        List<GitlabCommitDiff> gitlabCommitDiffsSingleCommit = getSingleCommitDiff(api, gitlabProject, gitlabCommitsFirstMerge.get(gitlabCommitsFirstMerge.size()-1));
+        String [] commitDiffStringSingleCommit = new String[gitlabCommitDiffsSingleCommit.size()];
+        for(int i = 0; i < gitlabCommitDiffsSingleCommit.size(); i++){
+            commitDiffStringSingleCommit[i] = gitlabCommitDiffsSingleCommit.get(i).getDiff();
         }
-/*
-        //Get the commit diffs between two specific commits (newest and second newest)
-        System.out.println("commit diff between first and second commit of first merge request:");
-        if (gitlabCommitsFirstMerge.size() > 1) {
-            List<GitlabCommitDiff> gitlabCommitDiffsFromCommits = api.compareCommits(projects.get(0).getId(),gitlabCommitsFirstMerge.get(1).getId(), gitlabCommitsFirstMerge.get(0).getId()).getDiffs();
 
+        //Get the commit diffs between two specific commits (newest and second newest)
+        if (gitlabCommitsFirstMerge.size() > 1) {
+            List<GitlabCommitDiff> gitlabCommitDiffsFromCommits = getCommitDiffFromTwoCommits(api, gitlabProject,gitlabCommitsFirstMerge.get(1), gitlabCommitsFirstMerge.get(0));
+            String [] commitDiffStringTwoCommit = new String[gitlabCommitDiffsFromCommits.size()];
             for (int i = 0; i < gitlabCommitDiffsFromCommits.size(); i++) {
-                System.out.println(gitlabCommitDiffsFromCommits.get(i).getDiff());
+                commitDiffStringTwoCommit[i] = gitlabCommitDiffsFromCommits.get(i).getDiff();;
             }
         }
-        System.out.println();
 
         //Get issue titles
-        List <GitlabIssue> gitlabIssues = api.getIssues(projects.get(0).getId());
+        List <GitlabIssue> gitlabIssues = getGitlabIssues(api, gitlabProject);
+        String [] gitlabIssuesTitles = new String[gitlabIssues.size()];
         for (int i = 0; i < gitlabIssues.size(); i++) {
-            System.out.println(gitlabIssues.get(i).getTitle());
+            gitlabIssuesTitles[i] = gitlabIssues.get(i).getTitle();
         }
 
         //Check which commits from a merge request are from the current user
@@ -84,7 +84,9 @@ public class ConnectToGitlab {
             if(gitlabCommitsFirstMerge.get(0).getAuthorName().equals(user.getName())){
                 System.out.println("commit " + gitlabCommitsFirstMerge.get(i).getId() + "  belongs to current user");
             }
-        }*/
+        }
+
+
     }
     public static GitlabAPI makeConnectionToGitlab(String token){
         return GitlabAPI.connect("https://cmpt373-1211-10.cmpt.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
@@ -173,6 +175,18 @@ public class ConnectToGitlab {
 
     public static String printCommitMessage(GitlabCommit gitlabCommit){
         return gitlabCommit.getTitle();
+    }
+
+    public static List<GitlabCommitDiff> getSingleCommitDiff(GitlabAPI api, GitlabProject gitlabProject, GitlabCommit gitlabCommit) throws IOException {
+        return api.getCommitDiffs(gitlabProject.getId(), gitlabCommit.getId());
+    }
+
+    public static List<GitlabCommitDiff> getCommitDiffFromTwoCommits(GitlabAPI api, GitlabProject gitlabProject, GitlabCommit newGitlabCommit, GitlabCommit oldGitlabCommit) throws IOException {
+            return api.compareCommits(gitlabProject.getId(), newGitlabCommit.getId(), oldGitlabCommit.getId()).getDiffs();
+    }
+
+    public static List<GitlabIssue> getGitlabIssues(GitlabAPI api, GitlabProject gitlabProject){
+        return api.getIssues(gitlabProject);
     }
 
 }
