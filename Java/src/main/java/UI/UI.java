@@ -12,16 +12,15 @@ public class UI extends Application {
 
     public static final int WIDTH_SIZE = 500;
     public static final int HEIGHT_SIZE = 500;
+    public static final String textForHomeButton = "Return to home screen";
+    public static final String textForDatabaseButton = "Access/Modify the Database";
+    public static final String textForGitLabButton = "Retrieve info from GitLab";
 
-    VBox empty_layout = new VBox(20);
-    VBox empty_layout2 = new VBox(20);
-    VBox empty_layout3 = new VBox(20);
+    Scene homeScene = new Scene(new VBox(20),WIDTH_SIZE, HEIGHT_SIZE);
 
-    Scene homeScene = new Scene(empty_layout,500, 500);
+    Scene databaseScene = new Scene(new VBox(20), WIDTH_SIZE, HEIGHT_SIZE);
 
-    Scene databaseScene = new Scene(empty_layout2, WIDTH_SIZE, HEIGHT_SIZE);
-
-    Scene gitlabScene = new Scene(empty_layout3,WIDTH_SIZE, HEIGHT_SIZE);
+    Scene gitlabScene = new Scene(new VBox(20),WIDTH_SIZE, HEIGHT_SIZE);
 
     public static void start_UI(String[] args) {
         launch(args);
@@ -38,7 +37,10 @@ public class UI extends Application {
 
         createDatabaseScene(primaryStage);
 
+        createGitLabScene(primaryStage);
+
         primaryStage.setScene(homeScene); // The screen initially shown when starting the app.
+
         primaryStage.show();
     }
 
@@ -47,8 +49,8 @@ public class UI extends Application {
         // Using lambdas, the action when clicking one of the buttons is to
         // switch to another screen (for now, just the DB and Gitlab screens).
 
-        Button databaseButton = new Button("Access/Modify the Database");
-        Button gitlabButton = new Button("Retrieve info from gitlab");
+        Button databaseButton = new Button(textForDatabaseButton);
+        Button gitlabButton = new Button(textForGitLabButton);
 
         databaseButton.setOnAction(e -> primaryStage.setScene(databaseScene));
         gitlabButton.setOnAction(e -> primaryStage.setScene(gitlabScene));
@@ -62,14 +64,11 @@ public class UI extends Application {
 
     private void createDatabaseScene(Stage primaryStage) {
 
-        // CONTINUE HERE - This DB scene with buttons isn't showing up
-        // when pressing the DB button in home.
-
         // Buttons for this database scene include buttons to go to the
         // home or gitlab scenes, as well as buttons to interact with the DB.
 
-        Button homeButton = new Button("Return to home screen");
-        Button gitlabButton = new Button("Retrieve info from gitlab");
+        Button homeButton = new Button(textForHomeButton);
+        Button gitlabButton = new Button(textForGitLabButton);
 
         homeButton.setOnAction(e -> primaryStage.setScene(homeScene));
         gitlabButton.setOnAction(e -> primaryStage.setScene(gitlabScene));
@@ -82,9 +81,27 @@ public class UI extends Application {
         databaseScene = new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE);
     }
 
-    private void createGitLabScene(Stage primaryStage, Scene GitLabScene,
-                                   VBox gitlabLayout) {
+    private void createGitLabScene(Stage primaryStage) {
 
-        // Continue here - make the return value type Scene
+        // Like in the createDatabase function, this function will have buttons
+        // taking it to the other screens (home & DB), as well as additional
+        // buttons for functionality.
+
+        Button homeButton = new Button(textForHomeButton);
+        Button databaseButton = new Button(textForDatabaseButton);
+
+        homeButton.setOnAction(e -> primaryStage.setScene(homeScene));
+        databaseButton.setOnAction(e -> primaryStage.setScene(databaseScene));
+
+        // Continue here - add buttons for getting data from GitLab, and textfields
+        // (such as for giving a token if needed).
+
+        // From here, also maybe call some logic class, that then checks
+        // if the user's token is already in the DB.
+
+        VBox layout = new VBox(20);
+        layout.getChildren().addAll(homeButton, databaseButton);
+
+        gitlabScene = new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE);
     }
 }
