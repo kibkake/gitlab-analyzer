@@ -19,7 +19,8 @@ public class ConnectToGitlab {
         GitlabUser user = getUserFromApi(api);
         System.out.println("Welcome " + user.getName() + "!");
 
-        List<GitlabProject> projects = api.getMembershipProjects();
+        //Get all the projects that user is a member of
+        List<GitlabProject> projects = getUserMemberProjects(api);
         if(projects.size() == 0){
             System.out.println("No projects!");
             return;
@@ -103,9 +104,20 @@ public class ConnectToGitlab {
     public static GitlabAPI makeConnectionToGitlab(String token){
         return GitlabAPI.connect("https://cmpt373-1211-10.cmpt.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
     }
+
     public static GitlabUser getUserFromApi(GitlabAPI api) throws IOException {
         return api.getUser();
     }
+
+    public static List<GitlabProject> getUserMemberProjects(GitlabAPI api) throws IOException {
+        return api.getMembershipProjects();
+    }
+
+    public static List<GitlabProject> getUserAccessibleProjects(GitlabAPI api) throws IOException {
+        return api.getProjects();
+    }
+
+
 
 
 }
