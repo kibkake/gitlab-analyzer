@@ -26,13 +26,8 @@ public class ConnectToGitlab {
             return;
         }
 
-        //List all projects
-        System.out.println("List of projects:");
-        for (int i = 0; i < projects.size(); i++) {
-            System.out.print(i + 1 + ". " + projects.get(i).getName());
-            System.out.println("  " + projects.get(i).getDefaultBranch());
-        }
-        System.out.println();
+        //Print projects
+        printMembershipProjects(projects);
 
         //Get name and url of newest project
         System.out.println("Newest project name : " + api.getProject(projects.get(0).getId()).getName());
@@ -115,6 +110,15 @@ public class ConnectToGitlab {
 
     public static List<GitlabProject> getUserAccessibleProjects(GitlabAPI api) throws IOException {
         return api.getProjects();
+    }
+
+    public static void printMembershipProjects(List<GitlabProject> gitlabProjects){
+        System.out.println("List of projects:");
+        for (int i = 0; i < gitlabProjects.size(); i++) {
+            System.out.print(i + 1 + ". " + gitlabProjects.get(i).getName());
+            System.out.println("  " + gitlabProjects.get(i).getDefaultBranch());
+        }
+        System.out.println();
     }
 
 
