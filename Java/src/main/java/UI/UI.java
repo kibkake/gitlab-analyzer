@@ -13,9 +13,9 @@ public class UI extends Application {
 
     public static final int WIDTH_SIZE = 500;
     public static final int HEIGHT_SIZE = 500;
-    public static final String textForHomeButton = "Return to home screen";
-    public static final String textForDatabaseButton = "Access/Modify the Database";
-    public static final String textForGitLabButton = "Retrieve info from GitLab";
+    public static final String TEXT_FOR_HOME_BUTTON = "Return to home screen";
+    public static final String TEXT_FOR_DATABASE_BUTTON = "Access/Modify the Database";
+    public static final String TEXT_FOR_GITLAB_BUTTON = "Retrieve info from GitLab";
 
     Scene homeScene = new Scene(new VBox(20),WIDTH_SIZE, HEIGHT_SIZE);
 
@@ -52,8 +52,8 @@ public class UI extends Application {
 
         Label homeSceneTitle = new Label("This is the Home Scene");
 
-        Button databaseButton = new Button(textForDatabaseButton);
-        Button gitlabButton = new Button(textForGitLabButton);
+        Button databaseButton = new Button(TEXT_FOR_DATABASE_BUTTON);
+        Button gitlabButton = new Button(TEXT_FOR_GITLAB_BUTTON);
 
         databaseButton.setOnAction(e -> primaryStage.setScene(databaseScene));
         gitlabButton.setOnAction(e -> primaryStage.setScene(gitlabScene));
@@ -71,8 +71,8 @@ public class UI extends Application {
         // Buttons for this database scene include buttons to go to the
         // home or gitlab scenes, as well as buttons to interact with the DB.
 
-        Button homeButton = new Button(textForHomeButton);
-        Button gitlabButton = new Button(textForGitLabButton);
+        Button homeButton = new Button(TEXT_FOR_HOME_BUTTON);
+        Button gitlabButton = new Button(TEXT_FOR_GITLAB_BUTTON);
 
         homeButton.setOnAction(e -> primaryStage.setScene(homeScene));
         gitlabButton.setOnAction(e -> primaryStage.setScene(gitlabScene));
@@ -93,8 +93,8 @@ public class UI extends Application {
         // taking it to the other screens (home & DB), as well as additional
         // buttons for functionality.
 
-        Button homeButton = new Button(textForHomeButton);
-        Button databaseButton = new Button(textForDatabaseButton);
+        Button homeButton = new Button(TEXT_FOR_HOME_BUTTON);
+        Button databaseButton = new Button(TEXT_FOR_DATABASE_BUTTON);
 
         homeButton.setOnAction(e -> primaryStage.setScene(homeScene));
         databaseButton.setOnAction(e -> primaryStage.setScene(databaseScene));
