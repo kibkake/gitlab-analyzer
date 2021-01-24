@@ -9,7 +9,10 @@ import org.gitlab.api.models.GitlabMergeRequest;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConnectToGitlab {
 
@@ -36,6 +39,9 @@ public class ConnectToGitlab {
             return;
         }
 
+        List<GitlabProjectMember> membersOfOneProject = api.getProjectMembers(gitlabProject);
+        //System.out.println(membersOfOneProject.get(0).getUsername() + ", " + membersOfOneProject.get(0).getName());
+
         //Get a list of and print merge requests
         List<GitlabMergeRequest> gitlabMergeRequests = gitlabMergeRequests(api, gitlabProject);
         //printProjectMergeRequests(gitlabMergeRequests);
@@ -56,11 +62,39 @@ public class ConnectToGitlab {
             //System.out.println(printCommitMessage(gitlabCommitsFirstMerge.get(gitlabCommitDiffsFromMerge.size()-1)));
         }
 
+        //Get a list of a user's merge requests
+        List<GitlabMergeRequest> userGitlabMergeRequests = new ArrayList<>();
+        for(int i = 0; i < gitlabMergeRequests.size(); i++){
+            if(isUserPartOfMerge(api, "arahilin", gitlabMergeRequests.get(i))){
+                userGitlabMergeRequests.add(gitlabMergeRequests.get(i));
+            }
+        }
+
         //Get changes from the first commit of the first merge request
         List<GitlabCommitDiff> gitlabCommitDiffsSingleCommit = getSingleCommitDiff(api, gitlabProject, gitlabCommitsFirstMerge.get(gitlabCommitsFirstMerge.size()-1));
         String [] commitDiffStringSingleCommit = new String[gitlabCommitDiffsSingleCommit.size()];
+        Pattern addedLines = Pattern.compile("\n\\+");
+        Pattern deletedLines = Pattern.compile("\n-");
+
+
+
         for(int i = 0; i < gitlabCommitDiffsSingleCommit.size(); i++){
             commitDiffStringSingleCommit[i] = gitlabCommitDiffsSingleCommit.get(i).getDiff();
+            //System.out.println(gitlabCommitDiffsSingleCommit.get(i).getNewPath());
+            //System.out.println(commitDiffStringSingleCommit[i]);
+            Matcher added = addedLines.matcher(commitDiffStringSingleCommit[i]);
+            Matcher deleted = deletedLines.matcher(commitDiffStringSingleCommit[i]);
+
+            double countOfAddedLines = 0;
+            double countOfDeletedLines = 0;
+            while (added.find()){
+                countOfAddedLines +=1;
+            }
+
+            while (deleted.find()){
+                countOfDeletedLines +=0.2;
+            }
+            //System.out.println(countOfAddedLines + countOfDeletedLines);
         }
 
         //Get the commit diffs between two specific commits (newest and second newest)
@@ -68,7 +102,7 @@ public class ConnectToGitlab {
             List<GitlabCommitDiff> gitlabCommitDiffsFromCommits = getCommitDiffFromTwoCommits(api, gitlabProject,gitlabCommitsFirstMerge.get(1), gitlabCommitsFirstMerge.get(0));
             String [] commitDiffStringTwoCommit = new String[gitlabCommitDiffsFromCommits.size()];
             for (int i = 0; i < gitlabCommitDiffsFromCommits.size(); i++) {
-                commitDiffStringTwoCommit[i] = gitlabCommitDiffsFromCommits.get(i).getDiff();;
+                commitDiffStringTwoCommit[i] = gitlabCommitDiffsFromCommits.get(i).getDiff();
             }
         }
 
@@ -94,6 +128,7 @@ public class ConnectToGitlab {
         for(int i = 0; i < gitlabCommitDiffCommitAndMergeCommit.size(); i++){
             commitDiffCommitAndMerge [i] = gitlabCommitDiffCommitAndMergeCommit.get(i).getDiff();
         }
+
 
     }
     public static GitlabAPI makeConnectionToGitlab(String token){
@@ -212,5 +247,15 @@ public class ConnectToGitlab {
             }
         }
         return null;
+    }
+
+    public static boolean isUserPartOfMerge(GitlabAPI api, String username, GitlabMergeRequest gitlabMergeRequest) throws IOException {
+        List<GitlabCommit> gitlabMergeCommits = getMergeCommits(api, gitlabMergeRequest);
+        for(int i = 0; i < gitlabMergeCommits.size(); i++){
+            if(gitlabMergeCommits.get(i).getAuthorName().equals(username)){
+                return true;
+            }
+        }
+        return false;
     }
 }
