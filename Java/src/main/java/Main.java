@@ -18,7 +18,7 @@ public class Main {
         try {
             UI.start_UI(args);
         } catch(Exception exception) {
-            System.out.println(exception.getMessage());
+            System.out.println("Problem in UI:\n" + exception.getMessage());
         }
     }
 }
