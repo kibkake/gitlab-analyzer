@@ -3,6 +3,7 @@ package main.java.UI;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -49,6 +50,8 @@ public class UI extends Application {
         // Using lambdas, the action when clicking one of the buttons is to
         // switch to another screen (for now, just the DB and Gitlab screens).
 
+        Label homeSceneTitle = new Label("This is the Home Scene");
+
         Button databaseButton = new Button(textForDatabaseButton);
         Button gitlabButton = new Button(textForGitLabButton);
 
@@ -56,13 +59,14 @@ public class UI extends Application {
         gitlabButton.setOnAction(e -> primaryStage.setScene(gitlabScene));
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(databaseButton, gitlabButton);
+        layout.getChildren().addAll(homeSceneTitle, databaseButton, gitlabButton);
         // Can add more stuff (buttons, labels, etc) here.
 
         homeScene = new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE);
     }
 
     private void createDatabaseScene(Stage primaryStage) {
+        Label databaseSceneTitle = new Label("This is the Database Scene");
 
         // Buttons for this database scene include buttons to go to the
         // home or gitlab scenes, as well as buttons to interact with the DB.
@@ -76,12 +80,14 @@ public class UI extends Application {
         // Continue here - add buttons to interact w/ DB.
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(homeButton, gitlabButton); // Add more buttons here.
+        layout.getChildren().addAll(databaseSceneTitle, homeButton,
+                                    gitlabButton); // Add more buttons here.
 
         databaseScene = new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE);
     }
 
     private void createGitLabScene(Stage primaryStage) {
+        Label gitlabSceneTitle = new Label("This is the GitLab Scene");
 
         // Like in the createDatabase function, this function will have buttons
         // taking it to the other screens (home & DB), as well as additional
@@ -100,7 +106,7 @@ public class UI extends Application {
         // if the user's token is already in the DB.
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(homeButton, databaseButton);
+        layout.getChildren().addAll(gitlabSceneTitle, homeButton, databaseButton);
 
         gitlabScene = new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE);
     }
