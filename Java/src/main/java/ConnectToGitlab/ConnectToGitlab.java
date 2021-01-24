@@ -6,13 +6,9 @@ import org.gitlab.api.Pagination;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.*;
 import org.gitlab.api.models.GitlabMergeRequest;
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ConnectToGitlab {
 
@@ -62,10 +58,12 @@ public class ConnectToGitlab {
             //System.out.println(printCommitMessage(gitlabCommitsFirstMerge.get(gitlabCommitDiffsFromMerge.size()-1)));
         }
 
+        getUserInformation(api, gitlabProject);
+
         //Get a list of a user's merge requests (where user has atleast one commit)
         List<GitlabMergeRequest> userGitlabMergeRequests = new ArrayList<>();
         for(int i = 0; i < gitlabMergeRequests.size(); i++){
-            if(isUserPartOfMerge(api, "arahilin", gitlabMergeRequests.get(i))){
+            if(isUserPartOfMerge(api, "user user", gitlabMergeRequests.get(i))){
                 userGitlabMergeRequests.add(gitlabMergeRequests.get(i));
             }
         }
@@ -279,6 +277,50 @@ public class ConnectToGitlab {
             score += calculateCommitScoreSingleDiff(gitlabCommitDiffs.get(i));
         }
         return Math.round(score * 100.0) / 100.0;
+    }
+
+    public static void getUserInformation(GitlabAPI api, GitlabProject gitlabProject) throws IOException {
+        //Get a list of a user's commits in a gitlab project(ALL)
+        List <GitlabCommit> userAllGitlabCommitsFromProject = api.getAllCommits(gitlabProject.getId());
+        for(int i = 0; i < userAllGitlabCommitsFromProject.size(); i++){
+            if(userAllGitlabCommitsFromProject.get(i).getAuthorName().equals("arahilin")){//user user
+                //System.out.println(userAllGitlabCommitsFromProject.get(i).getTitle());
+            }
+        }
+
+        //All merged merge requests in the project
+        List<GitlabMergeRequest> gitlabMergeRequests = gitlabMergeRequests(api, gitlabProject);
+
+        //Get a list of a user's merge requests (where user has atleast one commit)
+        List<GitlabMergeRequest> userGitlabMergeRequests = new ArrayList<>();
+        for(int i = 0; i < gitlabMergeRequests.size(); i++){
+            if(isUserPartOfMerge(api, "arahilin", gitlabMergeRequests.get(i))){
+                userGitlabMergeRequests.add(gitlabMergeRequests.get(i));
+            }
+        }
+
+        //Get All user commits from merge requests from latest merge
+        if(userGitlabMergeRequests.size() == 0) {
+            return;
+        }
+
+        List<GitlabCommit> userGitlabMergeCommits = new ArrayList<>();
+        for(int i = 0; i < userGitlabMergeRequests.size(); i ++){
+            List<GitlabCommit> userGitlabSingleMergeCommits = getMergeCommits(api, userGitlabMergeRequests.get(i));
+            for(int j = 0; j < userGitlabSingleMergeCommits.size(); j ++){
+                userGitlabMergeCommits.add(userGitlabSingleMergeCommits.get(j));
+            }
+        }
+        //calculate score of eversingle commit
+        for(int i = 0; i < userGitlabMergeCommits.size(); i++) {
+            if (userGitlabMergeCommits.get(i).getAuthorName().equals("arahilin")) {
+                //System.out.print(userGitlabMergeCommits.get(i).getTitle()+ ":    ");
+                List<GitlabCommitDiff> tempDiffs = getSingleCommitDiff(api, gitlabProject, userGitlabMergeCommits.get(i));
+                //System.out.println(calculateCommitScoreTotal(tempDiffs));
+            }
+        }
+
+
     }
 
 }
