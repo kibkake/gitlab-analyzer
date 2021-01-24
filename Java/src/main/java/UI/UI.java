@@ -32,7 +32,7 @@ public class UI extends Application {
 
         primaryStage.setTitle("GitLab Analyzer");
         // Primary stage is the entire window of the application.
-        // The Scenes are different scenes that can be showed on this window.
+        // The Scenes are different scenes that can be shown on this window.
 
         createHomeScene(primaryStage);
 
