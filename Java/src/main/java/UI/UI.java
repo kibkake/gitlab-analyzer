@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 
 public class UI extends Application {
 
+    public static final int WIDTH_SIZE = 500;
+    public static final int HEIGHT_SIZE = 500;
+
     public static void start_UI(String[] args) {
         launch(args);
     }
@@ -27,9 +30,9 @@ public class UI extends Application {
 
         Scene homeScene = new Scene(empty_layout,500, 500);
 
-        Scene databaseScene = new Scene(empty_layout2,500, 500);
+        Scene databaseScene = new Scene(empty_layout2, WIDTH_SIZE, HEIGHT_SIZE);
 
-        Scene gitlabScene = new Scene(empty_layout3,500, 500);
+        Scene gitlabScene = new Scene(empty_layout3,WIDTH_SIZE, HEIGHT_SIZE);
 
         homeScene = createHomeScene(primaryStage, databaseScene, gitlabScene);
 
@@ -39,7 +42,7 @@ public class UI extends Application {
 
     private Scene createHomeScene(Stage primaryStage, Scene databaseScene,
                                   Scene gitlabScene) {
-        // Add button functionality will be added for the home scene here.
+        // Button functionality will be added for the home scene here.
         // Using lambdas, the action when clicking one of the buttons is to
         // switch to another screen (for now, just the DB and Gitlab screens).
 
@@ -53,16 +56,35 @@ public class UI extends Application {
         layout.getChildren().addAll(databaseButton, gitlabButton);
         // Can add more stuff (buttons, labels, etc) here.
 
-        return (new Scene(layout, 500, 500));
+        return (new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE));
     }
 
-    private void createDatabaseScene(Stage primaryStage, Scene databaseScene,
-                                     VBox databaseLayout) {
+    private Scene createDatabaseScene(Stage primaryStage, Scene homeScene,
+                                      Scene gitlabScene) {
 
+        // CONTINUE HERE - This DB scene with buttons isn't showing up
+        // when pressing the DB button in home.
+
+        // Buttons for this database scene include buttons to go to the
+        // home or gitlab scenes, as well as buttons to interact with the DB.
+
+        Button homeButton = new Button("Return to home screen");
+        Button gitlabButton = new Button("Retrieve info from gitlab");
+
+        homeButton.setOnAction(e -> primaryStage.setScene(homeScene));
+        gitlabButton.setOnAction(e -> primaryStage.setScene(gitlabScene));
+
+        // Continue here - add buttons to interact w/ DB.
+
+        VBox layout = new VBox(20);
+        layout.getChildren().addAll(homeButton, gitlabButton); // Add more buttons here.
+
+        return (new Scene(layout, WIDTH_SIZE, HEIGHT_SIZE));
     }
 
     private void createGitLabScene(Stage primaryStage, Scene GitLabScene,
                                    VBox gitlabLayout) {
 
+        // Continue here - make the return value type Scene
     }
 }
