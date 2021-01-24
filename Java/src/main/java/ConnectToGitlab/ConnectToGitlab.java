@@ -30,9 +30,10 @@ public class ConnectToGitlab {
         printMembershipProjects(projects);
 
         //Get name and url of newest project
-        System.out.println("Newest project name : " + api.getProject(projects.get(0).getId()).getName());
-        System.out.println("Newest project name : " + api.getProject(projects.get(0).getId()).getHttpUrl());
-        System.out.println();
+        GitlabProject gitlabProject = getSpecificProjectByName(projects, "TestProject");
+        if(gitlabProject == null){
+            System.out.println("No such project");
+        }
 
         //Get a list of merge requests
         System.out.println("List of merge requests:");
@@ -119,6 +120,31 @@ public class ConnectToGitlab {
             System.out.println("  " + gitlabProjects.get(i).getDefaultBranch());
         }
         System.out.println();
+    }
+
+    public static GitlabProject getSpecificProjectByName(List<GitlabProject> gitlabProjects, String projectName){
+        for (GitlabProject gitlabProject : gitlabProjects) {
+            if (gitlabProject.getName().equals(projectName)) {
+                return gitlabProject;
+            }
+        }
+        return null;
+    }
+    public static GitlabProject getSpecificProjectById(List<GitlabProject> gitlabProjects, int id){
+        for (GitlabProject gitlabProject : gitlabProjects) {
+            if (gitlabProject.getId().equals(id)) {
+                return gitlabProject;
+            }
+        }
+        return null;
+    }
+
+    public static String getProjectUrl(GitlabProject gitlabProject){
+        return gitlabProject.getHttpUrl();
+    }
+
+    public static String getProjectName(GitlabProject gitlabProject){
+        return gitlabProject.getName();
     }
 
 
