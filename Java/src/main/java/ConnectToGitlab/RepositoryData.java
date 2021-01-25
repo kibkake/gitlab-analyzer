@@ -11,12 +11,14 @@ import java.util.List;
 
 public class RepositoryData {
 
-    static List<GitlabProject> gitlabMembershipProjects;
-    static List<GitProject> gitProjects;
+    public static List<GitlabProject> gitlabMembershipProjects;
+    public static List<GitProject> gitProjects = new ArrayList<>();
+    public static GitProject gitCurrentProject;
 
     //Get projects that user is a member of
     public static void collectMembershipProjects(GitlabAPI api) throws IOException {
        gitlabMembershipProjects = api.getMembershipProjects();
+       createGitProjects(api);
     }
 
     //Create project objects
@@ -36,18 +38,19 @@ public class RepositoryData {
     public static GitProject searchForProjectByName(String name){
         for (GitProject gitProject : gitProjects) {
             if (gitProject.gitlabProjectName.equals(name)) {
-                return gitProject;
+                gitCurrentProject = gitProject;
+                return gitCurrentProject;
             }
         }
         return null;
     }
 
     //Get a list of a user's merge requests (where user has atleast one commit)
-    public static List<GitlabMergeRequest> getUserMergeRequests(GitlabAPI api, String username, List<GitlabMergeRequest> gitlabMergeRequests) throws IOException {
+    public static List<GitlabMergeRequest> getUserMergeRequests(GitlabAPI api, String username) throws IOException {
         List<GitlabMergeRequest> userGitlabMergeRequests = new ArrayList<>();
-        for(int i = 0; i < gitlabMergeRequests.size(); i++){
-            if(isUserPartOfMerge(api, username, gitlabMergeRequests.get(i))){
-                userGitlabMergeRequests.add(gitlabMergeRequests.get(i));
+        for(int i = 0; i < gitCurrentProject.gitlabMergedMergeRequests.size(); i++){
+            if(isUserPartOfMerge(api, username, gitCurrentProject.gitlabMergedMergeRequests.get(i))){
+                userGitlabMergeRequests.add(gitCurrentProject.gitlabMergedMergeRequests.get(i));
                 //System.out.println(gitlabMergeRequests.get(i).getTitle());
             }
         }
@@ -68,4 +71,27 @@ public class RepositoryData {
         return false;
     }
 
+    public static List<GitlabCommit> getUserMergeCommits(GitlabAPI api, String username) throws IOException {
+        List<GitlabCommit> userGitlabMergeCommits = new ArrayList<>();
+        for(int i = 0; i < gitCurrentProject.gitlabMergedMergeRequests.size(); i++){
+            List<GitlabCommit> userGitlabSingleMergeCommits = new ArrayList<>();
+            userGitlabSingleMergeCommits = getMergeCommits(api, gitCurrentProject.gitlabMergedMergeRequests.get(i));
+            for(int j = 0; j < userGitlabSingleMergeCommits.size(); j++){
+                if(userGitlabSingleMergeCommits.get(j).getAuthorName().equals(username)  && !userGitlabSingleMergeCommits.get(j).getTitle().startsWith("Merge 'master'")) {
+                    userGitlabMergeCommits.add(userGitlabSingleMergeCommits.get(j));
+                }
+            }
+        }
+        return userGitlabMergeCommits;
+    }
+
+    public static List<GitlabCommit> getAllUserCommits(GitlabAPI api, String username ) throws IOException {
+        List <GitlabCommit> userAllGitlabCommitsFromProject = api.getAllCommits(gitCurrentProject.gitProject.getId());
+        for(int i = 0; i < userAllGitlabCommitsFromProject.size(); i++){
+            if(userAllGitlabCommitsFromProject.get(i).getAuthorName().equals(username)){//user user
+                //System.out.println(userAllGitlabCommitsFromProject.get(i).getTitle());
+            }
+        }
+        return userAllGitlabCommitsFromProject;
+    }
 }

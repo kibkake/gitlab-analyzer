@@ -2,12 +2,10 @@ package main.java.ConnectToGitlab;
 
 import org.gitlab.api.AuthMethod;
 import org.gitlab.api.GitlabAPI;
-import org.gitlab.api.Pagination;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.*;
 import org.gitlab.api.models.GitlabMergeRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectToGitlab {
@@ -58,16 +56,10 @@ public class ConnectToGitlab {
             //System.out.println(printCommitMessage(gitlabCommitsFirstMerge.get(gitlabCommitDiffsFromMerge.size()-1)));
         }
 
-        getUserInformation(api, gitlabProject, "arahilin");
-
-        //Get a list of a user's merge requests (where user has atleast one commit)
-        List<GitlabMergeRequest> userGitlabMergeRequests = new ArrayList<>();
-        for(int i = 0; i < gitlabMergeRequests.size(); i++){
-            if(isUserPartOfMerge(api, "user2", gitlabMergeRequests.get(i))){
-                userGitlabMergeRequests.add(gitlabMergeRequests.get(i));
-                //System.out.println(gitlabMergeRequests.get(i).getTitle());
-            }
-        }
+        /*RepositoryData.collectMembershipProjects(api);
+        RepositoryData.searchForProjectByName("Testproject2");
+        List<GitlabMergeRequest> test = RepositoryData.getUserMergeRequests(api, "arahilin");
+        List<GitlabCommit> test2 = RepositoryData.getUserMergeCommits(api, "arahilin");*/
 
         //Get changes from the first commit of the first merge request
         List<GitlabCommitDiff> gitlabCommitDiffsSingleCommit = getSingleCommitDiff(api, gitlabProject, gitlabCommitsFirstMerge.get(gitlabCommitsFirstMerge.size()-1));
@@ -112,135 +104,6 @@ public class ConnectToGitlab {
         for(int i = 0; i < gitlabCommitDiffCommitAndMergeCommit.size(); i++){
             commitDiffCommitAndMerge [i] = gitlabCommitDiffCommitAndMergeCommit.get(i).getDiff();
         }
-
-
-    }
-    public static GitlabAPI makeConnectionToGitlab(String token){
-        return GitlabAPI.connect("https://cmpt373-1211-10.cmpt.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
-    }
-
-    public static GitlabUser getUserFromApi(GitlabAPI api) throws IOException {
-        return api.getUser();
-    }
-
-    public static List<GitlabProject> getUserMemberProjects(GitlabAPI api) throws IOException {
-        return api.getMembershipProjects();
-    }
-
-    public static List<GitlabProject> getUserAccessibleProjects(GitlabAPI api) throws IOException {
-        return api.getProjects();
-    }
-
-    public static void printMembershipProjects(List<GitlabProject> gitlabProjects){
-        System.out.println("List of projects:");
-        for (int i = 0; i < gitlabProjects.size(); i++) {
-            System.out.print(i + 1 + ". " + gitlabProjects.get(i).getName());
-            System.out.println("  " + gitlabProjects.get(i).getDefaultBranch());
-        }
-        System.out.println();
-    }
-
-    public static GitlabProject getSpecificProjectByName(List<GitlabProject> gitlabProjects, String projectName){
-        for (GitlabProject gitlabProject : gitlabProjects) {
-            if (gitlabProject.getName().equals(projectName)) {
-                return gitlabProject;
-            }
-        }
-        return null;
-    }
-    public static GitlabProject getSpecificProjectById(List<GitlabProject> gitlabProjects, int id){
-        for (GitlabProject gitlabProject : gitlabProjects) {
-            if (gitlabProject.getId().equals(id)) {
-                return gitlabProject;
-            }
-        }
-        return null;
-    }
-
-    public static String getProjectUrl(GitlabProject gitlabProject){
-        return gitlabProject.getHttpUrl();
-    }
-
-    public static String getProjectName(GitlabProject gitlabProject){
-        return gitlabProject.getName();
-    }
-
-    public static List<GitlabMergeRequest> gitlabMergeRequests(GitlabAPI api, GitlabProject gitlabProject) throws IOException {
-        assert (gitlabProject != null);
-        return api.getMergedMergeRequests(api.getProject(gitlabProject.getId()));
-    }
-
-    public static void printProjectMergeRequests(List<GitlabMergeRequest> gitlabMergeRequests){
-        if(gitlabMergeRequests.size() == 0){
-            return;
-        }
-        System.out.println("List of merge requests:");
-        for (int i = 0; i < gitlabMergeRequests.size(); i++) {
-            System.out.print(i + 1 + ". " + gitlabMergeRequests.get(i).getTitle() + "   ");
-        }
-        System.out.println("\n");
-    }
-
-    public static List<GitlabCommitDiff> getMergeRequestDiff(GitlabAPI api, GitlabProject gitLabProject, GitlabMergeRequest gitlabMergeRequest) throws IOException {
-        return api.getMergeRequestChanges(gitLabProject.getId(), gitlabMergeRequest.getIid()).getChanges();
-    }
-
-    public static void printMergeRequestChanges(List<GitlabCommitDiff> gitlabCommitDiffs){
-        for (int i = 0; i < gitlabCommitDiffs.size(); i++) {
-            System.out.println(gitlabCommitDiffs.get(i).getDiff());
-        }
-        System.out.println();
-    }
-
-    public static List<GitlabCommit> getAllGitlabCommits(GitlabAPI api, GitlabProject gitlabProject) throws IOException {
-        return api.getAllCommits(gitlabProject.getId());
-    }
-
-    public static List<GitlabCommit> getMergeCommits(GitlabAPI api, GitlabMergeRequest gitlabMergeRequest) throws IOException {
-        return api.getCommits(gitlabMergeRequest);
-    }
-
-    public static String printCommitMessage(GitlabCommit gitlabCommit){
-        return gitlabCommit.getTitle();
-    }
-
-    public static List<GitlabCommitDiff> getSingleCommitDiff(GitlabAPI api, GitlabProject gitlabProject, GitlabCommit gitlabCommit) throws IOException {
-        return api.getCommitDiffs(gitlabProject.getId(), gitlabCommit.getId());
-    }
-
-    public static List<GitlabCommitDiff> getCommitDiffFromTwoCommits(GitlabAPI api, GitlabProject gitlabProject,  GitlabCommit oldGitlabCommit, GitlabCommit newGitlabCommit) throws IOException {
-        return api.compareCommits(gitlabProject.getId(), oldGitlabCommit.getId(), newGitlabCommit.getId()).getDiffs();
-    }
-
-    public static List<GitlabCommitDiff> getCommitDiffFromTwoCommits(GitlabAPI api, GitlabProject gitlabProject,  GitlabCommit oldGitlabCommit, String newGitlabCommit) throws IOException {
-        return api.compareCommits(gitlabProject.getId(),  oldGitlabCommit.getId(), newGitlabCommit).getDiffs();
-    }
-
-    public static List<GitlabIssue> getGitlabIssues(GitlabAPI api, GitlabProject gitlabProject){
-        return api.getIssues(gitlabProject);
-    }
-
-    public static String getParentCommitHashOfMergeRequest(GitlabAPI api, GitlabProject gitlabProject, GitlabCommit gitlabCommit) throws IOException {
-        List <GitlabCommit> gitlabMasterCommits = api.getAllCommits(gitlabProject.getId(), "master");
-        for(int i = 0; i < gitlabMasterCommits.size(); i++){
-            List<String> gitParentHashes = gitlabMasterCommits.get(i).getParentIds();
-            for(int j = 0; j < gitParentHashes.size(); j++){
-                if(gitParentHashes.get(j).equals(gitlabCommit.getId())){
-                    return gitlabMasterCommits.get(i).getId();
-                }
-            }
-        }
-        return null;
-    }
-
-    public static boolean isUserPartOfMerge(GitlabAPI api, String username, GitlabMergeRequest gitlabMergeRequest) throws IOException {
-        List<GitlabCommit> gitlabMergeCommits = getMergeCommits(api, gitlabMergeRequest);
-        for(int i = 0; i < gitlabMergeCommits.size(); i++){
-            if(gitlabMergeCommits.get(i).getAuthorName().equals(username)){
-                return true;
-            }
-        }
-        return false;
     }
 
     public static double calculateCommitScoreSingleDiff(GitlabCommitDiff gitlabCommitDiff){
@@ -280,48 +143,132 @@ public class ConnectToGitlab {
         return Math.round(score * 100.0) / 100.0;
     }
 
-    public static void getUserInformation(GitlabAPI api, GitlabProject gitlabProject, String username) throws IOException {
-        //Get a list of a user's commits in a gitlab project(ALL)
-        List <GitlabCommit> userAllGitlabCommitsFromProject = api.getAllCommits(gitlabProject.getId());
-        for(int i = 0; i < userAllGitlabCommitsFromProject.size(); i++){
-            if(userAllGitlabCommitsFromProject.get(i).getAuthorName().equals(username)){//user user
-                //System.out.println(userAllGitlabCommitsFromProject.get(i).getTitle());
-            }
-        }
-
-        //All merged merge requests in the project
-        List<GitlabMergeRequest> gitlabMergeRequests = gitlabMergeRequests(api, gitlabProject);
-
-        //Get a list of a user's merge requests (where user has atleast one commit)
-        List<GitlabMergeRequest> userGitlabMergeRequests = new ArrayList<>();
-        for(int i = 0; i < gitlabMergeRequests.size(); i++){
-            if(isUserPartOfMerge(api, username, gitlabMergeRequests.get(i))){
-                userGitlabMergeRequests.add(gitlabMergeRequests.get(i));
-            }
-        }
-
-        //Get All user commits from merge requests from latest merge
-        if(userGitlabMergeRequests.size() == 0) {
-            return;
-        }
-
-        List<GitlabCommit> userGitlabMergeCommits = new ArrayList<>();
-        for(int i = 0; i < userGitlabMergeRequests.size(); i ++){
-            List<GitlabCommit> userGitlabSingleMergeCommits = getMergeCommits(api, userGitlabMergeRequests.get(i));
-            for(int j = 0; j < userGitlabSingleMergeCommits.size(); j ++){
-                userGitlabMergeCommits.add(userGitlabSingleMergeCommits.get(j));
-            }
-        }
-
-        //calculate score of every single commit
-        for(int i = 0; i < userGitlabMergeCommits.size(); i++) {
-            if (userGitlabMergeCommits.get(i).getAuthorName().equals(username) && !userGitlabMergeCommits.get(i).getTitle().startsWith("Merge 'master'")) {
-                //System.out.print(userGitlabMergeCommits.get(i).getTitle()+ ":    ");
-                List<GitlabCommitDiff> tempDiffs = getSingleCommitDiff(api, gitlabProject, userGitlabMergeCommits.get(i));
-                //System.out.println(calculateCommitScoreTotal(tempDiffs));
-            }
-        }
-
+    public static List<GitlabCommit> getAllGitlabCommits(GitlabAPI api, GitlabProject gitlabProject) throws IOException {
+        return api.getAllCommits(gitlabProject.getId());
     }
 
+    public static List<GitlabCommitDiff> getCommitDiffFromTwoCommits(GitlabAPI api, GitlabProject gitlabProject,  GitlabCommit oldGitlabCommit, GitlabCommit newGitlabCommit) throws IOException {
+        return api.compareCommits(gitlabProject.getId(), oldGitlabCommit.getId(), newGitlabCommit.getId()).getDiffs();
+    }
+
+    public static List<GitlabCommitDiff> getCommitDiffFromTwoCommits(GitlabAPI api, GitlabProject gitlabProject,  GitlabCommit oldGitlabCommit, String newGitlabCommit) throws IOException {
+        return api.compareCommits(gitlabProject.getId(),  oldGitlabCommit.getId(), newGitlabCommit).getDiffs();
+    }
+
+    public static List<GitlabIssue> getGitlabIssues(GitlabAPI api, GitlabProject gitlabProject){
+        return api.getIssues(gitlabProject);
+    }
+
+    public static List<GitlabCommit> getMergeCommits(GitlabAPI api, GitlabMergeRequest gitlabMergeRequest) throws IOException {
+        return api.getCommits(gitlabMergeRequest);
+    }
+
+    public static List<GitlabCommitDiff> getMergeRequestDiff(GitlabAPI api, GitlabProject gitLabProject, GitlabMergeRequest gitlabMergeRequest) throws IOException {
+        return api.getMergeRequestChanges(gitLabProject.getId(), gitlabMergeRequest.getIid()).getChanges();
+    }
+
+    public static String getParentCommitHashOfMergeRequest(GitlabAPI api, GitlabProject gitlabProject, GitlabCommit gitlabCommit) throws IOException {
+        List <GitlabCommit> gitlabMasterCommits = api.getAllCommits(gitlabProject.getId(), "master");
+        for(int i = 0; i < gitlabMasterCommits.size(); i++){
+            List<String> gitParentHashes = gitlabMasterCommits.get(i).getParentIds();
+            for(int j = 0; j < gitParentHashes.size(); j++){
+                if(gitParentHashes.get(j).equals(gitlabCommit.getId())){
+                    return gitlabMasterCommits.get(i).getId();
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getProjectName(GitlabProject gitlabProject){
+        return gitlabProject.getName();
+    }
+
+    public static String getProjectUrl(GitlabProject gitlabProject){
+        return gitlabProject.getHttpUrl();
+    }
+
+    public static List<GitlabCommitDiff> getSingleCommitDiff(GitlabAPI api, GitlabProject gitlabProject, GitlabCommit gitlabCommit) throws IOException {
+        return api.getCommitDiffs(gitlabProject.getId(), gitlabCommit.getId());
+    }
+
+    public static GitlabProject getSpecificProjectById(List<GitlabProject> gitlabProjects, int id){
+        for (GitlabProject gitlabProject : gitlabProjects) {
+            if (gitlabProject.getId().equals(id)) {
+                return gitlabProject;
+            }
+        }
+        return null;
+    }
+
+    public static GitlabProject getSpecificProjectByName(List<GitlabProject> gitlabProjects, String projectName){
+        for (GitlabProject gitlabProject : gitlabProjects) {
+            if (gitlabProject.getName().equals(projectName)) {
+                return gitlabProject;
+            }
+        }
+        return null;
+    }
+
+    public static List<GitlabProject> getUserAccessibleProjects(GitlabAPI api) throws IOException {
+        return api.getProjects();
+    }
+
+    public static GitlabUser getUserFromApi(GitlabAPI api) throws IOException {
+        return api.getUser();
+    }
+
+    public static List<GitlabProject> getUserMemberProjects(GitlabAPI api) throws IOException {
+        return api.getMembershipProjects();
+    }
+
+    public static List<GitlabMergeRequest> gitlabMergeRequests(GitlabAPI api, GitlabProject gitlabProject) throws IOException {
+        assert (gitlabProject != null);
+        return api.getMergedMergeRequests(api.getProject(gitlabProject.getId()));
+    }
+
+    public static boolean isUserPartOfMerge(GitlabAPI api, String username, GitlabMergeRequest gitlabMergeRequest) throws IOException {
+        List<GitlabCommit> gitlabMergeCommits = getMergeCommits(api, gitlabMergeRequest);
+        for(int i = 0; i < gitlabMergeCommits.size(); i++){
+            if(gitlabMergeCommits.get(i).getAuthorName().equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static GitlabAPI makeConnectionToGitlab(String token){
+        return GitlabAPI.connect("https://cmpt373-1211-10.cmpt.sfu.ca", token, TokenType.ACCESS_TOKEN, AuthMethod.URL_PARAMETER);
+    }
+
+    public static String printCommitMessage(GitlabCommit gitlabCommit){
+        return gitlabCommit.getTitle();
+    }
+
+    public static void printMembershipProjects(List<GitlabProject> gitlabProjects){
+        System.out.println("List of projects:");
+        for (int i = 0; i < gitlabProjects.size(); i++) {
+            System.out.print(i + 1 + ". " + gitlabProjects.get(i).getName());
+            System.out.println("  " + gitlabProjects.get(i).getDefaultBranch());
+        }
+        System.out.println();
+    }
+
+    public static void printMergeRequestChanges(List<GitlabCommitDiff> gitlabCommitDiffs){
+        for (int i = 0; i < gitlabCommitDiffs.size(); i++) {
+            System.out.println(gitlabCommitDiffs.get(i).getDiff());
+        }
+        System.out.println();
+    }
+
+    public static void printProjectMergeRequests(List<GitlabMergeRequest> gitlabMergeRequests){
+        if(gitlabMergeRequests.size() == 0){
+            return;
+        }
+        System.out.println("List of merge requests:");
+        for (int i = 0; i < gitlabMergeRequests.size(); i++) {
+            System.out.print(i + 1 + ". " + gitlabMergeRequests.get(i).getTitle() + "   ");
+        }
+        System.out.println("\n");
+    }
 }
