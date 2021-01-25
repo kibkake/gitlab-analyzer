@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+//contains gitlabProject objects and methods to operate on them
 public class RepositoryData {
 
     public static List<GitlabProject> gitlabMembershipProjects;

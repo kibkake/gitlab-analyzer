@@ -33,9 +33,6 @@ public class ConnectToGitlab {
             return;
         }
 
-        List<GitlabProjectMember> membersOfOneProject = api.getProjectMembers(gitlabProject);
-        //System.out.println(membersOfOneProject.get(0).getUsername() + ", " + membersOfOneProject.get(0).getName());
-
         //Get a list of and print merge requests
         List<GitlabMergeRequest> gitlabMergeRequests = gitlabMergeRequests(api, gitlabProject);
         //printProjectMergeRequests(gitlabMergeRequests);
@@ -56,6 +53,7 @@ public class ConnectToGitlab {
             //System.out.println(printCommitMessage(gitlabCommitsFirstMerge.get(gitlabCommitDiffsFromMerge.size()-1)));
         }
 
+        //To get a specific user's merge commits:
         /*RepositoryData.collectMembershipProjects(api);
         RepositoryData.searchForProjectByName("Testproject2");
         List<GitlabMergeRequest> test = RepositoryData.getUserMergeRequests(api, "arahilin");
@@ -67,9 +65,6 @@ public class ConnectToGitlab {
 
         for(int i = 0; i < gitlabCommitDiffsSingleCommit.size(); i++){
             commitDiffStringSingleCommit[i] = gitlabCommitDiffsSingleCommit.get(i).getDiff();
-            //System.out.println(gitlabCommitDiffsSingleCommit.get(i).getNewPath());
-            //System.out.println(commitDiffStringSingleCommit[i]);
-            //System.out.println(calculateCommitScoreSingleDiff(gitlabCommitDiffsSingleCommit.get(i)));
         }
         //System.out.println(calculateCommitScoreTotal(gitlabCommitDiffsSingleCommit));
 
@@ -100,7 +95,6 @@ public class ConnectToGitlab {
         String mergeParentHash = getParentCommitHashOfMergeRequest(api, gitlabProject, gitlabCommitsFirstMerge.get(0));
         List<GitlabCommitDiff> gitlabCommitDiffCommitAndMergeCommit = getCommitDiffFromTwoCommits(api, gitlabProject, gitlabCommitsFirstMerge.get(gitlabCommitsFirstMerge.size()-1), mergeParentHash);
         String [] commitDiffCommitAndMerge = new String[gitlabCommitDiffCommitAndMergeCommit.size()];
-
         for(int i = 0; i < gitlabCommitDiffCommitAndMergeCommit.size(); i++){
             commitDiffCommitAndMerge [i] = gitlabCommitDiffCommitAndMergeCommit.get(i).getDiff();
         }

@@ -4,6 +4,7 @@ import org.gitlab.api.models.*;
 
 import java.util.List;
 
+//Contains all necessary information about gitlab project
 public class GitProject {
 
     public int gitlabProjectId;
