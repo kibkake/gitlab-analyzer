@@ -1,16 +1,21 @@
 package main.java.ConnectToGitlab;
 
-import org.gitlab.api.models.GitlabCommit;
-import org.gitlab.api.models.GitlabMergeRequest;
-import org.gitlab.api.models.GitlabProjectMember;
+import org.gitlab.api.models.*;
+
 import java.util.List;
 
 public class GitProject {
 
-    public GitProject gitProject;
+    public int gitlabProjectId;
+    public String gitlabProjectName;
+    public GitlabProject gitProject;
     public List<GitlabProjectMember> gitlabProjectMembers;
-    public List<GitlabMergeRequest> gitlabMergeRequests;
+    public List<GitlabMergeRequest> gitlabMergedMergeRequests;
     public List<GitlabCommit> gitlabAllCommits;
-    public List<GitlabCommit> gitAllMergeCommits;
+    public List<GitlabIssue> gitAllIssues;
+
+    public GitProject(int gitlabProjectId) {
+        this.gitlabProjectId = gitlabProjectId;
+    }
 
 }
