@@ -63,8 +63,9 @@ public class ConnectToGitlab {
         //Get a list of a user's merge requests (where user has atleast one commit)
         List<GitlabMergeRequest> userGitlabMergeRequests = new ArrayList<>();
         for(int i = 0; i < gitlabMergeRequests.size(); i++){
-            if(isUserPartOfMerge(api, "user user", gitlabMergeRequests.get(i))){
+            if(isUserPartOfMerge(api, "user2", gitlabMergeRequests.get(i))){
                 userGitlabMergeRequests.add(gitlabMergeRequests.get(i));
+                //System.out.println(gitlabMergeRequests.get(i).getTitle());
             }
         }
 
