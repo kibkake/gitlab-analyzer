@@ -316,9 +316,9 @@ public class ConnectToGitlab {
         //calculate score of eversingle commit
         for(int i = 0; i < userGitlabMergeCommits.size(); i++) {
             if (userGitlabMergeCommits.get(i).getAuthorName().equals("arahilin") && !userGitlabMergeCommits.get(i).getTitle().startsWith("Merge 'master'")) {
-                System.out.print(userGitlabMergeCommits.get(i).getTitle()+ ":    ");
+                //System.out.print(userGitlabMergeCommits.get(i).getTitle()+ ":    ");
                 List<GitlabCommitDiff> tempDiffs = getSingleCommitDiff(api, gitlabProject, userGitlabMergeCommits.get(i));
-                System.out.println(calculateCommitScoreTotal(tempDiffs));
+                //System.out.println(calculateCommitScoreTotal(tempDiffs));
             }
         }
 
