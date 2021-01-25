@@ -33,7 +33,6 @@ public class ConnectToGitlab {
 
         //Get a list of and print merge requests
         List<GitlabMergeRequest> gitlabMergeRequests = gitlabMergeRequests(api, gitlabProject);
-        //printProjectMergeRequests(gitlabMergeRequests);
 
         //Exit if not merge requests to show
         if (gitlabMergeRequests.size() == 0) {
@@ -43,20 +42,12 @@ public class ConnectToGitlab {
 
         //Get the changes from latest merge request
         List<GitlabCommitDiff> gitlabCommitDiffsFromMerge = getMergeRequestDiff(api, gitlabProject, gitlabMergeRequests.get(gitlabMergeRequests.size()-1));
-        //printMergeRequestChanges(gitlabCommitDiffsFromMerge);
 
         //Get the title of the first commit of the first merge request
         List <GitlabCommit> gitlabCommitsFirstMerge = getMergeCommits(api, gitlabMergeRequests.get(gitlabMergeRequests.size()-1));
 
         //Get changes from the first commit of the first merge request
         List<GitlabCommitDiff> gitlabCommitDiffsSingleCommit = getSingleCommitDiff(api, gitlabProject, gitlabCommitsFirstMerge.get(gitlabCommitsFirstMerge.size()-1));
-        String [] commitDiffStringSingleCommit = new String[gitlabCommitDiffsSingleCommit.size()];
-
-        for(int i = 0; i < gitlabCommitDiffsSingleCommit.size(); i++){
-            commitDiffStringSingleCommit[i] = gitlabCommitDiffsSingleCommit.get(i).getDiff();
-        }
-        //System.out.println(calculateCommitScoreTotal(gitlabCommitDiffsSingleCommit));
-
     }
 
     //Get Ids of all commits pushed by a specific user (commits in a merged branch)
