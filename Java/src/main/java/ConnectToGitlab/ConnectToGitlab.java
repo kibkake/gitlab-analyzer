@@ -29,7 +29,7 @@ public class ConnectToGitlab {
         //printMembershipProjects(projects);
 
         //Get name and url of newest project
-        GitlabProject gitlabProject = getSpecificProjectByName(projects, "TestProject");
+        GitlabProject gitlabProject = getSpecificProjectByName(projects, "Testproject2");
         if(gitlabProject == null){
             System.out.println("No such project");
             return;
@@ -311,15 +311,15 @@ public class ConnectToGitlab {
                 userGitlabMergeCommits.add(userGitlabSingleMergeCommits.get(j));
             }
         }
+
         //calculate score of eversingle commit
         for(int i = 0; i < userGitlabMergeCommits.size(); i++) {
-            if (userGitlabMergeCommits.get(i).getAuthorName().equals("arahilin")) {
-                //System.out.print(userGitlabMergeCommits.get(i).getTitle()+ ":    ");
+            if (userGitlabMergeCommits.get(i).getAuthorName().equals("arahilin") && !userGitlabMergeCommits.get(i).getTitle().startsWith("Merge 'master'")) {
+                System.out.print(userGitlabMergeCommits.get(i).getTitle()+ ":    ");
                 List<GitlabCommitDiff> tempDiffs = getSingleCommitDiff(api, gitlabProject, userGitlabMergeCommits.get(i));
-                //System.out.println(calculateCommitScoreTotal(tempDiffs));
+                System.out.println(calculateCommitScoreTotal(tempDiffs));
             }
         }
-
 
     }
 
