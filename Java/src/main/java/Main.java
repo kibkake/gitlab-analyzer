@@ -1,6 +1,8 @@
 package main.java;
 import main.java.ConnectToGitlab.ConnectToGitlab;
 import main.java.UI.UI;
+import main.java.DatabaseClasses.DatabaseFunctions;
+import main.java.Functions.LocalDateFunctions;
 
 import java.io.IOException;
 
