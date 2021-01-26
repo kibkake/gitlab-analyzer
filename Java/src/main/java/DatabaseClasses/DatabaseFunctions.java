@@ -1,5 +1,7 @@
 package main.java.DatabaseClasses;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import main.java.Functions.LocalDateFunctions;
 
 public class DatabaseFunctions {
 
@@ -21,16 +23,25 @@ public class DatabaseFunctions {
         // Find the number of commits made by the user, from the start date to
         // the end date.
 
-        // To do this, run through all the dates in this period. For each of them,
-        // search the DB for that user and that date, adding the # commits
-        // to the sum?
+        int numTotalCommits = 0;
 
-        return 0;
+        ArrayList<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates
+                                              (startDate, endDate);
+
+        // Run through all dates in this list. For each of them, search the DB for that
+        // user and that date, adding the # commits to the sum?
+
+        return numTotalCommits;
     }
 
     private int numMergeRequests(String userName, LocalDate startDate, LocalDate endDate) {
         // Same idea as the numCommits() function, just for MRs.
 
-        return 0;
+        int numTotalMergeRequests = 0;
+
+        ArrayList<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates
+                                              (startDate, endDate);
+
+        return numTotalMergeRequests;
     }
 }

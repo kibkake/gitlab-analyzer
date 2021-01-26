@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class LocalDateFunctions {
 
-    public ArrayList<LocalDate> generateRangeOfDates(LocalDate startDate,
+    public static ArrayList<LocalDate> generateRangeOfDates(LocalDate startDate,
                                                      LocalDate endDate) {
         ArrayList<LocalDate> rangeOfDates = new ArrayList<LocalDate>();
 
