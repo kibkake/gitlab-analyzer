@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static main.java.Functions.LocalDateFunctions.generateRangeOfDates;
 import static org.junit.Assert.*;
@@ -34,18 +32,36 @@ public class LocalDateFunctionsTest {
     }
 
     @Test
-    public void testLargeRangeOfDates() {
-        LocalDate start = LocalDate.of(2010, 1, 1);
-        LocalDate end = LocalDate.of(2010, 12, 31);
+    public void testWholeYear() {
+        // For this test function, look into how to run it multiple times with different
+        // LocalDate objects.
 
-        ArrayList<LocalDate> list = generateRangeOfDates(start, end);
+        // Non-leap year:
+        LocalDate start2010 = LocalDate.of(2010, 1, 1);
+        LocalDate end2010 = LocalDate.of(2010, 12, 31);
 
-        assertTrue((list.size() == 365 && !start.isLeapYear()) ||
-                   (list.size() == 366 && start.isLeapYear()));
-        assertTrue(list.get(0).getDayOfYear() == 1);
-        assertTrue(list.get(list.size()-1).getDayOfYear() == list.size());
+        ArrayList<LocalDate> list2010 = generateRangeOfDates(start2010, end2010);
 
-        assertTrue(allDaysInOrder(list, false));
+        assertTrue((list2010.size() == 365 && !start2010.isLeapYear()) ||
+                   (list2010.size() == 366 && start2010.isLeapYear()));
+        assertTrue(list2010.get(0).getDayOfYear() == 1);
+        assertTrue(list2010.get(list2010.size()-1).getDayOfYear() == list2010.size());
+
+        assertTrue(allDaysInOrder(list2010, start2010.isLeapYear()));
+
+        // Leap year:
+
+        LocalDate start2012 = LocalDate.of(2012, 1, 1);
+        LocalDate end2012 = LocalDate.of(2012, 12, 31);
+
+        ArrayList<LocalDate> list2012 = generateRangeOfDates(start2012, end2012);
+
+        assertTrue((list2012.size() == 365 && !start2012.isLeapYear()) ||
+                   (list2012.size() == 366 && start2012.isLeapYear()));
+        assertTrue(list2012.get(0).getDayOfYear() == 1);
+        assertTrue(list2012.get(list2012.size()-1).getDayOfYear() == list2012.size());
+
+        assertTrue(allDaysInOrder(list2012, start2012.isLeapYear()));
     }
 
     // Helper functions for testing:
