@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
 import java.util.Arrays;
+import java.io.PrintWriter;
 
 /**
  * The main application that invokes SpringBoot's bootRun
@@ -27,19 +28,25 @@ public class Main {
      *
      * @see  <a href="https://spring.io/guides/gs/spring-boot/">Spring IO</a>
      */
-    /* temporary disable bean printing
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
 
-            System.out.println("Let's inspect the beans provided by Spring Boot:");
+            System.out.print("Exporting Beans to Log file...");
+            PrintWriter writer = new PrintWriter("log.txt");
 
             String[] beanNames = ctx.getBeanDefinitionNames();
             Arrays.sort(beanNames);
             for (String beanName : beanNames) {
-                System.out.println(beanName);
+                writer.write(beanName);
             }
+            writer.flush();
+            writer.close();
 
+            System.out.println("done");
+
+            // indicate running status
+            System.out.println("Server broadcasting on localhost:8080");
         };
-    }*/
+    }
 }
