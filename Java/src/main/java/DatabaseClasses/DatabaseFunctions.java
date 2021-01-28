@@ -41,6 +41,9 @@ public class DatabaseFunctions {
     public static void setNumCommits(String userName, LocalDate date, int numCommits) {
         // In the DB, for the specified user on the given date, set the number of commits
         // to numCommits.
+
+        // Check whether there is already a value for this user at this date? If so,
+        // decide what to do.
     }
 
     public static int numMergeRequests(String userName, LocalDate startDate, LocalDate endDate) {
@@ -55,6 +58,6 @@ public class DatabaseFunctions {
     }
 
     public static void setNumMergeRequests(String userName, LocalDate date, int numMRs) {
-        // Similar idea to the above function.
+        // Similar idea to the setNumCommits() function.
     }
 }
