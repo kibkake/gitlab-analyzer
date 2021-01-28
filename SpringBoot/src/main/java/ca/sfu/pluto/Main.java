@@ -27,6 +27,7 @@ public class Main {
      *
      * @see  <a href="https://spring.io/guides/gs/spring-boot/">Spring IO</a>
      */
+    /* temporary disable bean printing
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
@@ -40,5 +41,5 @@ public class Main {
             }
 
         };
-    }
+    }*/
 }
