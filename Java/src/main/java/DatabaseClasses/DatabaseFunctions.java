@@ -6,9 +6,9 @@ import main.java.Functions.LocalDateFunctions;
 public class DatabaseFunctions {
 
     public static boolean isUserAuthenticated(/* args? */) {
-        // This function gets the user to enter some kind of password, and checks
-        // somewhere in the DB that this password is correct. Then, they get access
-        // to their token (which is also stored in the DB).
+        /* This function gets the user to enter some kind of password, and checks
+           somewhere in the DB that this password is correct. Then, they get access
+           to their token (which is also stored in the DB). */
 
         return false; // Placeholder
     }
@@ -24,26 +24,25 @@ public class DatabaseFunctions {
     }
 
     public static int numCommits(String userName, LocalDate startDate, LocalDate endDate) {
-        // Find the number of commits made by the user, from the start date to
-        // the end date.
+        /* Find the number of commits made by the user, from the start date to
+           the end date. */
 
         int numTotalCommits = 0;
 
-        ArrayList<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates
-                                              (startDate, endDate);
+        ArrayList<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
 
-        // Run through all dates in this list. For each of them, search the DB for that
-        // user and that date, adding the # commits to the sum?
+        /* Run through all dates in this list. For each of them, search the DB for that
+           user and that date, adding the # commits to the sum? */
 
         return numTotalCommits;
     }
 
     public static void setNumCommits(String userName, LocalDate date, int numCommits) {
-        // In the DB, for the specified user on the given date, set the number of commits
-        // to numCommits.
+        /* In the DB, for the specified user on the given date, set the number of commits
+           to numCommits.
 
-        // Check whether there is already a value for this user at this date? If so,
-        // decide what to do.
+           Check whether there is already a value for this user at this date? If so,
+           decide what to do. */
     }
 
     public static int numMergeRequests(String userName, LocalDate startDate, LocalDate endDate) {

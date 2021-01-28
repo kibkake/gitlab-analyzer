@@ -33,8 +33,8 @@ public class LocalDateFunctionsTest {
 
     @Test
     public void testWholeYear() {
-        // For this test function, look into how to run it multiple times with different
-        // LocalDate objects.
+        /* For this test function, look into how to run it multiple times with different
+           LocalDate objects. */
 
         // Non-leap year:
         LocalDate start2010 = LocalDate.of(2010, 1, 1);
