@@ -31,4 +31,12 @@ public class GitlabWrapper {
 
     }
 
+    public static void getMergedMergeRequests(String token, int projectId) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests" + "?state=merged&" + "access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+    }
 }
