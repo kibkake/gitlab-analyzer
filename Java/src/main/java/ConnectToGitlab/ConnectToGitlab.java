@@ -17,6 +17,7 @@ public class ConnectToGitlab {
         //Get a list of membership project(in json)
         GitlabWrapper.getListOfMembershipProjects(token);
         GitlabWrapper.getMergedMergeRequests(token, 6);
+        GitlabWrapper.getSingleMergedMergeRequestCommits(token, 2);
 
 
 

@@ -44,4 +44,17 @@ public class GitlabWrapper {
         connection.disconnect();
 
     }
+
+    public static void getSingleMergedMergeRequestCommits(String token, int mergeIid) throws IOException {
+        URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/commits?" + "access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+        //System.out.println(reply);
+        connection.disconnect();
+    }
 }
