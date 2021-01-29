@@ -3,6 +3,11 @@ package main.java.Functions;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * This class contains helper functions which work with the LocalDate class.
+ * Any class in the application can call it if it's useful.
+ */
+
 public class LocalDateFunctions {
 
     /* Continue here - JUnit test this function.

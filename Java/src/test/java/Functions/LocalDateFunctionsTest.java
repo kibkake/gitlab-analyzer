@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import static main.java.Functions.LocalDateFunctions.generateRangeOfDates;
 import static org.junit.Assert.*;
 
+/**
+ * This class does JUnit tests for the functions in the LocalDateFunctions class.
+ */
+
 public class LocalDateFunctionsTest {
 
     @Test

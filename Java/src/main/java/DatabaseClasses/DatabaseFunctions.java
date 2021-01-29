@@ -3,6 +3,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import main.java.Functions.LocalDateFunctions;
 
+/**
+ * This class has functions for interacting with the MongoDB.
+ * The code in each function will search the DB (or modify it).
+ * If we're dealing with dates (such as a range of dates for #commits),
+ * the LocalDate class could be used.
+ */
+
 public class DatabaseFunctions {
 
     public static boolean isUserAuthenticated(/* args? */) {
