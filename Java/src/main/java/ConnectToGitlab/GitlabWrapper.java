@@ -18,7 +18,7 @@ public class GitlabWrapper {
 
 
     public static void getListOfMembershipProjects(String token) throws IOException {
-        URL url = new URL(MAIN_URL + "?membership&" + "order_by=name&" + "simple=true" +"access_token=" + token);
+        URL url = new URL(MAIN_URL + "?membership&" + "order_by=name&" + "simple=true" +"&access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -26,7 +26,7 @@ public class GitlabWrapper {
 
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-        System.out.println(reply);
+        //System.out.println(reply);
         connection.disconnect();
 
     }

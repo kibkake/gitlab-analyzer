@@ -13,6 +13,15 @@ public class ConnectToGitlab {
 
     public static void connectGitlab(String token) throws IOException {
 
+        //calls for the new wrapper class-------------
+        //Get a list of membership project(in json)
+        GitlabWrapper.getListOfMembershipProjects(token);
+
+
+
+
+
+        //calls for older wrapper class---------------
         GitlabAPI api = makeConnectionToGitlab(token);
         GitlabUser user = getUserFromApi(api);
         System.out.println("Welcome " + user.getName() + "!");
