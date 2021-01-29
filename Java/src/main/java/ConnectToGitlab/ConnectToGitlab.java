@@ -13,9 +13,10 @@ public class ConnectToGitlab {
 
     public static void connectGitlab(String token) throws IOException {
 
-        //calls for the new wrapper class-------------
+        //calls for the new wrapper class-------------[Testing with project: 6]
         //Get a list of membership project(in json)
         GitlabWrapper.getListOfMembershipProjects(token);
+        GitlabWrapper.getMergedMergeRequests(token, 6);
 
 
 

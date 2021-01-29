@@ -38,5 +38,10 @@ public class GitlabWrapper {
         connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+        //System.out.println(reply);
+        connection.disconnect();
+
     }
 }
