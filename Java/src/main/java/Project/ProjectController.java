@@ -1,6 +1,6 @@
-package ConnectToGitlab.Project;
+package Project;
 
-import ConnectToGitlab.Project.Project;
+import Project.Project;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;

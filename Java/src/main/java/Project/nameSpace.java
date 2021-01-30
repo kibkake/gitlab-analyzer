@@ -1,4 +1,4 @@
-package ConnectToGitlab.Project;
+package Project;
 
 public class nameSpace {
     private int id;

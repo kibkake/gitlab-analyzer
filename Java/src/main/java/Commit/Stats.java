@@ -1,4 +1,4 @@
-package ConnectToGitlab.Commit;
+package Commit;
 
 public class Stats {
     private int additions;

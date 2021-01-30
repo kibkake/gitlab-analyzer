@@ -1,6 +1,6 @@
-package ConnectToGitlab.Commit;
+package Commit;
 
-import ConnectToGitlab.User.User;
+import User.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
