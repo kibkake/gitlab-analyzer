@@ -79,6 +79,13 @@ public class GitlabWrapper {
         //System.out.println(userCommitHashes);
     }
 
+    public static void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+    }
+
     public static void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
         URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/changes?" + "access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -104,7 +111,6 @@ public class GitlabWrapper {
             singleMergedMergeDiff.add(jsonPrimitive.getAsString());//file diff
             //System.out.println(jsonPrimitive.getAsString());
         }
-
     }
 
 }
