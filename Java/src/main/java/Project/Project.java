@@ -1,29 +1,31 @@
-package User;
+package Project;
 
 //import javax.persistence.Entity;
+
+import User.nameSpace;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 public class Project {
     private int id;
-    String description;
-    String name;
-    String name_with_namespace;
-    String path;
-    String path_with_namespace;
-    String created_at;
-    String default_branch;
-    ArrayList<String> tag_list;
-    String ssh_url_to_repo;
-    String http_url_to_repo;
-    String web_url;
-    String readme_url;
-    String avatar_url;
-    String forks_count;
-    String star_count;
-    String last_activity_at;
-    List<nameSpace> namespace;
+    private String description;
+    private String name;
+    private String name_with_namespace;
+    private String path;
+    private String path_with_namespace;
+    private String created_at;
+    private String default_branch;
+    private ArrayList<String> tag_list;
+    private String ssh_url_to_repo;
+    private String http_url_to_repo;
+    private String web_url;
+    private String readme_url;
+    private String avatar_url;
+    private String forks_count;
+    private String star_count;
+    private String last_activity_at;
+    private List<nameSpace> namespace;
 
 
     public Project() {

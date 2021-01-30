@@ -5,7 +5,10 @@ import java.time.LocalDate;
 public class User {
     private int id;
     private String name;
-    private LocalDate lastSignInAt; // do not know if this is project specific
+    private String username;
+    private String state;
+    private String avatar_url;
+    private String web_url;
 
     public User() {
     }
@@ -14,10 +17,13 @@ public class User {
         this.id = id;
     }
 
-    public User(int id, String name, LocalDate lastSignInAt) {
+    public User(int id, String name, String username, String state, String avatar_url, String web_url) {
         this.id = id;
         this.name = name;
-        this.lastSignInAt = lastSignInAt;
+        this.username = username;
+        this.state = state;
+        this.avatar_url = avatar_url;
+        this.web_url = web_url;
     }
 
     public int getId() {
@@ -36,11 +42,15 @@ public class User {
         this.name = name;
     }
 
-    public LocalDate getLastSignInAt() {
-        return lastSignInAt;
-    }
-
-    public void setLastSignInAt(LocalDate lastSignInAt) {
-        this.lastSignInAt = lastSignInAt;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", state='" + state + '\'' +
+                ", avatar_url='" + avatar_url + '\'' +
+                ", web_url='" + web_url + '\'' +
+                '}';
     }
 }

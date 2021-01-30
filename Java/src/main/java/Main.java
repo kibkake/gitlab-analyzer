@@ -1,5 +1,7 @@
 package main.java;
 
+import Project.ProjectController;
+import User.UserController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +31,7 @@ public class Main {
             System.out.println(excpetion.getMessage());
         }
         SpringApplication.run(Main.class,args);
+        UserController.getUsers();
     }
 
     /**
