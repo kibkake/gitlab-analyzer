@@ -2,10 +2,7 @@ package Project;
 
 //import javax.persistence.Entity;
 
-import User.nameSpace;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 public class Project {
     private int id;

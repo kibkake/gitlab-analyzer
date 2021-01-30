@@ -1,4 +1,4 @@
-package User;
+package Project;
 
 public class nameSpace {
     private int id;

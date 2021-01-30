@@ -1,5 +1,6 @@
 package main.java;
 
+import Commit.CommitController;
 import Project.ProjectController;
 import User.UserController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
@@ -31,7 +32,6 @@ public class Main {
             System.out.println(excpetion.getMessage());
         }
         SpringApplication.run(Main.class,args);
-        UserController.getUsers();
     }
 
     /**
