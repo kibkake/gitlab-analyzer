@@ -1,10 +1,13 @@
 package main.java;
 
+import main.java.ConnectToGitlab.ConnectToGitlab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.io.PrintWriter;
 
@@ -20,6 +23,11 @@ public class Main {
      * @param args arguments to the main method
      */
     public static void main(String[] args){
+        try {
+            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
+        }catch(IOException excpetion){
+            System.out.println(excpetion.getMessage());
+        }
         SpringApplication.run(Main.class,args);
     }
 
