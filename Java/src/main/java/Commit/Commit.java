@@ -2,6 +2,7 @@ package Commit;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Commit {
     private String id;
@@ -19,10 +20,9 @@ public class Commit {
     private String committed_date;
     private String web_url;
 
-//    // get these from stats
-//    private int additions;
-//    private int deletions;
-//    private int totalChanges;
+    //holds add, delete and total changes of a single commit
+    private List<Stats> stats;
+
 
     public Commit() {
     }

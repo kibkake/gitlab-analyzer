@@ -18,4 +18,8 @@ public class CommitController {
             System.out.println(users[i]);
         }
     }
+
+    public static void getSingleCommit(String identifier) {
+
+    }
 }

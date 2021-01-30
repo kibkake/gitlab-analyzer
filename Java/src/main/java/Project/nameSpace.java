@@ -3,12 +3,12 @@ package Project;
 public class nameSpace {
     private int id;
     private String name;
-    String path;
-    String kind;
-    String full_path;
-    String parent_id;
-    String avatar_url;
-    String web_url;
+    private String path;
+    private String kind;
+    private String full_path;
+    private String parent_id;
+    private String avatar_url;
+    private String web_url;
 
     public nameSpace() {
     }
