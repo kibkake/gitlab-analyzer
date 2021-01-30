@@ -102,8 +102,8 @@ public class GitlabWrapper {
             //System.out.println(jsonPrimitiveNewFileName.getAsString());//file name
             JsonPrimitive jsonPrimitive = jsonObject1.getAsJsonPrimitive("diff");
             singleMergedMergeDiff.add(jsonPrimitive.getAsString());//file diff
+            //System.out.println(jsonPrimitive.getAsString());
         }
-
 
     }
 
