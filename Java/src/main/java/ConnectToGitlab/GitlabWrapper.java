@@ -132,15 +132,31 @@ public class GitlabWrapper {
     }
 
     public static void getAllProjectIssues(String token, int mergeIid) throws IOException {
-        //GET /projects/:id/issues
-        URL url = new URL(MAIN_URL + "/projects/" + mergeIid + "/issues?" + "access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + mergeIid + "/issues" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String reply = "";
-        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+
         //System.out.println(reply);
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        List<Integer> issueIids = new ArrayList<>();
+        for(int i = 0; i< jsonArray.size(); i++) {
+            JsonElement jsonElement1 = jsonArray.get(i);
+            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveIssueIid = jsonObject1.getAsJsonPrimitive("iid");
+            //System.out.println(jsonPrimitiveIssueIid.getAsInt());
+            issueIids.add(jsonPrimitiveIssueIid.getAsInt());
+            JsonPrimitive jsonPrimitiveIssueTitle = jsonObject1.getAsJsonPrimitive("title");
+            //System.out.println(jsonPrimitiveIssueTitle.getAsString());
+
+        }
+
+
+
     }
 
 
