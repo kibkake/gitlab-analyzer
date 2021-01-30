@@ -18,6 +18,7 @@ public class ConnectToGitlab {
         GitlabWrapper.getListOfMembershipProjects(token);
         GitlabWrapper.getMergedMergeRequests(token, 6);
         GitlabWrapper.getSingleMergedMergeRequestCommits(token, 2);
+        GitlabWrapper.getSingleMergedMergeRequestChanges(token, 2);
 
 
 

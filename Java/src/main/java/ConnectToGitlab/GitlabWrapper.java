@@ -87,8 +87,24 @@ public class GitlabWrapper {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
-        //System.out.println(reply);
+        System.out.println(reply);
         connection.disconnect();
+        List<String> singleMergedMergeDiff = new ArrayList<>();
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.fromJson(reply, JsonElement.class);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonArray jsonArrayChanges = jsonObject.getAsJsonArray("changes");
+        for(int i = 0; i< jsonArrayChanges.size(); i++){
+            JsonElement jsonElement1 = jsonArrayChanges.get(i);
+            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveNewFileName = jsonObject1.getAsJsonPrimitive("new_path");
+            singleMergedMergeDiff.add(jsonPrimitiveNewFileName.getAsString());
+            //System.out.println(jsonPrimitiveNewFileName.getAsString());//file name
+            JsonPrimitive jsonPrimitive = jsonObject1.getAsJsonPrimitive("diff");
+            singleMergedMergeDiff.add(jsonPrimitive.getAsString());//file diff
+        }
+
+
     }
 
 }
