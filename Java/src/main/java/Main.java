@@ -1,13 +1,13 @@
 package main.java;
 
-import User.ProjectController;
+import main.java.ConnectToGitlab.ConnectToGitlab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.io.PrintWriter;
 
@@ -17,19 +17,18 @@ import java.io.PrintWriter;
 @SpringBootApplication
 public class Main {
 
-    @Bean
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
-
     /**
      * This is the main method for running Spring Boot
      *
      * @param args arguments to the main method
      */
     public static void main(String[] args){
+        try {
+            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
+        }catch(IOException excpetion){
+            System.out.println(excpetion.getMessage());
+        }
         SpringApplication.run(Main.class,args);
-        ProjectController.getProjects();
     }
 
     /**
@@ -37,25 +36,25 @@ public class Main {
      *
      * @see  <a href="https://spring.io/guides/gs/spring-boot/">Spring IO</a>
      */
-//    @Bean
-//    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-//        return args -> {
-//
-//            System.out.print("Exporting Beans to Log file...");
-//            PrintWriter writer = new PrintWriter("log.txt");
-//
-//            String[] beanNames = ctx.getBeanDefinitionNames();
-//            Arrays.sort(beanNames);
-//            for (String beanName : beanNames) {
-//                writer.write(beanName);
-//            }
-//            writer.flush();
-//            writer.close();
-//
-//            System.out.println("done");
-//
-//            // indicate running status
-//            System.out.println("Server broadcasting on localhost:8080");
-//        };
-//    }
+    @Bean
+    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+        return args -> {
+
+            System.out.print("Exporting Beans to Log file...");
+            PrintWriter writer = new PrintWriter("log.txt");
+
+            String[] beanNames = ctx.getBeanDefinitionNames();
+            Arrays.sort(beanNames);
+            for (String beanName : beanNames) {
+                writer.write(beanName);
+            }
+            writer.flush();
+            writer.close();
+
+            System.out.println("done");
+
+            // indicate running status
+            System.out.println("Server broadcasting on localhost:8080");
+        };
+    }
 }

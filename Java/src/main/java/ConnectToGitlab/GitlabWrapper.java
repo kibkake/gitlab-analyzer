@@ -1,10 +1,14 @@
 package main.java.ConnectToGitlab;
 
+import com.google.gson.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GitlabWrapper {
 
@@ -55,6 +59,76 @@ public class GitlabWrapper {
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
         //System.out.println(reply);
+        getUserCommits("arahilin", reply);
         connection.disconnect();
     }
+
+    public static void getUserCommits(String username, String jsonString) {
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
+        List<String> userCommitHashes = new ArrayList<>();
+        for(int i = 0; i < jsonArray.size(); i++) {
+            JsonElement jsonElement = jsonArray.get(i);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveName = jsonObject.getAsJsonPrimitive("committer_name");
+            if (jsonPrimitiveName.getAsString().equals(username)) {
+                JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
+                userCommitHashes.add(jsonPrimitiveId.getAsString());
+            }
+        }
+        //System.out.println(userCommitHashes);
+    }
+
+    public static void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+        //System.out.println(reply);
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        List<String> singleCommitDiffs = new ArrayList<>();
+        for(int i = 0; i< jsonArray.size(); i++){
+            JsonElement jsonElement1 = jsonArray.get(i);
+            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveNewFileName = jsonObject1.getAsJsonPrimitive("new_path");
+            singleCommitDiffs.add(jsonPrimitiveNewFileName.getAsString());
+            //System.out.println(jsonPrimitiveNewFileName.getAsString());//file name
+            JsonPrimitive jsonPrimitive = jsonObject1.getAsJsonPrimitive("diff");
+            singleCommitDiffs.add(jsonPrimitive.getAsString());//file diff
+            //System.out.println(jsonPrimitive.getAsString());
+        }
+    }
+
+    public static void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
+        URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/changes?" + "access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
+        //System.out.println(reply);
+        connection.disconnect();
+        List<String> singleMergedMergeDiff = new ArrayList<>();
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.fromJson(reply, JsonElement.class);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonArray jsonArrayChanges = jsonObject.getAsJsonArray("changes");
+        for(int i = 0; i< jsonArrayChanges.size(); i++){
+            JsonElement jsonElement1 = jsonArrayChanges.get(i);
+            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveNewFileName = jsonObject1.getAsJsonPrimitive("new_path");
+            singleMergedMergeDiff.add(jsonPrimitiveNewFileName.getAsString());
+            //System.out.println(jsonPrimitiveNewFileName.getAsString());//file name
+            JsonPrimitive jsonPrimitive = jsonObject1.getAsJsonPrimitive("diff");
+            singleMergedMergeDiff.add(jsonPrimitive.getAsString());//file diff
+            //System.out.println(jsonPrimitive.getAsString());
+        }
+    }
+
 }
