@@ -1,12 +1,14 @@
 package main.java.ConnectToGitlab;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GitlabWrapper {
 
@@ -62,6 +64,17 @@ public class GitlabWrapper {
 
     public static void getUserCommits(String username, String jsonString) {
         Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
+        List<String> userCommitHashes = new ArrayList<>();
+        for(int i = 0; i < jsonArray.size(); i++) {
+            JsonElement jsonElement = jsonArray.get(i);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveName = jsonObject.getAsJsonPrimitive("committer_name");
+            if (jsonPrimitiveName.getAsString().equals(username)) {
+                JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
+                userCommitHashes.add(jsonPrimitiveId.getAsString());
+            }
+        }
 
     }
 
