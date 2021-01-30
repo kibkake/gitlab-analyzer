@@ -22,6 +22,7 @@ public class ConnectToGitlab {
         GitlabWrapper.getSingleMergedMergeRequestCommits(token, 2);
         GitlabWrapper.getSingleMergedMergeRequestChanges(token, 2);
         GitlabWrapper.getSingleCommitDiffs(token, 6, "39979003d3aeb6aa8fd832d7a89e34d5272e4e3a");
+        GitlabWrapper.getAllProjectIssues(token, 2);
 
 
 
