@@ -1,4 +1,4 @@
-package Project;
+package main.java.Project;
 
 //import javax.persistence.Entity;
 
@@ -22,14 +22,14 @@ public class Project {
     private String forks_count;
     private String star_count;
     private String last_activity_at;
-    private List<nameSpace> namespace;
+    //private List<nameSpace> namespace;
 
 
     public Project() {
     }
 
     public Project(int id, String description, String name, String name_with_namespace, String path,
-                   String path_with_namespace, String created_at, String default_branch, ArrayList<String> tag_list, String ssh_url_to_repo, String http_url_to_repo, String web_url, String readme_url, String avatar_url, String forks_count, String star_count, String last_activity_at, List<nameSpace> namespace) {
+                   String path_with_namespace, String created_at, String default_branch, ArrayList<String> tag_list, String ssh_url_to_repo, String http_url_to_repo, String web_url, String readme_url, String avatar_url, String forks_count, String star_count, String last_activity_at) {
         this.id = id;
         this.description = description;
         this.name = name;
@@ -47,7 +47,7 @@ public class Project {
         this.forks_count = forks_count;
         this.star_count = star_count;
         this.last_activity_at = last_activity_at;
-        this.namespace = namespace;
+        //this.namespace = namespace;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Project {
                 ", forks_count='" + forks_count + '\'' +
                 ", star_count='" + star_count + '\'' +
                 ", last_activity_at='" + last_activity_at + '\'' +
-                ", namespace=" + namespace +
+                //", namespace=" + namespace +
                 '}';
     }
 

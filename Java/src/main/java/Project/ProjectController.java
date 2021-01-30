@@ -1,4 +1,4 @@
-package Project;
+package main.java.Project;
 
 import Project.Project;
 import org.springframework.http.ResponseEntity;
