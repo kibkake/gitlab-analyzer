@@ -1,5 +1,7 @@
 package main.java.ConnectToGitlab;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -57,4 +59,11 @@ public class GitlabWrapper {
         System.out.println(reply);
         connection.disconnect();
     }
+
+    public static void getUserCommits(String username, String jsonString) {
+        Gson gson = new Gson();
+
+    }
+
+
 }
