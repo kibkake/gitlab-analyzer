@@ -76,8 +76,19 @@ public class GitlabWrapper {
                 userCommitHashes.add(jsonPrimitiveId.getAsString());
             }
         }
-        System.out.println(userCommitHashes);
+        //System.out.println(userCommitHashes);
     }
 
+    public static void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
+        URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/changes?" + "access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
+        //System.out.println(reply);
+        connection.disconnect();
+    }
 
 }
