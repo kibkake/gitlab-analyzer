@@ -58,7 +58,8 @@ public class GitlabWrapper {
 
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-        System.out.println(reply);
+        //System.out.println(reply);
+        getUserCommits("arahilin", reply);
         connection.disconnect();
     }
 
@@ -75,7 +76,7 @@ public class GitlabWrapper {
                 userCommitHashes.add(jsonPrimitiveId.getAsString());
             }
         }
-
+        System.out.println(userCommitHashes);
     }
 
 
