@@ -1,4 +1,4 @@
-package Project;
+package ConnectToGitlab.Project;
 
 //import javax.persistence.Entity;
 
@@ -52,7 +52,7 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project{" +
+        return "ConnectToGitlab.Project{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +

@@ -1,6 +1,4 @@
-package User;
-
-import java.time.LocalDate;
+package ConnectToGitlab.User;
 
 public class User {
     private int id;
@@ -44,7 +42,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "ConnectToGitlab.User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +

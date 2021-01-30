@@ -1,8 +1,6 @@
 package main.java;
 
-import Commit.CommitController;
-import Project.ProjectController;
-import User.UserController;
+import ConnectToGitlab.User.UserController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;

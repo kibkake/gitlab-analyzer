@@ -1,6 +1,5 @@
-package Commit;
+package ConnectToGitlab.Commit;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,7 +150,7 @@ public class Commit {
 
     @Override
     public String toString() {
-        return "Commit{" +
+        return "ConnectToGitlab.Commit{" +
                 "id='" + id + '\'' +
                 ", shortId='" + shortId + '\'' +
                 ", created_at=" + created_at +

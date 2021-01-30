@@ -1,6 +1,5 @@
-package User;
+package ConnectToGitlab.User;
 
-import Project.Project;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
