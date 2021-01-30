@@ -80,10 +80,28 @@ public class GitlabWrapper {
     }
 
     public static void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+        //System.out.println(reply);
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        List<String> singleCommitDiffs = new ArrayList<>();
+        for(int i = 0; i< jsonArray.size(); i++){
+            JsonElement jsonElement1 = jsonArray.get(i);
+            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveNewFileName = jsonObject1.getAsJsonPrimitive("new_path");
+            singleCommitDiffs.add(jsonPrimitiveNewFileName.getAsString());
+            //System.out.println(jsonPrimitiveNewFileName.getAsString());//file name
+            JsonPrimitive jsonPrimitive = jsonObject1.getAsJsonPrimitive("diff");
+            singleCommitDiffs.add(jsonPrimitive.getAsString());//file diff
+            //System.out.println(jsonPrimitive.getAsString());
+        }
     }
 
     public static void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
@@ -94,7 +112,7 @@ public class GitlabWrapper {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
-        System.out.println(reply);
+        //System.out.println(reply);
         connection.disconnect();
         List<String> singleMergedMergeDiff = new ArrayList<>();
         Gson gson = new Gson();

@@ -5,6 +5,8 @@ import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.*;
 import org.gitlab.api.models.GitlabMergeRequest;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ public class ConnectToGitlab {
         GitlabWrapper.getMergedMergeRequests(token, 6);
         GitlabWrapper.getSingleMergedMergeRequestCommits(token, 2);
         GitlabWrapper.getSingleMergedMergeRequestChanges(token, 2);
+        GitlabWrapper.getSingleCommitDiffs(token, 6, "39979003d3aeb6aa8fd832d7a89e34d5272e4e3a");
 
 
 
