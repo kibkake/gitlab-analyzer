@@ -1,8 +1,8 @@
 package main.java;
 
-//import Commit.CommitController;
-//import Project.ProjectController;
-//import User.UserController;
+import main.java.Commit.CommitController;
+import main.java.Project.ProjectController;
+import main.java.User.UserController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
@@ -28,8 +28,8 @@ public class Main {
     public static void main(String[] args){
         try {
             ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
-        }catch(IOException excpetion){
-            System.out.println(excpetion.getMessage());
+        }catch(IOException exception){
+            System.out.println(exception.getMessage());
         }
         SpringApplication.run(Main.class,args);
     }
