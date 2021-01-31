@@ -1,4 +1,4 @@
-package Project;
+package main.java.Project;
 
 public class nameSpace {
     private int id;

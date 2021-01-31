@@ -1,4 +1,4 @@
-package Commit;
+package main.java.Commit;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

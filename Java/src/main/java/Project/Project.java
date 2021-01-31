@@ -22,7 +22,7 @@ public class Project {
     private String forks_count;
     private String star_count;
     private String last_activity_at;
-    //private List<nameSpace> namespace;
+    private List<nameSpace> namespace;
 
 
     public Project() {
@@ -47,7 +47,7 @@ public class Project {
         this.forks_count = forks_count;
         this.star_count = star_count;
         this.last_activity_at = last_activity_at;
-        //this.namespace = namespace;
+        this.namespace = namespace;
     }
 
     @Override

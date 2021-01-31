@@ -1,7 +1,8 @@
 package main.java.Commit;
-/*
-//import User.User;
+
+import main.java.User.User;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.test.annotation.Commit;
 import org.springframework.web.client.RestTemplate;
 
 public class CommitController {
@@ -9,7 +10,7 @@ public class CommitController {
     @Autowired
     private RestTemplate restTemplate;
  */
-/*
+
     public static void getProjectCommits() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Commit[]> responseEntity= restTemplate.getForEntity("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects/3/repository/commits?access_token=cFzzy7QFRvHzfHGpgrr1", Commit[].class);
@@ -23,4 +24,3 @@ public class CommitController {
 
     }
 }
-*/

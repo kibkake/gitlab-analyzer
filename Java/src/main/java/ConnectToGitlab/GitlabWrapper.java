@@ -154,12 +154,11 @@ public class GitlabWrapper {
             //System.out.println(jsonPrimitiveIssueTitle.getAsString());
 
         }
-
-
-
     }
 
 
 
 
 }
+
+

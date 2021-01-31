@@ -1,4 +1,4 @@
-package Commit;
+package main.java.Commit;
 
 public class Stats {
     private int additions;
