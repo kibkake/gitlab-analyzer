@@ -35,12 +35,12 @@ public class Main {
 //            System.out.println(excpetion.getMessage());
 //        }
         SpringApplication.run(Main.class,args);
-        UserController.getUsers();
-        List<Commit> allCommits = CommitController.getProjectCommits();
-        List<Commit> johnsCommits = Commit.getCommitByUser(allCommits, "John Doknjas");
+//        UserController.getUsers();
+        CommitController.getProjectCommits(8, "2021-01-01", "2021-01-26");
+//        List<Commit> johnsCommits = Commit.getCommitByUser(allCommits, "John Doknjas");
     }
 
-    /**
+    /**https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects/8/repository/commits?since=2021-01-01T00:00:00-08:00&access_token=cFzzy7QFRvHzfHGpgrr1
      * The following method is provided from spring.io and only prints information about beans created by our application
      *
      * @see  <a href="https://spring.io/guides/gs/spring-boot/">Spring IO</a>
