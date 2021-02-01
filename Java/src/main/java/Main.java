@@ -1,10 +1,8 @@
 package main.java;
 
-import Commit.Commit;
-import Commit.CommitController;
-import Project.ProjectController;
-import User.User;
-import User.UserController;
+import main.java.Commit.CommitController;
+import main.java.Project.ProjectController;
+import main.java.User.UserController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
@@ -15,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import java.io.IOException;
 import java.util.Arrays;
 import java.io.PrintWriter;
-import java.util.List;
 
 /**
  * The main application that invokes SpringBoot's bootRun
@@ -29,18 +26,15 @@ public class Main {
      * @param args arguments to the main method
      */
     public static void main(String[] args){
-//        try {
-//            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
-//        }catch(IOException excpetion){
-//            System.out.println(excpetion.getMessage());
-//        }
+        try {
+            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
+        }catch(IOException exception){
+            System.out.println(exception.getMessage());
+        }
         SpringApplication.run(Main.class,args);
-//        UserController.getUsers();
-        CommitController.getProjectCommits(8, "2021-01-01", "2021-01-26");
-//        List<Commit> johnsCommits = Commit.getCommitByUser(allCommits, "John Doknjas");
     }
 
-    /**https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects/8/repository/commits?since=2021-01-01T00:00:00-08:00&access_token=cFzzy7QFRvHzfHGpgrr1
+    /**
      * The following method is provided from spring.io and only prints information about beans created by our application
      *
      * @see  <a href="https://spring.io/guides/gs/spring-boot/">Spring IO</a>

@@ -1,18 +1,13 @@
-package Commit;
+package main.java.Commit;
 
-import User.User;
+import Commit.Commit;
+import main.java.User.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-// https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects/8/repository/commits?since=2021-01-00T00:00:00-08:00&until=2021-02-00T00:00:00-08:00&access_token=cFzzy7QFRvHzfHGpgrr1
-// https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects/8/repository/commits?since=2021-01-01T00:00:00-08:00&access_token=cFzzy7QFRvHzfHGpgrr1
+
 public class CommitController {
     private static String serverUrl = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects/";
     /*  TODO change to autowired this is the proper way using beans, and not creating a rest template over and over
@@ -27,8 +22,6 @@ public class CommitController {
         //-08:00 is offset from UTC
         String isoEnding = "T00:00:00-08:00";
         RestTemplate restTemplate = new RestTemplate();
-        //https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects/8/repository/commits?since=2021-01-01T00:00:00-08:00&Until=2021-01-27T00:00:00-08:00&access_token=cFzzy7QFRvHzfHGpgrr1
-        // &until=2021-02-00T00:00:00-08:00&access_token=cFzzy7QFRvHzfHGpgrr1
         String myUrl = serverUrl + id +"/repository/commits?since=" + sinceDate + isoEnding + "&until=" + untilDate
                + isoEnding + "&access_token=cFzzy7QFRvHzfHGpgrr1";
 

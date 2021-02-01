@@ -1,4 +1,4 @@
-package Commit;
+package main.java.Commit;
 
 import java.sql.SQLOutput;
 import java.time.LocalDate;

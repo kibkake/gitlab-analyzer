@@ -1,4 +1,4 @@
-package Project;
+package main.java.Project;
 
 /**
  * Holds the info about the name of a project

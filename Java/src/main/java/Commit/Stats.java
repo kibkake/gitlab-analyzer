@@ -1,4 +1,4 @@
-package Commit;
+package main.java.Commit;
 
 /**
  * Used by commits to hold the number of modification a commit has
