@@ -1,7 +1,9 @@
 package Project;
 
-//import javax.persistence.Entity;
-
+/**
+ * Holds the different info for a project when getting a list of projects and is used for turning JSON to object with
+ * spring
+  */
 import java.util.ArrayList;
 import java.util.List;
 public class Project {

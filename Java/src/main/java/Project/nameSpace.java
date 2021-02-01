@@ -1,5 +1,8 @@
 package Project;
 
+/**
+ * Holds the info about the name of a project
+ */
 public class nameSpace {
     private int id;
     private String name;

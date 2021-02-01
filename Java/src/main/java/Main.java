@@ -1,7 +1,9 @@
 package main.java;
 
+import Commit.Commit;
 import Commit.CommitController;
 import Project.ProjectController;
+import User.User;
 import User.UserController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import java.io.IOException;
 import java.util.Arrays;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * The main application that invokes SpringBoot's bootRun
@@ -26,12 +29,15 @@ public class Main {
      * @param args arguments to the main method
      */
     public static void main(String[] args){
-        try {
-            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
-        }catch(IOException excpetion){
-            System.out.println(excpetion.getMessage());
-        }
+//        try {
+//            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
+//        }catch(IOException excpetion){
+//            System.out.println(excpetion.getMessage());
+//        }
         SpringApplication.run(Main.class,args);
+        UserController.getUsers();
+        List<Commit> allCommits = CommitController.getProjectCommits();
+        List<Commit> johnsCommits = Commit.getCommitByUser(allCommits, "John Doknjas");
     }
 
     /**

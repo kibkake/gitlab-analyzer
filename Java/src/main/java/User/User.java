@@ -2,6 +2,9 @@ package User;
 
 import java.time.LocalDate;
 
+/**
+ *  Class hold information about the different users on gitlab used to convert JSON to an object with spring
+ */
 public class User {
     private int id;
     private String name;

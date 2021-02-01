@@ -1,5 +1,8 @@
 package Commit;
 
+/**
+ * Used by commits to hold the number of modification a commit has
+ */
 public class Stats {
     private int additions;
     private int deletions;

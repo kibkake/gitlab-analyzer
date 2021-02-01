@@ -1,9 +1,14 @@
 package Commit;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
+/**
+ *  Holds import information about commits and is used to convert JSON to an object with spring
+ */
 public class Commit {
     private String id;
     private String shortId;
@@ -19,10 +24,10 @@ public class Commit {
     private String committer_email;
     private String committed_date;
     private String web_url;
-
     //holds add, delete and total changes of a single commit
     private List<Stats> stats;
 
+//         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
 
     public Commit() {
     }
@@ -149,6 +154,13 @@ public class Commit {
         this.web_url = web_url;
     }
 
+    //https://stackoverflow.com/questions/122105/what-is-the-best-way-to-filter-a-java-collection/1385698
+    public static List<Commit>getCommitByUser(List<Commit> commits, String userName) {
+        List<Commit> filteredCommits = commits.stream()
+                .filter(p -> p.getAuthor_name().equals(userName)).collect(Collectors.toList());
+        return filteredCommits;
+    }
+
     @Override
     public String toString() {
         return "Commit{" +
@@ -167,4 +179,5 @@ public class Commit {
                 ", web_url='" + web_url + '\'' +
                 '}';
     }
+
 }
