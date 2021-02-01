@@ -1,4 +1,4 @@
-package main.java.Project;
+package main.java.ConnectToGitlab.Project;
 
 /**
  * Holds the info about the name of a project

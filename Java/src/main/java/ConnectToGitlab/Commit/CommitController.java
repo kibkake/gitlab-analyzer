@@ -1,4 +1,4 @@
-package main.java.Commit;
+package main.java.ConnectToGitlab.Commit;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;

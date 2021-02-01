@@ -1,4 +1,4 @@
-package main.java.User;
+package main.java.ConnectToGitlab.User;
 
 /**
  *  Class hold information about the different users on gitlab used to convert JSON to an object with spring

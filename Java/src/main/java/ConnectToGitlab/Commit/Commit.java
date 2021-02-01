@@ -1,4 +1,4 @@
-package main.java.Commit;
+package main.java.ConnectToGitlab.Commit;
 import java.util.*;
 import java.util.stream.Collectors;
 

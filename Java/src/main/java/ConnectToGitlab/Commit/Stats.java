@@ -1,4 +1,4 @@
-package main.java.Commit;
+package main.java.ConnectToGitlab.Commit;
 
 /**
  * Used by commits to hold the number of modification a commit has
