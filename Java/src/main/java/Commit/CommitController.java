@@ -1,7 +1,6 @@
-package main.java.Commit;
-
-import Commit.Commit;
-import main.java.User.User;
+//package main.java.Commit;
+package Commit;
+//import main.java.User.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +22,13 @@ public class CommitController {
         String isoEnding = "T00:00:00-08:00";
         RestTemplate restTemplate = new RestTemplate();
         String myUrl = serverUrl + id +"/repository/commits?since=" + sinceDate + isoEnding + "&until=" + untilDate
-               + isoEnding + "&access_token=cFzzy7QFRvHzfHGpgrr1";
-
-//                serverUrl + id +
-//                "/repository/commits?" + "since=" + sinceDate + isoEnding + "&access_token=cFzzy7QFRvHzfHGpgrr1"
+               + isoEnding + "&with_stats=true" + "&access_token=cFzzy7QFRvHzfHGpgrr1";
 
         // https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
         System.out.println(myUrl);
         ResponseEntity<List<Commit>> rateResponse = restTemplate.exchange(myUrl,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {});
         List<Commit> commits = rateResponse.getBody();
-        for(int i = 0; i < commits.size(); i ++) {
-            System.out.println(commits.get(i));
-        }
         return commits;
     }
 

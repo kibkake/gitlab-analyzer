@@ -1,4 +1,4 @@
-package main.java.Commit;
+package Commit;
 
 /**
  * Used by commits to hold the number of modification a commit has
@@ -39,5 +39,14 @@ public class Stats {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "stats{" +
+                "additions=" + additions +
+                ", deletions=" + deletions +
+                ", total=" + total +
+                '}';
     }
 }

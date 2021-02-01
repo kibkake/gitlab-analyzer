@@ -1,18 +1,22 @@
+//package main.java;
 package main.java;
+//import main.java.Commit.CommitController;
+//import main.java.Project.ProjectController;
+//import main.java.User.UserController;
 
-import main.java.Commit.CommitController;
-import main.java.Project.ProjectController;
-import main.java.User.UserController;
+import Commit.Commit;
 import main.java.ConnectToGitlab.ConnectToGitlab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
+import Commit.CommitController;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * The main application that invokes SpringBoot's bootRun
@@ -26,12 +30,18 @@ public class Main {
      * @param args arguments to the main method
      */
     public static void main(String[] args){
-        try {
-            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
-        }catch(IOException exception){
-            System.out.println(exception.getMessage());
-        }
+//        try {
+//            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
+//        }catch(IOException exception){
+//            System.out.println(exception.getMessage());
+//        }
         SpringApplication.run(Main.class,args);
+        List<Commit> commits = CommitController.getProjectCommits(8, "2021-01-01", "2021-01-27");
+        List<Commit> userCommits = Commit.getCommitByUser(commits, "John Doknjas");
+        for(int i =0; i<userCommits.size(); i++) {
+            System.out.println(userCommits.get(i).getStats().getTotal());
+        }
+        System.out.println(userCommits);
     }
 
     /**

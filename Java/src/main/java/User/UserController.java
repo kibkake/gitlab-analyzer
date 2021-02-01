@@ -1,6 +1,7 @@
-package main.java.User;
+//package main.java.User;
+package User;
 
-import main.java.User.*;
+//import main.java.User.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;

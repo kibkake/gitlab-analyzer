@@ -1,9 +1,6 @@
-package main.java.Commit;
-
-import java.sql.SQLOutput;
-import java.time.LocalDate;
+//package main.java.Commit;
+package Commit;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -25,7 +22,7 @@ public class Commit {
     private String committed_date;
     private String web_url;
     //holds add, delete and total changes of a single commit
-    private List<Stats> stats;
+    private Stats stats;
 
 //         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
 
@@ -33,8 +30,8 @@ public class Commit {
     }
 
     public Commit(String id, String shortId, String created_at, ArrayList<String> parent_ids, String title,
-                  String message, String author_name, String author_email, String authored_date,
-                  String committer_name, String committer_email, String committed_date, String web_url) {
+                  String message, String author_name, String author_email, String authored_date, String committer_name,
+                  String committer_email, String committed_date, String web_url, Stats stats) {
         this.id = id;
         this.shortId = shortId;
         this.created_at = created_at;
@@ -48,6 +45,7 @@ public class Commit {
         this.committer_email = committer_email;
         this.committed_date = committed_date;
         this.web_url = web_url;
+        this.stats = stats;
     }
 
     public String getId() {
@@ -154,6 +152,14 @@ public class Commit {
         this.web_url = web_url;
     }
 
+    public Stats getStats() {
+        return stats;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
     //https://stackoverflow.com/questions/122105/what-is-the-best-way-to-filter-a-java-collection/1385698
     public static List<Commit>getCommitByUser(List<Commit> commits, String userName) {
         List<Commit> filteredCommits = commits.stream()
@@ -177,6 +183,7 @@ public class Commit {
                 ", committer_email='" + committer_email + '\'' +
                 ", committed_date='" + committed_date + '\'' +
                 ", web_url='" + web_url + '\'' +
+                ", web_url='" + stats + '\'' +
                 '}';
     }
 
