@@ -1,6 +1,4 @@
-//package main.java.Commit;
-package Commit;
-//import main.java.User.User;
+package main.java.Commit;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +26,7 @@ public class CommitController {
         System.out.println(myUrl);
         ResponseEntity<List<Commit>> rateResponse = restTemplate.exchange(myUrl,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {});
-        List<Commit> commits = rateResponse.getBody();
-        return commits;
+        return rateResponse.getBody();
     }
 
     public static void getSingleCommit(String identifier) {

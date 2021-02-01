@@ -1,7 +1,5 @@
-//package main.java.User;
-package User;
+package main.java.User;
 
-//import main.java.User.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -19,9 +17,6 @@ public class UserController {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<User[]> responseEntity= restTemplate.getForEntity("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/users?access_token=cFzzy7QFRvHzfHGpgrr1", User[].class);
         User[] users = responseEntity.getBody();
-        for(int i = 0; i < users.length; i ++) {
-            System.out.println(users[i]);
-        }
         return users;
     }
 }

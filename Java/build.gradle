@@ -14,6 +14,16 @@ repositories {
     mavenCentral()
 }
 
+// Fixes issue where main.java is set as source root
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+    }
+}
+
+
 dependencies {
     implementation 'org.projectlombok:lombok:1.18.16'
 
@@ -24,6 +34,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'com.google.code.gson:gson:2.8.5'
+    /*
+    Fixes issues error: package org.junit does not exist import org.junit.Test
+    from suggested solution: https://stackoverflow.com/questions/42677526/gradle-compilejava-error-package-org-junit-does-not-exist
+     */
+    testImplementation 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
 
 }
 
@@ -31,7 +47,7 @@ apply plugin : "java"
 
 ext {
     // package was renamed, so fix run task build by naming package main.java with Main
-    javaMainPointer = "main.java.Main"
+    javaMainPointer = "main.java"
 }
 
 application {

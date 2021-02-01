@@ -1,6 +1,4 @@
-//package main.java.User;
-package User;
-import java.time.LocalDate;
+package main.java.User;
 
 /**
  *  Class hold information about the different users on gitlab used to convert JSON to an object with spring

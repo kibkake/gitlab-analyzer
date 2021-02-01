@@ -6,7 +6,6 @@ import org.gitlab.api.TokenType;
 import org.gitlab.api.models.*;
 import org.gitlab.api.models.GitlabMergeRequest;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

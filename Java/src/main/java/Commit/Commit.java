@@ -1,5 +1,4 @@
-//package main.java.Commit;
-package Commit;
+package main.java.Commit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -165,6 +164,13 @@ public class Commit {
         List<Commit> filteredCommits = commits.stream()
                 .filter(p -> p.getAuthor_name().equals(userName)).collect(Collectors.toList());
         return filteredCommits;
+    }
+
+    public double getCommitScore() {
+        int additions = stats.getAdditions();
+        int deletions = stats.getDeletions();
+        double score = additions + (deletions * 0.2);
+        return score;
     }
 
     @Override
