@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class GitlabWrapper {
 
@@ -166,9 +167,23 @@ public class GitlabWrapper {
 
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
-        System.out.println(reply);
+        //System.out.println(reply);
         connection.disconnect();
 
+    }
+
+    public static void parsIsoDate() throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+        Date result1 = df1.parse("2024-01-24T23:55:59.000+00:00");
+
+        System.out.println(result1);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result1);
+        System.out.println(cal.get(Calendar.YEAR));
+        System.out.println(cal.get(Calendar.MONTH)+1);
+        System.out.println(cal.get(Calendar.DATE));
     }
 
 
