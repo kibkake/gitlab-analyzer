@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,6 +155,20 @@ public class GitlabWrapper {
             //System.out.println(jsonPrimitiveIssueTitle.getAsString());
 
         }
+    }
+
+    public static void getAllCommitBetweenDates(String token, int projectId, int sinceYear, int sinceMonth, int sinceDay, int untilYear, int untilMonth, int untilDay) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits" + "?since=" + sinceYear + "-" + sinceMonth + "-" + sinceDay + "T00:00:00.000-08:00&" + "until=" + untilYear + "-" + untilMonth + "-" + untilDay + "T23:59:59.000-08:00&" + "access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
+        System.out.println(reply);
+        connection.disconnect();
+
     }
 
 
