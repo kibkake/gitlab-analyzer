@@ -5,12 +5,13 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Projections;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import static com.mongodb.client.model.Filters.*;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 /**
  * This class has functions for interacting with the MongoDB.
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 
 public class DatabaseFunctions {
 
-    private static String mongoDBURI = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
+    private static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
 
     public static boolean isUserAuthenticated(/* args? */) {
         /* This function gets the user to enter some kind of password, and checks
@@ -31,10 +32,25 @@ public class DatabaseFunctions {
         return false; // Placeholder
     }
 
+    /**
+     * Searches the database for the token associated with the given username
+     *
+     * @param username username to identify whose token is being retrieved
+     * @return The associated username's token as a String. Returns empty string if no token is found.
+     */
     public static String retrieveUserToken(String username) {
-        // Search the database for the token (a String?) matching username.
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
 
-        return ""; // Placeholder
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
+
+            Document user = usersCollection.find(eq("username", username))
+                    .projection(Projections.fields(Projections.include("token"), Projections.excludeId()))
+                    .first();
+
+            String token = user.getString("token");
+            return token;
+        }
     }
 
     /**
@@ -44,7 +60,7 @@ public class DatabaseFunctions {
      * @param token authentication token to be stored
      */
     public static void addUserToken(String username, String token) {
-        try (MongoClient mongoClient = MongoClients.create(mongoDBURI)) {
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
 
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
             MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
