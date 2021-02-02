@@ -70,8 +70,6 @@ public class DatabaseFunctions {
                     .append("token", token);
 
             userCollection.insertOne(user);
-
-            return;
         }
     }
 
