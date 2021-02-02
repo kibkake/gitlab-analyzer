@@ -15,7 +15,24 @@ import java.util.*;
 public class GitlabWrapper {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
+    public static int sinceYear = 2000;
+    public static int sinceMonth = 1;
+    public static int sinceDay = 1;
+    public static int untilYear = 2021;
+    public static int untilMonth = 2;
+    public static int untilDay = 24;
 
+    public static void setSinceDates(int sYear, int sMonth, int sDay){
+        sinceYear = sYear;
+        sinceMonth = sMonth;
+        sinceDay = sDay;
+    }
+
+    public static void setUntilDates(int uYear, int uMonth, int uDay){
+        untilYear = uYear;
+        untilMonth = uMonth;
+        untilDay = uDay;
+    }
 
     public static HttpURLConnection makeConnection(URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -158,8 +175,10 @@ public class GitlabWrapper {
         }
     }
 
-    public static void getAllCommitBetweenDates(String token, int projectId, int sinceYear, int sinceMonth, int sinceDay, int untilYear, int untilMonth, int untilDay) throws IOException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits" + "?since=" + sinceYear + "-" + sinceMonth + "-" + sinceDay + "T00:00:00.000-08:00&" + "until=" + untilYear + "-" + untilMonth + "-" + untilDay + "T23:59:59.000-08:00&" + "access_token=" + token);
+    public static void getAllCommitBetweenDates(String token, int projectId) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits" + "?since=" + sinceYear + "-" +
+                sinceMonth + "-" + sinceDay + "T00:00:00.000-08:00&" + "until=" + untilYear + "-" + untilMonth + "-" +
+                untilDay + "T23:59:59.000-08:00&" + "access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();

@@ -23,7 +23,7 @@ public class ConnectToGitlab {
         GitlabWrapper.getSingleMergedMergeRequestChanges(token, 2);
         GitlabWrapper.getSingleCommitDiffs(token, 6, "39979003d3aeb6aa8fd832d7a89e34d5272e4e3a");
         GitlabWrapper.getAllProjectIssues(token, 6);
-        GitlabWrapper.getAllCommitBetweenDates("cFzzy7QFRvHzfHGpgrr1", 6, 2021, 01, 24, 2021,01, 24);
+        GitlabWrapper.getAllCommitBetweenDates("cFzzy7QFRvHzfHGpgrr1", 6);
         GitlabWrapper.getMergedMergeRequestsBetweenDates(token, 6);
 
 
