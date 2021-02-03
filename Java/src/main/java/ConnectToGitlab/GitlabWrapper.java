@@ -202,9 +202,9 @@ public class GitlabWrapper {
         Calendar cal = Calendar.getInstance();
         cal.setTime(result1);
 
-        System.out.println(cal.get(Calendar.YEAR));
+        /*System.out.println(cal.get(Calendar.YEAR));
         System.out.println(cal.get(Calendar.MONTH)+1);
-        System.out.println(cal.get(Calendar.DATE));
+        System.out.println(cal.get(Calendar.DATE));*/
     }
 
     public static void getMergedMergeRequestsBetweenDates(String token, int projectId) throws IOException, ParseException {
@@ -225,7 +225,7 @@ public class GitlabWrapper {
             JsonElement jsonElement1 = jsonArray.get(i);
             JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
             JsonPrimitive jsonPrimitiveDate = jsonObject1.getAsJsonPrimitive("merged_at");
-            System.out.println(jsonPrimitiveDate.getAsString());
+            //System.out.println(jsonPrimitiveDate.getAsString());
             parsIsoDate(jsonPrimitiveDate.getAsString());
 
         }
