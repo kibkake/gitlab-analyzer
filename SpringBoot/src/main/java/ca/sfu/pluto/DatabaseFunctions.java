@@ -77,6 +77,15 @@ public class DatabaseFunctions {
         }
     }
 
+    public static void removeUserToken(String username, String token) {
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
+
+            
+        }
+    }
+
     public static int numCommits(String username, LocalDate startDate, LocalDate endDate) {
         /* Find the number of commits made by the user, from the start date to
            the end date. */
