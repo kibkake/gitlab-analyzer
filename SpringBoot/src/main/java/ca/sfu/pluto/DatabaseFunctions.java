@@ -76,6 +76,12 @@ public class DatabaseFunctions {
         }
     }
 
+    /**
+     * Searches for a document storing the token for the user, and if it exists,
+     * it is removed from the "users" collection.
+     * @param username The user we're looking for.
+     * @param token Their current token.
+     */
     public static void removeUserToken(String username, String token) {
         try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
@@ -101,13 +107,16 @@ public class DatabaseFunctions {
         return numTotalCommits;
     }
 
+    /**
+     * Add a document to the commits Collection, storing the number of commits done
+     * by the user on a specific date. If an entry already exists for this date,
+     * it is overwritten.
+     *
+     * @param username Specifies the username attribute of the new/updated document.
+     * @param date Specifies the date we're looking for. Is broken up into year, month, day.
+     * @param numCommits Specifies the number of commits (an int value) to store.
+     */
     public static void setNumCommits(String username, LocalDate date, int numCommits) {
-        /* In the DB, for the specified user on the given date, set the number of commits
-           to numCommits.
-
-           Check whether there is already a value for this user at this date? If so,
-           decide what to do. */
-
         try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
             MongoCollection<Document> userCollection = gitlabDB.getCollection("commits");
