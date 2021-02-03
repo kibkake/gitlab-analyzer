@@ -78,12 +78,15 @@ public class DatabaseFunctions {
         }
     }
 
-    public static void removeUserToken(String usernameP, String tokenP) {
+    public static void removeUserToken(String username, String token) {
         try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
             MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
 
-            usersCollection.deleteOne(Filters.eq("username", usernameP));
+            Bson deleteCondition = and(eq("username", username),
+                                         eq("token", token));
+
+            usersCollection.deleteOne(deleteCondition);
         }
     }
 
