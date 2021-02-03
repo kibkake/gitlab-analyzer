@@ -47,7 +47,7 @@ apply plugin : "java"
 
 ext {
     // package was renamed, so fix run task build by naming package main.java with Main
-    javaMainPointer = "main.java"
+    javaMainPointer = "main.java.Main"
 }
 
 application {
