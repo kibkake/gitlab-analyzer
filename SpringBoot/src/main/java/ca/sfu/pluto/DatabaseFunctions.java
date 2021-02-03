@@ -5,10 +5,14 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Projections;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+
 import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Updates.*;
 
 
 import java.time.LocalDate;
@@ -55,21 +59,21 @@ public class DatabaseFunctions {
 
     /**
      * Adds a document to the collection store a token for the given username
+     * If the user already exists, the token will be updated instead
      *
      * @param username username to identify whose token is being stored
      * @param token authentication token to be stored
      */
     public static void addUserToken(String username, String token) {
         try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
             MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
 
-            Document user = new Document("_id", new ObjectId());
-            user.append("username", username)
-                    .append("token", token);
-
-            userCollection.insertOne(user);
+            // Setup filter and upsert options so that usernames remain unique.
+            Bson filter = eq("username", username);
+            Bson updateOperation = set("token", token);
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            userCollection.updateOne(filter, updateOperation, options);
         }
     }
 
