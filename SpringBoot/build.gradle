@@ -17,3 +17,7 @@ dependencies {
 group = 'ca.sfu.pluto'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+
+bootRun {
+    jvmArgs = ["-Djdk.tls.client.protocols=TLSv1.2"]
+}
