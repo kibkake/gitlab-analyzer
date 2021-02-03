@@ -10,6 +10,7 @@ import com.mongodb.client.model.Projections;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import com.mongodb.client.model.Filters;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
@@ -77,12 +78,12 @@ public class DatabaseFunctions {
         }
     }
 
-    public static void removeUserToken(String username, String token) {
+    public static void removeUserToken(String usernameP, String tokenP) {
         try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
             MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
 
-            
+            usersCollection.deleteOne(Filters.eq("username", usernameP));
         }
     }
 
