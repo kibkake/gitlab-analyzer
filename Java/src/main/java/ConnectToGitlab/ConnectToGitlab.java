@@ -15,8 +15,6 @@ public class ConnectToGitlab {
 
     public static void connectGitlab(String token) throws IOException, ParseException {
 
-        //calls for the new wrapper class-------------[Testing with project: 6]
-        //Get a list of membership project(in json)
         GitlabWrapper.getListOfMembershipProjects(token);
         GitlabWrapper.getMergedMergeRequests(token, 6);
         GitlabWrapper.getSingleMergedMergeRequestCommits(token, 2);
@@ -26,7 +24,10 @@ public class ConnectToGitlab {
         GitlabWrapper.getAllCommitBetweenDates("cFzzy7QFRvHzfHGpgrr1", 6);
         GitlabWrapper.getMergedMergeRequestsBetweenDates(token, 6);
 
+        //testGitMethods(token);
+    }
 
+    public static void testGitMethods(String token) throws IOException, ParseException {
 
         //calls for older wrapper class---------------
         GitlabAPI api = makeConnectionToGitlab(token);
