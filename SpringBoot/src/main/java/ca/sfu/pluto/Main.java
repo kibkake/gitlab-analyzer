@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import java.util.Arrays;
 import java.io.PrintWriter;
 
+import java.time.LocalDate;
+
 /**
  * The main application that invokes SpringBoot's bootRun
  */
@@ -21,6 +23,8 @@ public class Main {
      */
     public static void main(String[] args){
         SpringApplication.run(Main.class,args);
+
+        // DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 2, 3), 100);
     }
 
     /**

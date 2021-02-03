@@ -1,6 +1,5 @@
 package ca.sfu.pluto;
 
-// import main.java.Functions.LocalDateFunctions;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -14,7 +13,6 @@ import com.mongodb.client.model.Filters;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
-
 
 import java.time.LocalDate;
 
@@ -83,8 +81,7 @@ public class DatabaseFunctions {
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
             MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
 
-            Bson deleteCondition = and(eq("username", username),
-                                         eq("token", token));
+            Bson deleteCondition = and(eq("username", username), eq("token", token));
 
             usersCollection.deleteOne(deleteCondition);
         }
@@ -96,7 +93,7 @@ public class DatabaseFunctions {
 
         int numTotalCommits = 0;
 
-//        ArrayList<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
+        // ArrayList<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
 
         /* Run through all dates in this list. For each of them, search the DB for that
            user and that date, adding the # commits to the sum? */
@@ -110,6 +107,23 @@ public class DatabaseFunctions {
 
            Check whether there is already a value for this user at this date? If so,
            decide what to do. */
+
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> userCollection = gitlabDB.getCollection("commits");
+
+            int day = date.getDayOfMonth();
+            int month = date.getMonthValue();
+            int year = date.getYear();
+
+            Bson attributeValues = and(eq("username", username), eq("day", day),
+                                       eq("month", month), eq("year", year));
+
+            Bson updateOperation = set("num_commits", numCommits);
+
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            userCollection.updateOne(attributeValues, updateOperation, options);
+        }
     }
 
     public static int numMergeRequests(String username, LocalDate startDate, LocalDate endDate) {
