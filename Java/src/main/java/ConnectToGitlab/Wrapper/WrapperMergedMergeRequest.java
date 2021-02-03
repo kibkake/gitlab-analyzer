@@ -14,7 +14,7 @@ public class WrapperMergedMergeRequest {
     private List<WrapperCommit> mergeRequestCommits;
 
     public WrapperMergedMergeRequest(int mergeRequestId, int mergeRequestIid, int gitlabProjectId, String mergeRequestTitle,
-                                     int mergeYear, int mergeMonth, int mergeDay) {
+                                     int mergeYear, int mergeMonth, int mergeDay){
         this.mergeRequestId = mergeRequestId;
         this.mergeRequestIid = mergeRequestIid;
         this.gitlabProjectId = gitlabProjectId;

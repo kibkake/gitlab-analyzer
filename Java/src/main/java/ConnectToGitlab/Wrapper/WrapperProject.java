@@ -26,12 +26,12 @@ public class WrapperProject {
     public WrapperProject(String token, int gitlabProjectId, String gitlabProjectName) throws IOException, ParseException {
         this.gitlabProjectId = gitlabProjectId;
         this.gitlabProjectName = gitlabProjectName;
-        getMergedMergeRequests(token, gitlabProjectId);
-        getAllCommitProjectCommits(token, gitlabProjectId);
+        getMergedMergeRequests(token);
+        getAllCommitProjectCommits(token);
     }
 
-    private static void getAllCommitProjectCommits(String token, int projectId) throws IOException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits" +  "?access_token=" + token);
+    private void getAllCommitProjectCommits(String token) throws IOException, ParseException {
+        URL url = new URL(MAIN_URL + "/" + gitlabProjectId + "/repository/commits" +  "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -41,11 +41,32 @@ public class WrapperProject {
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
         //System.out.println(reply);
         connection.disconnect();
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        for(int i = 0; i < jsonArray.size(); i++) {
+            JsonElement jsonElement = jsonArray.get(i);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
+            int commitId = jsonPrimitiveId.getAsInt();
+            JsonPrimitive jsonPrimitiveAuthorName = jsonObject.getAsJsonPrimitive("author_name");
+            String authorName = jsonPrimitiveAuthorName.getAsString();
+            JsonPrimitive jsonPrimitiveAuthorEmail = jsonObject.getAsJsonPrimitive("author_email");
+            String authorEmail = jsonPrimitiveAuthorEmail.getAsString();
+            JsonPrimitive jsonPrimitiveTitle = jsonObject.getAsJsonPrimitive("title");
+            String title = jsonPrimitiveTitle.getAsString();
+            JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
+            String commitDate = jsonPrimitiveCommitDate.getAsString();
+            int [] parsedCommitDate = parsIsoDate(commitDate);
 
+
+            WrapperCommit commit = new WrapperCommit(commitId, authorName, authorEmail, title, parsedCommitDate[0],
+                    parsedCommitDate[1],parsedCommitDate[2]);
+            allCommits.add(commit);
+        }
     }
 
-    private void getMergedMergeRequests(String token, int projectId) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests" + "?state=merged&" + "access_token=" + token);
+    private void getMergedMergeRequests(String token) throws IOException, ParseException {
+        URL url = new URL(MAIN_URL + "/" + gitlabProjectId + "/merge_requests?" + "state=merged&" + "access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -70,7 +91,7 @@ public class WrapperProject {
             JsonPrimitive jsonPrimitiveMergedAt = jsonObject.getAsJsonPrimitive("merged_at");
             String mergeRequestUntilDate = jsonPrimitiveMergedAt.getAsString();
             JsonPrimitive jsonPrimitiveTitle = jsonObject.getAsJsonPrimitive("title");
-            String mergeRequestTitle = jsonPrimitiveMergedAt.getAsString();
+            String mergeRequestTitle = jsonPrimitiveTitle.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestUntilDate);
 
             WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(mergeRequestId,mergeRequestIid,
@@ -84,7 +105,6 @@ public class WrapperProject {
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
         //Date result1 = df1.parse("2024-01-24T23:55:59.000+00:00");
         Date result1 = df1.parse(isoDate);
-
         //System.out.println(result1);
 
         Calendar cal = Calendar.getInstance();
