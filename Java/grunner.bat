@@ -8,4 +8,4 @@ CALL gradle test
 :: run the main application
 @ECHO:
 ECHO "Running Application: Main.class ..."
-CALL gradle run
+CALL gradle bootRun
