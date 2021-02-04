@@ -4,7 +4,7 @@
 ## A program that chooses a timeline snapshot from a GitLab Repository and fetches all activities of members from that timeline and produces further analysis on the contributions of members.
   
 ## Instructions:
-### The easiest way to run the program is to navigate to /Java folder and run `gradle bootRun`
+### The easiest way to run the program is to open up `cmd`, navigate to `/Java` folder and run `gradle bootRun` or `grunner`
   
 ### You may choose to run this with IntelliJ as well but you must add the necessary libraries:
   
