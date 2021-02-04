@@ -36,6 +36,7 @@ build/
 .gradletasknamecache
 gradle-app.setting
 !gradle-wrapper.jar
+log.txt
 
 # localization: gradle ignore build config
 Java/.gradle/

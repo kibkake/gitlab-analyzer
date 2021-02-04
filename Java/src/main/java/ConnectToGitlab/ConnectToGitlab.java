@@ -1,18 +1,39 @@
 package main.java.ConnectToGitlab;
 
+import main.java.ConnectToGitlab.Wrapper.WrapperProject;
 import org.gitlab.api.AuthMethod;
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.*;
 import org.gitlab.api.models.GitlabMergeRequest;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectToGitlab {
 
-    public static void connectGitlab(String token) throws IOException {
+    public static void connectGitlab(String token) throws IOException, ParseException {
 
+        GitlabWrapper.getListOfMembershipProjects(token);
+        GitlabWrapper.getMergedMergeRequests(token, 6);
+        GitlabWrapper.getSingleMergedMergeRequestCommits(token, 2);
+        GitlabWrapper.getSingleMergedMergeRequestChanges(token, 2);
+        GitlabWrapper.getSingleCommitDiffs(token, 6, "39979003d3aeb6aa8fd832d7a89e34d5272e4e3a");
+        GitlabWrapper.getAllProjectIssues(token, 6);
+        GitlabWrapper.getAllCommitBetweenDates("cFzzy7QFRvHzfHGpgrr1", 6);
+        GitlabWrapper.getMergedMergeRequestsBetweenDates(token, 6);
+        /*WrapperProject project = new WrapperProject(token, 6, "Testproject2");
+        System.out.println(project.getMergedMergeRequests().size());
+        System.out.println(project.getMergedMergeRequests().get(1).getMergeRequestId());*/
+
+        //testGitMethods(token);
+    }
+
+    public static void testGitMethods(String token) throws IOException, ParseException {
+
+        //calls for older wrapper class---------------
         GitlabAPI api = makeConnectionToGitlab(token);
         GitlabUser user = getUserFromApi(api);
         System.out.println("Welcome " + user.getName() + "!");
