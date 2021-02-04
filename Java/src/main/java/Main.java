@@ -3,6 +3,10 @@ import main.java.ConnectToGitlab.Commit.CommitController;
 import main.java.ConnectToGitlab.Commit.Commit;
 
 import main.java.ConnectToGitlab.ConnectToGitlab;
+import main.java.ConnectToGitlab.Project.Project;
+import main.java.ConnectToGitlab.Project.ProjectController;
+import main.java.ConnectToGitlab.User.User;
+import main.java.ConnectToGitlab.User.UserController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;

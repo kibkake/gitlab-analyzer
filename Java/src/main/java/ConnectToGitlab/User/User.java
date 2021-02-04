@@ -10,6 +10,7 @@ public class User {
     private String state;
     private String avatar_url;
     private String web_url;
+    private String email;
 
     public User() {
     }
@@ -18,13 +19,14 @@ public class User {
         this.id = id;
     }
 
-    public User(int id, String name, String username, String state, String avatar_url, String web_url) {
+    public User(int id, String name, String username, String state, String avatar_url, String web_url, String email) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.state = state;
         this.avatar_url = avatar_url;
         this.web_url = web_url;
+        this.email = email;
     }
 
     public int getId() {
