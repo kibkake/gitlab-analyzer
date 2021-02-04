@@ -24,4 +24,36 @@ public class WrapperMergedMergeRequest {
         this.mergeDay = mergeDay;
         //this.mergeRequestCommits = mergeRequestCommits;
     }
+
+    public int getMergeRequestId() {
+        return mergeRequestId;
+    }
+
+    public int getMergeRequestIid() {
+        return mergeRequestIid;
+    }
+
+    public int getGitlabProjectId() {
+        return gitlabProjectId;
+    }
+
+    public String getMergeRequestTitle() {
+        return mergeRequestTitle;
+    }
+
+    public int getMergeYear() {
+        return mergeYear;
+    }
+
+    public int getMergeMonth() {
+        return mergeMonth;
+    }
+
+    public int getMergeDay() {
+        return mergeDay;
+    }
+
+    public List<WrapperCommit> getMergeRequestCommits() {
+        return mergeRequestCommits;
+    }
 }

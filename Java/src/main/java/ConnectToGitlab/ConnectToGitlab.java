@@ -1,5 +1,6 @@
 package main.java.ConnectToGitlab;
 
+import main.java.ConnectToGitlab.Wrapper.WrapperProject;
 import org.gitlab.api.AuthMethod;
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
@@ -23,6 +24,9 @@ public class ConnectToGitlab {
         GitlabWrapper.getAllProjectIssues(token, 6);
         GitlabWrapper.getAllCommitBetweenDates("cFzzy7QFRvHzfHGpgrr1", 6);
         GitlabWrapper.getMergedMergeRequestsBetweenDates(token, 6);
+        /*WrapperProject project = new WrapperProject(token, 6, "Testproject2");
+        System.out.println(project.getMergedMergeRequests().size());
+        System.out.println(project.getMergedMergeRequests().get(1).getMergeRequestId());*/
 
         //testGitMethods(token);
     }

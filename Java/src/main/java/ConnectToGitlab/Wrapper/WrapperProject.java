@@ -10,18 +10,15 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 public class WrapperProject {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
     private int gitlabProjectId;
     private String gitlabProjectName;
-    private List<WrapperMergedMergeRequest> mergedMergeRequests;
-    private List<WrapperCommit> allCommits;
+    private List<WrapperMergedMergeRequest> mergedMergeRequests = new ArrayList<>();
+    private List<WrapperCommit> allCommits = new ArrayList<>();
 
     public WrapperProject(String token, int gitlabProjectId, String gitlabProjectName) throws IOException, ParseException {
         this.gitlabProjectId = gitlabProjectId;
@@ -47,7 +44,7 @@ public class WrapperProject {
             JsonElement jsonElement = jsonArray.get(i);
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
-            int commitId = jsonPrimitiveId.getAsInt();
+            String commitId = jsonPrimitiveId.getAsString();
             JsonPrimitive jsonPrimitiveAuthorName = jsonObject.getAsJsonPrimitive("author_name");
             String authorName = jsonPrimitiveAuthorName.getAsString();
             JsonPrimitive jsonPrimitiveAuthorEmail = jsonObject.getAsJsonPrimitive("author_email");
