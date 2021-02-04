@@ -1,12 +1,13 @@
 package main.java;
-import main.java.ConnectToGitlab.Commit.CommitController;
-import main.java.ConnectToGitlab.Commit.Commit;
 
+import main.java.ConnectToGitlab.Commit.Commit;
+import main.java.ConnectToGitlab.Commit.CommitController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
+import main.java.ConnectToGitlab.Developer.Developer;
+import main.java.ConnectToGitlab.Developer.DeveloperController;
 import main.java.ConnectToGitlab.Project.Project;
 import main.java.ConnectToGitlab.Project.ProjectController;
-import main.java.ConnectToGitlab.User.User;
-import main.java.ConnectToGitlab.User.UserController;
+import main.java.ConnectToGitlab.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
@@ -17,8 +18,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.io.PrintWriter;
 import java.util.List;
-
-import static main.java.ConnectToGitlab.Commit.Commit.*;
 
 /**
  * The main application that invokes SpringBoot's bootRun
@@ -32,6 +31,10 @@ public class Main {
      * @param args arguments to the main method
      */
     public static void main(String[] args){
+        User user = User.getInstance();
+        user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
+        user.setToken("cFzzy7QFRvHzfHGpgrr1");
+
         try {
             ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
         }catch(IOException exception){
