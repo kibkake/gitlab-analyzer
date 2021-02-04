@@ -15,6 +15,7 @@ import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.io.PrintWriter;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Main {
 
         try {
             ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
-        }catch(IOException exception){
+        }catch(IOException | ParseException exception){
             System.out.println(exception.getMessage());
         }
         SpringApplication.run(Main.class,args);
