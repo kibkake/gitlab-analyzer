@@ -1,9 +1,17 @@
 package main.java.ConnectToGitlab.Project;
 
+import main.java.ConnectToGitlab.User;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
+/**
+ * Calls to GitLab Api to get Project information
+ */
 @RestController
 public class ProjectController {
 
@@ -12,10 +20,13 @@ public class ProjectController {
     private RestTemplate restTemplate;
  */
 
-    public static Project[] getProjects() {
+    public static List<Project> getProjects() {
+        User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Project[]> responseEntity= restTemplate.getForEntity("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects?simple=true", Project[].class);
-        Project[] projects = responseEntity.getBody();
+        String url = user.getServerUrl() + "projects?simple=true";
+        ResponseEntity<List<Project>> usersResponse = restTemplate.exchange(url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Project>>() {});
+        List<Project> projects = usersResponse.getBody();
         return projects;
     }
 }
