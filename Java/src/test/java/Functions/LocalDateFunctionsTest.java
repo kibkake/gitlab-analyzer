@@ -1,4 +1,4 @@
-package Functions;
+package test.java.Functions;
 
 import org.junit.Test;
 
