@@ -42,6 +42,7 @@ log.txt
 Java/.gradle/
 Java/build/
 Java/gradle/
+Java/log.txt
 SpringBoot/.idea/
 SpringBoot/.gradle/
 SpringBoot/build/
