@@ -42,8 +42,5 @@ log.txt
 Java/.gradle/
 Java/build/
 Java/gradle/
-SpringBoot/.idea/
-SpringBoot/.gradle/
-SpringBoot/build/
-SpringBoot/gradle/
-SpringBoot/log.txt
+Java/log.txt
+Java/out/*
