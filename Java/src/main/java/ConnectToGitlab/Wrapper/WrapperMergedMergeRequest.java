@@ -45,6 +45,24 @@ public class WrapperMergedMergeRequest {
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
         //System.out.println(reply);
         connection.disconnect();
+
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        for(int i = 0; i < jsonArray.size(); i++) {
+            JsonElement jsonElement = jsonArray.get(i);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
+            String commitId = jsonPrimitiveId.getAsString();
+            JsonPrimitive jsonPrimitiveAuthorName = jsonObject.getAsJsonPrimitive("author_name");
+            String authorName = jsonPrimitiveAuthorName.getAsString();
+            JsonPrimitive jsonPrimitiveAuthorEmail = jsonObject.getAsJsonPrimitive("author_email");
+            String authorEmail = jsonPrimitiveAuthorEmail.getAsString();
+            JsonPrimitive jsonPrimitiveTitle = jsonObject.getAsJsonPrimitive("title");
+            String title = jsonPrimitiveTitle.getAsString();
+
+        }
+
+
     }
 
     public static void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
