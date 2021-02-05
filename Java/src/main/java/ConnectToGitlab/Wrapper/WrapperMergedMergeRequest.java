@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class WrapperMergedMergeRequest {
 
@@ -34,7 +36,7 @@ public class WrapperMergedMergeRequest {
         //this.mergeRequestCommits = mergeRequestCommits;
     }
 
-    public static void getSingleMergedMergeRequestCommits(String token, int mergeIid) throws IOException {
+    public static void getSingleMergedMergeRequestCommits(String token, int mergeIid) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/commits" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -59,10 +61,31 @@ public class WrapperMergedMergeRequest {
             String authorEmail = jsonPrimitiveAuthorEmail.getAsString();
             JsonPrimitive jsonPrimitiveTitle = jsonObject.getAsJsonPrimitive("title");
             String title = jsonPrimitiveTitle.getAsString();
+            JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
+            String mergeRequestCommitDate = jsonPrimitiveCommitDate.getAsString();
+            int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
+
 
         }
 
 
+    }
+
+    public static int[] parsIsoDate(String isoDate) throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+        //Date result1 = df1.parse("2024-01-24T23:55:59.000+00:00");
+        Date result1 = df1.parse(isoDate);
+        //System.out.println(result1);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result1);
+        int [] result = new int[3];
+
+        result[0] = cal.get(Calendar.YEAR);
+        result[1] = (cal.get(Calendar.MONTH)+1);
+        result[2] = cal.get(Calendar.DATE);
+        return result;
     }
 
     public static void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
