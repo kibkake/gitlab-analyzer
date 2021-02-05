@@ -1,4 +1,4 @@
-package OutputLogic;
+package main.java.ScoreLogic;
 
 /*
     This class manages the calculation of code contribution by number and frequency of commits and merge request.
