@@ -1,4 +1,4 @@
-package OutputData;
+package OutputLogic;
 
 public class CodeContribution {
 }
