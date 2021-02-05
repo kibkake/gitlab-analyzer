@@ -20,7 +20,7 @@ public class WrapperMergedMergeRequest {
     private int mergeYear;
     private int mergeMonth;
     private int mergeDay;
-    private List<WrapperCommit> mergeRequestCommits;
+    private List<WrapperCommit> mergeRequestCommits = new ArrayList<>();
 
     public WrapperMergedMergeRequest(int mergeRequestId, int mergeRequestIid, int gitlabProjectId, String mergeRequestTitle,
                                      int mergeYear, int mergeMonth, int mergeDay){
@@ -32,6 +32,19 @@ public class WrapperMergedMergeRequest {
         this.mergeMonth = mergeMonth;
         this.mergeDay = mergeDay;
         //this.mergeRequestCommits = mergeRequestCommits;
+    }
+
+    public static void getSingleMergedMergeRequestCommits(String token, int mergeIid) throws IOException {
+        URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/commits" + "?access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+        //System.out.println(reply);
+        connection.disconnect();
     }
 
     public static void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
