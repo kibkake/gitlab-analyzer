@@ -24,10 +24,10 @@ public class WrapperProject {
         this.gitlabProjectId = gitlabProjectId;
         this.gitlabProjectName = gitlabProjectName;
         getMergedMergeRequests(token);
-        getAllCommitProjectCommits(token);
+        getAllProjectCommits(token);
     }
 
-    private void getAllCommitProjectCommits(String token) throws IOException, ParseException {
+    private void getAllProjectCommits(String token) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + gitlabProjectId + "/repository/commits" +  "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
