@@ -91,7 +91,7 @@ public class WrapperProject {
             String mergeRequestTitle = jsonPrimitiveTitle.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestUntilDate);
 
-            WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(mergeRequestId,mergeRequestIid,
+            WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, mergeRequestId,mergeRequestIid,
                     mergeRequestProjectId, mergeRequestTitle, mergeDate[0], mergeDate[1], mergeDate[2]);
             mergedMergeRequests.add(mergeRequest);
         }

@@ -24,8 +24,8 @@ public class WrapperMergedMergeRequest {
     private int mergeDay;
     private List<WrapperCommit> mergeRequestCommits = new ArrayList<>();
 
-    public WrapperMergedMergeRequest(int mergeRequestId, int mergeRequestIid, int gitlabProjectId, String mergeRequestTitle,
-                                     int mergeYear, int mergeMonth, int mergeDay){
+    public WrapperMergedMergeRequest(String token, int mergeRequestId, int mergeRequestIid, int gitlabProjectId, String mergeRequestTitle,
+                                     int mergeYear, int mergeMonth, int mergeDay) throws IOException, ParseException {
         this.mergeRequestId = mergeRequestId;
         this.mergeRequestIid = mergeRequestIid;
         this.gitlabProjectId = gitlabProjectId;
@@ -33,10 +33,10 @@ public class WrapperMergedMergeRequest {
         this.mergeYear = mergeYear;
         this.mergeMonth = mergeMonth;
         this.mergeDay = mergeDay;
-        //this.mergeRequestCommits = mergeRequestCommits;
+        getSingleMergedMergeRequestCommits(token, mergeRequestIid);
     }
 
-    public static void getSingleMergedMergeRequestCommits(String token, int mergeIid) throws IOException, ParseException {
+    public void getSingleMergedMergeRequestCommits(String token, int mergeIid) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/commits" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -64,7 +64,9 @@ public class WrapperMergedMergeRequest {
             JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
             String mergeRequestCommitDate = jsonPrimitiveCommitDate.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
-
+            WrapperCommit wrapperCommit = new WrapperCommit(commitId, authorName, authorEmail, title, mergeDate[0],
+                    mergeDate[1], mergeDate[2]);
+            mergeRequestCommits.add(wrapperCommit);
 
         }
 
@@ -88,7 +90,7 @@ public class WrapperMergedMergeRequest {
         return result;
     }
 
-    public static void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
+    public void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
         URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/changes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
