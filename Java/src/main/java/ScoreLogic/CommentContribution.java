@@ -1,4 +1,4 @@
-package main.java.OutputLogic;
+package main.java.ScoreLogic;
 
 import java.time.LocalDate;
 import java.util.List;
