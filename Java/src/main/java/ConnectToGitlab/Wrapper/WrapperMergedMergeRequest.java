@@ -23,6 +23,8 @@ public class WrapperMergedMergeRequest {
     private int mergeMonth;
     private int mergeDay;
     private List<WrapperCommit> mergeRequestCommits = new ArrayList<>();
+    private List<WrapperCommitDiff> wrapperCommitDiffs = new ArrayList<>();
+
 
     public WrapperMergedMergeRequest(String token, int projectId, int mergeRequestId, int mergeRequestIid, int gitlabProjectId, String mergeRequestTitle,
                                      int mergeYear, int mergeMonth, int mergeDay) throws IOException, ParseException {
@@ -34,6 +36,7 @@ public class WrapperMergedMergeRequest {
         this.mergeMonth = mergeMonth;
         this.mergeDay = mergeDay;
         getSingleMergedMergeRequestCommits(token, projectId, mergeRequestIid);
+        getSingleMergedMergeRequestChanges(token, mergeRequestIid);
     }
 
     public void getSingleMergedMergeRequestCommits(String token, int projectId, int mergeIid) throws IOException, ParseException {
@@ -108,12 +111,22 @@ public class WrapperMergedMergeRequest {
         for(int i = 0; i< jsonArrayChanges.size(); i++){
             JsonElement jsonElement1 = jsonArrayChanges.get(i);
             JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
-            JsonPrimitive jsonPrimitiveNewFileName = jsonObject1.getAsJsonPrimitive("new_path");
-            singleMergedMergeDiff.add(jsonPrimitiveNewFileName.getAsString());
-            //System.out.println(jsonPrimitiveNewFileName.getAsString());//file name
-            JsonPrimitive jsonPrimitive = jsonObject1.getAsJsonPrimitive("diff");
-            singleMergedMergeDiff.add(jsonPrimitive.getAsString());//file diff
-            //System.out.println(jsonPrimitive.getAsString());
+            JsonPrimitive jsonPrimitiveNewPath = jsonObject1.getAsJsonPrimitive("new_path");
+            String newPath = jsonPrimitiveNewPath.getAsString();
+            JsonPrimitive jsonPrimitiveOldPath = jsonObject1.getAsJsonPrimitive("old_path");
+            String oldPath = jsonPrimitiveOldPath.getAsString();
+            JsonPrimitive jsonPrimitiveNewFile = jsonObject1.getAsJsonPrimitive("new_file");
+            boolean newFile = jsonPrimitiveNewFile.getAsBoolean();
+            JsonPrimitive jsonPrimitiveRenamedFile = jsonObject1.getAsJsonPrimitive("renamed_file");
+            boolean renamedFile = jsonPrimitiveRenamedFile.getAsBoolean();
+            JsonPrimitive jsonPrimitiveDeletedFile = jsonObject1.getAsJsonPrimitive("deleted_file");
+            boolean deletedFile = jsonPrimitiveDeletedFile.getAsBoolean();
+            JsonPrimitive jsonPrimitiveDiff = jsonObject1.getAsJsonPrimitive("diff");
+            String diff = jsonPrimitiveDiff.getAsString();
+            WrapperCommitDiff wrapperCommitDiff = new WrapperCommitDiff(newPath, oldPath, newFile, renamedFile,
+                    deletedFile, diff);
+
+            wrapperCommitDiffs.add(wrapperCommitDiff);
         }
     }
 
