@@ -1,10 +1,13 @@
-package main.java.OutputData;
+package main.java.OutputLogic;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /*
     This class manages the calculation of comment contribution on code review/issues, by word count and frequency.
-    For now, this class is written by assumption the required data is saved at DB.
+
+    (**For now, this class is written by assumption the required data is saved at DB,
+     but the way to access to DB is not clear yet so consider it as dummy code.)
  */
 public class CommentContribution {
     /*
@@ -15,17 +18,30 @@ public class CommentContribution {
     */
 
     private int authorID;
+    private int numOfComments;
+    private int commentsPerDay;
     private List<String> commentsOnIssue;
     private List<String> commentsOnMergeRequest;
     private int numWordsOfCommentsOnIssue;
     private int numWordsOfCommentsOnMergeRequest;
 
-    //fetch data from db somehow
-    public static void getCommentsFromDB (int authorID) {
+    //fetch the whole data from db somehow
+    public void getCommentsFromDB (int authorID) {
         // this.commentsOnIssue =
         // this.commentsOnMergeRequest =
     }
 
+    //fetch the data for a date range from db somehow
+    //there should be a way to fetch data sorted by date, via some DB configuration
+    public void getCommentsByDateFromDB (int authorID) {
+        // this.commentsOnIssue =
+        // this.commentsOnMergeRequest =
+    }
+
+    public void getFrequencyOfComments(LocalDate startDate, LocalDate endDate) {
+        this.numOfComments = commentsOnIssue.size() + commentsOnMergeRequest.size();
+        //this.commentsPerDay =  numOfComments /  the numberOfDays during the date range
+    }
 
     public void setNumWordsOfComments (int authorID) {
         this.numWordsOfCommentsOnIssue = countWords(commentsOnIssue);
@@ -33,7 +49,7 @@ public class CommentContribution {
     }
 
 
-    public static int countWords (List<String> comments) {
+    public int countWords (List<String> comments) {
         if (comments == null || comments.isEmpty()) {
             return 0;
         }
