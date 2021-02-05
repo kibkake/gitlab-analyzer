@@ -23,11 +23,11 @@ public class WrapperProject {
     public WrapperProject(String token, int gitlabProjectId, String gitlabProjectName) throws IOException, ParseException {
         this.gitlabProjectId = gitlabProjectId;
         this.gitlabProjectName = gitlabProjectName;
-        getMergedMergeRequests(token);
-        getAllProjectCommits(token);
+        getMergedMergeRequests(token,gitlabProjectId);
+        getAllProjectCommits(token, gitlabProjectId);
     }
 
-    private void getAllProjectCommits(String token) throws IOException, ParseException {
+    private void getAllProjectCommits(String token, int projectId) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + gitlabProjectId + "/repository/commits" +  "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -56,13 +56,13 @@ public class WrapperProject {
             int [] parsedCommitDate = parsIsoDate(commitDate);
 
 
-            WrapperCommit commit = new WrapperCommit(commitId, authorName, authorEmail, title, parsedCommitDate[0],
+            WrapperCommit commit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title, parsedCommitDate[0],
                     parsedCommitDate[1],parsedCommitDate[2]);
             allCommits.add(commit);
         }
     }
 
-    private void getMergedMergeRequests(String token) throws IOException, ParseException {
+    private void getMergedMergeRequests(String token, int projectId) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + gitlabProjectId + "/merge_requests?" + "state=merged&" + "access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -91,7 +91,7 @@ public class WrapperProject {
             String mergeRequestTitle = jsonPrimitiveTitle.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestUntilDate);
 
-            WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, mergeRequestId,mergeRequestIid,
+            WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, projectId, mergeRequestId,mergeRequestIid,
                     mergeRequestProjectId, mergeRequestTitle, mergeDate[0], mergeDate[1], mergeDate[2]);
             mergedMergeRequests.add(mergeRequest);
         }

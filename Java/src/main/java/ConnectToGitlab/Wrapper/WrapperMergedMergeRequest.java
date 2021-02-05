@@ -24,7 +24,7 @@ public class WrapperMergedMergeRequest {
     private int mergeDay;
     private List<WrapperCommit> mergeRequestCommits = new ArrayList<>();
 
-    public WrapperMergedMergeRequest(String token, int mergeRequestId, int mergeRequestIid, int gitlabProjectId, String mergeRequestTitle,
+    public WrapperMergedMergeRequest(String token, int projectId, int mergeRequestId, int mergeRequestIid, int gitlabProjectId, String mergeRequestTitle,
                                      int mergeYear, int mergeMonth, int mergeDay) throws IOException, ParseException {
         this.mergeRequestId = mergeRequestId;
         this.mergeRequestIid = mergeRequestIid;
@@ -33,10 +33,10 @@ public class WrapperMergedMergeRequest {
         this.mergeYear = mergeYear;
         this.mergeMonth = mergeMonth;
         this.mergeDay = mergeDay;
-        getSingleMergedMergeRequestCommits(token, mergeRequestIid);
+        getSingleMergedMergeRequestCommits(token, projectId, mergeRequestIid);
     }
 
-    public void getSingleMergedMergeRequestCommits(String token, int mergeIid) throws IOException, ParseException {
+    public void getSingleMergedMergeRequestCommits(String token, int projectId, int mergeIid) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/commits" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -64,7 +64,7 @@ public class WrapperMergedMergeRequest {
             JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
             String mergeRequestCommitDate = jsonPrimitiveCommitDate.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
-            WrapperCommit wrapperCommit = new WrapperCommit(commitId, authorName, authorEmail, title, mergeDate[0],
+            WrapperCommit wrapperCommit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title, mergeDate[0],
                     mergeDate[1], mergeDate[2]);
             mergeRequestCommits.add(wrapperCommit);
 

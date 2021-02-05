@@ -20,10 +20,12 @@ public class WrapperCommit {
     private int commitYear;
     private int commitMonth;
     private int commitDay;
+    private double commitScore = 0.0;
     private List<WrapperCommitDiff> wrapperCommitDiffs = new ArrayList<>();
 
 
-    public WrapperCommit(String id, String authorName, String authorEmail, String title, int commitYear, int commitMonth, int commitDay) {
+    public WrapperCommit(String token, int projectId, String id, String authorName, String authorEmail, String title,
+                         int commitYear, int commitMonth, int commitDay) throws IOException {
         this.id = id;
         this.authorName = authorName;
         this.authorEmail = authorEmail;
@@ -31,6 +33,8 @@ public class WrapperCommit {
         this.commitYear = commitYear;
         this.commitMonth = commitMonth;
         this.commitDay = commitDay;
+        getSingleCommitDiffs(token, projectId, id);
+        calculateCommitScore();
     }
 
     public void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
@@ -64,6 +68,12 @@ public class WrapperCommit {
             WrapperCommitDiff wrapperCommitDiff = new WrapperCommitDiff(newPath, oldPath, newFile, renamedFile,
                     deletedFile, diff);
             wrapperCommitDiffs.add(wrapperCommitDiff);
+        }
+    }
+
+    public void calculateCommitScore(){
+        for(int i = 0; i < wrapperCommitDiffs.size(); i++){
+            commitScore += wrapperCommitDiffs.get(i).getScore();
         }
     }
 
