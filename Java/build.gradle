@@ -26,6 +26,11 @@ dependencies {
     implementation 'junit:junit:4.12'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+}
+
+processResources {
+    expand(project.properties)
 }
 
 apply plugin : "java"
