@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.lang.IllegalArgumentException;
 import java.util.Arrays;
 import java.io.PrintWriter;
 import java.util.List;
@@ -46,12 +47,18 @@ public class Main {
         }
         SpringApplication.run(Main.class,args);
 
-        // test for database functions
-        System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
+        try {
 
-        // DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 10, 15), 6);
-        System.out.println(DatabaseFunctions.numCommits("Bob", LocalDate.of(2020,1,1),
-                                                        LocalDate.of(2021,1,2)));
+            // test for database functions
+            System.out.println("\n\n" + DatabaseFunctions.retrieveUserToken("test") + "\n\n");
+
+            // DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 10, 15), 6);
+            System.out.println(DatabaseFunctions.numCommits("Bob", LocalDate.of(2020, 1, 1),
+                    LocalDate.of(2021, 1, 2)));
+        }
+        catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
+        }
     }
 
     /**

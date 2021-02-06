@@ -17,6 +17,8 @@ import static com.mongodb.client.model.Updates.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import java.lang.IllegalArgumentException;
+
 import main.java.Functions.LocalDateFunctions;
 
 /*
@@ -156,9 +158,14 @@ public class DatabaseFunctions {
      *
      * @param username Specifies the username attribute of the new/updated document.
      * @param date Specifies the date we're looking for. Is broken up into year, month, day.
-     * @param numCommits Specifies the number of commits (an int value) to store.
+     * @param numCommits Specifies the number of commits (an int value) to store. If it is
+     *                   a negative value, the function throws an Exception.
      */
-    public static void setNumCommits(String username, LocalDate date, int numCommits) {
+    public static void setNumCommits(String username, LocalDate date, int numCommits) throws IllegalArgumentException {
+        if (numCommits < 0) {
+            throw new IllegalArgumentException("numCommits param is negative in the setNumCommits() function");
+        }
+
         try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
             MongoCollection<Document> userCollection = gitlabDB.getCollection("commits");
