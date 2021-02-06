@@ -17,17 +17,46 @@ public class ConnectToGitlab {
 
     public static void connectGitlab(String token) throws IOException, ParseException {
 
-        GitlabWrapper.getListOfMembershipProjects(token);
-        GitlabWrapper.getMergedMergeRequests(token, 6);
-        GitlabWrapper.getSingleMergedMergeRequestCommits(token, 2);
-        GitlabWrapper.getSingleMergedMergeRequestChanges(token, 2);
-        GitlabWrapper.getSingleCommitDiffs(token, 6, "39979003d3aeb6aa8fd832d7a89e34d5272e4e3a");
-        GitlabWrapper.getAllProjectIssues(token, 6);
-        GitlabWrapper.getAllCommitBetweenDates("cFzzy7QFRvHzfHGpgrr1", 6);
-        GitlabWrapper.getMergedMergeRequestsBetweenDates(token, 6);
-        /*WrapperProject project = new WrapperProject(token, 6, "Testproject2");
-        System.out.println(project.getMergedMergeRequests().size());
-        System.out.println(project.getMergedMergeRequests().get(1).getMergeRequestId());*/
+        WrapperProject project = new WrapperProject(token, 6, "Testproject2");
+        System.out.println("project name: " + project.getGitlabProjectName());
+        System.out.println("project id: " + project.getGitlabProjectId());
+        System.out.println("number of merged merge requests: " + project.getMergedMergeRequests().size());
+        for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
+            System.out.println("score for merged merge request " + (project.getMergedMergeRequests().size()-i) +": " + project.getMergedMergeRequests().get(i).getMergeScore());
+        }
+        for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
+            for(int j = 0; j <  project.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
+                System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getTitle());
+                System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName());
+                System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitScore());
+                for(int k = 0; k < project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getWrapperCommitDiffs().size(); k++){
+                    //System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getWrapperCommitDiffs().get(k).getNewPath());
+                    //System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getWrapperCommitDiffs().get(k).getDiff());
+
+                }
+                System.out.println();
+                System.out.println();
+            }
+        }
+
+//get a user's merge requests
+        List<WrapperMergedMergeRequest> wrapperMergedMergeRequests = new ArrayList<>();
+        for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
+            boolean isUserPartOfMerge = false;
+            for(int j = 0; j <  project.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
+                if(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName().equals("user2")){
+                    isUserPartOfMerge = true;
+                }
+            }
+            if(isUserPartOfMerge){
+                wrapperMergedMergeRequests.add(project.getMergedMergeRequests().get(i));
+            }
+        }
+        for (int i = 0; i < wrapperMergedMergeRequests.size(); i++){
+            System.out.println(wrapperMergedMergeRequests.get(i).getMergeRequestTitle());
+        }
+
+
 
 
 
