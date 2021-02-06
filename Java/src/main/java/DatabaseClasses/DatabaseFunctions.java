@@ -15,8 +15,23 @@ import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import main.java.Functions.LocalDateFunctions;
+
+/*
+References:
+
+- https://www.tutorialspoint.com/how-to-delete-a-mongodb-document-using-java
+  This page and the other tabs under "Related Questions and Answers" provided a useful reference
+  for using MongoDB functions in Java.
+
+- https://mongodb.github.io/mongo-java-driver/3.11/javadoc/org/bson/Document.html
+  Provided documentation for using org.bson.Document.
+
+- https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html
+  Documentation on the LocalDate class and its functions.
+*/
 
 /**
  * This class has functions for interacting with the MongoDB.
@@ -116,7 +131,18 @@ public class DatabaseFunctions {
                user and that date, adding the # commits to the sum? */
 
             for (LocalDate currentDate : datesToExamine) {
+                Document user = usersCollection.find(and(
+                        eq("username", username),
+                        eq("year", currentDate.getYear()),
+                        eq("month", currentDate.getMonthValue()),
+                        eq("day", currentDate.getDayOfMonth())))
+                        .projection(Projections.fields(Projections.include("num_commits")))
+                        .first();
 
+                if (user != null) {
+                    int numCommits = user.getInteger("num_commits").intValue();
+                    numTotalCommits += numCommits;
+                }
             }
 
             return numTotalCommits;

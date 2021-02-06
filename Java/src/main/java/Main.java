@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.io.PrintWriter;
 import java.util.List;
+import java.time.LocalDate;
 
 /**
  * The main application that invokes SpringBoot's bootRun
@@ -47,6 +48,10 @@ public class Main {
 
         // test for database functions
         System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
+
+        // DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 10, 15), 6);
+        System.out.println(DatabaseFunctions.numCommits("Bob", LocalDate.of(2020,1,1),
+                                                        LocalDate.of(2021,1,2)));
     }
 
     /**
