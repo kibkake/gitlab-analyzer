@@ -51,7 +51,6 @@ public class GitlabWrapper {
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
         //System.out.println(reply);
         connection.disconnect();
-
     }
 
     public static void getMergedMergeRequests(String token, int projectId) throws IOException {

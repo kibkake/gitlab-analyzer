@@ -15,29 +15,29 @@ import java.util.*;
 public class WrapperMergedMergeRequest {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    private int mergeRequestId;
-    private int mergeRequestIid;
-    private int gitlabProjectId;
-    private String mergeRequestTitle;
-    private int mergeYear;
-    private int mergeMonth;
-    private int mergeDay;
-    private double mergeScore = 0.0;
-    private List<WrapperCommit> mergeRequestCommits = new ArrayList<>();
-    private List<WrapperCommitDiff> wrapperCommitDiffs = new ArrayList<>();
+    private final int MERGE_REQUEST_ID;
+    private final int MERGE_REQUEST_IID;
+    private final int PROJECT_ID;
+    private final String MERGE_REQUEST_TITLE;
+    private final int MERGE_YEAR;
+    private final int MERGE_MONTH;
+    private final int MERGE_DAY;
+    private double MERGE_SCORE = 0.0;
+    private final List<WrapperCommit> MERGE_REQUEST_COMMITS = new ArrayList<>();
+    private final List<WrapperCommitDiff> MERGE_DIFFS = new ArrayList<>();
 
 
     public WrapperMergedMergeRequest(String token, int projectId, int mergeRequestId, int mergeRequestIid, int gitlabProjectId, String mergeRequestTitle,
                                      int mergeYear, int mergeMonth, int mergeDay) throws IOException, ParseException {
-        this.mergeRequestId = mergeRequestId;
-        this.mergeRequestIid = mergeRequestIid;
-        this.gitlabProjectId = gitlabProjectId;
-        this.mergeRequestTitle = mergeRequestTitle;
-        this.mergeYear = mergeYear;
-        this.mergeMonth = mergeMonth;
-        this.mergeDay = mergeDay;
-        getSingleMergedMergeRequestCommits(token, projectId, mergeRequestIid);
-        getSingleMergedMergeRequestChanges(token, mergeRequestIid);
+        this.MERGE_REQUEST_ID = mergeRequestId;
+        this.MERGE_REQUEST_IID = mergeRequestIid;
+        this.PROJECT_ID = gitlabProjectId;
+        this.MERGE_REQUEST_TITLE = mergeRequestTitle;
+        this.MERGE_YEAR = mergeYear;
+        this.MERGE_MONTH = mergeMonth;
+        this.MERGE_DAY = mergeDay;
+        getSingleMergedMergeRequestCommits(token, projectId, MERGE_REQUEST_IID);
+        getSingleMergedMergeRequestChanges(token, MERGE_REQUEST_IID);
         calculateCommitScore();
     }
 
@@ -71,7 +71,7 @@ public class WrapperMergedMergeRequest {
             int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
             WrapperCommit wrapperCommit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title, mergeDate[0],
                     mergeDate[1], mergeDate[2]);
-            mergeRequestCommits.add(wrapperCommit);
+            MERGE_REQUEST_COMMITS.add(wrapperCommit);
 
         }
     }
@@ -79,17 +79,16 @@ public class WrapperMergedMergeRequest {
     public static int[] parsIsoDate(String isoDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
-        //Date result1 = df1.parse("2024-01-24T23:55:59.000+00:00");
-        Date result1 = df1.parse(isoDate);
-        //System.out.println(result1);
 
+        Date result1 = df1.parse(isoDate);
         Calendar cal = Calendar.getInstance();
         cal.setTime(result1);
-        int [] result = new int[3];
 
+        int [] result = new int[3];
         result[0] = cal.get(Calendar.YEAR);
         result[1] = (cal.get(Calendar.MONTH)+1);
         result[2] = cal.get(Calendar.DATE);
+
         return result;
     }
 
@@ -103,6 +102,7 @@ public class WrapperMergedMergeRequest {
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
         //System.out.println(reply);
         connection.disconnect();
+
         List<String> singleMergedMergeDiff = new ArrayList<>();
         Gson gson = new Gson();
         JsonElement jsonElement = gson.fromJson(reply, JsonElement.class);
@@ -126,15 +126,15 @@ public class WrapperMergedMergeRequest {
             WrapperCommitDiff wrapperCommitDiff = new WrapperCommitDiff(newPath, oldPath, newFile, renamedFile,
                     deletedFile, diff);
 
-            wrapperCommitDiffs.add(wrapperCommitDiff);
+            MERGE_DIFFS.add(wrapperCommitDiff);
         }
     }
 
     public void calculateCommitScore(){
-        for(int i = 0; i < wrapperCommitDiffs.size(); i++){
-            mergeScore += wrapperCommitDiffs.get(i).getScore();
+        for(int i = 0; i < MERGE_DIFFS.size(); i++){
+            MERGE_SCORE += MERGE_DIFFS.get(i).getScore();
         }
-        mergeScore = Math.round(mergeScore * 100.0) / 100.0;
+        MERGE_SCORE = Math.round(MERGE_SCORE * 100.0) / 100.0;
     }
 
     public static HttpURLConnection makeConnection(URL url) throws IOException {
@@ -143,38 +143,38 @@ public class WrapperMergedMergeRequest {
     }
 
     public int getMergeRequestId() {
-        return mergeRequestId;
+        return MERGE_REQUEST_ID;
     }
 
     public int getMergeRequestIid() {
-        return mergeRequestIid;
+        return MERGE_REQUEST_IID;
     }
 
-    public int getGitlabProjectId() {
-        return gitlabProjectId;
+    public int getProjectId() {
+        return PROJECT_ID;
     }
 
     public String getMergeRequestTitle() {
-        return mergeRequestTitle;
+        return MERGE_REQUEST_TITLE;
     }
 
     public int getMergeYear() {
-        return mergeYear;
+        return MERGE_YEAR;
     }
 
     public int getMergeMonth() {
-        return mergeMonth;
+        return MERGE_MONTH;
     }
 
     public int getMergeDay() {
-        return mergeDay;
+        return MERGE_DAY;
     }
 
     public double getMergeScore() {
-        return mergeScore;
+        return MERGE_SCORE;
     }
 
     public List<WrapperCommit> getMergeRequestCommits() {
-        return mergeRequestCommits;
+        return MERGE_REQUEST_COMMITS;
     }
 }

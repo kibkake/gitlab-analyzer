@@ -7,7 +7,7 @@ import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.*;
 import org.gitlab.api.models.GitlabMergeRequest;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -17,14 +17,16 @@ public class ConnectToGitlab {
 
     public static void connectGitlab(String token) throws IOException, ParseException {
 
+        testWrapperMethods(token);
+    }
+
+    public static void testWrapperMethods(String token) throws IOException, ParseException {
         WrapperProject project = new WrapperProject(token, 6, "Testproject2");
         System.out.println("project name: " + project.getGitlabProjectName());
         System.out.println("project id: " + project.getGitlabProjectId());
-        System.out.println("number of merged merge requests: " + project.getMergedMergeRequests().size());
         for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
-            System.out.println("score for merged merge request " + (project.getMergedMergeRequests().size()-i) +": " + project.getMergedMergeRequests().get(i).getMergeScore());
-        }
-        for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
+            System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestTitle() + ": " + project.getMergedMergeRequests().get(i).getMergeScore());
+            System.out.println();
             for(int j = 0; j <  project.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
                 System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getTitle());
                 System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName());
@@ -41,10 +43,12 @@ public class ConnectToGitlab {
 
 //get a user's merge requests
         List<WrapperMergedMergeRequest> wrapperMergedMergeRequests = new ArrayList<>();
+        double userCommitsScore = 0.00;
         for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
             boolean isUserPartOfMerge = false;
             for(int j = 0; j <  project.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
-                if(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName().equals("user2")){
+                if(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName().equals("arahilin")){
+                    userCommitsScore += project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitScore();
                     isUserPartOfMerge = true;
                 }
             }
@@ -52,17 +56,17 @@ public class ConnectToGitlab {
                 wrapperMergedMergeRequests.add(project.getMergedMergeRequests().get(i));
             }
         }
+        System.out.println(userCommitsScore);
+
         for (int i = 0; i < wrapperMergedMergeRequests.size(); i++){
-            System.out.println(wrapperMergedMergeRequests.get(i).getMergeRequestTitle());
+            //System.out.println(wrapperMergedMergeRequests.get(i).getMergeRequestTitle());
         }
-
-
-
 
 
     }
 
-    public static void testGitMethods(String token) throws IOException {
+
+        public static void testGitMethods(String token) throws IOException {
 
         //calls for older wrapper class---------------
         GitlabAPI api = makeConnectionToGitlab(token);
