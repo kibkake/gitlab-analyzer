@@ -16,6 +16,8 @@ import static com.mongodb.client.model.Updates.*;
 
 import java.time.LocalDate;
 
+import main.java.Functions.LocalDateFunctions;
+
 /**
  * This class has functions for interacting with the MongoDB.
  * The code in each function will search the DB (or modify it).
@@ -93,18 +95,32 @@ public class DatabaseFunctions {
         }
     }
 
+    /**
+     * This function searches for all documents in the commits collection storing username,
+     * and a date between startDate and endDate.
+     * @param username is the username.
+     * @param startDate The minimum date attribute for documents we're searching for.
+     * @param endDate The maximum date attribute for documents.
+     * @return The total number of commits between startDate and endDate.
+     */
     public static int numCommits(String username, LocalDate startDate, LocalDate endDate) {
-        /* Find the number of commits made by the user, from the start date to
-           the end date. */
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> usersCollection = gitlabDB.getCollection("commits");
 
-        int numTotalCommits = 0;
+            int numTotalCommits = 0;
 
-        // ArrayList<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
+            List<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
 
-        /* Run through all dates in this list. For each of them, search the DB for that
-           user and that date, adding the # commits to the sum? */
+            /* Run through all dates in this list. For each of them, search the DB for that
+               user and that date, adding the # commits to the sum? */
 
-        return numTotalCommits;
+            for (LocalDate currentDate : datesToExamine) {
+
+            }
+
+            return numTotalCommits;
+        }
     }
 
     /**
