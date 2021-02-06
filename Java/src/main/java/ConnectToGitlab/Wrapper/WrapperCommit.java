@@ -75,6 +75,8 @@ public class WrapperCommit {
         for(int i = 0; i < wrapperCommitDiffs.size(); i++){
             commitScore += wrapperCommitDiffs.get(i).getScore();
         }
+        commitScore = Math.round(commitScore * 100.0) / 100.0;
+
     }
 
     public static HttpURLConnection makeConnection(URL url) throws IOException {
@@ -104,6 +106,10 @@ public class WrapperCommit {
 
     public int getCommitMonth() {
         return commitMonth;
+    }
+
+    public double getCommitScore() {
+        return commitScore;
     }
 
     public int getCommitDay() {

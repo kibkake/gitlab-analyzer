@@ -24,7 +24,6 @@ public class WrapperCommitDiff {
         score = calculateCommitScoreSingleDiff(diff);
     }
 
-    //Calculates a single commit diffs score
     public double calculateCommitScoreSingleDiff(String diff){
         double score = 0.0;
         for(int j = 0; j < diff.length(); j++){

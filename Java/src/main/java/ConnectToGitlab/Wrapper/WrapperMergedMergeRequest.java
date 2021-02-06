@@ -22,6 +22,7 @@ public class WrapperMergedMergeRequest {
     private int mergeYear;
     private int mergeMonth;
     private int mergeDay;
+    private double mergeScore = 0.0;
     private List<WrapperCommit> mergeRequestCommits = new ArrayList<>();
     private List<WrapperCommitDiff> wrapperCommitDiffs = new ArrayList<>();
 
@@ -37,6 +38,7 @@ public class WrapperMergedMergeRequest {
         this.mergeDay = mergeDay;
         getSingleMergedMergeRequestCommits(token, projectId, mergeRequestIid);
         getSingleMergedMergeRequestChanges(token, mergeRequestIid);
+        calculateCommitScore();
     }
 
     public void getSingleMergedMergeRequestCommits(String token, int projectId, int mergeIid) throws IOException, ParseException {
@@ -72,8 +74,6 @@ public class WrapperMergedMergeRequest {
             mergeRequestCommits.add(wrapperCommit);
 
         }
-
-
     }
 
     public static int[] parsIsoDate(String isoDate) throws ParseException {
@@ -130,6 +130,13 @@ public class WrapperMergedMergeRequest {
         }
     }
 
+    public void calculateCommitScore(){
+        for(int i = 0; i < wrapperCommitDiffs.size(); i++){
+            mergeScore += wrapperCommitDiffs.get(i).getScore();
+        }
+        mergeScore = Math.round(mergeScore * 100.0) / 100.0;
+    }
+
     public static HttpURLConnection makeConnection(URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         return connection;
@@ -161,6 +168,10 @@ public class WrapperMergedMergeRequest {
 
     public int getMergeDay() {
         return mergeDay;
+    }
+
+    public double getMergeScore() {
+        return mergeScore;
     }
 
     public List<WrapperCommit> getMergeRequestCommits() {

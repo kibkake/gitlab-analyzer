@@ -1,5 +1,6 @@
 package main.java.ConnectToGitlab;
 
+import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
 import main.java.ConnectToGitlab.Wrapper.WrapperProject;
 import org.gitlab.api.AuthMethod;
 import org.gitlab.api.GitlabAPI;
@@ -28,10 +29,11 @@ public class ConnectToGitlab {
         System.out.println(project.getMergedMergeRequests().size());
         System.out.println(project.getMergedMergeRequests().get(1).getMergeRequestId());*/
 
-        //testGitMethods(token);
+
+
     }
 
-    public static void testGitMethods(String token) throws IOException, ParseException {
+    public static void testGitMethods(String token) throws IOException {
 
         //calls for older wrapper class---------------
         GitlabAPI api = makeConnectionToGitlab(token);
