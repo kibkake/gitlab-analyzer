@@ -1,5 +1,6 @@
 package main.java;
 
+import DatabaseClasses.repository.ProjectRepository;
 import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Commit.CommitController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
@@ -10,6 +11,7 @@ import main.java.ConnectToGitlab.Project.ProjectController;
 import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.DatabaseFunctions;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
@@ -27,6 +29,9 @@ import java.util.List;
  */
 @SpringBootApplication
 public class Main {
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     /**
      * This is the main method for running Spring Boot
@@ -49,30 +54,11 @@ public class Main {
         System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
     }
 
-    /**
-     * The following method is provided from spring.io and only prints information about beans created by our application
-     *
-     * @see  <a href="https://spring.io/guides/gs/spring-boot/">Spring IO</a>
-     */
-    @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
+    @Override
+    public void run(String... args) throws Exception {
+        projectRepository.save(GitLabClient.getProjects());
 
-            System.out.print("Exporting Beans to Log file...");
-            PrintWriter writer = new PrintWriter("log.txt");
-
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            Arrays.sort(beanNames);
-            for (String beanName : beanNames) {
-                writer.write(beanName);
-            }
-            writer.flush();
-            writer.close();
-
-            System.out.println("done");
-
-            // indicate running status
-            System.out.println("Server broadcasting on localhost:8080");
-        };
+        // This is for checking in the console if the data from api was saved properly in MongoDBConfig class
+        System.out.println(projectRepository.findAll());
     }
 }

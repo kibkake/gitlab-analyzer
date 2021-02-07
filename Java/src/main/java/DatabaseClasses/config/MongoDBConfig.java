@@ -16,12 +16,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackageClasses = ProjectRepository.class)
 @Configuration
 @RequiredArgsConstructor
-public class MultipleMongoDBConfig {
-
-    private static final Log log = LogFactory.getLog(MultipleMongoDBConfig.class);
-
-    private final MultipleMongoProperties mongoProperties;
-
+public class MongoDBConfig {
 
     @Bean
     CommandLineRunner commandLineRunner(ProjectRepository projectRepository) {
