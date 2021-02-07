@@ -1,5 +1,7 @@
 package main.java.DatabaseClasses;
 
+import main.java.Security.Authenticator;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -27,13 +29,19 @@ public class DatabaseFunctions {
 
     private static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
 
-    public static boolean isUserAuthenticated(/* args? */) {
-        /* This function gets the user to enter some kind of password, and checks
-           somewhere in the DB that this password is correct. Then, they get access
-           to their token (which is also stored in the DB). */
-
-        return false; // Placeholder
+    public static boolean isUserAuthenticated(String username, String password) {
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
+            Document user = usersCollection.find(eq("username", username))
+                    .projection(Projections.fields(Projections.include("password"), Projections.excludeId()))
+                    .first();
+            String pass = user.getString("password");
+            return Authenticator.encrypt(password).equals(pass);
+        }
     }
+
+
 
     /**
      * Searches the database for the token associated with the given username
