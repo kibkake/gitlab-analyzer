@@ -22,9 +22,11 @@ public class WrapperUser {
             if(!userIsPartOfMerge){
                 userIsPartOfMerge = checkUserHasNoteInMerge(project, i);
             }
+            if(userIsPartOfMerge) {
+                MERGED_MERGE_REQUESTS.add(project.getMergedMergeRequests().get(i));
+            }
         }
-
-
+        removeCommitsFromOtherAuthors();
     }
 
     private boolean checkUserIsPartOfMerge(WrapperProject project, int index) {
@@ -44,6 +46,18 @@ public class WrapperUser {
             }
         }
         return false;
+    }
+
+    private void removeCommitsFromOtherAuthors() {
+        for(int i = 0; i < MERGED_MERGE_REQUESTS.size(); i++) {
+            for(int j = 0; j < MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().size(); j++) {
+                if(!MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().get(j).getAuthorName().equals(NAME)){
+                    MERGED_MERGE_REQUESTS.get(i).removeCommit(j);
+                    j--;
+                }
+            }
+        }
+
     }
 
 
