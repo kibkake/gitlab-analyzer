@@ -29,6 +29,12 @@ public class DatabaseFunctions {
 
     private static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
 
+    /**
+     * checks to see if the user is authenticated by comparing encrypted password strings between the raw and the database one.
+     * @param username the uninque username of the user
+     * @param password the raw password
+     * @return true if encrypted password matches, false otherwise.
+     */
     public static boolean isUserAuthenticated(String username, String password) {
         try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
