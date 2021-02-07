@@ -46,6 +46,38 @@ public class WrapperIssue {
         //System.out.println(reply);
         connection.disconnect();
 
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        for(int i = 0; i < jsonArray.size(); i++) {
+            JsonElement jsonElement = jsonArray.get(i);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveNoteId = jsonObject.getAsJsonPrimitive("id");
+            int noteId = jsonPrimitiveNoteId.getAsInt();
+            JsonPrimitive jsonPrimitiveNoteBody = jsonObject.getAsJsonPrimitive("body");
+            String noteBody = jsonPrimitiveNoteBody.getAsString();
+            JsonObject jsonObjectNoteBody = jsonObject.getAsJsonObject("author");
+            JsonPrimitive jsonPrimitiveNoteAuthorName = jsonObjectNoteBody.getAsJsonPrimitive("name");
+            String authorName = jsonPrimitiveNoteAuthorName.getAsString();
+            JsonPrimitive jsonPrimitiveNoteDate = jsonObject.getAsJsonPrimitive("created_at");
+            String noteDate = jsonPrimitiveNoteDate.getAsString();
+            int [] noteDateParsed = parsIsoDate(noteDate);
+
+        }
+    }
+
+    private static int[] parsIsoDate(String isoDate) throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+
+        Date result1 = df1.parse(isoDate);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result1);
+
+        int [] result = new int[3];
+        result[0] = cal.get(Calendar.YEAR);
+        result[1] = (cal.get(Calendar.MONTH)+1);
+        result[2] = cal.get(Calendar.DATE);
+        return result;
     }
 
     private static HttpURLConnection makeConnection(URL url) throws IOException {
