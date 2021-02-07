@@ -46,16 +46,9 @@ public class Main {
         }
         SpringApplication.run(Main.class,args);
 
-        // test for database functions
-        System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
-
-        // test for password
-        String pKey = Authenticator.encrypt("password");
-        System.out.println("\n\nkey = "+pKey);
-        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("Password")));
-        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("_password")));
-        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("password_")));
-        System.out.println("Expected: true ---> Actual: "+pKey.equals(Authenticator.encrypt("password")));
+        // tests for implemented classes  -- comment out each line for skipping tests
+        testDbFunctions();
+        testAuthenticator();
     }
 
     /**
@@ -83,5 +76,25 @@ public class Main {
             // indicate running status
             System.out.println("Server broadcasting on localhost:8080");
         };
+    }
+
+    /**
+     * test method for convenience of testing DatabaseFunctions class
+     */
+    public static void testDbFunctions(){
+        DatabaseFunctions.addUserToken("test","gklP3oD95mxDs2lFk6Hy4");
+        System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
+    }
+
+    /**
+     * test method for convenience of testing Authenticator class
+     */
+    public static void testAuthenticator(){
+        String pKey = Authenticator.encrypt("password");
+        System.out.println("\n\nkey = "+pKey);
+        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("Password")));
+        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("_password")));
+        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("password_")));
+        System.out.println("Expected: true ---> Actual: "+pKey.equals(Authenticator.encrypt("password")));
     }
 }
