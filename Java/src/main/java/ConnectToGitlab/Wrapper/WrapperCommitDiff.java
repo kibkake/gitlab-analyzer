@@ -20,7 +20,7 @@ public class WrapperCommitDiff {
         SCORE = calculateCommitScoreSingleDiff(diff);
     }
 
-    public double calculateCommitScoreSingleDiff(String diff) {
+    private double calculateCommitScoreSingleDiff(String diff) {
         double score = 0.0;
         for(int j = 0; j < diff.length(); j++){
             if(diff.charAt(j) == '\n' && j < diff.length()-2){

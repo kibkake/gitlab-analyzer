@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WrapperCommit {
 
-    public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
+    private static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
     private final String ID;
     private final String AUTHOR_NAME;
     private final String AUTHOR_EMAIL;
@@ -36,7 +36,7 @@ public class WrapperCommit {
         calculateCommitScore();
     }
 
-    public void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
+    private void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -70,7 +70,7 @@ public class WrapperCommit {
         }
     }
 
-    public void calculateCommitScore(){
+    private void calculateCommitScore(){
         for(int i = 0; i < COMMIT_DIFFS.size(); i++){
             commitScore += COMMIT_DIFFS.get(i).getScore();
         }
@@ -78,7 +78,7 @@ public class WrapperCommit {
 
     }
 
-    public static HttpURLConnection makeConnection(URL url) throws IOException {
+    private static HttpURLConnection makeConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
     }
 

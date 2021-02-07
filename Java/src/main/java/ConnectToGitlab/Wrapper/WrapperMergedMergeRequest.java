@@ -40,7 +40,7 @@ public class WrapperMergedMergeRequest {
         calculateCommitScore();
     }
 
-    public void getSingleMergedMergeRequestCommits(String token) throws IOException, ParseException {
+    private void getSingleMergedMergeRequestCommits(String token) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/commits" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -73,7 +73,7 @@ public class WrapperMergedMergeRequest {
         }
     }
 
-    public static int[] parsIsoDate(String isoDate) throws ParseException {
+    private static int[] parsIsoDate(String isoDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
 
@@ -88,7 +88,7 @@ public class WrapperMergedMergeRequest {
         return result;
     }
 
-    public void getSingleMergedMergeRequestChanges(String token) throws IOException {
+    private void getSingleMergedMergeRequestChanges(String token) throws IOException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/changes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -126,16 +126,15 @@ public class WrapperMergedMergeRequest {
         }
     }
 
-    public void calculateCommitScore() {
+    private void calculateCommitScore() {
         for(int i = 0; i < MERGE_DIFFS.size(); i++){
             MERGE_SCORE += MERGE_DIFFS.get(i).getScore();
         }
         MERGE_SCORE = Math.round(MERGE_SCORE * 100.0) / 100.0;
     }
 
-    public static HttpURLConnection makeConnection(URL url) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        return connection;
+    private static HttpURLConnection makeConnection(URL url) throws IOException {
+        return (HttpURLConnection) url.openConnection();
     }
 
     public int getMergeRequestId() {

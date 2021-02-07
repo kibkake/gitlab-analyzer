@@ -20,15 +20,12 @@ public class ConnectToGitlab {
     }
 
     public static void testWrapperMethods(String token) throws IOException, ParseException {
-        WrapperProject project = new WrapperProject(token, 6, "Testproject2");
+        WrapperProject project = new WrapperProject(token, 6);
         System.out.println("project name: " + project.getGitlabProjectName());
         System.out.println("project id: " + project.getGitlabProjectId());
         for (int i = 0; i < project.getAllCommits().size(); i++){
-            System.out.println(
-                    project.getAllCommits().get(i).getTitle()
-            );
+            System.out.println(project.getAllCommits().get(i).getTitle());
         }
-
 
         for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
         System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestTitle() + ": " + project.getMergedMergeRequests().get(i).getMergeScore());
@@ -64,13 +61,18 @@ public class ConnectToGitlab {
         }
         System.out.println(userCommitsScore);
 
+        System.out.println(project.getAllIssues().size());
+
+
+        for (int i = 0; i < project.getAllIssues().size(); i++){
+            System.out.println(project.getAllIssues().get(i).getTitle());
+            System.out.println(project.getAllIssues().get(i).getAuthorName());
+        }
+
         for (int i = 0; i < wrapperMergedMergeRequests.size(); i++){
             //System.out.println(wrapperMergedMergeRequests.get(i).getMergeRequestTitle());
         }
-
-
     }
-
 
     public static void testGitMethods(String token) throws IOException {
 
