@@ -20,6 +20,10 @@ public class ConnectToGitlab {
         Gson gson = new Gson();
         String jsonInString = gson.toJson(project);
         System.out.println(jsonInString);
+        String jsonInString2 = gson.toJson(project.getMergedMergeRequests().get(0));
+        System.out.println(jsonInString2);
+
+
     }
 
     public static void testWrapperMethods(String token, WrapperProject project) throws IOException, ParseException {
