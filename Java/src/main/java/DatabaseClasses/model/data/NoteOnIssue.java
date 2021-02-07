@@ -15,4 +15,20 @@ public class NoteOnIssue {
         this.created_at = created_at;
         this.body = body;
     }
+
+    public void setNoteOnIssueId(int noteOnIssueId) {
+        this.noteOnIssueId = noteOnIssueId;
+    }
+
+    public void setAuthor_userName(String author_userName) {
+        this.author_userName = author_userName;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
 }

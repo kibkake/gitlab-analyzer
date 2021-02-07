@@ -10,4 +10,16 @@ public class CommitStat {
         this.deletions = deletions;
         this.total = total;
     }
+
+    public void setAdditions(int additions) {
+        this.additions = additions;
+    }
+
+    public void setDeletions(int deletions) {
+        this.deletions = deletions;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
 }

@@ -14,4 +14,15 @@ public class Issue {
         this.noteOnIssueList = noteOnIssueList;
     }
 
+    public void setIssueId(int issueId) {
+        this.issueId = issueId;
+    }
+
+    public void setOpened(boolean opened) {
+        isOpened = opened;
+    }
+
+    public void setNoteOnIssueList(List<NoteOnIssue> noteOnIssueList) {
+        this.noteOnIssueList = noteOnIssueList;
+    }
 }

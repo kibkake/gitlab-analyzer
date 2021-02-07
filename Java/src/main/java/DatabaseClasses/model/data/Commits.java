@@ -18,4 +18,24 @@ public class Commits {
         this.commitStats = commitStats;
         this.created_at = created_at;
     }
+
+    public void setCommitShortId(String commitShortId) {
+        this.commitShortId = commitShortId;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCommitStats(List<CommitStat> commitStats) {
+        this.commitStats = commitStats;
+    }
+
+    public void setCreated_at(int created_at) {
+        this.created_at = created_at;
+    }
 }

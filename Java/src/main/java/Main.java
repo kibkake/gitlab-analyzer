@@ -1,7 +1,7 @@
 package main.java;
 
 import DatabaseClasses.model.Projects;
-import DatabaseClasses.repository.ProjectRepository;
+import DatabaseClasses.repository.ProjectsRepository;
 import main.java.ConnectToGitlab.ConnectToGitlab;
 import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.DatabaseFunctions;
@@ -10,7 +10,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -20,12 +19,9 @@ import java.text.ParseException;
 /**
  * The main application that invokes SpringBoot's bootRun
  */
-//@EnableMongoRepositories(basePackageClasses = ProjectRepository.class)
 @SpringBootApplication
 public class Main implements CommandLineRunner {
 
-//    @Autowired
-//    ProjectRepository projectRepository;
     /**
      * This is the main method for running Spring Boot
      *
@@ -50,12 +46,8 @@ public class Main implements CommandLineRunner {
         // test for database functions
         System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
 
-//        projectRepository.save(new Projects(1, "Laine", "0206"));
-
-        // This is for checking in the console if the data from api was saved properly in MongoDBConfig class
         System.out.println("test");
     }
-
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {

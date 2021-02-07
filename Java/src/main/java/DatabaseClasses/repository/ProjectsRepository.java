@@ -11,7 +11,9 @@ import java.util.List;
  * without implementing these methods, in addition to our own defined methods
  */
 
-public interface ProjectRepository extends MongoRepository<Projects, Integer> {
+public interface ProjectsRepository extends MongoRepository<Projects, Integer> {
+
     List<Projects> findByIdContaining(int id);
-    List<Projects> findByName(String name);
+    List<Projects> findByName(String projectName);
+
 }
