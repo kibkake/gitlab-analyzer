@@ -18,20 +18,13 @@ public class ConnectToGitlab {
     public static void connectGitlab(String token) throws IOException, ParseException {
         WrapperProject project = new WrapperProject(token, 6);
         Gson gson = new Gson();
-        String jsonInString = gson.toJson(project);
-        System.out.println(jsonInString);
-        String jsonInString2 = gson.toJson(project.getMergedMergeRequests().get(0));
-        System.out.println(jsonInString2);
-
-
+        String jsonString = gson.toJson(project);
+        System.out.println(jsonString);
     }
 
     public static void testWrapperMethods(String token, WrapperProject project) throws IOException, ParseException {
         System.out.println("project name: " + project.getGitlabProjectName());
         System.out.println("project id: " + project.getGitlabProjectId());
-        for (int i = 0; i < project.getAllCommits().size(); i++){
-            System.out.println(project.getAllCommits().get(i).getTitle());
-        }
 
         for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
         System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestTitle() + ": " + project.getMergedMergeRequests().get(i).getMergeScore());

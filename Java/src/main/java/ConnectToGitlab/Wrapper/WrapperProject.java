@@ -17,14 +17,14 @@ public class WrapperProject {
     private final int PROJECT_ID;
     private final String PROJECT_NAME;
     private final List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS = new ArrayList<>();
-    private final List<WrapperCommit> ALL_COMMITS = new ArrayList<>();
+    //private final List<WrapperCommit> ALL_COMMITS = new ArrayList<>();
     private final List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
 
     public WrapperProject(String token, int gitlabProjectId) throws IOException, ParseException {
         this.PROJECT_ID = gitlabProjectId;
         this.PROJECT_NAME = getProjectName(token);
         getMergedMergeRequests(token,gitlabProjectId);
-        getAllProjectCommits(token, gitlabProjectId);
+        //getAllProjectCommits(token, gitlabProjectId);
         getAllProjectIssues(token);
     }
 
@@ -76,7 +76,7 @@ public class WrapperProject {
 
             WrapperCommit commit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title, parsedCommitDate[0],
                     parsedCommitDate[1],parsedCommitDate[2]);
-            ALL_COMMITS.add(commit);
+            //ALL_COMMITS.add(commit);
         }
     }
 
@@ -184,9 +184,9 @@ public class WrapperProject {
         return MERGED_MERGE_REQUESTS;
     }
 
-    public List<WrapperCommit> getAllCommits() {
+    /*public List<WrapperCommit> getAllCommits() {
         return ALL_COMMITS;
-    }
+    }*/
 
     public List<WrapperIssue> getAllIssues() {
         return ALL_ISSUES;

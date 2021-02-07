@@ -24,6 +24,7 @@ public class WrapperMergedMergeRequest {
     private double MERGE_SCORE = 0.0;
     private final List<WrapperCommit> MERGE_REQUEST_COMMITS = new ArrayList<>();
     private final List<WrapperCommitDiff> MERGE_DIFFS = new ArrayList<>();
+    private final List<WrapperNote> NOTES = new ArrayList<>();
 
     public WrapperMergedMergeRequest(String token, int mergeRequestId, int mergeRequestIid,
                                      int gitlabProjectId, String mergeRequestTitle, int mergeYear, int mergeMonth,
@@ -70,6 +71,39 @@ public class WrapperMergedMergeRequest {
             WrapperCommit wrapperCommit = new WrapperCommit(token, PROJECT_ID, commitId, authorName, authorEmail, title, mergeDate[0],
                     mergeDate[1], mergeDate[2]);
             MERGE_REQUEST_COMMITS.add(wrapperCommit);
+        }
+    }
+
+    private void getMergeNotes(String token) throws IOException, ParseException {
+        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/notes" + "?access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+        //System.out.println(reply);
+        connection.disconnect();
+
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        for(int i = 0; i < jsonArray.size(); i++) {
+            JsonElement jsonElement = jsonArray.get(i);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveNoteId = jsonObject.getAsJsonPrimitive("id");
+            int noteId = jsonPrimitiveNoteId.getAsInt();
+            JsonPrimitive jsonPrimitiveNoteBody = jsonObject.getAsJsonPrimitive("body");
+            String noteBody = jsonPrimitiveNoteBody.getAsString();
+            JsonObject jsonObjectNoteBody = jsonObject.getAsJsonObject("author");
+            JsonPrimitive jsonPrimitiveNoteAuthorName = jsonObjectNoteBody.getAsJsonPrimitive("name");
+            String authorName = jsonPrimitiveNoteAuthorName.getAsString();
+            JsonPrimitive jsonPrimitiveNoteDate = jsonObject.getAsJsonPrimitive("created_at");
+            String noteDate = jsonPrimitiveNoteDate.getAsString();
+            int[] noteDateParsed = parsIsoDate(noteDate);
+
+        WrapperNote wrapperNote = new WrapperNote(noteId, noteBody, authorName, noteDateParsed[0], noteDateParsed[1],
+                noteDateParsed[2]);
+        NOTES.add(wrapperNote);
         }
     }
 
@@ -171,5 +205,9 @@ public class WrapperMergedMergeRequest {
 
     public List<WrapperCommit> getMergeRequestCommits() {
         return MERGE_REQUEST_COMMITS;
+    }
+
+    public List<WrapperNote> getNotes() {
+        return NOTES;
     }
 }
