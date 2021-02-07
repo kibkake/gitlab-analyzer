@@ -73,7 +73,7 @@ public class WrapperMergedMergeRequest {
         }
     }
 
-    private static int[] parsIsoDate(String isoDate) throws ParseException {
+    private int[] parsIsoDate(String isoDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
 

@@ -115,22 +115,8 @@ public class WrapperProject {
         }
     }
 
-    private int[] parsIsoDate(String isoDate) throws ParseException {
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
-        df1.setTimeZone(TimeZone.getTimeZone("PT"));
-        Date result1 = df1.parse(isoDate);
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(result1);
-        int [] result = new int[3];
-
-        result[0] = cal.get(Calendar.YEAR);
-        result[1] = (cal.get(Calendar.MONTH)+1);
-        result[2] = cal.get(Calendar.DATE);
-        return result;
-    }
-
-    private void getAllProjectIssues(String token) throws IOException {
+    private void getAllProjectIssues(String token) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/issues" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -156,10 +142,30 @@ public class WrapperProject {
             JsonObject jsonObjectAuthor = jsonObject1.getAsJsonObject("author");
             JsonPrimitive jsonPrimitiveAuthorName = jsonObjectAuthor.getAsJsonPrimitive("name");
             String authorName = jsonPrimitiveAuthorName.getAsString();
+            JsonPrimitive jsonPrimitiveIssueDate = jsonObject1.getAsJsonPrimitive("created_at");
+            String issueDate = jsonPrimitiveIssueDate.getAsString();
+            int [] issueDateParsed = parsIsoDate(issueDate);
 
-            WrapperIssue wrapperIssue = new WrapperIssue(projectId, issueId, issueIid, authorName, issueTitle);
+
+            WrapperIssue wrapperIssue = new WrapperIssue(token, projectId, issueId, issueIid, authorName, issueTitle,
+                    issueDateParsed[0], issueDateParsed[1], issueDateParsed[2]);
             ALL_ISSUES.add(wrapperIssue);
         }
+    }
+
+    private int[] parsIsoDate(String isoDate) throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+        Date result1 = df1.parse(isoDate);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result1);
+        int [] result = new int[3];
+
+        result[0] = cal.get(Calendar.YEAR);
+        result[1] = (cal.get(Calendar.MONTH)+1);
+        result[2] = cal.get(Calendar.DATE);
+        return result;
     }
 
     private static HttpURLConnection makeConnection(URL url) throws IOException {
