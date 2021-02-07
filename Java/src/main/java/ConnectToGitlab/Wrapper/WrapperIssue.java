@@ -21,6 +21,7 @@ public class WrapperIssue {
     private final int ISSUE_YEAR;
     private final int ISSUE_MONTH;
     private final int ISSUE_DAY;
+    private final List<WrapperNote> NOTES = new ArrayList<>();
 
     public WrapperIssue(String token, int projectId, int issueId, int issueIid, String authorName, String title,
                         int year, int month, int day) throws IOException, ParseException {
@@ -32,7 +33,7 @@ public class WrapperIssue {
         this.ISSUE_YEAR = year;
         this.ISSUE_MONTH = month;
         this.ISSUE_DAY = day;
-        //getIssueNotes(token);
+        getIssueNotes(token);
     }
 
     private void getIssueNotes(String token) throws IOException, ParseException {
@@ -62,6 +63,9 @@ public class WrapperIssue {
             String noteDate = jsonPrimitiveNoteDate.getAsString();
             int [] noteDateParsed = parsIsoDate(noteDate);
 
+            WrapperNote wrapperNote = new WrapperNote(noteId, noteBody, authorName, noteDateParsed[0], noteDateParsed[1],
+                    noteDateParsed[2]);
+            NOTES.add(wrapperNote);
         }
     }
 
@@ -114,5 +118,9 @@ public class WrapperIssue {
 
     public int getIssueDay() {
         return ISSUE_DAY;
+    }
+
+    public List<WrapperNote> getNotes() {
+        return NOTES;
     }
 }

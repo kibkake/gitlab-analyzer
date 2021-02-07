@@ -5,19 +5,17 @@ public class WrapperNote {
     private final int ID;
     private final String BODY;
     private final String AUTHOR;
-    private final int NAME;
     private final int SCORE;
     private final int YEAR;
     private final int MONTH;
     private final int DAY;
 
-    public WrapperNote(int id, String body, String author, int name, int score, int year, int month, int day) {
-        ID = id;
+    public WrapperNote(int id, String body, String author, int year, int month, int day) {
+        this.ID = id;
         this.BODY = body;
         this.AUTHOR = author;
-        this.NAME = name;
-        SCORE = score;
-        YEAR = year;
+        this.SCORE = body.length();
+        this.YEAR = year;
         this.MONTH = month;
         this.DAY = day;
     }
@@ -32,10 +30,6 @@ public class WrapperNote {
 
     public String getAuthor() {
         return AUTHOR;
-    }
-
-    public int getName() {
-        return NAME;
     }
 
     public int getScore() {
