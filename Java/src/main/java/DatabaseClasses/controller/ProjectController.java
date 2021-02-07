@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin //(origins = "http://localhost:3000/")
+@CrossOrigin
 @RestController
 @RequestMapping("git/")
 public class ProjectController {
@@ -24,17 +24,22 @@ public class ProjectController {
     }
 
     @GetMapping("projects")
-    @Query(fields="{}")
-    public List<Projects> getAll() {
+    @Query(fields="{'name' : 1, 'created_at' : 1}")
+    public List<Projects> getAllProjects() {
         return projectRepository.findAll();
     }
 
-
-
-    @PostMapping("updateProjects")
-    public static void saveProject(@RequestBody Projects project){
-        projectRepository.save(project);
+    @GetMapping("projects/{projectId}")
+    @Query(fields="{'memberList' : 1}")
+    public List<Projects> getAllMembersOfSingleProject(@RequestParam int projectId) {
+        return projectRepository.findByIdContaining(projectId);
     }
 
+    @GetMapping("projects/{projectId}/{memberList.memberId}")
+    @Query(fields="{'memberList.scoreOnMergeRequest' :1, 'memberList.scoreCommit' :1, " +
+            "'memberList.numWordsOnNotesForMR':1, 'memberList.numWordsOnNotesForIssue' :1}")
+    public List<Projects> getSingleMemberStatsById(@RequestParam int memberId) {
+        return projectRepository.findByIdContaining(memberId);
+    }
 
 }

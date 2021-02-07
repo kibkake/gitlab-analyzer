@@ -10,7 +10,7 @@ import java.util.List;
 public class Projects {
 
     @Id
-    private int id;
+    private int projectId;
     private String name;
     private String created_at;
     private List<Member> memberList;
@@ -18,4 +18,27 @@ public class Projects {
     private List<MergedRequest> mergedRequestList;
     private List<Issue> IssueList;
 
+    public Projects (int projectId, String name, String created_at) {
+        this.projectId = projectId;
+        this.name = name;
+        this.created_at = created_at;
+    }
+
+    public Projects (int projectId, String name, String created_at, List<Member> memberList) {
+        this.projectId = projectId;
+        this.name = name;
+        this.created_at = created_at;
+        this.memberList = memberList;
+    }
+
+    public Projects (int projectId, String name, String created_at, List<Member> memberList,
+                    List<Commits> commitsList, List<MergedRequest> mergedRequestList, List<Issue> issueList) {
+        this.projectId = projectId;
+        this.name = name;
+        this.created_at = created_at;
+        this.memberList = memberList;
+        this.commitsList = commitsList;
+        this.mergedRequestList = mergedRequestList;
+        IssueList = issueList;
+    }
 }

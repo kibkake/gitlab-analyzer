@@ -1,7 +1,10 @@
 package DatabaseClasses.model.data;
 
+import org.springframework.data.annotation.Id;
+
 public class Member {
 
+    @Id
     private int memberId;
     private String memberName;
 
