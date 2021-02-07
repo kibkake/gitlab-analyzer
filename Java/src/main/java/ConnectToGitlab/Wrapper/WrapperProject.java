@@ -140,7 +140,7 @@ public class WrapperProject {
             JsonPrimitive jsonPrimitiveIssueTitle = jsonObject1.getAsJsonPrimitive("title");
             String issueTitle = jsonPrimitiveIssueTitle.getAsString();
             JsonObject jsonObjectAuthor = jsonObject1.getAsJsonObject("author");
-            JsonPrimitive jsonPrimitiveAuthorName = jsonObjectAuthor.getAsJsonPrimitive("name");
+            JsonPrimitive jsonPrimitiveAuthorName = jsonObjectAuthor.getAsJsonPrimitive("username");
             String authorName = jsonPrimitiveAuthorName.getAsString();
             JsonPrimitive jsonPrimitiveIssueDate = jsonObject1.getAsJsonPrimitive("created_at");
             String issueDate = jsonPrimitiveIssueDate.getAsString();

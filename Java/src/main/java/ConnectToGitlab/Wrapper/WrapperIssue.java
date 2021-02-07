@@ -57,7 +57,7 @@ public class WrapperIssue {
             JsonPrimitive jsonPrimitiveNoteBody = jsonObject.getAsJsonPrimitive("body");
             String noteBody = jsonPrimitiveNoteBody.getAsString();
             JsonObject jsonObjectNoteBody = jsonObject.getAsJsonObject("author");
-            JsonPrimitive jsonPrimitiveNoteAuthorName = jsonObjectNoteBody.getAsJsonPrimitive("name");
+            JsonPrimitive jsonPrimitiveNoteAuthorName = jsonObjectNoteBody.getAsJsonPrimitive("username");
             String authorName = jsonPrimitiveNoteAuthorName.getAsString();
             JsonPrimitive jsonPrimitiveNoteDate = jsonObject.getAsJsonPrimitive("created_at");
             String noteDate = jsonPrimitiveNoteDate.getAsString();
@@ -86,6 +86,10 @@ public class WrapperIssue {
 
     private static HttpURLConnection makeConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
+    }
+
+    public void removeNote(int index) {
+        NOTES.remove(index);
     }
 
     public int getProjectId() {

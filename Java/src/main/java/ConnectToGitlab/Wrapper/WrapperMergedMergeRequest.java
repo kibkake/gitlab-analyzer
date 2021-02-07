@@ -167,6 +167,14 @@ public class WrapperMergedMergeRequest {
         MERGE_SCORE = Math.round(MERGE_SCORE * 100.0) / 100.0;
     }
 
+    public void removeCommit(int index) {
+        MERGE_REQUEST_COMMITS.remove(index);
+    }
+
+    public void removeNote(int index) {
+        NOTES.remove(index);
+    }
+
     private static HttpURLConnection makeConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
     }
