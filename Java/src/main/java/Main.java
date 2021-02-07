@@ -46,7 +46,7 @@ public class Main {
         }
         SpringApplication.run(Main.class,args);
 
-        // tests for implemented classes  -- comment out each line for skipping tests
+        // tests for implemented classes  -- comment each line for skipping tests
         testDbFunctions();
         testAuthenticator();
     }
@@ -90,6 +90,11 @@ public class Main {
         System.out.println("Testing User Passwords with Database stored Password:\nuser: Enterprise\npass: thegreyghost\n");
         System.out.println("Test 1 - \"thegrayghost\" ... Expected: false ---> Actual: "+DatabaseFunctions.isUserAuthenticated("Enterprise","thegrayghost"));
         System.out.println("Test 2 - \"thegreyghost\" ... Expected: true ---> Actual: "+DatabaseFunctions.isUserAuthenticated("Enterprise","thegreyghost"));
+
+        //test user account creation
+        System.out.println("\n\nTesting Account creation:\nuser: Farragut\npass: uss\ntoken: DDG-37\n");
+        DatabaseFunctions.createUserAccount("Farragut","uss","DDG-37");
+        System.out.println("Account created:\nTest --> fetching from Database...\n"+DatabaseFunctions.retrieveUserInfo("Farragut"));
     }
 
     /**
