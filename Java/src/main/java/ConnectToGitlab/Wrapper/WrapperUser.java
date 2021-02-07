@@ -19,7 +19,12 @@ public class WrapperUser {
         boolean userIsPartOfMerge = false;
         for(int i = 0; i < project.getMergedMergeRequests().size(); i++){
             userIsPartOfMerge = checkUserIsPartOfMerge(project, i);
+            if(!userIsPartOfMerge){
+                userIsPartOfMerge = checkUserHasNoteInMerge(project, i);
+            }
         }
+
+
     }
 
     private boolean checkUserIsPartOfMerge(WrapperProject project, int index) {
@@ -28,6 +33,15 @@ public class WrapperUser {
                 return true;
             }
 
+        }
+        return false;
+    }
+
+    private boolean checkUserHasNoteInMerge(WrapperProject project, int index) {
+        for(int j = 0; j < project.getMergedMergeRequests().get(index).getNotes().size(); j++) {
+            if(project.getMergedMergeRequests().get(index).getNotes().get(j).getAuthor().equals(NAME)) {
+                return true;
+            }
         }
         return false;
     }
