@@ -82,6 +82,7 @@ public class DatabaseFunctions {
                     .projection(Projections.fields(Projections.include("password"), Projections.excludeId()))
                     .first();
             String pass = user.getString("password");
+            // matches encrypted password for security reasons
             return Authenticator.encrypt(password).equals(pass);
         }
     }
