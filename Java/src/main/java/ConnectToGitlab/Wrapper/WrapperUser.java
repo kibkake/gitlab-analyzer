@@ -28,7 +28,7 @@ public class WrapperUser {
             }
         }
         removeCommitsFromOtherAuthors();
-        removeNotesFromOtherAuthors();
+        removeMergeNotesFromOtherAuthors();
     }
 
     private boolean checkUserIsPartOfMerge(WrapperProject project, int index) {
@@ -62,7 +62,7 @@ public class WrapperUser {
 
     }
 
-    private void removeNotesFromOtherAuthors() {
+    private void removeMergeNotesFromOtherAuthors() {
         for(int i = 0; i < MERGED_MERGE_REQUESTS.size(); i++) {
             for(int j = 0; j < MERGED_MERGE_REQUESTS.get(i).getNotes().size(); j++) {
                 if(!MERGED_MERGE_REQUESTS.get(i).getNotes().get(j).getAuthor().equals(NAME)) {
@@ -81,6 +81,7 @@ public class WrapperUser {
                 ALL_ISSUES.add(project.getAllIssues().get(i));
             }
         }
+        removeIssueNotesFromOtherAuthors();
     }
 
     private boolean checkUserIsPartOfIssue(WrapperProject project, int index) {
@@ -92,10 +93,15 @@ public class WrapperUser {
         return false;
     }
 
-
-
-
-
-
+    private void removeIssueNotesFromOtherAuthors() {
+        for(int i = 0; i < ALL_ISSUES.size(); i++) {
+            for (int j = 0; j < ALL_ISSUES.get(i).getNotes().size(); j++) {
+                if (!ALL_ISSUES.get(i).getNotes().get(j).getAuthor().equals(NAME)) {
+                    ALL_ISSUES.get(i).removeNote(j);
+                    j--;
+                }
+            }
+        }
+    }
 
 }

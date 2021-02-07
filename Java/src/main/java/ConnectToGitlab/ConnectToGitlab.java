@@ -21,11 +21,6 @@ public class ConnectToGitlab {
         Gson gson = new Gson();
         String jsonString = gson.toJson(project);
         System.out.println(jsonString);
-
-        WrapperUser user = new WrapperUser("user2", project);
-        String jsonStringUser = gson.toJson(user);
-        System.out.println(jsonStringUser);
-
     }
 
     public static void testWrapperMethods(String token, WrapperProject project) throws IOException, ParseException {
