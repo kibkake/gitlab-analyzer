@@ -1,30 +1,26 @@
 package main.java.ConnectToGitlab.Wrapper;
 
-import org.gitlab.api.models.GitlabCommitDiff;
-
-import java.util.List;
-
 public class WrapperCommitDiff {
 
-    private String newPath;
-    private String oldPath;
-    private boolean newFile;
-    private boolean renamedFile;
-    private boolean deletedFile;
-    private String diff;
-    private double score;
+    private final String NEW_PATH;
+    private final String OLD_PATH;
+    private final boolean NEW_FILE;
+    private final boolean RENAMED_FILE;
+    private final boolean DELETED_FILE;
+    private final String DIFF;
+    private final double SCORE;
 
     public WrapperCommitDiff(String newPath, String oldPath, boolean newFile, boolean renamedFile, boolean deletedFile, String diff) {
-        this.newPath = newPath;
-        this.oldPath = oldPath;
-        this.newFile = newFile;
-        this.renamedFile = renamedFile;
-        this.deletedFile = deletedFile;
-        this.diff = diff;
-        score = calculateCommitScoreSingleDiff(diff);
+        this.NEW_PATH = newPath;
+        this.OLD_PATH = oldPath;
+        this.NEW_FILE = newFile;
+        this.RENAMED_FILE = renamedFile;
+        this.DELETED_FILE = deletedFile;
+        this.DIFF = diff;
+        SCORE = calculateCommitScoreSingleDiff(diff);
     }
 
-    public double calculateCommitScoreSingleDiff(String diff){
+    public double calculateCommitScoreSingleDiff(String diff) {
         double score = 0.0;
         for(int j = 0; j < diff.length(); j++){
             if(diff.charAt(j) == '\n' && j < diff.length()-2){
@@ -54,30 +50,30 @@ public class WrapperCommitDiff {
     }
 
     public String getNewPath() {
-        return newPath;
+        return NEW_PATH;
     }
 
     public String getOldPath() {
-        return oldPath;
+        return OLD_PATH;
     }
 
     public boolean isNewFile() {
-        return newFile;
+        return NEW_FILE;
     }
 
     public boolean isRenamedFile() {
-        return renamedFile;
+        return RENAMED_FILE;
     }
 
     public boolean isDeletedFile() {
-        return deletedFile;
+        return DELETED_FILE;
     }
 
     public String getDiff() {
-        return diff;
+        return DIFF;
     }
 
     public double getScore() {
-        return score;
+        return SCORE;
     }
 }

@@ -1,7 +1,6 @@
 package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,9 +25,9 @@ public class WrapperMergedMergeRequest {
     private final List<WrapperCommit> MERGE_REQUEST_COMMITS = new ArrayList<>();
     private final List<WrapperCommitDiff> MERGE_DIFFS = new ArrayList<>();
 
-
-    public WrapperMergedMergeRequest(String token, int projectId, int mergeRequestId, int mergeRequestIid, int gitlabProjectId, String mergeRequestTitle,
-                                     int mergeYear, int mergeMonth, int mergeDay) throws IOException, ParseException {
+    public WrapperMergedMergeRequest(String token, int mergeRequestId, int mergeRequestIid,
+                                     int gitlabProjectId, String mergeRequestTitle, int mergeYear, int mergeMonth,
+                                     int mergeDay) throws IOException, ParseException {
         this.MERGE_REQUEST_ID = mergeRequestId;
         this.MERGE_REQUEST_IID = mergeRequestIid;
         this.PROJECT_ID = gitlabProjectId;
@@ -36,18 +35,17 @@ public class WrapperMergedMergeRequest {
         this.MERGE_YEAR = mergeYear;
         this.MERGE_MONTH = mergeMonth;
         this.MERGE_DAY = mergeDay;
-        getSingleMergedMergeRequestCommits(token, projectId, MERGE_REQUEST_IID);
-        getSingleMergedMergeRequestChanges(token, MERGE_REQUEST_IID);
+        getSingleMergedMergeRequestCommits(token);
+        getSingleMergedMergeRequestChanges(token);
         calculateCommitScore();
     }
 
-    public void getSingleMergedMergeRequestCommits(String token, int projectId, int mergeIid) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/commits" + "?access_token=" + token);
+    public void getSingleMergedMergeRequestCommits(String token) throws IOException, ParseException {
+        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/commits" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
         //System.out.println(reply);
@@ -69,10 +67,9 @@ public class WrapperMergedMergeRequest {
             JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
             String mergeRequestCommitDate = jsonPrimitiveCommitDate.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
-            WrapperCommit wrapperCommit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title, mergeDate[0],
+            WrapperCommit wrapperCommit = new WrapperCommit(token, PROJECT_ID, commitId, authorName, authorEmail, title, mergeDate[0],
                     mergeDate[1], mergeDate[2]);
             MERGE_REQUEST_COMMITS.add(wrapperCommit);
-
         }
     }
 
@@ -88,12 +85,11 @@ public class WrapperMergedMergeRequest {
         result[0] = cal.get(Calendar.YEAR);
         result[1] = (cal.get(Calendar.MONTH)+1);
         result[2] = cal.get(Calendar.DATE);
-
         return result;
     }
 
-    public void getSingleMergedMergeRequestChanges(String token, int mergeIid) throws IOException {
-        URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/changes" + "?access_token=" + token);
+    public void getSingleMergedMergeRequestChanges(String token) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/changes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -130,7 +126,7 @@ public class WrapperMergedMergeRequest {
         }
     }
 
-    public void calculateCommitScore(){
+    public void calculateCommitScore() {
         for(int i = 0; i < MERGE_DIFFS.size(); i++){
             MERGE_SCORE += MERGE_DIFFS.get(i).getScore();
         }

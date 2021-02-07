@@ -49,7 +49,7 @@ public class GitlabWrapper {
 
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-        //System.out.println(reply);
+        System.out.println(reply);
         connection.disconnect();
     }
 

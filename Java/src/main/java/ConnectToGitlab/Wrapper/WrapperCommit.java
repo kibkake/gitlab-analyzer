@@ -1,7 +1,6 @@
 package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,26 +12,26 @@ import java.util.List;
 public class WrapperCommit {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    private String id;
-    private String authorName;
-    private String authorEmail;
-    private String title;
-    private int commitYear;
-    private int commitMonth;
-    private int commitDay;
+    private final String ID;
+    private final String AUTHOR_NAME;
+    private final String AUTHOR_EMAIL;
+    private final String TITLE;
+    private final int COMMIT_YEAR;
+    private final int COMMIT_MONTH;
+    private final int COMMIT_DAY;
     private double commitScore = 0.0;
-    private List<WrapperCommitDiff> wrapperCommitDiffs = new ArrayList<>();
+    private final List<WrapperCommitDiff> COMMIT_DIFFS = new ArrayList<>();
 
 
     public WrapperCommit(String token, int projectId, String id, String authorName, String authorEmail, String title,
                          int commitYear, int commitMonth, int commitDay) throws IOException {
-        this.id = id;
-        this.authorName = authorName;
-        this.authorEmail = authorEmail;
-        this.title = title;
-        this.commitYear = commitYear;
-        this.commitMonth = commitMonth;
-        this.commitDay = commitDay;
+        this.ID = id;
+        this.AUTHOR_NAME = authorName;
+        this.AUTHOR_EMAIL = authorEmail;
+        this.TITLE = title;
+        this.COMMIT_YEAR = commitYear;
+        this.COMMIT_MONTH = commitMonth;
+        this.COMMIT_DAY = commitDay;
         getSingleCommitDiffs(token, projectId, id);
         calculateCommitScore();
     }
@@ -67,45 +66,44 @@ public class WrapperCommit {
             String diff = jsonPrimitiveDiff.getAsString();
             WrapperCommitDiff wrapperCommitDiff = new WrapperCommitDiff(newPath, oldPath, newFile, renamedFile,
                     deletedFile, diff);
-            wrapperCommitDiffs.add(wrapperCommitDiff);
+            COMMIT_DIFFS.add(wrapperCommitDiff);
         }
     }
 
     public void calculateCommitScore(){
-        for(int i = 0; i < wrapperCommitDiffs.size(); i++){
-            commitScore += wrapperCommitDiffs.get(i).getScore();
+        for(int i = 0; i < COMMIT_DIFFS.size(); i++){
+            commitScore += COMMIT_DIFFS.get(i).getScore();
         }
         commitScore = Math.round(commitScore * 100.0) / 100.0;
 
     }
 
     public static HttpURLConnection makeConnection(URL url) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        return connection;
+        return (HttpURLConnection) url.openConnection();
     }
 
     public String getId() {
-        return id;
+        return ID;
     }
 
     public String getAuthorName() {
-        return authorName;
+        return AUTHOR_NAME;
     }
 
     public String getAuthorEmail() {
-        return authorEmail;
+        return AUTHOR_EMAIL;
     }
 
     public String getTitle() {
-        return title;
+        return TITLE;
     }
 
     public int getCommitYear() {
-        return commitYear;
+        return COMMIT_YEAR;
     }
 
     public int getCommitMonth() {
-        return commitMonth;
+        return COMMIT_MONTH;
     }
 
     public double getCommitScore() {
@@ -113,10 +111,10 @@ public class WrapperCommit {
     }
 
     public int getCommitDay() {
-        return commitDay;
+        return COMMIT_DAY;
     }
 
     public List<WrapperCommitDiff> getWrapperCommitDiffs() {
-        return wrapperCommitDiffs;
+        return COMMIT_DIFFS;
     }
 }

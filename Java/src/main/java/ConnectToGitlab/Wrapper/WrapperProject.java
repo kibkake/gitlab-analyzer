@@ -63,7 +63,7 @@ public class WrapperProject {
     }
 
     private void getMergedMergeRequests(String token, int projectId) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + gitlabProjectId + "/merge_requests?" + "state=merged&" + "access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged&" + "access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -91,7 +91,7 @@ public class WrapperProject {
             String mergeRequestTitle = jsonPrimitiveTitle.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestUntilDate);
 
-            WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, projectId, mergeRequestId,mergeRequestIid,
+            WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, mergeRequestId,mergeRequestIid,
                     mergeRequestProjectId, mergeRequestTitle, mergeDate[0], mergeDate[1], mergeDate[2]);
             mergedMergeRequests.add(mergeRequest);
         }
@@ -100,9 +100,7 @@ public class WrapperProject {
     public static int[] parsIsoDate(String isoDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
-        //Date result1 = df1.parse("2024-01-24T23:55:59.000+00:00");
         Date result1 = df1.parse(isoDate);
-        //System.out.println(result1);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(result1);
@@ -135,7 +133,6 @@ public class WrapperProject {
             issueIids.add(jsonPrimitiveIssueIid.getAsInt());
             JsonPrimitive jsonPrimitiveIssueTitle = jsonObject1.getAsJsonPrimitive("title");
             //System.out.println(jsonPrimitiveIssueTitle.getAsString());
-
         }
     }
 
