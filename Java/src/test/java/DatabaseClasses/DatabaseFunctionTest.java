@@ -4,10 +4,21 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import main.java.DatabaseClasses.DatabaseFunctions;
 
+import org.slf4j.LoggerFactory;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 /**
  * JUnit test class to test DatabaseFunctions class
  */
 public class DatabaseFunctionTest{
+
+    /*
+        inserted static code here to disable MongoDB driver console logging for normal events.
+     */
+    static{
+        Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        root.setLevel(Level.WARN);
+    }
 
     /**
      * Test for adding and retrieving tokens
