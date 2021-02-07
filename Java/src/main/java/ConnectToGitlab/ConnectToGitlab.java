@@ -3,6 +3,7 @@ package main.java.ConnectToGitlab;
 import com.google.gson.Gson;
 import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
 import main.java.ConnectToGitlab.Wrapper.WrapperProject;
+import main.java.ConnectToGitlab.Wrapper.WrapperUser;
 import org.gitlab.api.AuthMethod;
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
@@ -20,6 +21,11 @@ public class ConnectToGitlab {
         Gson gson = new Gson();
         String jsonString = gson.toJson(project);
         System.out.println(jsonString);
+
+        WrapperUser user = new WrapperUser("user2", project);
+        String jsonStringUser = gson.toJson(user);
+        System.out.println(jsonStringUser);
+
     }
 
     public static void testWrapperMethods(String token, WrapperProject project) throws IOException, ParseException {
