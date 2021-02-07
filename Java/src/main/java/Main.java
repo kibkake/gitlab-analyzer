@@ -45,10 +45,6 @@ public class Main {
             System.out.println(exception.getMessage());
         }
         SpringApplication.run(Main.class,args);
-
-        // tests for implemented classes  -- comment each line for skipping tests
-        testDbFunctions();
-        testAuthenticator();
     }
 
     /**
@@ -76,36 +72,5 @@ public class Main {
             // indicate running status
             System.out.println("Server broadcasting on localhost:8080");
         };
-    }
-
-    /**
-     * test method for convenience of testing DatabaseFunctions class
-     */
-    public static void testDbFunctions(){
-        // test add and read tokens
-        DatabaseFunctions.addUserToken("test","gklP3oD95mxDs2lFk6Hy4");
-        System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
-
-        // test user password with database stored password
-        System.out.println("Testing User Passwords with Database stored Password:\nuser: Enterprise\npass: thegreyghost\n");
-        System.out.println("Test 1 - \"thegrayghost\" ... Expected: false ---> Actual: "+DatabaseFunctions.isUserAuthenticated("Enterprise","thegrayghost"));
-        System.out.println("Test 2 - \"thegreyghost\" ... Expected: true ---> Actual: "+DatabaseFunctions.isUserAuthenticated("Enterprise","thegreyghost"));
-
-        //test user account creation
-        System.out.println("\n\nTesting Account creation:\nuser: Farragut\npass: uss\ntoken: DDG-37\n");
-        DatabaseFunctions.createUserAccount("Farragut","uss","DDG-37");
-        System.out.println("Account created:\nTest --> fetching from Database...\n"+DatabaseFunctions.retrieveUserInfo("Farragut"));
-    }
-
-    /**
-     * test method for convenience of testing Authenticator class
-     */
-    public static void testAuthenticator(){
-        String pKey = Authenticator.encrypt("Montana");
-        System.out.println("\n\nTesting of Password encryption:\npassword = \"Montana\"\nkey = "+pKey+"\n");
-        System.out.println("Test 1 - \"montana\" ... Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("montana")));
-        System.out.println("Test 2 - \"_Montana\" ... Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("_Montana")));
-        System.out.println("Test 3 - \"Idaho\" ... Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("Idaho")));
-        System.out.println("Test 4 - \"Montana\" ... Expected: true ---> Actual: "+pKey.equals(Authenticator.encrypt("Montana")));
     }
 }
