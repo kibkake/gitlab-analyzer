@@ -9,6 +9,7 @@ import main.java.ConnectToGitlab.Project.Project;
 import main.java.ConnectToGitlab.Project.ProjectController;
 import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.DatabaseFunctions;
+import main.java.Security.Authenticator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
@@ -47,6 +48,14 @@ public class Main {
 
         // test for database functions
         System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
+
+        // test for password
+        String pKey = Authenticator.encrypt("password");
+        System.out.println("\n\nkey = "+pKey);
+        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("Password")));
+        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("_password")));
+        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("password_")));
+        System.out.println("Expected: true ---> Actual: "+pKey.equals(Authenticator.encrypt("password")));
     }
 
     /**
