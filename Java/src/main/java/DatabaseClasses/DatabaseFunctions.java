@@ -29,6 +29,34 @@ public class DatabaseFunctions {
 
     private static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
 
+    public static void createUserAccount(String username, String password, String token){
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+
+            // Setup filter and upsert options so that usernames remain unique.
+            Bson filter = eq("username", username);
+            // sets the password
+            Bson updateOperation = set("password", Authenticator.encrypt(password));
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            userCollection.updateOne(filter, updateOperation, options);
+            // update or set token
+            if (token!=null){
+                updateOperation = set("token", token);
+            }
+            userCollection.updateOne(filter, updateOperation, options);
+        }
+    }
+
+    public static String retrieveUserInfo(String username){
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+            Document user = userCollection.find(eq("username", username)).first();
+            return user.getString("username")+"\n"+user.getString("password")+"\n"+user.getString("token");
+        }
+    }
+
     /**
      * checks to see if the user is authenticated by comparing encrypted password strings between the raw and the database one.
      * @param username the uninque username of the user
@@ -46,8 +74,6 @@ public class DatabaseFunctions {
             return Authenticator.encrypt(password).equals(pass);
         }
     }
-
-
 
     /**
      * Searches the database for the token associated with the given username
