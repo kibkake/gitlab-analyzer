@@ -27,8 +27,14 @@ import java.time.LocalDate;
 
 public class DatabaseFunctions {
 
-    private static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
+    private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
 
+    /**
+     * Creates a user account with an optional token and stores it securely on the database.
+     * @param username the unique username to be created
+     * @param password the password for the account
+     * @param token (optional) the token used to access gitlab api.
+     */
     public static void createUserAccount(String username, String password, String token){
         try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
@@ -48,6 +54,11 @@ public class DatabaseFunctions {
         }
     }
 
+    /**
+     * retrieves information regarding the users from the database. Usually, only used for testing purposes.
+     * @param username the unique username of the user
+     * @return a line by line string of the entries of the username, encrypted password, and token from the database.
+     */
     public static String retrieveUserInfo(String username){
         try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
             MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
