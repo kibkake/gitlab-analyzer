@@ -13,6 +13,7 @@ public class WrapperUser {
     public WrapperUser(String name, WrapperProject project) {
         this.NAME = name;
         getUserMergedMergeRequest(project);
+        getUserIssues(project);
     }
 
     private void getUserMergedMergeRequest(WrapperProject project) {
@@ -70,9 +71,29 @@ public class WrapperUser {
                 }
             }
         }
-
-
     }
+
+    private void getUserIssues(WrapperProject project) {
+        boolean userIsPartOfIssue = false;
+        for(int i = 0; i < project.getAllIssues().size(); i++){
+            userIsPartOfIssue = checkUserIsPartOfIssue(project, i);
+            if(userIsPartOfIssue) {
+                ALL_ISSUES.add(project.getAllIssues().get(i));
+            }
+        }
+    }
+
+    private boolean checkUserIsPartOfIssue(WrapperProject project, int index) {
+        for(int j = 0; j < project.getAllIssues().get(index).getNotes().size(); j++) {
+            if(project.getAllIssues().get(index).getNotes().get(j).getAuthor().equals(NAME)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
 
 
 
