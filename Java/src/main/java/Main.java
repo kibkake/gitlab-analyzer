@@ -82,19 +82,25 @@ public class Main {
      * test method for convenience of testing DatabaseFunctions class
      */
     public static void testDbFunctions(){
+        // test add and read tokens
         DatabaseFunctions.addUserToken("test","gklP3oD95mxDs2lFk6Hy4");
         System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
+
+        // test user password with database stored password
+        System.out.println("Testing User Passwords with Database stored Password:\nuser: Enterprise\npass: thegreyghost\n");
+        System.out.println("Test 1 - \"thegrayghost\" ... Expected: false ---> Actual: "+DatabaseFunctions.isUserAuthenticated("Enterprise","thegrayghost"));
+        System.out.println("Test 2 - \"thegreyghost\" ... Expected: true ---> Actual: "+DatabaseFunctions.isUserAuthenticated("Enterprise","thegreyghost"));
     }
 
     /**
      * test method for convenience of testing Authenticator class
      */
     public static void testAuthenticator(){
-        String pKey = Authenticator.encrypt("password");
-        System.out.println("\n\nkey = "+pKey);
-        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("Password")));
-        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("_password")));
-        System.out.println("Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("password_")));
-        System.out.println("Expected: true ---> Actual: "+pKey.equals(Authenticator.encrypt("password")));
+        String pKey = Authenticator.encrypt("Montana");
+        System.out.println("\n\nTesting of Password encryption:\npassword = \"Montana\"\nkey = "+pKey+"\n");
+        System.out.println("Test 1 - \"montana\" ... Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("montana")));
+        System.out.println("Test 2 - \"_Montana\" ... Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("_Montana")));
+        System.out.println("Test 3 - \"Idaho\" ... Expected: false ---> Actual: "+pKey.equals(Authenticator.encrypt("Idaho")));
+        System.out.println("Test 4 - \"Montana\" ... Expected: true ---> Actual: "+pKey.equals(Authenticator.encrypt("Montana")));
     }
 }
