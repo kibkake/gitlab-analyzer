@@ -44,7 +44,7 @@ public class Main implements CommandLineRunner {
         }
 
         // test for database functions
-        System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
+//        System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
 
         System.out.println("test");
     }
