@@ -7,10 +7,11 @@ import main.java.DatabaseClasses.DatabaseFunctions;
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import java.time.Duration;
 /**
  * JUnit test class to test DatabaseFunctions class
  */
-public class DatabaseFunctionTest{
+public class DatabaseFunctionsTest{
 
     /*
         inserted static code here to disable MongoDB driver console logging for normal events.
