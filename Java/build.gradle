@@ -45,6 +45,13 @@ test{
 bootRun {
     jvmArgs = ["-Djdk.tls.client.protocols=TLSv1.2"]
 }
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+    }
+}
 
 sourceSets {
     main {
