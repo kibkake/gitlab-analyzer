@@ -8,8 +8,8 @@ import org.junit.Test;
 
 public class MainTest{
     @Test
-    public void testCase1(){
+    public void testMain(){
         // nothing to test for now
-        System.out.println("passed");
+        assertTrue(true);
     }
 }
