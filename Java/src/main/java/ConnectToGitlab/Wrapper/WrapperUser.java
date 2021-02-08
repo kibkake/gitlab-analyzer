@@ -13,6 +13,7 @@ public class WrapperUser {
     private final String NAME;
     private final List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS = new ArrayList<>();
     private final List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
+    private double commitScore = 0.0;
 
 
     public WrapperUser(String name, WrapperProject project) {
@@ -141,5 +142,18 @@ public class WrapperUser {
             }
         }
     }
+
+    /**
+     * Adds up and calculates the score from all user commits in the repository that are in merged
+     * merge request. Also adds up all note scores from merged merge requests as well.
+     */
+    private void calculateUserCommitScore() {
+        for(int i = 0; i < MERGED_MERGE_REQUESTS.size(); i++) {
+            for (int j = 0; j < MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().size(); j++) {
+                commitScore += MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().get(j).getCommitScore();
+            }
+        }
+    }
+
 
 }
