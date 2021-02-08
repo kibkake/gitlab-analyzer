@@ -9,6 +9,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class includes all of the important data about a commit, including the
+ * diffs, author's name, and the overall score from the entire commit. The score
+ * is calcualted by adding up changes from all the diffs contained in the commit.
+ */
 public class WrapperCommit {
 
     private static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
@@ -36,6 +41,12 @@ public class WrapperCommit {
         calculateCommitScore();
     }
 
+    /**
+     * Retrieves a particular commit's diffs.
+     * @param token the token provided by user of the class.
+     * @param projectId the id of the repository.
+     * @param token the hash of the commit.
+     */
     private void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -70,14 +81,21 @@ public class WrapperCommit {
         }
     }
 
+    /**
+     * Calculates the commit score by adding up all the scores from
+     * commit diffs.
+     */
     private void calculateCommitScore(){
         for(int i = 0; i < COMMIT_DIFFS.size(); i++){
             commitScore += COMMIT_DIFFS.get(i).getScore();
         }
         commitScore = Math.round(commitScore * 100.0) / 100.0;
-
     }
 
+    /**
+     * Creates a HttpURLConnection object
+     * @param url the url object containing the full address of th serve
+     */
     private static HttpURLConnection makeConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
     }
