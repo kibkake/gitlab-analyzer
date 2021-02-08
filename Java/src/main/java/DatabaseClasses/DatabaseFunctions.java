@@ -1,5 +1,7 @@
 package main.java.DatabaseClasses;
 
+import main.java.Security.Authenticator;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -44,14 +46,64 @@ References:
 
 public class DatabaseFunctions {
 
-    private static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
+    private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
 
-    public static boolean isUserAuthenticated(/* args? */) {
-        /* This function gets the user to enter some kind of password, and checks
-           somewhere in the DB that this password is correct. Then, they get access
-           to their token (which is also stored in the DB). */
+    /**
+     * Creates a user account with an optional token and stores it securely on the database.
+     * @param username the unique username to be created
+     * @param password the password for the account
+     * @param token (optional) the token used to access gitlab api.
+     */
+    public static void createUserAccount(String username, String password, String token){
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
 
-        return false; // Placeholder
+            // Setup filter and upsert options so that usernames remain unique.
+            Bson filter = eq("username", username);
+            // sets the password
+            Bson updateOperation = set("password", Authenticator.encrypt(password));
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            userCollection.updateOne(filter, updateOperation, options);
+            // update or set token
+            if (token!=null){
+                updateOperation = set("token", token);
+            }
+            userCollection.updateOne(filter, updateOperation, options);
+        }
+    }
+
+    /**
+     * retrieves information regarding the users from the database. Usually, only used for testing purposes.
+     * @param username the unique username of the user
+     * @return a line by line string of the entries of the username, encrypted password, and token from the database.
+     */
+    public static String retrieveUserInfo(String username){
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+            Document user = userCollection.find(eq("username", username)).first();
+            return user.getString("username")+"\n"+user.getString("password")+"\n"+user.getString("token");
+        }
+    }
+
+    /**
+     * checks to see if the user is authenticated by comparing encrypted password strings between the raw and the database one.
+     * @param username the uninque username of the user
+     * @param password the raw password
+     * @return true if encrypted password matches, false otherwise.
+     */
+    public static boolean isUserAuthenticated(String username, String password) {
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
+            Document user = usersCollection.find(eq("username", username))
+                    .projection(Projections.fields(Projections.include("password"), Projections.excludeId()))
+                    .first();
+            String pass = user.getString("password");
+            // matches encrypted password for security reasons
+            return Authenticator.encrypt(password).equals(pass);
+        }
     }
 
     /**

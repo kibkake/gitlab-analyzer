@@ -9,6 +9,7 @@ import main.java.ConnectToGitlab.Project.Project;
 import main.java.ConnectToGitlab.Project.ProjectController;
 import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.DatabaseFunctions;
+import main.java.Security.Authenticator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
