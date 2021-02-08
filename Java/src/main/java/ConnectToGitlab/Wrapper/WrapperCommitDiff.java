@@ -1,5 +1,10 @@
 package main.java.ConnectToGitlab.Wrapper;
 
+/**
+ * This class includes all of the important data about a commit diff, which represents
+ * the changes made by a commit or merged merge request to a single file. Therefore,
+ * a commit or merged merge request might have multiple diffs.
+ */
 public class WrapperCommitDiff {
 
     private final String NEW_PATH;
@@ -20,6 +25,10 @@ public class WrapperCommitDiff {
         SCORE = calculateCommitScoreSingleDiff(diff);
     }
 
+    /**
+     * Calculates the score from a diff string
+     * @param diff the actual string containing the changes made to the file
+     */
     private double calculateCommitScoreSingleDiff(String diff) {
         double score = 0.0;
         for(int j = 0; j < diff.length(); j++){

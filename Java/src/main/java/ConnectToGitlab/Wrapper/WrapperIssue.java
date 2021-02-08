@@ -11,6 +11,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * This class includes all of the important data about a repository issue. It contains
+ * a list of notes, which represent the dicussion posts in a particular issue.
+ */
 public class WrapperIssue {
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
     private final int PROJECT_ID;
@@ -36,6 +40,10 @@ public class WrapperIssue {
         getIssueNotes(token);
     }
 
+    /**
+     * Retrieves a single issue's notes from the server.
+     * @param token the token provided by user of the class.
+     */
     private void getIssueNotes(String token) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/issues/" + ISSUE_IID + "/notes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -69,6 +77,10 @@ public class WrapperIssue {
         }
     }
 
+    /**
+     * Converts an iso 8601 date into simple year, month, and day ints.
+     * @param isoDate the date in iso 8601 format
+     */
     private static int[] parsIsoDate(String isoDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
@@ -84,6 +96,10 @@ public class WrapperIssue {
         return result;
     }
 
+    /**
+     * Creates a HttpURLConnection object
+     * @param url the url object containing the full address of th serve
+     */
     private static HttpURLConnection makeConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
     }

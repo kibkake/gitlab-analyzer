@@ -201,6 +201,10 @@ public class WrapperMergedMergeRequest {
         NOTES.remove(index);
     }
 
+    /**
+     * Creates a HttpURLConnection object
+     * @param url the url object containing the full address of th serve
+     */
     private static HttpURLConnection makeConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
     }
