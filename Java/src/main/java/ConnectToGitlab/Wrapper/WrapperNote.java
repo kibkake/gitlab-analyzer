@@ -1,5 +1,10 @@
 package main.java.ConnectToGitlab.Wrapper;
 
+/**
+ * This class includes all of the important data about a repository note. These
+ * notes are posts on an issue or merge request. They have an author and score,
+ * which comes from the number of words in the body.
+ */
 public class WrapperNote {
 
     private final int ID;

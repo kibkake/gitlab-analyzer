@@ -11,6 +11,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
+/**
+ * This class includes all of the important data about a repository. Merged merge
+ * requests and repository issues are kept as objects in a list belonging to
+ * a project object.
+ */
 public class WrapperProject {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
@@ -28,6 +34,10 @@ public class WrapperProject {
         getAllProjectIssues(token);
     }
 
+    /**
+     * Retrieves the name of a project using the project id.
+     * @param token the token provided by user of the class.
+     */
     private String getProjectName(String token) throws IOException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -45,6 +55,12 @@ public class WrapperProject {
         return jsonPrimitiveProjectName.getAsString();
     }
 
+    /**
+     * Retrieves all project commits, regardless of whether they were in a merge request or
+     * commited directly to master.
+     * @param token the token provided by user of the class.
+     * @param projectId the id of the project.
+     */
     private void getAllProjectCommits(String token, int projectId) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/repository/commits" +  "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -80,6 +96,11 @@ public class WrapperProject {
         }
     }
 
+    /**
+     * Retrieves all project merged merge request.
+     * @param token the token provided by user of the class.
+     * @param projectId the id of the project.
+     */
     private void getMergedMergeRequests(String token, int projectId) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged&" + "access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -115,7 +136,10 @@ public class WrapperProject {
         }
     }
 
-
+    /**
+     * Retrieves all project issues.
+     * @param token the token provided by user of the class.
+     */
     private void getAllProjectIssues(String token) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/issues" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -153,6 +177,10 @@ public class WrapperProject {
         }
     }
 
+    /**
+     * Converts an iso 8601 date into simple year, month, and day ints.
+     * @param isoDate the date in iso 8601 format
+     */
     private int[] parsIsoDate(String isoDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
@@ -168,6 +196,10 @@ public class WrapperProject {
         return result;
     }
 
+    /**
+     * Creates a HttpURLConnection object
+     * @param url the url object containing the full address of th serve
+     */
     private static HttpURLConnection makeConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
     }
