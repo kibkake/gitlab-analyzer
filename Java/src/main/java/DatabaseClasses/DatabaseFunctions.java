@@ -50,6 +50,10 @@ public class DatabaseFunctions {
     private static MongoClient mongoClient;
     private static MongoDatabase gitlabDB = connectToDatabase();
 
+    /**
+     * Initializes the gitlabDB and mongoClient static objects.
+     * @return A MongoDatabase object, that gitlabDB is set equal to.
+     */
     private static MongoDatabase connectToDatabase() {
         mongoClient = MongoClients.create(mongoDBConnectionAddress);
         return mongoClient.getDatabase("gitlab");
@@ -218,6 +222,14 @@ public class DatabaseFunctions {
         userCollection.updateOne(attributeValues, updateOperation, options);
     }
 
+    /**
+     * Return an int storing the number of merge requests the user has done, from
+     * startDate to endDate.
+     * @param username The user's username.
+     * @param startDate The earliest date we're looking at.
+     * @param endDate The latest date we're looking at.
+     * @return The number of merge requests.
+     */
     public static int numMergeRequests(String username, LocalDate startDate, LocalDate endDate) {
         MongoCollection<Document> usersCollection = gitlabDB.getCollection("mergeRequests");
 
@@ -243,6 +255,14 @@ public class DatabaseFunctions {
         return numTotalMergeRequests;
     }
 
+    /**
+     * Add a document to the mergeRequests collection, storing the user's username,
+     * their number of merge requests, and the relevant date.
+     * @param username User's username.
+     * @param date The date they made the MRs in question.
+     * @param numMergeRequests An int storing the number of MRs.
+     * @throws IllegalArgumentException
+     */
     public static void setNumMergeRequests(String username, LocalDate date,
                                            int numMergeRequests) throws IllegalArgumentException{
         if (numMergeRequests < 0) {
