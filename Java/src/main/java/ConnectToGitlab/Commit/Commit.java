@@ -1,11 +1,14 @@
 package main.java.ConnectToGitlab.Commit;
 import java.util.*;
+import org.springframework.data.annotation.Id;
+
 import java.util.stream.Collectors;
 
 /**
  *  Holds import information about commits and is used to convert JSON to an object with spring
  */
 public class Commit {
+    @Id
     private String id;
     private String shortId;
     private String created_at;

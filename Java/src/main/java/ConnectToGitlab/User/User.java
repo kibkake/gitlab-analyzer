@@ -1,4 +1,7 @@
-package main.java.ConnectToGitlab;
+package main.java.ConnectToGitlab.User;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Used to hold the server info and the users authentication so it is not hard codded in different files and can
@@ -6,12 +9,18 @@ package main.java.ConnectToGitlab;
  *  User in this context refers to the user of the product we are building
  */
 
+@Document(collection = "users")
 public class User {
 
+    @Id
+    private String id;
+    private String username;
     private String serverUrl;
     private String token;
     private String name;
     private String email;
+    private String password;
+
 
     private static User singleton = new User( );
 
@@ -62,5 +71,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

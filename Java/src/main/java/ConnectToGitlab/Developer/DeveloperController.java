@@ -1,6 +1,6 @@
 package main.java.ConnectToGitlab.Developer;
 
-import main.java.ConnectToGitlab.User;
+import main.java.ConnectToGitlab.User.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
