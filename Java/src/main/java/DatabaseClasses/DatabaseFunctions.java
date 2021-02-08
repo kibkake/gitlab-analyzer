@@ -47,6 +47,13 @@ References:
 public class DatabaseFunctions {
 
     private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
+    private static MongoClient mongoClient;
+    private static MongoDatabase gitlabDB = connectToDatabase();
+
+    private static MongoDatabase connectToDatabase() {
+        mongoClient = MongoClients.create(mongoDBConnectionAddress);
+        return mongoClient.getDatabase("gitlab");
+    }
 
     /**
      * Creates a user account with an optional token and stores it securely on the database.
@@ -55,22 +62,19 @@ public class DatabaseFunctions {
      * @param token (optional) the token used to access gitlab api.
      */
     public static void createUserAccount(String username, String password, String token){
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
 
-            // Setup filter and upsert options so that usernames remain unique.
-            Bson filter = eq("username", username);
-            // sets the password
-            Bson updateOperation = set("password", Authenticator.encrypt(password));
-            UpdateOptions options = new UpdateOptions().upsert(true);
-            userCollection.updateOne(filter, updateOperation, options);
-            // update or set token
-            if (token!=null){
-                updateOperation = set("token", token);
-            }
-            userCollection.updateOne(filter, updateOperation, options);
+        // Setup filter and upsert options so that usernames remain unique.
+        Bson filter = eq("username", username);
+        // sets the password
+        Bson updateOperation = set("password", Authenticator.encrypt(password));
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        userCollection.updateOne(filter, updateOperation, options);
+        // update or set token
+        if (token!=null){
+            updateOperation = set("token", token);
         }
+        userCollection.updateOne(filter, updateOperation, options);
     }
 
     /**
@@ -79,12 +83,9 @@ public class DatabaseFunctions {
      * @return a line by line string of the entries of the username, encrypted password, and token from the database.
      */
     public static String retrieveUserInfo(String username){
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
-            Document user = userCollection.find(eq("username", username)).first();
-            return user.getString("username")+"\n"+user.getString("password")+"\n"+user.getString("token");
-        }
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+        Document user = userCollection.find(eq("username", username)).first();
+        return user.getString("username")+"\n"+user.getString("password")+"\n"+user.getString("token");
     }
 
     /**
@@ -94,16 +95,13 @@ public class DatabaseFunctions {
      * @return true if encrypted password matches, false otherwise.
      */
     public static boolean isUserAuthenticated(String username, String password) {
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
-            Document user = usersCollection.find(eq("username", username))
-                    .projection(Projections.fields(Projections.include("password"), Projections.excludeId()))
-                    .first();
-            String pass = user.getString("password");
-            // matches encrypted password for security reasons
-            return Authenticator.encrypt(password).equals(pass);
-        }
+        MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
+        Document user = usersCollection.find(eq("username", username))
+                .projection(Projections.fields(Projections.include("password"), Projections.excludeId()))
+                .first();
+        String pass = user.getString("password");
+        // matches encrypted password for security reasons
+        return Authenticator.encrypt(password).equals(pass);
     }
 
     /**
@@ -113,18 +111,14 @@ public class DatabaseFunctions {
      * @return The associated username's token as a String. Returns empty string if no token is found.
      */
     public static String retrieveUserToken(String username) {
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+        MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
 
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
+        Document user = usersCollection.find(eq("username", username))
+                .projection(Projections.fields(Projections.include("token"), Projections.excludeId()))
+                .first();
 
-            Document user = usersCollection.find(eq("username", username))
-                    .projection(Projections.fields(Projections.include("token"), Projections.excludeId()))
-                    .first();
-
-            String token = user.getString("token");
-            return token;
-        }
+        String token = user.getString("token");
+        return token;
     }
 
     /**
@@ -135,16 +129,13 @@ public class DatabaseFunctions {
      * @param token authentication token to be stored
      */
     public static void addUserToken(String username, String token) {
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
 
-            // Setup filter and upsert options so that usernames remain unique.
-            Bson filter = eq("username", username);
-            Bson updateOperation = set("token", token);
-            UpdateOptions options = new UpdateOptions().upsert(true);
-            userCollection.updateOne(filter, updateOperation, options);
-        }
+        // Setup filter and upsert options so that usernames remain unique.
+        Bson filter = eq("username", username);
+        Bson updateOperation = set("token", token);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        userCollection.updateOne(filter, updateOperation, options);
     }
 
     /**
@@ -154,14 +145,11 @@ public class DatabaseFunctions {
      * @param token Their current token.
      */
     public static void removeUserToken(String username, String token) {
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
+        MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
 
-            Bson deleteCondition = and(eq("username", username), eq("token", token));
+        Bson deleteCondition = and(eq("username", username), eq("token", token));
 
-            usersCollection.deleteOne(deleteCondition);
-        }
+        usersCollection.deleteOne(deleteCondition);
     }
 
     /**
@@ -173,34 +161,31 @@ public class DatabaseFunctions {
      * @return The total number of commits between startDate and endDate.
      */
     public static int numCommits(String username, LocalDate startDate, LocalDate endDate) {
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> usersCollection = gitlabDB.getCollection("commits");
+        MongoCollection<Document> usersCollection = gitlabDB.getCollection("commits");
 
-            int numTotalCommits = 0;
+        int numTotalCommits = 0;
 
-            List<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
+        List<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
 
-            /* Run through all dates in this list. For each of them, search the DB for that
-               user and that date, adding the # commits to the sum? */
+        /* Run through all dates in this list. For each of them, search the DB for that
+           user and that date, adding the # commits to the sum? */
 
-            for (LocalDate currentDate : datesToExamine) {
-                Document user = usersCollection.find(and(
-                        eq("username", username),
-                        eq("year", currentDate.getYear()),
-                        eq("month", currentDate.getMonthValue()),
-                        eq("day", currentDate.getDayOfMonth())))
-                        .projection(Projections.fields(Projections.include("num_commits")))
-                        .first();
+        for (LocalDate currentDate : datesToExamine) {
+            Document user = usersCollection.find(and(
+                    eq("username", username),
+                    eq("year", currentDate.getYear()),
+                    eq("month", currentDate.getMonthValue()),
+                    eq("day", currentDate.getDayOfMonth())))
+                    .projection(Projections.fields(Projections.include("num_commits")))
+                    .first();
 
-                if (user != null) {
-                    int numCommits = user.getInteger("num_commits").intValue();
-                    numTotalCommits += numCommits;
-                }
+            if (user != null) {
+                int numCommits = user.getInteger("num_commits").intValue();
+                numTotalCommits += numCommits;
             }
-
-            return numTotalCommits;
         }
+
+        return numTotalCommits;
     }
 
     /**
@@ -218,50 +203,44 @@ public class DatabaseFunctions {
             throw new IllegalArgumentException("numCommits param is negative in the setNumCommits() function");
         }
 
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> userCollection = gitlabDB.getCollection("commits");
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("commits");
 
-            int day = date.getDayOfMonth();
-            int month = date.getMonthValue();
-            int year = date.getYear();
+        int day = date.getDayOfMonth();
+        int month = date.getMonthValue();
+        int year = date.getYear();
 
-            Bson attributeValues = and(eq("username", username), eq("day", day),
-                    eq("month", month), eq("year", year));
+        Bson attributeValues = and(eq("username", username), eq("day", day),
+                eq("month", month), eq("year", year));
 
-            Bson updateOperation = set("num_commits", numCommits);
+        Bson updateOperation = set("num_commits", numCommits);
 
-            UpdateOptions options = new UpdateOptions().upsert(true);
-            userCollection.updateOne(attributeValues, updateOperation, options);
-        }
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        userCollection.updateOne(attributeValues, updateOperation, options);
     }
 
     public static int numMergeRequests(String username, LocalDate startDate, LocalDate endDate) {
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> usersCollection = gitlabDB.getCollection("mergeRequests");
+        MongoCollection<Document> usersCollection = gitlabDB.getCollection("mergeRequests");
 
-            int numTotalMergeRequests = 0;
+        int numTotalMergeRequests = 0;
 
-            List<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
+        List<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
 
-            for (LocalDate currentDate : datesToExamine) {
-                Document user = usersCollection.find(and(
-                        eq("username", username),
-                        eq("year", currentDate.getYear()),
-                        eq("month", currentDate.getMonthValue()),
-                        eq("day", currentDate.getDayOfMonth())))
-                        .projection(Projections.fields(Projections.include("num_merge_requests")))
-                        .first();
+        for (LocalDate currentDate : datesToExamine) {
+            Document user = usersCollection.find(and(
+                    eq("username", username),
+                    eq("year", currentDate.getYear()),
+                    eq("month", currentDate.getMonthValue()),
+                    eq("day", currentDate.getDayOfMonth())))
+                    .projection(Projections.fields(Projections.include("num_merge_requests")))
+                    .first();
 
-                if (user != null) {
-                    int numMergeRequests = user.getInteger("num_merge_requests").intValue();
-                    numTotalMergeRequests += numMergeRequests;
-                }
+            if (user != null) {
+                int numMergeRequests = user.getInteger("num_merge_requests").intValue();
+                numTotalMergeRequests += numMergeRequests;
             }
-
-            return numTotalMergeRequests;
         }
+
+        return numTotalMergeRequests;
     }
 
     public static void setNumMergeRequests(String username, LocalDate date,
@@ -270,21 +249,18 @@ public class DatabaseFunctions {
             throw new IllegalArgumentException("numMergeRequests param is negative in the setNumMergeRequests() function");
         }
 
-        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
-            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
-            MongoCollection<Document> userCollection = gitlabDB.getCollection("mergeRequests");
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("mergeRequests");
 
-            int day = date.getDayOfMonth();
-            int month = date.getMonthValue();
-            int year = date.getYear();
+        int day = date.getDayOfMonth();
+        int month = date.getMonthValue();
+        int year = date.getYear();
 
-            Bson attributeValues = and(eq("username", username), eq("day", day),
-                    eq("month", month), eq("year", year));
+        Bson attributeValues = and(eq("username", username), eq("day", day),
+                eq("month", month), eq("year", year));
 
-            Bson updateOperation = set("num_merge_requests", numMergeRequests);
+        Bson updateOperation = set("num_merge_requests", numMergeRequests);
 
-            UpdateOptions options = new UpdateOptions().upsert(true);
-            userCollection.updateOne(attributeValues, updateOperation, options);
-        }
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        userCollection.updateOne(attributeValues, updateOperation, options);
     }
 }
