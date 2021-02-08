@@ -185,14 +185,31 @@ public class DatabaseFunctions {
     }
 
     public static int numMergeRequests(String username, LocalDate startDate, LocalDate endDate) {
-        // Same idea as the numCommits() function, just for MRs.
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> usersCollection = gitlabDB.getCollection("mergeRequests");
 
-        int numTotalMergeRequests = 0;
+            int numTotalMergeRequests = 0;
 
-//        ArrayList<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates
-//                                              (startDate, endDate);
+            List<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
 
-        return numTotalMergeRequests;
+            for (LocalDate currentDate : datesToExamine) {
+                Document user = usersCollection.find(and(
+                        eq("username", username),
+                        eq("year", currentDate.getYear()),
+                        eq("month", currentDate.getMonthValue()),
+                        eq("day", currentDate.getDayOfMonth())))
+                        .projection(Projections.fields(Projections.include("num_merge_requests")))
+                        .first();
+
+                if (user != null) {
+                    int numMergeRequests = user.getInteger("num_merge_requests").intValue();
+                    numTotalMergeRequests += numMergeRequests;
+                }
+            }
+
+            return numTotalMergeRequests;
+        }
     }
 
     public static void setNumMergeRequests(String username, LocalDate date, int numMRs) {
