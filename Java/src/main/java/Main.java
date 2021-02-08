@@ -9,6 +9,7 @@ import main.java.ConnectToGitlab.Project.Project;
 import main.java.ConnectToGitlab.Project.ProjectController;
 import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.DatabaseFunctions;
+import main.java.Security.Authenticator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
@@ -44,9 +45,6 @@ public class Main {
             System.out.println(exception.getMessage());
         }
         SpringApplication.run(Main.class,args);
-
-        // test for database functions
-        System.out.println("\n\n"+DatabaseFunctions.retrieveUserToken("test")+"\n\n");
     }
 
     /**
