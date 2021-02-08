@@ -212,7 +212,27 @@ public class DatabaseFunctions {
         }
     }
 
-    public static void setNumMergeRequests(String username, LocalDate date, int numMRs) {
-        // Similar idea to the setNumCommits() function.
+    public static void setNumMergeRequests(String username, LocalDate date,
+                                           int numMergeRequests) throws IllegalArgumentException{
+        if (numMergeRequests < 0) {
+            throw new IllegalArgumentException("numMergeRequests param is negative in the setNumMergeRequests() function");
+        }
+
+        try (MongoClient mongoClient = MongoClients.create(mongoDBConnectionAddress)) {
+            MongoDatabase gitlabDB = mongoClient.getDatabase("gitlab");
+            MongoCollection<Document> userCollection = gitlabDB.getCollection("mergeRequests");
+
+            int day = date.getDayOfMonth();
+            int month = date.getMonthValue();
+            int year = date.getYear();
+
+            Bson attributeValues = and(eq("username", username), eq("day", day),
+                    eq("month", month), eq("year", year));
+
+            Bson updateOperation = set("num_merge_requests", numMergeRequests);
+
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            userCollection.updateOne(attributeValues, updateOperation, options);
+        }
     }
 }

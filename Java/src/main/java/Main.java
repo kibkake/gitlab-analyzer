@@ -48,13 +48,22 @@ public class Main {
         SpringApplication.run(Main.class,args);
 
         try {
-
             // test for database functions
             System.out.println("\n\n" + DatabaseFunctions.retrieveUserToken("test") + "\n\n");
 
             // DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 10, 15), 6);
-            System.out.println(DatabaseFunctions.numCommits("Bob", LocalDate.of(2020, 1, 1),
-                    LocalDate.of(2021, 1, 2)));
+            System.out.println("Bob's total commits: " +
+                               DatabaseFunctions.numCommits("Bob", LocalDate.of(2020, 1, 1),
+                               LocalDate.of(2021, 1, 2)));
+
+            DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 2);
+            DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 3);
+            // should overwrite.
+            DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 6, 20), 1);
+
+            System.out.println("Bob's total MRs from 2021: " +
+                               DatabaseFunctions.numMergeRequests("Bob", LocalDate.of(2021, 1, 1),
+                               LocalDate.of(2021, 12, 31)));
         }
         catch (IllegalArgumentException exception) {
             System.out.println(exception.getMessage());
