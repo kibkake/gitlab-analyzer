@@ -19,8 +19,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void createUser(String) {
-
+    public void createUserAccount(User user) {
+        userRepository.createUserAccount(user);
     }
 
+    public User retrieveUserInfo(String username) {
+        return userRepository.retrieveUserInfo(username);
+    }
 }

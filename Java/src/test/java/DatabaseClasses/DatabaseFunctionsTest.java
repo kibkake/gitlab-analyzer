@@ -1,5 +1,6 @@
 package test.java.DatabaseClasses;
 
+import main.java.ConnectToGitlab.User.User;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import main.java.DatabaseClasses.DatabaseFunctions;
@@ -59,8 +60,11 @@ public class DatabaseFunctionsTest{
                 pass: uss
                 token: DDG-37
          */
-
-        DatabaseFunctions.createUserAccount("Farragut","uss","DDG-37");
+        User user = new User();
+        user.setName("Farragut");
+        user.setPassword("uss");
+        user.setToken("DDG-37");
+        DatabaseFunctions.createUserAccount(user);
         String correctAnswer= "Farragut\nVFUUwPHbmuEztQ1FQ6IzJfxyV+OT9vvZatMKLUrOpRtndZfb1k7CI1b1i40NMcs6s9KNrmHNE3MgrFcEVq3S1A==\nDDG-37";
         assertEquals(correctAnswer,DatabaseFunctions.retrieveUserInfo("Farragut"));
     }

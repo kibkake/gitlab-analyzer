@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 
 //@RepositoryRestResource(collectionResourceRel = "users", path = "users")
 @Repository
-public interface UserRepository extends MongoRepository<User, String>, CustomUserRepository {
+public interface UserRepository extends MongoRepository<User, String>, UserRepositoryCustom {
 
-    void createUserAccount();
+    void createUserAccount(User user);
+
+    User retrieveUserInfo(String username);
 
 
 

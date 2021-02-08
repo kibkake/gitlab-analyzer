@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses;
 
+import main.java.ConnectToGitlab.User.User;
 import main.java.Security.Authenticator;
 
 import com.mongodb.client.MongoClient;
@@ -10,8 +11,6 @@ import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Projections;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
-import com.mongodb.client.model.Filters;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
@@ -65,8 +64,11 @@ public class DatabaseFunctions {
      * @param password the password for the account
      * @param token (optional) the token used to access gitlab api.
      */
-    public static void createUserAccount(String username, String password, String token){
+    public static void createUserAccount(User user){
         MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+        String username = user.getUsername();
+        String password = user.getPassword();
+        String token = user.getToken();
 
         // Setup filter and upsert options so that usernames remain unique.
         Bson filter = eq("username", username);
@@ -86,10 +88,15 @@ public class DatabaseFunctions {
      * @param username the unique username of the user
      * @return a line by line string of the entries of the username, encrypted password, and token from the database.
      */
-    public static String retrieveUserInfo(String username){
+    public static User retrieveUserInfo(String username){
         MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
-        Document user = userCollection.find(eq("username", username)).first();
-        return user.getString("username")+"\n"+user.getString("password")+"\n"+user.getString("token");
+        Document userDoc = userCollection.find(eq("username", username)).first();
+//        return user.getString("username")+"\n"+user.getString("password")+"\n"+user.getString("token");
+        User foundUser = new User();
+        foundUser.setUsername(userDoc.getString("username"));
+        foundUser.setPassword(userDoc.getString("password"));
+        foundUser.setToken(userDoc.getString("token"));
+        return foundUser;
     }
 
     /**

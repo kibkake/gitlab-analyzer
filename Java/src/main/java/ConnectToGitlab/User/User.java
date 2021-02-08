@@ -31,7 +31,7 @@ public class User {
         return singleton;
     }
 
-    private User() {
+    public User() {
     }
 
     private User(String serverUrl, String token, String name, String email) {
@@ -50,7 +50,7 @@ public class User {
     }
 
     public String getToken() {
-        return token;
+        return this.token;
     }
 
     public void setToken(String token) {
@@ -87,5 +87,26 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", serverUrl='" + serverUrl + '\'' +
+                ", token='" + token + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
