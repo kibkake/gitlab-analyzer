@@ -1,0 +1,53 @@
+.navbarItems{
+    background:darkcyan;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    font-size:1.2rem;
+
+}
+
+.navMenu{
+    display: grid;
+    grid-template-columns: repeat(5,auto);
+    grid-gap: 20px;
+    list-style: none;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.nav-links{
+    display: flex;
+    align-content: center;
+    padding:8px 8px 8xp 16px;
+}
+
+
+.nav-links a{
+    color: lightgray;
+    padding: 1rem 1rem;    
+    font-size: 20px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    padding: 5px 16px;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+}
+
+
+.nav-links a:hover{
+    background-color:darkturquoise ;
+    color: white;
+    height: 100%;
+    transition-duration: .5s;
+    
+
+}
+
+span{
+    margin-left: 7px;
+}

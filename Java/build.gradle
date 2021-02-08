@@ -39,6 +39,7 @@ application {
 test{
     useJUnit()
     testLogging.showStandardStreams = true
+    jvmArgs = ["-Djdk.tls.client.protocols=TLSv1.2"]
     failFast = true
 }
 

@@ -7,10 +7,12 @@ import main.java.DatabaseClasses.DatabaseFunctions;
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import java.time.Duration;
+import java.time.LocalDate;
 /**
  * JUnit test class to test DatabaseFunctions class
  */
-public class DatabaseFunctionTest{
+public class DatabaseFunctionsTest{
 
     /*
         inserted static code here to disable MongoDB driver console logging for normal events.
@@ -61,6 +63,32 @@ public class DatabaseFunctionTest{
         DatabaseFunctions.createUserAccount("Farragut","uss","DDG-37");
         String correctAnswer= "Farragut\nVFUUwPHbmuEztQ1FQ6IzJfxyV+OT9vvZatMKLUrOpRtndZfb1k7CI1b1i40NMcs6s9KNrmHNE3MgrFcEVq3S1A==\nDDG-37";
         assertEquals(correctAnswer,DatabaseFunctions.retrieveUserInfo("Farragut"));
+    }
+
+    /**
+     * test for setting the number of commits on certain dates, and getting
+     * the number of commits over a given period.
+     */
+    @Test
+    public void testNumCommits() {
+        DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 10, 15), 6);
+        DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 2, 3), 150);
+        assertEquals(156, DatabaseFunctions.numCommits("Bob", LocalDate.of(2020, 1, 1),
+                LocalDate.of(2021, 1, 2)));
+    }
+
+    /**
+     * test for setting the number of merge requests on certain dates, and getting
+     * the number of merge requests over a given period.
+     */
+    @Test
+    public void testNumMergeRequests() {
+        DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 2);
+        DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 3);
+        // should overwrite.
+        DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 6, 20), 1);
+        assertEquals(4, DatabaseFunctions.numMergeRequests("Bob", LocalDate.of(2021, 1, 1),
+                LocalDate.of(2021, 12, 31)));
     }
 }
 
