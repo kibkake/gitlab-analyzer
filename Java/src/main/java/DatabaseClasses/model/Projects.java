@@ -18,6 +18,9 @@ public class Projects {
     private List<MergedRequest> mergedRequestList;
     private List<Issue> IssueList;
 
+    public Projects() {
+    }
+
     public Projects (int projectId, String projectName, String created_at) {
         this.projectId = projectId;
         this.projectName = projectName;

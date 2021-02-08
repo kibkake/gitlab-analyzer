@@ -19,9 +19,12 @@ public class MongoDBConfig {
     CommandLineRunner commandLineRunner(ProjectsRepository projectsRepository) {
         return strings -> {
 
-            projectsRepository.save(new Projects(1, "Laine", "0206"));
-            System.out.println("hello");
+            Projects projectExample = new Projects();
 
+            projectsRepository.save(projectExample);
+            projectsRepository.save(new Projects(1, "Laine", "0206"));
+
+            System.out.println("hello");
             System.out.println(projectsRepository.findAll());
 
             // save methods for other data from api could be added more

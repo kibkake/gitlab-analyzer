@@ -18,8 +18,8 @@ public class Issue {
         this.issueId = issueId;
     }
 
-    public void setOpened(boolean opened) {
-        isOpened = opened;
+    public void setOpened(boolean isOpened) {
+        isOpened = isOpened;
     }
 
     public void setNoteOnIssueList(List<NoteOnIssue> noteOnIssueList) {

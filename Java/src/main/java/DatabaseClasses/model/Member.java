@@ -21,6 +21,9 @@ public class Member {
     private int notesOnMergeRequestPerDay;
     private int notesOnIssuePerDay;
 
+    public Member() {
+    }
+
     public Member(int memberId, String memberName) {
         this.memberId = memberId;
         this.memberName = memberName;
