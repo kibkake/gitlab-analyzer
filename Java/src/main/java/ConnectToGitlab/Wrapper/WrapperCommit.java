@@ -45,7 +45,7 @@ public class WrapperCommit {
      * Retrieves a particular commit's diffs.
      * @param token the token provided by user of the class.
      * @param projectId the id of the repository.
-     * @param token the hash of the commit.
+     * @param commitHash the hash of the commit.
      */
     private void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
