@@ -13,8 +13,8 @@ export const MenuItems=[
     {
 
 
-        title: 'Students',
-        url: '/Students',
+        title: 'Developers',
+        url: '/Developers',
         cName: 'nav-links',
         icon: <HiIcons.HiOutlineUserGroup/>
     },
