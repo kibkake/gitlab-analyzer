@@ -11,6 +11,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * This class includes all of the important data about a merged merge request, including
+ * commits and notes. This class also has a list of its own merge diffs. These diffs represent
+ * the changes that the merge request made to the master branch (branch it was merged into).
+ */
 public class WrapperMergedMergeRequest {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
@@ -39,8 +44,13 @@ public class WrapperMergedMergeRequest {
         getSingleMergedMergeRequestCommits(token);
         getSingleMergedMergeRequestChanges(token);
         calculateCommitScore();
+        getMergeNotes(token);
     }
 
+    /**
+     * Retrieves a single merged merge request from the server.
+     * @param token the token provided by user of the class.
+     */
     private void getSingleMergedMergeRequestCommits(String token) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/commits" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -74,6 +84,10 @@ public class WrapperMergedMergeRequest {
         }
     }
 
+    /**
+     * Retrieves notes belonging to a merged merge request
+     * @param token the token provided by user of the class.
+     */
     private void getMergeNotes(String token) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/notes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -107,6 +121,10 @@ public class WrapperMergedMergeRequest {
         }
     }
 
+    /**
+     * Converts an iso 8601 date into simple year, month, and day ints.
+     * @param isoDate the date in iso 8601 format
+     */
     private int[] parsIsoDate(String isoDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
@@ -122,6 +140,10 @@ public class WrapperMergedMergeRequest {
         return result;
     }
 
+    /**
+     * Retrieves the changes made by a single merged merge request.
+     * @param token the token provided by user of the class.
+     */
     private void getSingleMergedMergeRequestChanges(String token) throws IOException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/changes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
@@ -160,6 +182,10 @@ public class WrapperMergedMergeRequest {
         }
     }
 
+    /**
+     * Calculates the commit score by adding up all the scores from
+     * commit diffs.
+     */
     private void calculateCommitScore() {
         for(int i = 0; i < MERGE_DIFFS.size(); i++){
             MERGE_SCORE += MERGE_DIFFS.get(i).getScore();
