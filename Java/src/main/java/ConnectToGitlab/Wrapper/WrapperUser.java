@@ -14,12 +14,14 @@ public class WrapperUser {
     private final List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS = new ArrayList<>();
     private final List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
     private double commitScore = 0.0;
-
+    private double issueScore = 0.0;
 
     public WrapperUser(String name, WrapperProject project) {
         this.NAME = name;
         getUserMergedMergeRequest(project);
         getUserIssues(project);
+        calculateUserCommitScore();
+        calculateUserIssueScore();
     }
 
     /**
@@ -152,8 +154,21 @@ public class WrapperUser {
             for (int j = 0; j < MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().size(); j++) {
                 commitScore += MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().get(j).getCommitScore();
             }
+            for (int k = 0; k < MERGED_MERGE_REQUESTS.get(i).getNotes().size(); k++) {
+                issueScore += MERGED_MERGE_REQUESTS.get(i).getNotes().get(k).getScore();
+            }
         }
     }
 
-
+    /**
+     * Adds up and calculates the score from all user notes in the repository that are in merged
+     * merge request.
+     */
+    private void calculateUserIssueScore() {
+        for(int i = 0; i < ALL_ISSUES.size(); i++) {
+            for (int j = 0; j < ALL_ISSUES.get(i).getNotes().size(); j++) {
+                issueScore += ALL_ISSUES.get(i).getNotes().get(j).getScore();
+            }
+        }
+    }
 }
