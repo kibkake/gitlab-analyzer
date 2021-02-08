@@ -159,13 +159,6 @@ public class Commit {
         this.stats = stats;
     }
 
-    //https://stackoverflow.com/questions/122105/what-is-the-best-way-to-filter-a-java-collection/1385698
-    public static List<Commit>getCommitByUser(List<Commit> commits, String userName) {
-        List<Commit> filteredCommits = commits.stream()
-                .filter(p -> p.getAuthor_name().equals(userName)).collect(Collectors.toList());
-        return filteredCommits;
-    }
-
     public double getCommitScore() {
         int additions = stats.getAdditions();
         int deletions = stats.getDeletions();
