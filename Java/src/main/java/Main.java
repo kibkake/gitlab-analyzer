@@ -5,6 +5,8 @@ import main.java.ConnectToGitlab.Commit.CommitController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
 import main.java.ConnectToGitlab.Developer.Developer;
 import main.java.ConnectToGitlab.Developer.DeveloperController;
+import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
+import main.java.ConnectToGitlab.MergeRequests.MergeRequestController;
 import main.java.ConnectToGitlab.Project.Project;
 import main.java.ConnectToGitlab.Project.ProjectController;
 import main.java.ConnectToGitlab.User;
@@ -47,6 +49,15 @@ public class Main {
             System.out.println(exception.getMessage());
         }
         SpringApplication.run(Main.class,args);
+
+        List<MergeRequest> mrs = MergeRequestController.getProjectMergeRequests(6, "2021-01-01",
+                "2021-02-01");
+//        System.out.println(mrs);
+
+        List<Developer> devs = DeveloperController.getDevelopers();
+        Developer testDevs = devs.get(4);
+        List<MergeRequest> mergeRequests = testDevs.getDevMergeRequests(mrs);
+        System.out.println(mergeRequests);
     }
 
     /**
