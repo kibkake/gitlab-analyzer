@@ -64,7 +64,6 @@ public class Main {
         List<MergeRequest> mergeRequests = testDevs.getDevMergeRequests(mrs);
         System.out.println(mergeRequests);
 
-
     }
 
     /**
@@ -92,9 +91,11 @@ public class Main {
             // indicate running status
             System.out.println("Server broadcasting on localhost:8080");
 
-            // functions for testing DB cloud connection
-            Projects projects = new Projects(4, "Testing1");
 
+            // simple testing for DB cloud connection
+            // after running this, you can see the projects collection under gitlab db has this component
+            // after saving the object, should comment out the save function so there won't be duplicate
+            Projects projects = new Projects(4, "Testing1");
             projectRepository.save(projects);
             System.out.println(projectRepository.findAll());
         };
