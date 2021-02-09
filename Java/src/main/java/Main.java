@@ -1,5 +1,7 @@
 package main.java;
 
+import DatabaseClasses.model.Projects;
+import DatabaseClasses.repository.ProjectRepository;
 import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Commit.CommitController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
@@ -13,6 +15,7 @@ import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.DatabaseFunctions;
 import main.java.Security.Authenticator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
@@ -32,6 +35,9 @@ import java.time.LocalDate;
  */
 @SpringBootApplication
 public class Main {
+
+    @Autowired
+    ProjectRepository projectRepository;
 
     /**
      * This is the main method for running Spring Boot
@@ -58,6 +64,8 @@ public class Main {
         Developer testDevs = devs.get(4);
         List<MergeRequest> mergeRequests = testDevs.getDevMergeRequests(mrs);
         System.out.println(mergeRequests);
+
+
     }
 
     /**
@@ -84,6 +92,9 @@ public class Main {
 
             // indicate running status
             System.out.println("Server broadcasting on localhost:8080");
+
+            Projects projects = new Projects(1, "Laine");
+            projectRepository.save(projects);
         };
     }
 }
