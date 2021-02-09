@@ -1,7 +1,7 @@
-package DatabaseClasses.model.data;
+package main.java.DatabaseClasses.model.data;
 
-import DatabaseClasses.model.data.Issue;
-import DatabaseClasses.model.data.MergedRequest;
+import main.java.DatabaseClasses.model.data.Issue;
+import main.java.DatabaseClasses.model.data.MergedRequest;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
