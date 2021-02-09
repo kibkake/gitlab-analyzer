@@ -1,0 +1,36 @@
+.repoButton{
+    width: 1000px;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    position: relative;
+    top: 10px;
+    font-size: 18px;
+    background-color: transparent;
+    border-left: none;
+    border-right: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+.repoButton:hover {
+    border: none;
+}
+
+.repoButton .projectTag{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.repoButton .ownerTag{
+    font-size: 15px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.repoButton .ownerName{
+    font-size: 15px;
+    text-align: right;
+}
+

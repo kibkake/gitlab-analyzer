@@ -8,7 +8,7 @@
   
 ### You may choose to run this with IntelliJ as well but you must add the necessary libraries:
   
-+ org.mongodb:mongo-java-driver:3.11.0
++ org.mongodb:mongo-java-driver:3.12.7
 + org.gitlab:java-gitlab-api:4.0.0
 + org.springframework.boot:spring-boot-starter-web:2.2.0.RELEASE
 + org.projectlombok:lombok:1.18.16
