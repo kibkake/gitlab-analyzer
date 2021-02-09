@@ -1,5 +1,6 @@
 package test.java.DatabaseClasses;
 
+import main.java.DatabaseClasses.DatabaseFunctions;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -27,8 +28,8 @@ public class DatabaseFunctionsTest{
     @Test
     public void testTokens(){
         // test add and read tokens
-        DatabaseClasses.DatabaseFunctions.addUserToken("test","gklP3oD95mxDs2lFk6Hy4");
-        assertEquals("gklP3oD95mxDs2lFk6Hy4", DatabaseClasses.DatabaseFunctions.retrieveUserToken("test"));
+        DatabaseFunctions.addUserToken("test","gklP3oD95mxDs2lFk6Hy4");
+        assertEquals("gklP3oD95mxDs2lFk6Hy4", DatabaseFunctions.retrieveUserToken("test"));
     }
 
     /**
@@ -42,10 +43,10 @@ public class DatabaseFunctionsTest{
          */
 
         // Testing wrong password = thegrayghost
-        assertFalse(DatabaseClasses.DatabaseFunctions.isUserAuthenticated("Enterprise","thegrayghost"));
+        assertFalse(DatabaseFunctions.isUserAuthenticated("Enterprise","thegrayghost"));
 
         // Testing correct password = thegreyghost
-        assertTrue(DatabaseClasses.DatabaseFunctions.isUserAuthenticated("Enterprise","thegreyghost"));
+        assertTrue(DatabaseFunctions.isUserAuthenticated("Enterprise","thegreyghost"));
     }
 
     /**
@@ -59,9 +60,9 @@ public class DatabaseFunctionsTest{
                 token: DDG-37
          */
 
-        DatabaseClasses.DatabaseFunctions.createUserAccount("Farragut","uss","DDG-37");
+        DatabaseFunctions.createUserAccount("Farragut","uss","DDG-37");
         String correctAnswer= "Farragut\nVFUUwPHbmuEztQ1FQ6IzJfxyV+OT9vvZatMKLUrOpRtndZfb1k7CI1b1i40NMcs6s9KNrmHNE3MgrFcEVq3S1A==\nDDG-37";
-        assertEquals(correctAnswer, DatabaseClasses.DatabaseFunctions.retrieveUserInfo("Farragut"));
+        assertEquals(correctAnswer, DatabaseFunctions.retrieveUserInfo("Farragut"));
     }
 
     /**
@@ -70,9 +71,9 @@ public class DatabaseFunctionsTest{
      */
     @Test
     public void testNumCommits() {
-        DatabaseClasses.DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 10, 15), 6);
-        DatabaseClasses.DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 2, 3), 150);
-        assertEquals(156, DatabaseClasses.DatabaseFunctions.numCommits("Bob", LocalDate.of(2020, 1, 1),
+        DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 10, 15), 6);
+        DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 2, 3), 150);
+        assertEquals(156, DatabaseFunctions.numCommits("Bob", LocalDate.of(2020, 1, 1),
                 LocalDate.of(2021, 1, 2)));
     }
 
@@ -82,11 +83,11 @@ public class DatabaseFunctionsTest{
      */
     @Test
     public void testNumMergeRequests() {
-        DatabaseClasses.DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 2);
-        DatabaseClasses.DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 3);
+        DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 2);
+        DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 3);
         // should overwrite.
-        DatabaseClasses.DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 6, 20), 1);
-        assertEquals(4, DatabaseClasses.DatabaseFunctions.numMergeRequests("Bob", LocalDate.of(2021, 1, 1),
+        DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 6, 20), 1);
+        assertEquals(4, DatabaseFunctions.numMergeRequests("Bob", LocalDate.of(2021, 1, 1),
                 LocalDate.of(2021, 12, 31)));
     }
 }

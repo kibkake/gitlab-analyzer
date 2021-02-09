@@ -92,8 +92,8 @@ public class Main {
             System.out.println("Server broadcasting on localhost:8080");
 
 
-            // simple testing for DB cloud connection
-            // after running this, you can see the projects collection under gitlab db has this component
+            // very simple testing for DB cloud connection
+            // after running this, you can see the projects collection under gitlab db was created with this component
             // after saving the object, should comment out the save function so there won't be duplicate
             Projects projects = new Projects(4, "Testing1");
             projectRepository.save(projects);
