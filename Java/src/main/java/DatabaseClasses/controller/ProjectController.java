@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 //@CrossOrigin
 @RestController("ProjectController")
-//@RequestMapping("git/")
+@RequestMapping("git/")
 public class ProjectController {
 
     @Autowired
