@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-/**
- * This class manages API mapping for functions to be called from frontend.
- * (All functions used for mapping should be placed here, except user authentication collection data.)
- */
-@CrossOrigin
-@RestController
-@RequestMapping("git/")
+//@CrossOrigin
+@RestController("ProjectController")
+//@RequestMapping("git/")
 public class ProjectController {
 
     @Autowired
@@ -23,21 +23,17 @@ public class ProjectController {
         this.projectsRepository = projectsRepository;
     }
 
-
-    // Just a couple of examples with querying, should be changed
-
-    // Example of getting projects only with field of name, not tested
     @GetMapping("projects")
-    @Query(fields="{'name' : 1}")
+    @Query(fields="{'name' : 1, 'created_at' : 1}")
     public List<Projects> getAllProjects() {
         return projectsRepository.findAll();
     }
 
-    // Example of getting projects by id, hasn't tested
     @GetMapping("projects/{projectId}")
     @Query(fields="{'memberList' : 1}")
     public List<Projects> getAllMembersOfSingleProject(@RequestParam int projectId) {
-        return projectsRepository.findByIdContaining(projectId);
+        return projectsRepository.findByProjectId(projectId);
     }
 
 }
+

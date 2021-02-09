@@ -10,8 +10,8 @@ import java.util.List;
 public class Projects {
 
     @Id
-    private int PROJECT_ID;
-    private String PROJECT_NAME;
+    private int projectId;
+    private String projectName;
     private List<MergedRequest> MERGED_MERGE_REQUESTS;
     private List<Issue> ALL_ISSUES;
 
@@ -20,39 +20,39 @@ public class Projects {
     }
 
     public Projects(int PROJECT_ID, String PROJECT_NAME) {
-        this.PROJECT_ID = PROJECT_ID;
-        this.PROJECT_NAME = PROJECT_NAME;
+        this.projectId = PROJECT_ID;
+        this.projectName = PROJECT_NAME;
     }
 
     public Projects(int PROJECT_ID, String PROJECT_NAME,
                     List<MergedRequest> MERGED_MERGE_REQUESTS, List<Issue> ALL_ISSUES) {
-        this.PROJECT_ID = PROJECT_ID;
-        this.PROJECT_NAME = PROJECT_NAME;
+        this.projectId = PROJECT_ID;
+        this.projectName = PROJECT_NAME;
         this.MERGED_MERGE_REQUESTS = MERGED_MERGE_REQUESTS;
         this.ALL_ISSUES = ALL_ISSUES;
     }
 
     public int getPROJECT_ID() {
-        return PROJECT_ID;
+        return projectId;
     }
 
     public void setPROJECT_ID(int PROJECT_ID) {
-        this.PROJECT_ID = PROJECT_ID;
+        this.projectId = PROJECT_ID;
     }
 
     public String getPROJECT_NAME() {
-        return PROJECT_NAME;
+        return projectName;
     }
 
     public void setPROJECT_NAME(String PROJECT_NAME) {
-        this.PROJECT_NAME = PROJECT_NAME;
+        this.projectName = PROJECT_NAME;
     }
 
     @Override
     public String toString() {
         return "Projects{" +
-                "PROJECT_ID=" + PROJECT_ID +
-                ", PROJECT_NAME='" + PROJECT_NAME + '\'' +
+                "PROJECT_ID=" + projectId +
+                ", PROJECT_NAME='" + projectName + '\'' +
                 '}';
     }
 }
