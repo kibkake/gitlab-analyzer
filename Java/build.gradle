@@ -1,11 +1,11 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.springframework.boot' version '2.2.0.RELEASE'
+    id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
-version = '0.0.2-SNAPSHOT'
+version = '2.4.2'
 sourceCompatibility = '1.8'
 
 repositories {
@@ -19,6 +19,7 @@ dependencies {
     implementation 'org.gitlab:java-gitlab-api:4.1.1'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'com.google.code.gson:gson:2.8.5'
     testImplementation 'junit:junit:4.12'
     implementation 'junit:junit:4.12'
