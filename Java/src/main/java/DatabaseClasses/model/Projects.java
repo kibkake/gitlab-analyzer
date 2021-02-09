@@ -1,6 +1,7 @@
-package DatabaseClasses.model;
+package main.java.DatabaseClasses.model;
 
-import DatabaseClasses.model.data.*;
+import main.java.DatabaseClasses.model.data.Issue;
+import main.java.DatabaseClasses.model.data.MergedRequest;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

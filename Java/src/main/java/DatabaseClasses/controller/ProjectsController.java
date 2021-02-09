@@ -1,10 +1,11 @@
-package DatabaseClasses.controller;
+package main.java.DatabaseClasses.controller;
 
-import DatabaseClasses.model.Projects;
-import DatabaseClasses.repository.ProjectRepository;
+import main.java.DatabaseClasses.model.Projects;
+import main.java.DatabaseClasses.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -14,17 +15,17 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("git/")
-public class ProjectController {
+public class ProjectsController {
 
     @Autowired
     private static ProjectRepository projectsRepository;
 
-    public ProjectController(ProjectRepository projectsRepository) {
+    public ProjectsController(ProjectRepository projectsRepository) {
         this.projectsRepository = projectsRepository;
     }
 
 
-    // Just a couple of examples with querying, should be changed
+    // Just a couple of examples to show how querying works, should be changed
 
     // Example of getting projects only with field of name, not tested
     @GetMapping("projects")
