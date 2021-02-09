@@ -20,7 +20,6 @@ public class MongoDBConfig {
             Projects projectExample = new Projects();
 
             projectsRepository.save(projectExample);
-            projectsRepository.save(new Projects(1, "Laine", "0206"));
 
             System.out.println("hello");
             System.out.println(projectsRepository.findAll());

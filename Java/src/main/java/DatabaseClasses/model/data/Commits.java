@@ -4,38 +4,30 @@ import java.util.List;
 
 public class Commits {
 
-    private String commitShortId;
-    private String authorName;
-    private String title;
-    private List<CommitStat> commitStats;
-    private int created_at;
+    private String ID;
+    private String AUTHOR_NAME;
+    private String AUTHOR_EMAIL;
+    private String TITLE;
+    private int COMMIT_YEAR;
+    private int COMMIT_MONTH;
+    private int COMMIT_DAY;
+    private double commitScore;
+    private List<CommitDiff> COMMIT_DIFFS;
 
-    public Commits(String commitShortId, String authorName, String title,
-                   List<CommitStat> commitStats, int created_at) {
-        this.commitShortId = commitShortId;
-        this.authorName = authorName;
-        this.title = title;
-        this.commitStats = commitStats;
-        this.created_at = created_at;
+    public Commits() {
     }
 
-    public void setCommitShortId(String commitShortId) {
-        this.commitShortId = commitShortId;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setCommitStats(List<CommitStat> commitStats) {
-        this.commitStats = commitStats;
-    }
-
-    public void setCreated_at(int created_at) {
-        this.created_at = created_at;
+    public Commits(String ID, String AUTHOR_NAME, String AUTHOR_EMAIL, String TITLE,
+                   int COMMIT_YEAR, int COMMIT_MONTH, int COMMIT_DAY,
+                   double commitScore, List<CommitDiff> COMMIT_DIFFS) {
+        this.ID = ID;
+        this.AUTHOR_NAME = AUTHOR_NAME;
+        this.AUTHOR_EMAIL = AUTHOR_EMAIL;
+        this.TITLE = TITLE;
+        this.COMMIT_YEAR = COMMIT_YEAR;
+        this.COMMIT_MONTH = COMMIT_MONTH;
+        this.COMMIT_DAY = COMMIT_DAY;
+        this.commitScore = commitScore;
+        this.COMMIT_DIFFS = COMMIT_DIFFS;
     }
 }

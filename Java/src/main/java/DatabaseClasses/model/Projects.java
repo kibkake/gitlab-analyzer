@@ -4,44 +4,47 @@ import DatabaseClasses.model.data.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document (collection = "Projects")
 public class Projects {
 
     @Id
-    private int projectId;
-    private String projectName;
-    private String created_at;
-    private List<Member> memberList;
-    private List<Commits> commitsList;
-    private List<MergedRequest> mergedRequestList;
-    private List<Issue> IssueList;
+    private int PROJECT_ID;
+    private String PROJECT_NAME;
+    private List<MergedRequest> MERGED_MERGE_REQUESTS;
+    private List<Issue> ALL_ISSUES;
 
     public Projects() {
     }
 
-    public Projects (int projectId, String projectName, String created_at) {
-        this.projectId = projectId;
-        this.projectName = projectName;
-        this.created_at = created_at;
+    public Projects(int PROJECT_ID, String PROJECT_NAME) {
+        this.PROJECT_ID = PROJECT_ID;
+        this.PROJECT_NAME = PROJECT_NAME;
     }
 
-    public Projects (int projectId, String projectName, String created_at, List<Member> memberList) {
-        this.projectId = projectId;
-        this.projectName = projectName;
-        this.created_at = created_at;
-        this.memberList = memberList;
+    public Projects(int PROJECT_ID, String PROJECT_NAME,
+                    List<MergedRequest> MERGED_MERGE_REQUESTS, List<Issue> ALL_ISSUES) {
+        this.PROJECT_ID = PROJECT_ID;
+        this.PROJECT_NAME = PROJECT_NAME;
+        this.MERGED_MERGE_REQUESTS = MERGED_MERGE_REQUESTS;
+        this.ALL_ISSUES = ALL_ISSUES;
     }
 
-    public Projects (int projectId, String projectName, String created_at, List<Member> memberList,
-                     List<Commits> commitsList, List<MergedRequest> mergedRequestList, List<Issue> issueList) {
-        this.projectId = projectId;
-        this.projectName = projectName;
-        this.created_at = created_at;
-        this.memberList = memberList;
-        this.commitsList = commitsList;
-        this.mergedRequestList = mergedRequestList;
-        IssueList = issueList;
+    public int getPROJECT_ID() {
+        return PROJECT_ID;
+    }
+
+    public void setPROJECT_ID(int PROJECT_ID) {
+        this.PROJECT_ID = PROJECT_ID;
+    }
+
+    public String getPROJECT_NAME() {
+        return PROJECT_NAME;
+    }
+
+    public void setPROJECT_NAME(String PROJECT_NAME) {
+        this.PROJECT_NAME = PROJECT_NAME;
     }
 }
