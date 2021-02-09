@@ -1,25 +1,31 @@
 package main.java;
 
-import DatabaseClasses.model.Projects;
-import DatabaseClasses.repository.ProjectRepository;
+import main.java.ConnectToGitlab.Commit.Commit;
+import main.java.ConnectToGitlab.Commit.CommitController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
+import main.java.ConnectToGitlab.Developer.Developer;
+import main.java.ConnectToGitlab.Developer.DeveloperController;
+import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
+import main.java.ConnectToGitlab.MergeRequests.MergeRequestController;
+import main.java.ConnectToGitlab.Project.Project;
+import main.java.ConnectToGitlab.Project.ProjectController;
 import main.java.ConnectToGitlab.User;
+import main.java.DatabaseClasses.DatabaseFunctions;
+import main.java.Security.Authenticator;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.*;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.io.PrintWriter;
+import java.lang.IllegalArgumentException;
 import java.util.Arrays;
+import java.io.PrintWriter;
+import java.util.List;
+import java.time.LocalDate;
 
 /**
  * The main application that invokes SpringBoot's bootRun
@@ -44,17 +50,21 @@ public class Main {
         }
         SpringApplication.run(Main.class,args);
 
-        // uncommented because these are from the latest code before Mr
-//        List<MergeRequest> mrs = MergeRequestController.getProjectMergeRequests(6, "2021-01-01",
-//                "2021-02-01");
-////        System.out.println(mrs);
-//
-//        List<Developer> devs = DeveloperController.getDevelopers();
-//        Developer testDevs = devs.get(4);
-//        List<MergeRequest> mergeRequests = testDevs.getDevMergeRequests(mrs);
-//        System.out.println(mergeRequests);
+        List<MergeRequest> mrs = MergeRequestController.getProjectMergeRequests(6, "2021-01-01",
+                "2021-02-01");
+//        System.out.println(mrs);
+
+        List<Developer> devs = DeveloperController.getDevelopers();
+        Developer testDevs = devs.get(4);
+        List<MergeRequest> mergeRequests = testDevs.getDevMergeRequests(mrs);
+        System.out.println(mergeRequests);
     }
 
+    /**
+     * The following method is provided from spring.io and only prints information about beans created by our application
+     *
+     * @see  <a href="https://spring.io/guides/gs/spring-boot/">Spring IO</a>
+     */
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
@@ -74,8 +84,6 @@ public class Main {
 
             // indicate running status
             System.out.println("Server broadcasting on localhost:8080");
-
         };
     }
-
 }

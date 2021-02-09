@@ -1,7 +1,6 @@
 package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,23 +11,58 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
+/**
+ * This class includes all of the important data about a repository. Merged merge
+ * requests and repository issues are kept as objects in a list belonging to
+ * a project object.
+ */
 public class WrapperProject {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    private int gitlabProjectId;
-    private String gitlabProjectName;
-    private List<WrapperMergedMergeRequest> mergedMergeRequests = new ArrayList<>();
-    private List<WrapperCommit> allCommits = new ArrayList<>();
+    private final int PROJECT_ID;
+    private final String PROJECT_NAME;
+    private final List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS = new ArrayList<>();
+    //private final List<WrapperCommit> ALL_COMMITS = new ArrayList<>();
+    private final List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
 
-    public WrapperProject(String token, int gitlabProjectId, String gitlabProjectName) throws IOException, ParseException {
-        this.gitlabProjectId = gitlabProjectId;
-        this.gitlabProjectName = gitlabProjectName;
-        getMergedMergeRequests(token);
-        getAllCommitProjectCommits(token);
+    public WrapperProject(String token, int gitlabProjectId) throws IOException, ParseException {
+        this.PROJECT_ID = gitlabProjectId;
+        this.PROJECT_NAME = getProjectName(token);
+        getMergedMergeRequests(token,gitlabProjectId);
+        //getAllProjectCommits(token, gitlabProjectId);
+        getAllProjectIssues(token);
     }
 
-    private void getAllCommitProjectCommits(String token) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + gitlabProjectId + "/repository/commits" +  "?access_token=" + token);
+    /**
+     * Retrieves the name of a project using the project id.
+     * @param token the token provided by user of the class.
+     */
+    private String getProjectName(String token) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "?access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;
+        connection.disconnect();
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.fromJson(reply, JsonElement.class);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonPrimitive jsonPrimitiveProjectName = jsonObject.getAsJsonPrimitive("name");
+        return jsonPrimitiveProjectName.getAsString();
+    }
+
+    /**
+     * Retrieves all project commits, regardless of whether they were in a merge request or
+     * commited directly to master.
+     * @param token the token provided by user of the class.
+     * @param projectId the id of the project.
+     */
+    private void getAllProjectCommits(String token, int projectId) throws IOException, ParseException {
+        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/repository/commits" +  "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -56,14 +90,19 @@ public class WrapperProject {
             int [] parsedCommitDate = parsIsoDate(commitDate);
 
 
-            WrapperCommit commit = new WrapperCommit(commitId, authorName, authorEmail, title, parsedCommitDate[0],
+            WrapperCommit commit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title, parsedCommitDate[0],
                     parsedCommitDate[1],parsedCommitDate[2]);
-            allCommits.add(commit);
+            //ALL_COMMITS.add(commit);
         }
     }
 
-    private void getMergedMergeRequests(String token) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + gitlabProjectId + "/merge_requests?" + "state=merged&" + "access_token=" + token);
+    /**
+     * Retrieves all project merged merge request.
+     * @param token the token provided by user of the class.
+     * @param projectId the id of the project.
+     */
+    private void getMergedMergeRequests(String token, int projectId) throws IOException, ParseException {
+        URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged&" + "access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -91,18 +130,61 @@ public class WrapperProject {
             String mergeRequestTitle = jsonPrimitiveTitle.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestUntilDate);
 
-            WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(mergeRequestId,mergeRequestIid,
+            WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, mergeRequestId,mergeRequestIid,
                     mergeRequestProjectId, mergeRequestTitle, mergeDate[0], mergeDate[1], mergeDate[2]);
-            mergedMergeRequests.add(mergeRequest);
+            MERGED_MERGE_REQUESTS.add(mergeRequest);
         }
     }
 
-    public static int[] parsIsoDate(String isoDate) throws ParseException {
+    /**
+     * Retrieves all project issues.
+     * @param token the token provided by user of the class.
+     */
+    private void getAllProjectIssues(String token) throws IOException, ParseException {
+        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/issues" + "?access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+
+        //System.out.println(reply);
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        for(int i = 0; i< jsonArray.size(); i++) {
+            JsonElement jsonElement1 = jsonArray.get(i);
+            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveProjectId = jsonObject1.getAsJsonPrimitive("project_id");
+            int projectId = jsonPrimitiveProjectId.getAsInt();
+            JsonPrimitive jsonPrimitiveIssueIid = jsonObject1.getAsJsonPrimitive("iid");
+            int issueIid = jsonPrimitiveIssueIid.getAsInt();
+            JsonPrimitive jsonPrimitiveIssueId = jsonObject1.getAsJsonPrimitive("id");
+            int issueId = jsonPrimitiveIssueId.getAsInt();
+            JsonPrimitive jsonPrimitiveIssueTitle = jsonObject1.getAsJsonPrimitive("title");
+            String issueTitle = jsonPrimitiveIssueTitle.getAsString();
+            JsonObject jsonObjectAuthor = jsonObject1.getAsJsonObject("author");
+            JsonPrimitive jsonPrimitiveAuthorName = jsonObjectAuthor.getAsJsonPrimitive("username");
+            String authorName = jsonPrimitiveAuthorName.getAsString();
+            JsonPrimitive jsonPrimitiveIssueDate = jsonObject1.getAsJsonPrimitive("created_at");
+            String issueDate = jsonPrimitiveIssueDate.getAsString();
+            int [] issueDateParsed = parsIsoDate(issueDate);
+
+
+            WrapperIssue wrapperIssue = new WrapperIssue(token, projectId, issueId, issueIid, authorName, issueTitle,
+                    issueDateParsed[0], issueDateParsed[1], issueDateParsed[2]);
+            ALL_ISSUES.add(wrapperIssue);
+        }
+    }
+
+    /**
+     * Converts an iso 8601 date into simple year, month, and day ints.
+     * @param isoDate the date in iso 8601 format
+     */
+    private int[] parsIsoDate(String isoDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
-        //Date result1 = df1.parse("2024-01-24T23:55:59.000+00:00");
         Date result1 = df1.parse(isoDate);
-        //System.out.println(result1);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(result1);
@@ -114,40 +196,31 @@ public class WrapperProject {
         return result;
     }
 
-    public static HttpURLConnection makeConnection(URL url) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        return connection;
+    /**
+     * Creates a HttpURLConnection object
+     * @param url the url object containing the full address of th serve
+     */
+    private static HttpURLConnection makeConnection(URL url) throws IOException {
+        return (HttpURLConnection) url.openConnection();
     }
 
     public int getGitlabProjectId() {
-        return gitlabProjectId;
+        return PROJECT_ID;
     }
 
     public String getGitlabProjectName() {
-        return gitlabProjectName;
+        return PROJECT_NAME;
     }
 
     public List<WrapperMergedMergeRequest> getMergedMergeRequests() {
-        return mergedMergeRequests;
+        return MERGED_MERGE_REQUESTS;
     }
 
-    public List<WrapperCommit> getAllCommits() {
-        return allCommits;
-    }
+    /*public List<WrapperCommit> getAllCommits() {
+        return ALL_COMMITS;
+    }*/
 
-    public void setGitlabProjectId(int gitlabProjectId) {
-        this.gitlabProjectId = gitlabProjectId;
-    }
-
-    public void setGitlabProjectName(String gitlabProjectName) {
-        this.gitlabProjectName = gitlabProjectName;
-    }
-
-    public void setMergedMergeRequests(List<WrapperMergedMergeRequest> mergedMergeRequests) {
-        this.mergedMergeRequests = mergedMergeRequests;
-    }
-
-    public void setAllCommits(List<WrapperCommit> allCommits) {
-        this.allCommits = allCommits;
+    public List<WrapperIssue> getAllIssues() {
+        return ALL_ISSUES;
     }
 }
