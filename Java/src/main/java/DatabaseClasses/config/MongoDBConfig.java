@@ -1,27 +1,23 @@
 package main.java.DatabaseClasses.config;
 
-import main.java.DatabaseClasses.repository.ProjectRepository;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
-@EnableMongoRepositories(basePackageClasses = ProjectRepository.class)
 @Configuration
 public class MongoDBConfig {
+    private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
 
 
-    // This is a suggestion, if we set bean for this command lineRunner and
-    // Main implements commandline runner, we can hide all db functions in this class.
-    // Since current Main different structure, I didn't change it
+    public MongoClient mongoClient() {
+        return MongoClients.create(mongoDBConnectionAddress);
+    }
 
-
-    // @Bean
-//    CommandLineRunner commandLineRunner(ProjectRepository projectRepository) {
-//        return strings -> {
-
-//            projectRepository.save(projects);
-
-//            // save, and other methods for other data from api could be added more
-//        };
-//    }
-
+    public @Bean
+    MongoTemplate mongoTemplate() {
+        return new MongoTemplate(mongoClient(), "gitlab");
+    }
 }
+

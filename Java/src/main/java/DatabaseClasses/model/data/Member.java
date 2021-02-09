@@ -1,8 +1,5 @@
 package main.java.DatabaseClasses.model.data;
 
-
-import org.springframework.data.annotation.Id;
-
 import java.util.List;
 
 /**
@@ -12,7 +9,7 @@ import java.util.List;
  */
 public class Member {
 
-    private String NAME;
+    private String memberName;
     private List<MergedRequest> MERGED_MERGE_REQUESTS;
     private List<Issue> ALL_ISSUES;
     private double commitScore;
@@ -34,12 +31,12 @@ public class Member {
     }
 
     public Member(String NAME) {
-        this.NAME = NAME;
+        this.memberName = NAME;
     }
 
     public Member(String NAME, List<MergedRequest> MERGED_MERGE_REQUESTS,
                   List<Issue> ALL_ISSUES, double commitScore, double issueScore) {
-        this.NAME = NAME;
+        this.memberName = NAME;
         this.MERGED_MERGE_REQUESTS = MERGED_MERGE_REQUESTS;
         this.ALL_ISSUES = ALL_ISSUES;
         this.commitScore = commitScore;
@@ -50,7 +47,7 @@ public class Member {
                   double commitScore, double issueScore, int scoreOnMergeRequest, int numMergeRequest,
                   int numCommit, int numMergeRequestPerDay, int numCommitPerDay, int numWordsOnNotesForMR,
                   int numWordsOnNotesForIssue, int notesOnMergeRequestPerDay, int notesOnIssuePerDay) {
-        this.NAME = NAME;
+        this.memberName = NAME;
         this.MERGED_MERGE_REQUESTS = MERGED_MERGE_REQUESTS;
         this.ALL_ISSUES = ALL_ISSUES;
         this.commitScore = commitScore;
