@@ -18,7 +18,7 @@ public class CommitController {
 
     // Dates must be in YYYY-MM-DD
     // Dates must be between dates repo is open and must be dates that are not in the future from today
-    public static List<Commit> getProjectCommits(int projectId, String sinceYYYY_MM_DD, String untilYYYY_MM_DD) {
+    public static List<main.java.ConnectToGitlab.Commit.Commit> getProjectCommits(int projectId, String sinceYYYY_MM_DD, String untilYYYY_MM_DD) {
         User user = User.getInstance();
         //Example: 2021-01-01T00:00:00-08:00
         //-08:00 is offset from UTC

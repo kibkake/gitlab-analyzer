@@ -9,26 +9,26 @@ import main.java.ConnectToGitlab.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.*;
-import org.springframework.context.*;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 /**
  * The main application that invokes SpringBoot's bootRun
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"java"})
-public class Main implements CommandLineRunner{
+public class Main {
 
     @Autowired
     ProjectRepository projectRepository;
-
     /**
      * This is the main method for running Spring Boot
      *
@@ -46,7 +46,6 @@ public class Main implements CommandLineRunner{
         }
         SpringApplication.run(Main.class,args);
 
-
         // uncommented because these are from the latest code before Mr
 //        List<MergeRequest> mrs = MergeRequestController.getProjectMergeRequests(6, "2021-01-01",
 //                "2021-02-01");
@@ -58,59 +57,27 @@ public class Main implements CommandLineRunner{
 //        System.out.println(mergeRequests);
     }
 
+    @Bean
+    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+        return args -> {
 
-    @Override
-    public void run(String... args) throws Exception {
-        System.out.print("Exporting Beans to Log file...");
-        PrintWriter writer = new PrintWriter("log.txt");
+            System.out.print("Exporting Beans to Log file...");
+            PrintWriter writer = new PrintWriter("log.txt");
 
-//        String[] beanNames = ctx.getBeanDefinitionNames();
-//        Arrays.sort(beanNames);
-//        for (String beanName : beanNames) {
-//            writer.write(beanName);
-//        }
-//        writer.flush();
-//        writer.close();
+            String[] beanNames = ctx.getBeanDefinitionNames();
+            Arrays.sort(beanNames);
+            for (String beanName : beanNames) {
+                writer.write(beanName);
+            }
+            writer.flush();
+            writer.close();
 
-        System.out.println("done");
+            System.out.println("done");
 
-        // indicate running status
-        System.out.println("Server broadcasting on localhost:8080");
+            // indicate running status
+            System.out.println("Server broadcasting on localhost:8080");
 
-
-        Projects projectExample = new Projects(1, "ds");
-
-        projectRepository.save(projectExample);
+        };
     }
-
-//    @Bean
-//    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-//        return args -> {
-//
-//            System.out.print("Exporting Beans to Log file...");
-//            PrintWriter writer = new PrintWriter("log.txt");
-//
-//            String[] beanNames = ctx.getBeanDefinitionNames();
-//            Arrays.sort(beanNames);
-//            for (String beanName : beanNames) {
-//                writer.write(beanName);
-//            }
-//            writer.flush();
-//            writer.close();
-//
-//            System.out.println("done");
-//
-//            // indicate running status
-//            System.out.println("Server broadcasting on localhost:8080");
-//
-//
-//            Projects projectExample = new Projects(1, "ds");
-//
-//            projectRepository.save(projectExample);
-//
-//
-//        };
-//    }
-//
 
 }

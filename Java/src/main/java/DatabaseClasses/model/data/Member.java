@@ -1,4 +1,4 @@
-package DatabaseClasses.model;
+package DatabaseClasses.model.data;
 
 import DatabaseClasses.model.data.Issue;
 import DatabaseClasses.model.data.MergedRequest;

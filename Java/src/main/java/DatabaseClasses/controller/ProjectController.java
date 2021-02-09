@@ -5,11 +5,8 @@ import DatabaseClasses.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
@@ -17,27 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProjectController {
 
     @Autowired
-    private static ProjectRepository projectRepository;
+    private static ProjectRepository projectsRepository;
 
-    public ProjectController (ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+    public ProjectController(ProjectRepository projectsRepository) {
+        this.projectsRepository = projectsRepository;
     }
 
+    // Example of getting projects only with field of name, not tested
     @GetMapping("projects")
-    @Query(fields="{'name' : 1, 'created_at' : 1}")
+    @Query(fields="{'name' : 1}")
     public List<Projects> getAllProjects() {
-        return projectRepository.findAll();
+        return projectsRepository.findAll();
     }
 
+    // Example of getting projects by id, hasn't tested
     @GetMapping("projects/{projectId}")
     @Query(fields="{'memberList' : 1}")
     public List<Projects> getAllMembersOfSingleProject(@RequestParam int projectId) {
-        return projectRepository.findByIdContaining(projectId);
+        return projectsRepository.findByIdContaining(projectId);
     }
 
-//    @GetMapping("projects/{projectId}/{memberList.memberName}")
-//    @Query(fields="{'scoreOnMergeRequest' :1, 'scoreCommit' :1 }")
-//    public List<Member> getMemberStatsOnCode(@RequestParam String memberName) {
-//        return projectsRepository.findMemberByMemberNameIs(memberName);
-//    }
 }
