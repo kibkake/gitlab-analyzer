@@ -92,13 +92,10 @@ public class Main {
             // indicate running status
             System.out.println("Server broadcasting on localhost:8080");
 
-            // functions for DB cloud
-            Projects projects = new Projects(1, "Laine");
-            Projects projects1 = new Projects(2, "Test");
+            // functions for testing DB cloud connection
+            Projects projects = new Projects(4, "Testing1");
 
-////            projectRepository.save(projects);
-//            projectRepository.save(projects1);
-
+            projectRepository.save(projects);
             System.out.println(projectRepository.findAll());
         };
     }
