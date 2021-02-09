@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {MenuItems} from "./MenuItems";
 import {Link} from 'react-router-dom';
+import {AiOutlineHome} from 'react-icons/ai';
 
 import './Navbar.css';
 
@@ -8,8 +9,11 @@ class Navbar extends Component{
     render(){
         return(
             <nav className="navbarItems">
-                <div className="navbarContainer">
+                <div>
 
+                    <Link to='/Home' className='nav-icon'>
+                        <AiOutlineHome size={30} />
+                    </Link>
                 </div>
                 <ul className='navMenu'>
                     {MenuItems.map((item,index)=>{
@@ -23,6 +27,8 @@ class Navbar extends Component{
                         )
                     })}
                 </ul>
+                <div>
+                </div>
             </nav>
         )
     }
