@@ -3,6 +3,8 @@ package DatabaseClasses.repository;
 import DatabaseClasses.model.Projects;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
+
 /*
  This interface connects Spring app to MongoDB.
 
@@ -11,5 +13,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  without implementing these methods, in addition to our own defined methods
  */
 public interface ProjectRepository extends MongoRepository <Projects, Integer> {
-
+    List<Projects> findByIdContaining(int id);
+    // More functions can be added more here, or a new implementation class could be added
 }

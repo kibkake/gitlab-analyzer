@@ -5,9 +5,12 @@ import DatabaseClasses.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+/**
+ * This class manages API mapping for functions to be called from frontend.
+ * (All functions used for mapping should be placed here, except user authentication collection data.)
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("git/")
@@ -19,6 +22,9 @@ public class ProjectController {
     public ProjectController(ProjectRepository projectsRepository) {
         this.projectsRepository = projectsRepository;
     }
+
+
+    // Just a couple of examples with querying, should be changed
 
     // Example of getting projects only with field of name, not tested
     @GetMapping("projects")

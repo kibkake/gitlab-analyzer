@@ -27,8 +27,6 @@ import java.util.Arrays;
 @SpringBootApplication
 public class Main {
 
-    @Autowired
-    ProjectRepository projectRepository;
     /**
      * This is the main method for running Spring Boot
      *
