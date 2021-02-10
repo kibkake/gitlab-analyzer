@@ -1,22 +1,22 @@
 package main.java.ConnectToGitlab.Commit;
 
 public class CommitDiffs {
-    private final String NEW_PATH;
-    private final String OLD_PATH;
-    private final boolean NEW_FILE;
-    private final boolean RENAMED_FILE;
-    private final boolean DELETED_FILE;
-    private final String DIFF;
-    private final double SCORE;
+    private String new_path;
+    private String old_path;
+    private boolean new_file;
+    private boolean renamed_file;
+    private boolean deleted_file;
+    private String diff;
+    private double score;
 
-    public WrapperCommitDiff(String newPath, String oldPath, boolean newFile, boolean renamedFile, boolean deletedFile, String diff) {
-        this.NEW_PATH = newPath;
-        this.OLD_PATH = oldPath;
-        this.NEW_FILE = newFile;
-        this.RENAMED_FILE = renamedFile;
-        this.DELETED_FILE = deletedFile;
-        this.DIFF = diff;
-        SCORE = calculateCommitScoreSingleDiff(diff);
+    public CommitDiffs(String new_path, String old_path, boolean new_file, boolean renamed_file, boolean deleted_file, String diff, double score) {
+        this.new_path = new_path;
+        this.old_path = old_path;
+        this.new_file = new_file;
+        this.renamed_file = renamed_file;
+        this.deleted_file = deleted_file;
+        this.diff = diff;
+        this.score = score;
     }
 
     /**
@@ -52,31 +52,59 @@ public class CommitDiffs {
         return Math.round(score * 100.0) / 100.0;
     }
 
-    public String getNewPath() {
-        return NEW_PATH;
+    public String getNew_path() {
+        return new_path;
     }
 
-    public String getOldPath() {
-        return OLD_PATH;
+    public void setNew_path(String new_path) {
+        this.new_path = new_path;
     }
 
-    public boolean isNewFile() {
-        return NEW_FILE;
+    public String getOld_path() {
+        return old_path;
     }
 
-    public boolean isRenamedFile() {
-        return RENAMED_FILE;
+    public void setOld_path(String old_path) {
+        this.old_path = old_path;
     }
 
-    public boolean isDeletedFile() {
-        return DELETED_FILE;
+    public boolean isNew_file() {
+        return new_file;
+    }
+
+    public void setNew_file(boolean new_file) {
+        this.new_file = new_file;
+    }
+
+    public boolean isRenamed_file() {
+        return renamed_file;
+    }
+
+    public void setRenamed_file(boolean renamed_file) {
+        this.renamed_file = renamed_file;
+    }
+
+    public boolean isDeleted_file() {
+        return deleted_file;
+    }
+
+    public void setDeleted_file(boolean deleted_file) {
+        this.deleted_file = deleted_file;
     }
 
     public String getDiff() {
-        return DIFF;
+        return diff;
+    }
+
+    public void setDiff(String diff) {
+        this.diff = diff;
     }
 
     public double getScore() {
-        return SCORE;
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 }

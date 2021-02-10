@@ -1,6 +1,7 @@
 package main.java;
 
 import main.java.ConnectToGitlab.ConnectToGitlab;
+import main.java.DatabaseClasses.User.User;
 import main.java.DatabaseClasses.User.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,15 @@ public class Main {
      * @param args arguments to the main method
      */
     public static void main(String[] args){
-//        User user = User.getInstance();
-//        user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
-//        user.setToken("cFzzy7QFRvHzfHGpgrr1");
+        User user = User.getInstance();
+        user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
+        user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
-        try {
-            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
-        }catch(IOException | ParseException exception){
-            System.out.println(exception.getMessage());
-        }
+//        try {
+//            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
+//        }catch(IOException | ParseException exception){
+//            System.out.println(exception.getMessage());
+//        }
         SpringApplication.run(Main.class,args);
 
 //        List<MergeRequest> mrs = MergeRequestController.getProjectMergeRequests(6, "2021-01-01",

@@ -67,7 +67,8 @@ public class CommitController {
     }
 
     private void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
+        User user = User.getInstance();
+        URL url = new URL(user.getServerUrl() + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
