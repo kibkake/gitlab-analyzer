@@ -16,11 +16,12 @@ import java.util.List;
 
 public class ConnectToGitlab {
 
-    public static void connectGitlab(String token) throws IOException, ParseException {
+    public static WrapperProject connectGitlab(String token) throws IOException, ParseException {
         WrapperProject project = new WrapperProject(token, 6);
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(project);
-        System.out.println(jsonString);
+        return project;
+//        Gson gson = new Gson();
+//        String jsonString = gson.toJson(project);
+//        System.out.println(jsonString);
     }
 
     public static void testWrapperMethods(String token, WrapperProject project) throws IOException, ParseException {
