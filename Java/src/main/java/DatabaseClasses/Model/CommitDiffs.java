@@ -27,7 +27,7 @@ public class CommitDiffs {
 
     /**
      * Calculates the score from a diff string
-     * @param diff the actual string containing the changes made to the file
+     * the actual string containing the changes made to the file
      */
     public double calculateCommitScoreSingleDiff() {
         double score = 0.0;

@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.model.data;
+package main.java.DatabaseClasses.Model.data;
 
 public class CommitDiff {
 

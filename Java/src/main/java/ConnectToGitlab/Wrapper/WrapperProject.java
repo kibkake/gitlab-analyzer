@@ -1,6 +1,9 @@
 package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,9 +20,11 @@ import java.util.*;
  * requests and repository issues are kept as objects in a list belonging to
  * a project object.
  */
+//@Document(collection = "projects")
 public class WrapperProject {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
+//    @Id
     private final int PROJECT_ID;
     private final String PROJECT_NAME;
     private final List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS = new ArrayList<>();

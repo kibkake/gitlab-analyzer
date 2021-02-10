@@ -1,6 +1,4 @@
-package main.java.DatabaseClasses.model.data;
-
-import java.util.List;
+package main.java.DatabaseClasses.Model.data;
 
 public class Note {
     private int ID;

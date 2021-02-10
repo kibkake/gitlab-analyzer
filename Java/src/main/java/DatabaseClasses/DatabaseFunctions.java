@@ -10,12 +10,8 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.UpdateOptions;
 import main.java.Functions.LocalDateFunctions;
-import main.java.Security.Authenticator;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-
-import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Updates.*;
 
 import java.time.LocalDate;
 import java.util.List;

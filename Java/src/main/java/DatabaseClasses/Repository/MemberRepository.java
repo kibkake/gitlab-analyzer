@@ -1,6 +1,6 @@
-package main.java.DatabaseClasses.repository;
+package main.java.DatabaseClasses.Repository;
 
-import main.java.DatabaseClasses.model.data.Member;
+import main.java.DatabaseClasses.Model.data.Member;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
