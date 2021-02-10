@@ -1,4 +1,4 @@
-package test.java.Security;
+package test.Security;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

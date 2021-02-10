@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+
+// This memberRepository is not configured with documents & cloud.
+// If we don't make a separate collection, this controller should be removed at the next commit.
+
 @RestController("memberController")
 //@RequestMapping("git/")
 public class MemberController {
