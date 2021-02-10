@@ -9,8 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @Configuration
 public class AppConfig {
     private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
-
-
+    
     public MongoClient mongoClient() {
         return MongoClients.create(mongoDBConnectionAddress);
     }
