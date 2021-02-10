@@ -1,5 +1,10 @@
 package main.java.ConnectToGitlab.Commit;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
+import main.java.ConnectToGitlab.Wrapper.WrapperCommitDiff;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -29,6 +34,8 @@ public class Commit {
     private String web_url;
     //holds add, delete and total changes of a single commit
     private Stats stats;
+    private List<WrapperCommitDiff> diffs;
+    private Date date;
 
 //         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
 
@@ -179,6 +186,27 @@ public class Commit {
         int deletions = stats.getDeletions();
         double score = additions + (deletions * 0.2);
         return score;
+    }
+
+    public List<WrapperCommitDiff> getDiffs() {
+        return diffs;
+    }
+
+    public void setDiffs(List<WrapperCommitDiff> diffs) {
+        this.diffs = diffs;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) throws ParseException {
+        if(date == null) {
+            DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
+            df1.setTimeZone(TimeZone.getTimeZone("PT"));
+            Date dateInJavaData = df1.parse(this.committed_date);
+            this.date = dateInJavaData;
+        }
     }
 
     @Override
