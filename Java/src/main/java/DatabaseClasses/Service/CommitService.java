@@ -9,6 +9,9 @@ import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Communicates between rest endpoint and the database
+ */
 @Service
 public class CommitService {
     private final CommitRepository commitRepository;

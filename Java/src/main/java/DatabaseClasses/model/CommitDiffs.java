@@ -1,5 +1,8 @@
 package main.java.DatabaseClasses.model;
 
+/**
+ * Duplicate of the gitlab wrapperCommitDiff used by the controller to translate json and set its properties.
+ */
 public class CommitDiffs {
     private String new_path;
     private String old_path;

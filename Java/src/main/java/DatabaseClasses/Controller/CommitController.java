@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 /**
- * Calls to GitLab Api to get Commit information
+ * Calls to GitLab Api to get Commit information and sets up rest endpoints to get data from
  */
 @RestController
 @RequestMapping(path = "api/v1/")
