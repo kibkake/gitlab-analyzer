@@ -31,11 +31,11 @@ public class Main {
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
-//        try {
-//            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
-//        }catch(IOException | ParseException exception){
-//            System.out.println(exception.getMessage());
-//        }
+        try {
+            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
+        }catch(IOException | ParseException exception){
+            System.out.println(exception.getMessage());
+        }
         SpringApplication.run(Main.class,args);
     }
 
