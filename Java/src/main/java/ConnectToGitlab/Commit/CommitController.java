@@ -1,6 +1,8 @@
 package main.java.ConnectToGitlab.Commit;
+import com.google.gson.*;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
+import main.java.ConnectToGitlab.Wrapper.WrapperCommitDiff;
 import main.java.DatabaseClasses.User.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -11,7 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,6 +63,40 @@ public class CommitController {
             }
         } else {
             return commitService.getCommits(sinceYYYY_MM_DD, untilYYYY_MM_DD);
+        }
+    }
+
+    private void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+        //System.out.println(reply);
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        List<String> singleCommitDiffs = new ArrayList<>();
+        for(int i = 0; i< jsonArray.size(); i++){
+            JsonElement jsonElement1 = jsonArray.get(i);
+            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveNewPath = jsonObject1.getAsJsonPrimitive("new_path");
+            String newPath = jsonPrimitiveNewPath.getAsString();
+            JsonPrimitive jsonPrimitiveOldPath = jsonObject1.getAsJsonPrimitive("old_path");
+            String oldPath = jsonPrimitiveOldPath.getAsString();
+            JsonPrimitive jsonPrimitiveNewFile = jsonObject1.getAsJsonPrimitive("new_file");
+            boolean newFile = jsonPrimitiveNewFile.getAsBoolean();
+            JsonPrimitive jsonPrimitiveRenamedFile = jsonObject1.getAsJsonPrimitive("renamed_file");
+            boolean renamedFile = jsonPrimitiveRenamedFile.getAsBoolean();
+            JsonPrimitive jsonPrimitiveDeletedFile = jsonObject1.getAsJsonPrimitive("deleted_file");
+            boolean deletedFile = jsonPrimitiveDeletedFile.getAsBoolean();
+            JsonPrimitive jsonPrimitiveDiff = jsonObject1.getAsJsonPrimitive("diff");
+            String diff = jsonPrimitiveDiff.getAsString();
+            WrapperCommitDiff wrapperCommitDiff = new WrapperCommitDiff(newPath, oldPath, newFile, renamedFile,
+                    deletedFile, diff);
+            COMMIT_DIFFS.add(wrapperCommitDiff);
         }
     }
 
