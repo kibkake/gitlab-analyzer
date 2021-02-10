@@ -1,7 +1,6 @@
 package main.java.ConnectToGitlab;
 
 import org.gitlab.api.models.*;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 

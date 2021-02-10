@@ -20,21 +20,19 @@ import java.util.*;
  * requests and repository issues are kept as objects in a list belonging to
  * a project object.
  */
-@Document(collection = "Projects")
+//@Document(collection = "projects")
 public class WrapperProject {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    @Id
-    private  Integer projectId;
+//    @Id
+    private final int PROJECT_ID;
     private final String PROJECT_NAME;
     private final List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS = new ArrayList<>();
     //private final List<WrapperCommit> ALL_COMMITS = new ArrayList<>();
     private final List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
 
-
-
     public WrapperProject(String token, int gitlabProjectId) throws IOException, ParseException {
-        this.projectId = gitlabProjectId;
+        this.PROJECT_ID = gitlabProjectId;
         this.PROJECT_NAME = getProjectName(token);
         getMergedMergeRequests(token,gitlabProjectId);
         //getAllProjectCommits(token, gitlabProjectId);
@@ -46,7 +44,7 @@ public class WrapperProject {
      * @param token the token provided by user of the class.
      */
     private String getProjectName(String token) throws IOException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "?access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -69,7 +67,7 @@ public class WrapperProject {
      * @param projectId the id of the project.
      */
     private void getAllProjectCommits(String token, int projectId) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits" +  "?access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/repository/commits" +  "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -148,7 +146,7 @@ public class WrapperProject {
      * @param token the token provided by user of the class.
      */
     private void getAllProjectIssues(String token) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "/issues" + "?access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/issues" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -212,7 +210,7 @@ public class WrapperProject {
     }
 
     public int getGitlabProjectId() {
-        return projectId;
+        return PROJECT_ID;
     }
 
     public String getGitlabProjectName() {
@@ -230,6 +228,4 @@ public class WrapperProject {
     public List<WrapperIssue> getAllIssues() {
         return ALL_ISSUES;
     }
-
-
 }
