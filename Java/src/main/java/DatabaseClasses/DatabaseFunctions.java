@@ -1,6 +1,6 @@
 package main.java.DatabaseClasses;
 
-import main.java.DatabaseClasses.User.User;
+import main.java.DatabaseClasses.model.User;
 import main.java.Security.Authenticator;
 
 import com.mongodb.client.MongoClient;

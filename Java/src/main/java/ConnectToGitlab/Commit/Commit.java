@@ -34,7 +34,7 @@ public class Commit {
     private String web_url;
     //holds add, delete and total changes of a single commit
     private Stats stats;
-    private List<WrapperCommitDiff> diffs;
+    private List<CommitDiffs> diffs;
     private Date date;
 
 //         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
@@ -188,11 +188,11 @@ public class Commit {
         return score;
     }
 
-    public List<WrapperCommitDiff> getDiffs() {
+    public List<CommitDiffs> getDiffs() {
         return diffs;
     }
 
-    public void setDiffs(List<WrapperCommitDiff> diffs) {
+    public void setDiffs(List<CommitDiffs> diffs) {
         this.diffs = diffs;
     }
 

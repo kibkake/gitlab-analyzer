@@ -1,4 +1,6 @@
-package main.java.DatabaseClasses.User;
+package main.java.DatabaseClasses.Repository;
+
+import main.java.DatabaseClasses.model.User;
 
 /**
  * Is used to help integrate the custom functions that are already written working with UserRepository,

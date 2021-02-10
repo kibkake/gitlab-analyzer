@@ -1,8 +1,7 @@
 package main.java;
 
-import main.java.ConnectToGitlab.ConnectToGitlab;
-import main.java.DatabaseClasses.User.User;
-import main.java.DatabaseClasses.User.UserRepository;
+import main.java.DatabaseClasses.model.User;
+import main.java.DatabaseClasses.Repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -10,9 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.io.PrintWriter;
 
@@ -52,6 +50,8 @@ public class Main {
     @Autowired
     private UserRepository userRepository;
 
+
+
     /**
      * The following method is provided from spring.io and only prints information about beans created by our application
      *
@@ -78,4 +78,10 @@ public class Main {
             System.out.println("Server broadcasting on localhost:8080");
         };
     }
+
+    @Bean
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
 }
+

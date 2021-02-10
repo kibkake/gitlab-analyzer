@@ -1,6 +1,6 @@
 package test.java.DatabaseClasses;
 
-import main.java.DatabaseClasses.User.User;
+import main.java.DatabaseClasses.model.User;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import main.java.DatabaseClasses.DatabaseFunctions;
