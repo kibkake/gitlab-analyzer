@@ -2,6 +2,7 @@ package main.java.ConnectToGitlab.Commit;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 import main.java.ConnectToGitlab.Wrapper.WrapperCommitDiff;
@@ -200,12 +201,10 @@ public class Commit {
         return date;
     }
 
-    public void setDate(Date date) throws ParseException {
+    public void setDate(String date) throws ParseException {
         if(date == null) {
-            DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
-            df1.setTimeZone(TimeZone.getTimeZone("PT"));
-            Date dateInJavaData = df1.parse(this.committed_date);
-            this.date = dateInJavaData;
+            OffsetDateTime dateWithOffSet = OffsetDateTime.parse(committed_date);
+            this.date = Date.from(dateWithOffSet.toInstant());
         }
     }
 

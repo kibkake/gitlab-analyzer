@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CommitRepository  extends MongoRepository<Commit, String> {
-    public List<Commit> findByDateBetween(Date from, Date to);
+    List<Commit> findByDateBetween(Date from, Date to);
 
 }
