@@ -1,4 +1,4 @@
-package main.java.ConnectToGitlab.User;
+package main.java.DatabaseClasses.Model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

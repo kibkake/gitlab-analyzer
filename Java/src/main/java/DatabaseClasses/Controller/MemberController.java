@@ -1,14 +1,13 @@
-package main.java.DatabaseClasses.controller;
+package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.model.data.Member;
-import main.java.DatabaseClasses.repository.MemberRepository;
+import main.java.DatabaseClasses.Model.Data.Member;
+import main.java.DatabaseClasses.Repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-
 
 @RestController("memberController")
 //@RequestMapping("git/")

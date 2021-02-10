@@ -1,29 +1,16 @@
 package main.java;
 
 import main.java.ConnectToGitlab.ConnectToGitlab;
-import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Developer.DeveloperController;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequestController;
-import main.java.ConnectToGitlab.Project.Project;
-import main.java.ConnectToGitlab.Project.ProjectController;
-import main.java.ConnectToGitlab.User;
-import main.java.DatabaseClasses.model.Projects;
-import main.java.DatabaseClasses.repository.ProjectRepository;
-import main.java.Security.Authenticator;
-import main.java.ConnectToGitlab.User.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
+import main.java.DatabaseClasses.Model.User;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.context.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.Arrays;
-import java.io.PrintWriter;
 
 /**
  * The main application that invokes SpringBoot's bootRun

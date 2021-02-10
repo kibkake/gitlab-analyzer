@@ -1,5 +1,7 @@
-package main.java.ConnectToGitlab.User;
+package main.java.DatabaseClasses.Service;
 
+import main.java.DatabaseClasses.Model.User;
+import main.java.DatabaseClasses.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

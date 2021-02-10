@@ -1,8 +1,9 @@
-package main.java.ConnectToGitlab.User;
+package main.java.DatabaseClasses.Controller;
 
+import main.java.DatabaseClasses.Model.User;
+import main.java.DatabaseClasses.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 /**

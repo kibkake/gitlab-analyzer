@@ -1,11 +1,10 @@
-package main.java.DatabaseClasses.controller;
+package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.model.Projects;
-import main.java.DatabaseClasses.repository.ProjectRepository;
+import main.java.DatabaseClasses.Model.Projects;
+import main.java.DatabaseClasses.Repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 /**

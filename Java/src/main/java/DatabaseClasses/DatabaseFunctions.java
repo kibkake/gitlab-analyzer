@@ -1,6 +1,6 @@
 package main.java.DatabaseClasses;
 
-import main.java.ConnectToGitlab.User.User;
+import main.java.DatabaseClasses.Model.User;
 import main.java.Security.Authenticator;
 
 import com.mongodb.client.MongoClient;
@@ -10,12 +10,8 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.UpdateOptions;
 import main.java.Functions.LocalDateFunctions;
-import main.java.Security.Authenticator;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-
-import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Updates.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -62,9 +58,9 @@ public class DatabaseFunctions {
 
     /**
      * Creates a user account with an optional token and stores it securely on the database.
-     * @param username the unique username to be created
-     * @param password the password for the account
-     * @param token (optional) the token used to access gitlab api.
+     * username the unique username to be created
+     * password the password for the account
+     * token (optional) the token used to access gitlab api.
      */
     public static void createUserAccount(User user){
         MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
