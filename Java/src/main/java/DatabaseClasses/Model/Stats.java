@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.model;
+package main.java.DatabaseClasses.Model;
 
 /**
  * Used by commits to hold the number of modification a commit has

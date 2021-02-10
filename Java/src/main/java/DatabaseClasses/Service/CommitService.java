@@ -1,7 +1,7 @@
 package main.java.DatabaseClasses.Service;
 
 import main.java.DatabaseClasses.Repository.CommitRepository;
-import main.java.DatabaseClasses.model.Commit;
+import main.java.DatabaseClasses.Model.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

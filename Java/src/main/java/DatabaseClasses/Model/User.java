@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.model;
+package main.java.DatabaseClasses.Model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

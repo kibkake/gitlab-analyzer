@@ -1,6 +1,6 @@
 package main.java;
 
-import main.java.DatabaseClasses.model.User;
+import main.java.DatabaseClasses.Model.User;
 import main.java.DatabaseClasses.Repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

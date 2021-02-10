@@ -1,8 +1,8 @@
 package main.java.DatabaseClasses.Controller;
-import main.java.DatabaseClasses.model.Commit;
-import main.java.DatabaseClasses.model.CommitDiffs;
+import main.java.DatabaseClasses.Model.Commit;
+import main.java.DatabaseClasses.Model.CommitDiffs;
 import main.java.DatabaseClasses.Service.CommitService;
-import main.java.DatabaseClasses.model.User;
+import main.java.DatabaseClasses.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -53,6 +53,8 @@ public class CommitController {
             for (Commit singleCommit : commits) {
                 singleCommit.setProjectId(projectId); // sets projectId if removing set project id a different way
                 singleCommit.setDiffs(getSingleCommitDiffs(projectId, singleCommit.getId()));
+                singleCommit.setCommitScore(singleCommit.calculateCommitScore()); // done after getting commits
+
             }
             commitService.addCommits(commits);
             return commits;
@@ -68,6 +70,9 @@ public class CommitController {
         ResponseEntity<List<CommitDiffs>> commitsResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<CommitDiffs>>() {});
         List<CommitDiffs> commitDiffs = commitsResponse.getBody();
+        for (CommitDiffs singleDiff : commitDiffs) {
+            singleDiff.calculateCommitScoreSingleDiff();
+        }
         return commitDiffs;
     }
 

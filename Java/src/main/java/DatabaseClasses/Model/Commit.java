@@ -1,5 +1,4 @@
-package main.java.DatabaseClasses.model;
-import java.text.ParseException;
+package main.java.DatabaseClasses.Model;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -33,6 +32,7 @@ public class Commit {
     private Date date;
     private String sha;
     private int projectId;
+    private double commitScore;
 
 //         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
 
@@ -231,4 +231,15 @@ public class Commit {
                 '}';
     }
 
+    public void setCommitScore(double commitScore) {
+        this.commitScore = commitScore;
+    }
+
+    public double calculateCommitScore(){
+        for(int i = 0; i < diffs.size(); i++){
+            commitScore += diffs.get(i).getScore();
+        }
+        commitScore = Math.round(commitScore * 100.0) / 100.0;
+        return 0;
+    }
 }

@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.model;
+package main.java.DatabaseClasses.Model;
 
 /**
  * Duplicate of the gitlab wrapperCommitDiff used by the controller to translate json and set its properties.
@@ -29,7 +29,7 @@ public class CommitDiffs {
      * Calculates the score from a diff string
      * @param diff the actual string containing the changes made to the file
      */
-    private double calculateCommitScoreSingleDiff(String diff) {
+    public double calculateCommitScoreSingleDiff() {
         double score = 0.0;
         for(int j = 0; j < diff.length(); j++){
             if(diff.charAt(j) == '\n' && j < diff.length()-2){

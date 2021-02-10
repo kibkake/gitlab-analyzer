@@ -1,6 +1,6 @@
 package main.java.ConnectToGitlab.Developer;
 
-import main.java.DatabaseClasses.model.Commit;
+import main.java.DatabaseClasses.Model.Commit;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 
 import java.util.List;
