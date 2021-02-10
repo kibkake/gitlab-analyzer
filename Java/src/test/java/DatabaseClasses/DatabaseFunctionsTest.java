@@ -1,9 +1,9 @@
 package test.java.DatabaseClasses;
 
+import main.java.DatabaseClasses.DatabaseFunctions;
 import main.java.ConnectToGitlab.User.User;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import main.java.DatabaseClasses.DatabaseFunctions;
 
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
@@ -30,7 +30,7 @@ public class DatabaseFunctionsTest{
     public void testTokens(){
         // test add and read tokens
         DatabaseFunctions.addUserToken("test","gklP3oD95mxDs2lFk6Hy4");
-        assertEquals("gklP3oD95mxDs2lFk6Hy4",DatabaseFunctions.retrieveUserToken("test"));
+        assertEquals("gklP3oD95mxDs2lFk6Hy4", DatabaseFunctions.retrieveUserToken("test"));
     }
 
     /**
@@ -66,7 +66,7 @@ public class DatabaseFunctionsTest{
         user.setToken("DDG-37");
         DatabaseFunctions.createUserAccount(user);
         String correctAnswer= "Farragut\nVFUUwPHbmuEztQ1FQ6IzJfxyV+OT9vvZatMKLUrOpRtndZfb1k7CI1b1i40NMcs6s9KNrmHNE3MgrFcEVq3S1A==\nDDG-37";
-        assertEquals(correctAnswer,DatabaseFunctions.retrieveUserInfo("Farragut"));
+        assertEquals(correctAnswer, DatabaseFunctions.retrieveUserInfo("Farragut"));
     }
 
     /**
