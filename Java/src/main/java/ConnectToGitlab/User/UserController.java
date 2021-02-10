@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Sets up REST endpoints for getting and adding user info.
+ */
 @RestController
 @RequestMapping(path = "api/v1/user")
 public class UserController {

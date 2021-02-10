@@ -4,9 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * Used to hold the server info and the users authentication so it is not hard codded in different files and can
- *  be updated easily
- *  User in this context refers to the user of the product we are building
+ * Holds the user and login information
  */
 
 @Document(collection = "users")
