@@ -1,27 +1,22 @@
 package main.java.DatabaseClasses;
 
-import main.java.Security.Authenticator;
-
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.UpdateOptions;
+import main.java.Functions.LocalDateFunctions;
+import main.java.Security.Authenticator;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
-import com.mongodb.client.model.Filters;
-
-import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Updates.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import java.lang.IllegalArgumentException;
-
-import main.java.Functions.LocalDateFunctions;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
 
 /*
 References:

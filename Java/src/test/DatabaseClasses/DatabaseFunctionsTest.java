@@ -1,8 +1,8 @@
-package test.java.DatabaseClasses;
+package test.DatabaseClasses;
 
+import main.java.DatabaseClasses.DatabaseFunctions;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import main.java.DatabaseClasses.DatabaseFunctions;
 
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
@@ -29,7 +29,7 @@ public class DatabaseFunctionsTest{
     public void testTokens(){
         // test add and read tokens
         DatabaseFunctions.addUserToken("test","gklP3oD95mxDs2lFk6Hy4");
-        assertEquals("gklP3oD95mxDs2lFk6Hy4",DatabaseFunctions.retrieveUserToken("test"));
+        assertEquals("gklP3oD95mxDs2lFk6Hy4", DatabaseFunctions.retrieveUserToken("test"));
     }
 
     /**
@@ -62,7 +62,7 @@ public class DatabaseFunctionsTest{
 
         DatabaseFunctions.createUserAccount("Farragut","uss","DDG-37");
         String correctAnswer= "Farragut\nVFUUwPHbmuEztQ1FQ6IzJfxyV+OT9vvZatMKLUrOpRtndZfb1k7CI1b1i40NMcs6s9KNrmHNE3MgrFcEVq3S1A==\nDDG-37";
-        assertEquals(correctAnswer,DatabaseFunctions.retrieveUserInfo("Farragut"));
+        assertEquals(correctAnswer, DatabaseFunctions.retrieveUserInfo("Farragut"));
     }
 
     /**

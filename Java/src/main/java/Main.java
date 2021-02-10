@@ -10,9 +10,11 @@ import main.java.ConnectToGitlab.MergeRequests.MergeRequestController;
 import main.java.ConnectToGitlab.Project.Project;
 import main.java.ConnectToGitlab.Project.ProjectController;
 import main.java.ConnectToGitlab.User;
-import main.java.DatabaseClasses.DatabaseFunctions;
+import main.java.DatabaseClasses.model.Projects;
+import main.java.DatabaseClasses.repository.ProjectRepository;
 import main.java.Security.Authenticator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
@@ -32,6 +34,9 @@ import java.time.LocalDate;
  */
 @SpringBootApplication
 public class Main {
+
+    @Autowired
+    ProjectRepository projectRepository;
 
     /**
      * This is the main method for running Spring Boot
@@ -58,6 +63,7 @@ public class Main {
         Developer testDevs = devs.get(4);
         List<MergeRequest> mergeRequests = testDevs.getDevMergeRequests(mrs);
         System.out.println(mergeRequests);
+
     }
 
     /**
@@ -84,6 +90,17 @@ public class Main {
 
             // indicate running status
             System.out.println("Server broadcasting on localhost:8080");
+
+
+            // very simple testing for DB cloud connection
+            // after running this, you can see the projects collection under gitlab db was created with this component
+            // after saving the object, should comment out the save function so there won't be duplicate
+            // you can use delete & save in turn
+
+            Projects projects = new Projects(4, "Testing1");
+//            projectRepository.save(projects);
+//            projectRepository.delete(projects);
+            System.out.println(projectRepository.findAll());
         };
     }
 }
