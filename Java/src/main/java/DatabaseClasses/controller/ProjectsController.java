@@ -27,16 +27,19 @@ public class ProjectsController {
 
     // Just a couple of examples to show how querying works, should be changed
 
-    // Example of getting projects only with field of name, not tested
+    // Example of getting projects only with field of name
     @GetMapping("projects")
-    @Query(fields="{'name' : 1}")
+    @Query(fields="{'project_NAME' : 1, 'project_ID' : 0}")
     public List<Projects> getAllProjects() {
         return projectsRepository.findAll();
     }
 
-    // Example of getting projects by id, hasn't tested
+
+    // Example of getting memberList by project id,
+    // But the current json object structure does not have the memberList inside Project structure
+    // so consider this just as an example pseudocode
     @GetMapping("projects/{projectId}")
-    @Query(fields="{'memberList' : 1}")
+    @Query(value="{'project_ID': ?0}", fields="{'memberList' : 1, 'project_ID': 0}")
     public List<Projects> getAllMembersOfSingleProject(@RequestParam int projectId) {
         return projectsRepository.findByIdContaining(projectId);
     }
