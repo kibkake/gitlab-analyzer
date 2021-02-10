@@ -1,20 +1,30 @@
 package main.java.ConnectToGitlab.Commit;
-import main.java.ConnectToGitlab.User.User;
+import main.java.DatabaseClasses.User.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 /**
  * Calls to GitLab Api to get Commit information
  */
+@Controller
+@RequestMapping(path = "api/v1/commits")
 public class CommitController {
 
     /*  TODO change to autowired this is the proper way using beans, and not creating a rest template over and over
         @Autowired
         private RestTemplate restTemplate;
      */
+    private final CommitService commitService;
+
+    public CommitController(CommitService commitService) {
+        this.commitService = commitService;
+    }
+
 
     // Dates must be in YYYY-MM-DD
     // Dates must be between dates repo is open and must be dates that are not in the future from today

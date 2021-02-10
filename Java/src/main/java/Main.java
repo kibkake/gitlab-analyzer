@@ -1,7 +1,7 @@
 package main.java;
 
 import main.java.ConnectToGitlab.ConnectToGitlab;
-import main.java.ConnectToGitlab.User.UserRepository;
+import main.java.DatabaseClasses.User.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

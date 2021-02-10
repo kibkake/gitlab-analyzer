@@ -1,4 +1,4 @@
-package main.java.ConnectToGitlab.User;
+package main.java.DatabaseClasses.User;
 
 import main.java.DatabaseClasses.DatabaseFunctions;
 import org.springframework.beans.factory.annotation.Autowired;

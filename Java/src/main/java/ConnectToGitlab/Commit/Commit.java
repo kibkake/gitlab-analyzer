@@ -1,14 +1,18 @@
 package main.java.ConnectToGitlab.Commit;
 import java.util.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.stream.Collectors;
 
 /**
  *  Holds import information about commits and is used to convert JSON to an object with spring
  */
+@Document(collection = "commits")
 public class Commit {
+
     @Id
+    private String sha;
     private String id;
     private String shortId;
     private String created_at;
@@ -160,6 +164,14 @@ public class Commit {
 
     public void setStats(Stats stats) {
         this.stats = stats;
+    }
+
+    public String getSha() {
+        return sha;
+    }
+
+    public void setSha(String sha) {
+        this.sha = sha;
     }
 
     public double getCommitScore() {

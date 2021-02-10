@@ -1,4 +1,4 @@
-package main.java.ConnectToGitlab.User;
+package main.java.DatabaseClasses.User;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -16,7 +16,5 @@ public interface UserRepository extends MongoRepository<User, String>, UserRepos
     void createUserAccount(User user);
 
     User retrieveUserInfo(String username);
-
-
 
 }

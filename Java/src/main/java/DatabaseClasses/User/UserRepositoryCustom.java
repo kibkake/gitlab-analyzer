@@ -1,4 +1,4 @@
-package main.java.ConnectToGitlab.User;
+package main.java.DatabaseClasses.User;
 
 /**
  * Is used to help integrate the custom functions that are already written working with UserRepository,

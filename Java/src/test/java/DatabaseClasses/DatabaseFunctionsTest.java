@@ -1,6 +1,6 @@
 package test.java.DatabaseClasses;
 
-import main.java.ConnectToGitlab.User.User;
+import main.java.DatabaseClasses.User.User;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import main.java.DatabaseClasses.DatabaseFunctions;
@@ -8,7 +8,7 @@ import main.java.DatabaseClasses.DatabaseFunctions;
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import java.time.Duration;
+
 import java.time.LocalDate;
 /**
  * JUnit test class to test DatabaseFunctions class
