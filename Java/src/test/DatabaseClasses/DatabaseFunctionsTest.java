@@ -1,4 +1,4 @@
-package test.java.DatabaseClasses;
+package test.DatabaseClasses;
 
 import main.java.DatabaseClasses.DatabaseFunctions;
 import org.junit.Test;

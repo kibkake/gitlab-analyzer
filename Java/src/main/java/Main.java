@@ -96,6 +96,7 @@ public class Main {
             // after running this, you can see the projects collection under gitlab db was created with this component
             // after saving the object, should comment out the save function so there won't be duplicate
             // you can use delete & save in turn
+
             Projects projects = new Projects(4, "Testing1");
 //            projectRepository.save(projects);
 //            projectRepository.delete(projects);
