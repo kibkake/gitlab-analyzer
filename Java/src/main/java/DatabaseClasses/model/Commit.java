@@ -1,15 +1,10 @@
-package main.java.ConnectToGitlab.Commit;
-import java.text.DateFormat;
+package main.java.DatabaseClasses.model;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
 
-import main.java.ConnectToGitlab.Wrapper.WrapperCommitDiff;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.stream.Collectors;
 
 /**
  *  Holds import information about commits and is used to convert JSON to an object with spring
@@ -18,7 +13,6 @@ import java.util.stream.Collectors;
 public class Commit {
 
     @Id
-    private String sha;
     private String id;
     private String shortId;
     private String created_at;
@@ -37,6 +31,8 @@ public class Commit {
     private Stats stats;
     private List<CommitDiffs> diffs;
     private Date date;
+    private String sha;
+    private int projectId;
 
 //         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
 
@@ -155,6 +151,8 @@ public class Commit {
     }
 
     public void setCommitted_date(String committed_date) {
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(committed_date);
+        setDate(Date.from(dateWithOffSet.toInstant()));
         this.committed_date = committed_date;
     }
 
@@ -201,11 +199,16 @@ public class Commit {
         return date;
     }
 
-    public void setDate(String date) throws ParseException {
-        if(date == null) {
-            OffsetDateTime dateWithOffSet = OffsetDateTime.parse(committed_date);
-            this.date = Date.from(dateWithOffSet.toInstant());
-        }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package main.java.ConnectToGitlab.Commit;
+package main.java.DatabaseClasses.model;
 
 /**
  * Used by commits to hold the number of modification a commit has

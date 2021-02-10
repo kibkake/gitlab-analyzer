@@ -1,4 +1,7 @@
-package main.java.ConnectToGitlab.Commit;
+package main.java.DatabaseClasses.Controller;
+import main.java.DatabaseClasses.model.Commit;
+import main.java.DatabaseClasses.model.CommitDiffs;
+import main.java.DatabaseClasses.Service.CommitService;
 import main.java.DatabaseClasses.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -7,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -36,7 +38,7 @@ public class CommitController {
         String isoEnding = "T00:00:00-08:00";
         String since = sinceYYYY_MM_DD + isoEnding;
         String until = untilYYYY_MM_DD + isoEnding;
-        if(commitService.getCommits(since, until).isEmpty()) {
+        if(commitService.getCommitsBetween(since, until, projectId).isEmpty()) {
             User user = User.getInstance();
             //Example: 2021-01-01T00:00:00-08:00
             //-08:00 is offset from UTC
@@ -49,11 +51,13 @@ public class CommitController {
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {});
             List<Commit> commits = commitsResponse.getBody();
             for (Commit singleCommit : commits) {
+                singleCommit.setProjectId(projectId); // sets projectId if removing set project id a different way
                 singleCommit.setDiffs(getSingleCommitDiffs(projectId, singleCommit.getId()));
             }
+            commitService.addCommits(commits);
             return commits;
         } else {
-            return commitService.getCommits(since, until);
+            return commitService.getCommitsBetween(since, until, projectId);
         }
     }
 
