@@ -2,6 +2,7 @@ package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,9 +27,11 @@ public class WrapperProject {
     @Id
     private final int ID;
     private final String PROJECT_NAME;
-    private final List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS = new ArrayList<>();
+    private List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS;
     //private final List<WrapperCommit> ALL_COMMITS = new ArrayList<>();
     private final List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
+    private List<Integer> mergeRequestIds = new ArrayList<>();
+
 
     public WrapperProject(String token, int gitlabProjectId) throws IOException, ParseException {
         this.ID = gitlabProjectId;
@@ -105,7 +108,7 @@ public class WrapperProject {
      * @param token the token provided by user of the class.
      * @param projectId the id of the project.
      */
-    public List<WrapperMergedMergeRequest> getMergedMergeRequests(String token, int projectId) throws IOException, ParseException {
+    public List<WrapperMergedMergeRequest> getMergedMergeRequestsFromServer(String token, int projectId) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged&" + "access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -137,7 +140,7 @@ public class WrapperProject {
 
             WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, mergeRequestId,mergeRequestIid,
                     mergeRequestProjectId, mergeRequestTitle, mergeDate[0], mergeDate[1], mergeDate[2]);
-            //MERGED_MERGE_REQUESTS.add(mergeRequest);
+            mergeRequestIds.add(mergeRequest.getMergeRequestId());
             mergerRequests.add(mergeRequest);
         }
         return mergerRequests;
