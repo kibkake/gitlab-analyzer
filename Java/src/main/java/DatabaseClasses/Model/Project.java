@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * spring
  */
 
+import java.util.Date;
 import java.util.List;
 
 @Document("Project")
@@ -26,6 +27,8 @@ public class Project {
     private List<Issue> issues;
     private List<Commit> commits;
     private List<Developer> developers;
+    private boolean infoSet;
+    private Date infoSetDate;
 
 
 
@@ -118,5 +121,40 @@ public class Project {
 
     public void setDevelopers(List<Developer> developers) {
         this.developers = developers;
+    }
+
+    public boolean isInfoSet() {
+        return infoSet;
+    }
+
+    public void setInfoSet(boolean infoSet) {
+        this.infoSet = infoSet;
+    }
+
+    public Date getInfoSetDate() {
+        return infoSetDate;
+    }
+
+    public void setInfoSetDate(Date infoSetDate) {
+        this.infoSetDate = infoSetDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", default_branch='" + default_branch + '\'' +
+                ", readme_url='" + readme_url + '\'' +
+                ", last_activity_at='" + last_activity_at + '\'' +
+                ", mergedRequests=" + mergedRequests +
+                ", issues=" + issues +
+                ", commits=" + commits +
+                ", developers=" + developers +
+                ", infoSet=" + infoSet +
+                ", infoSetDate=" + infoSetDate +
+                '}';
     }
 }

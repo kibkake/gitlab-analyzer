@@ -19,9 +19,9 @@ public class CommitConnection {
     public static List<Commit> getProjectCommits(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
-        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/repository/commits&with_stats=true"
-                + "&access_token=" + user.getToken();
+        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/repository/commits?access_token=" + user.getToken();
 
+        // https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
         ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {});
         return commitsResponse.getBody();

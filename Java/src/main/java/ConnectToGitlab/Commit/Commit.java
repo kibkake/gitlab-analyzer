@@ -159,12 +159,12 @@ public class Commit {
         this.stats = stats;
     }
 
-    public double getCommitScore() {
-        int additions = stats.getAdditions();
-        int deletions = stats.getDeletions();
-        double score = additions + (deletions * 0.2);
-        return score;
-    }
+//    public double getCommitScore() {
+//        int additions = stats.getAdditions();
+//        int deletions = stats.getDeletions();
+//        double score = additions + (deletions * 0.2);
+//        return score;
+//    }
 
     @Override
     public String toString() {

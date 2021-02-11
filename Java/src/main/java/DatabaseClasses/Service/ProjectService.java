@@ -9,6 +9,7 @@ import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,7 @@ public class ProjectService {
         project.setCommits(CommitConnection.getProjectCommits(projectId));
         project.setMergedRequests(MergeRequestConnection.getProjectMergeRequests(projectId));
         project.setIssues(IssueConnection.getProjectIssues(projectId));
+        project.setInfoSet(true);
     }
 
 
