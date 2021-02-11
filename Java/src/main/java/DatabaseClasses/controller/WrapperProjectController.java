@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.controller;
 
 
+import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
 import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
 import main.java.ConnectToGitlab.Wrapper.WrapperProject;
 import main.java.DatabaseClasses.repository.WrapperMergedMergeRequestRepository;
@@ -33,9 +34,10 @@ public class WrapperProjectController {
     public void saveProject() throws IOException, ParseException {
         WrapperProject project = new WrapperProject ("cFzzy7QFRvHzfHGpgrr1", 6);
         List<WrapperMergedMergeRequest> mergedMergeRequests = project.getMergedMergeRequestsFromServer("cFzzy7QFRvHzfHGpgrr1", 6);
+        List<WrapperCommit> commits = new ArrayList<>();
         projectRepository.save(project);
         for(int i = 0; i < mergedMergeRequests.size(); i++){
-
+            commits.addAll(mergedMergeRequests.get(i).getSingleMergedMergeRequestCommits("cFzzy7QFRvHzfHGpgrr1"));
         }
         wrapperMergedMergeRequestRepository.saveAll(mergedMergeRequests);
     }
@@ -45,14 +47,25 @@ public class WrapperProjectController {
         Optional<WrapperProject> project = projectRepository.findById(6);
         List<Integer> mergeRequestIds = new ArrayList<>();
         List<WrapperMergedMergeRequest> mergedMergeRequests = new ArrayList<>();
+
         if(project.isPresent()){
             mergeRequestIds = project.get().getMergeRequestIds();
-            Iterator<WrapperMergedMergeRequest> itr = wrapperMergedMergeRequestRepository.findAllById(project.get().getMergeRequestIds()).iterator();
+            Iterator<WrapperMergedMergeRequest> itr = wrapperMergedMergeRequestRepository.findAllById(
+                    project.get().getMergeRequestIds()).iterator();
             while (itr.hasNext()){
                 mergedMergeRequests.add(itr.next());
             }
-
             project.get().addMergedMergeRequests(mergedMergeRequests);
+
+            for(int i = 0; i < project.get().getMergedMergeRequests().size(); i++){
+                List<WrapperCommit> commits = new ArrayList<>();
+                //project.get().getMergedMergeRequests().get(i).getMergeRequestCommitIds()
+
+            }
+
+
+
+
             return project.get();
 
         }

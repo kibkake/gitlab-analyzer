@@ -56,11 +56,15 @@ public class WrapperMergedMergeRequest {
     public WrapperMergedMergeRequest() {
     }
 
+    public List<String> getMergeRequestCommitIds() {
+        return mergeRequestCommitIds;
+    }
+
     /**
      * Retrieves a single merged merge request from the server.
      * @param token the token provided by user of the class.
      */
-    private void getSingleMergedMergeRequestCommits(String token) throws IOException, ParseException {
+    public List<WrapperCommit> getSingleMergedMergeRequestCommits(String token) throws IOException, ParseException {
         URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/commits" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -92,6 +96,7 @@ public class WrapperMergedMergeRequest {
             MERGE_REQUEST_COMMITS.add(wrapperCommit);
             mergeRequestCommitIds.add(wrapperCommit.getId());
         }
+        return MERGE_REQUEST_COMMITS;
     }
 
     /**
