@@ -47,7 +47,7 @@ public class WrapperMergedMergeRequest {
         this.MERGE_YEAR = mergeYear;
         this.MERGE_MONTH = mergeMonth;
         this.MERGE_DAY = mergeDay;
-        getSingleMergedMergeRequestCommits(token);
+        //getSingleMergedMergeRequestCommits(token);
         getSingleMergedMergeRequestChanges(token);
         calculateCommitScore();
         getMergeNotes(token);
@@ -93,7 +93,7 @@ public class WrapperMergedMergeRequest {
             int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
             WrapperCommit wrapperCommit = new WrapperCommit(token, PROJECT_ID, commitId, authorName, authorEmail, title, mergeDate[0],
                     mergeDate[1], mergeDate[2]);
-            MERGE_REQUEST_COMMITS.add(wrapperCommit);
+            //MERGE_REQUEST_COMMITS.add(wrapperCommit);
             mergeRequestCommitIds.add(wrapperCommit.getId());
         }
         return MERGE_REQUEST_COMMITS;

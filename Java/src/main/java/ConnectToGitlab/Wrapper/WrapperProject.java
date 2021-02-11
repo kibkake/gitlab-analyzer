@@ -143,7 +143,7 @@ public class WrapperProject {
             WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, mergeRequestId,mergeRequestIid,
                     mergeRequestProjectId, mergeRequestTitle, mergeDate[0], mergeDate[1], mergeDate[2]);
             mergeRequestIds.add(mergeRequest.getMergeRequestId());
-            //mergerRequests.add(mergeRequest);
+            mergerRequests.add(mergeRequest);
         }
         return mergerRequests;
     }
