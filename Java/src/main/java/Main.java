@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.io.PrintWriter;
 import java.util.List;
@@ -35,6 +36,9 @@ public class Main {
      * @param args arguments to the main method
      */
     public static void main(String[] args){
+        LocalDate x = LocalDate.of(2020,9,12);
+        DatabaseFunctions.addUserToken("harveer","123");
+        DatabaseFunctions.setNumCommits("harveer",x, 20);
         User user = User.getInstance();
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
