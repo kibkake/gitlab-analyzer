@@ -1,6 +1,9 @@
 package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,10 +19,12 @@ import java.util.*;
  * commits and notes. This class also has a list of its own merge diffs. These diffs represent
  * the changes that the merge request made to the master branch (branch it was merged into).
  */
+@Document("MergedMergeRequests")
 public class WrapperMergedMergeRequest {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    private final int MERGE_REQUEST_ID;
+    @Id
+    private final int ID;
     private final int MERGE_REQUEST_IID;
     private final int PROJECT_ID;
     private final String MERGE_REQUEST_TITLE;
@@ -34,7 +39,7 @@ public class WrapperMergedMergeRequest {
     public WrapperMergedMergeRequest(String token, int mergeRequestId, int mergeRequestIid,
                                      int gitlabProjectId, String mergeRequestTitle, int mergeYear, int mergeMonth,
                                      int mergeDay) throws IOException, ParseException {
-        this.MERGE_REQUEST_ID = mergeRequestId;
+        this.ID = mergeRequestId;
         this.MERGE_REQUEST_IID = mergeRequestIid;
         this.PROJECT_ID = gitlabProjectId;
         this.MERGE_REQUEST_TITLE = mergeRequestTitle;
@@ -210,7 +215,7 @@ public class WrapperMergedMergeRequest {
     }
 
     public int getMergeRequestId() {
-        return MERGE_REQUEST_ID;
+        return ID;
     }
 
     public int getMergeRequestIid() {

@@ -74,46 +74,6 @@ public class ConnectToGitlab {
         }
     }
 
-    public static void testGitMethods(String token) throws IOException {
-
-        //calls for older wrapper class---------------
-        GitlabAPI api = makeConnectionToGitlab(token);
-        GitlabUser user = getUserFromApi(api);
-        System.out.println("Welcome " + user.getName() + "!");
-
-        //Get all the projects that user is a member of
-        List<GitlabProject> projects = getUserMemberProjects(api);
-        if(projects.size() == 0){
-            System.out.println("No projects!");
-            return;
-        }
-
-        //Get name and url of newest project
-        GitlabProject gitlabProject = getSpecificProjectByName(projects, "Testproject2");
-        if(gitlabProject == null){
-            System.out.println("No such project");
-            return;
-        }
-
-        //Get a list of and print merge requests
-        List<GitlabMergeRequest> gitlabMergeRequests = gitlabMergeRequests(api, gitlabProject);
-
-        //Exit if not merge requests to show
-        if (gitlabMergeRequests.size() == 0) {
-            System.out.println("No merge requests!");
-            return;
-        }
-
-        //Get the changes from latest merge request
-        List<GitlabCommitDiff> gitlabCommitDiffsFromMerge = getMergeRequestDiff(api, gitlabProject, gitlabMergeRequests.get(gitlabMergeRequests.size()-1));
-
-        //Get the title of the first commit of the first merge request
-        List <GitlabCommit> gitlabCommitsFirstMerge = getMergeCommits(api, gitlabMergeRequests.get(gitlabMergeRequests.size()-1));
-
-        //Get changes from the first commit of the first merge request
-        List<GitlabCommitDiff> gitlabCommitDiffsSingleCommit = getSingleCommitDiff(api, gitlabProject, gitlabCommitsFirstMerge.get(gitlabCommitsFirstMerge.size()-1));
-    }
-
     //Get Ids of all commits pushed by a specific user (commits in a merged branch)
     public static List<String> getUserMergeCommitIds(String username, List<GitlabCommit> gitlabCommits){
         //Check which commits from a merge request are from the current user
