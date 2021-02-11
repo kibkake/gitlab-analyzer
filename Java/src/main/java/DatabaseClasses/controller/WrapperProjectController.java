@@ -65,15 +65,13 @@ public class WrapperProjectController {
             project.get().addMergedMergeRequests(mergedMergeRequests);
             getCommitID();
 
-           /* for(int i = 0; i < project.get().getMergedMergeRequests().size(); i++){
+            for(int i = 0; i < project.get().getMergedMergeRequests().size(); i++){
                 List<WrapperCommit> commits = new ArrayList<>();
-                for(int j = 0; j < project.get().getMergedMergeRequests().get(j).getMergeRequestCommitIds().size(); j++ ){
-                    //System.out.println(getCommitId(new ObjectId(project.get().getMergedMergeRequests().get(i).getMergeRequestCommitIds().get(j))));
-                    //wrapperCommitRepository.findById(new ObjectId(project.get().getMergedMergeRequests().get(i).getMergeRequestCommitIds().get(j)));
+                for(int j = 0; j < project.get().getMergedMergeRequests().get(i).getMergeRequestCommitIds().size(); j++ ){
+                    commits.add(wrapperCommitRepository.findByID(project.get().getMergedMergeRequests().get(i).getMergeRequestCommitIds().get(j)));
                 }
-                //Iterator<WrapperCommit> commitItr = wrapperCommitRepository.findAllById(new ObjectId(project.get().getMergedMergeRequests().get(i).getMergeRequestCommitIds())).iterator();
-
-            }*/
+                project.get().getMergedMergeRequests().get(i).addMergedMergeRequestsCommits(commits);
+            }
 
 
 
@@ -86,7 +84,7 @@ public class WrapperProjectController {
 
     //@Query("{ '_id': ?0 }")
     public void getCommitID(){
-        System.out.println(wrapperCommitRepository.findByID("ac108a6cab6e2b63c8e2d4a1150ac67ba82849d0").get(0).getTitle());
+        System.out.println(wrapperCommitRepository.findByID("ac108a6cab6e2b63c8e2d4a1150ac67ba82849d0").getTitle());
     }
 
 

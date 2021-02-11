@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface WrapperCommitRepository extends MongoRepository<WrapperCommit, Integer> {
 
-    public List<WrapperCommit> findByID(String id);
+    public WrapperCommit findByID(String id);
 
 }
 

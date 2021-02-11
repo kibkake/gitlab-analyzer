@@ -32,7 +32,7 @@ public class WrapperMergedMergeRequest {
     private int MERGE_MONTH;
     private int MERGE_DAY;
     private double MERGE_SCORE = 0.0;
-    private List<WrapperCommit> MERGE_REQUEST_COMMITS = new ArrayList<>();
+    private List<WrapperCommit> MERGE_REQUEST_COMMITS;
     private List<String> mergeRequestCommitIds = new ArrayList<>();
     private List<WrapperCommitDiff> MERGE_DIFFS = new ArrayList<>();
     private List<WrapperNote> NOTES = new ArrayList<>();
@@ -222,6 +222,11 @@ public class WrapperMergedMergeRequest {
      */
     private static HttpURLConnection makeConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
+    }
+
+    public void addMergedMergeRequestsCommits(List<WrapperCommit> commits){
+        MERGE_REQUEST_COMMITS = new ArrayList<>();
+        MERGE_REQUEST_COMMITS.addAll(commits);
     }
 
     public int getMergeRequestId() {
