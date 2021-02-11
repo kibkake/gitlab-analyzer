@@ -17,15 +17,18 @@ import java.util.*;
  */
 public class WrapperIssue {
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    private final int PROJECT_ID;
-    private final int ISSUE_ID;
-    private final int ISSUE_IID;
-    private final String AUTHOR_NAME;
-    private final String TITLE;
-    private final int ISSUE_YEAR;
-    private final int ISSUE_MONTH;
-    private final int ISSUE_DAY;
+    private int PROJECT_ID;
+    private int ISSUE_ID;
+    private int ISSUE_IID;
+    private String AUTHOR_NAME;
+    private String TITLE;
+    private int ISSUE_YEAR;
+    private int ISSUE_MONTH;
+    private int ISSUE_DAY;
     private final List<WrapperNote> NOTES = new ArrayList<>();
+
+    public WrapperIssue() {
+    }
 
     public WrapperIssue(String token, int projectId, int issueId, int issueIid, String authorName, String title,
                         int year, int month, int day) throws IOException, ParseException {

@@ -6,11 +6,14 @@ import main.java.ConnectToGitlab.Wrapper.WrapperProject;
 import main.java.DatabaseClasses.repository.WrapperMergedMergeRequestRepository;
 import main.java.DatabaseClasses.repository.WrapperProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController("WrapperProjectController")
@@ -32,6 +35,14 @@ public class WrapperProjectController {
         projectRepository.save(project);
         wrapperMergedMergeRequestRepository.saveAll(mergedMergeRequests);
     }
+
+    @GetMapping("getproject")
+    public void getProject() throws IOException, ParseException {
+        Optional<WrapperProject> project = projectRepository.findById(6);
+        List<Integer> mergeRequestIds = new ArrayList<>();
+
+    }
+
 
 }
 

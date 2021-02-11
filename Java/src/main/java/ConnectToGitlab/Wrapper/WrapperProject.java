@@ -25,13 +25,15 @@ public class WrapperProject {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
     @Id
-    private final int ID;
-    private final String PROJECT_NAME;
+    private int ID;
+    private String PROJECT_NAME;
     private List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS;
     //private final List<WrapperCommit> ALL_COMMITS = new ArrayList<>();
     private final List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
     private List<Integer> mergeRequestIds = new ArrayList<>();
 
+    public WrapperProject() {
+    }
 
     public WrapperProject(String token, int gitlabProjectId) throws IOException, ParseException {
         this.ID = gitlabProjectId;
@@ -232,5 +234,9 @@ public class WrapperProject {
 
     public List<WrapperIssue> getAllIssues() {
         return ALL_ISSUES;
+    }
+
+    public List<Integer> getMergeRequestIds() {
+        return mergeRequestIds;
     }
 }

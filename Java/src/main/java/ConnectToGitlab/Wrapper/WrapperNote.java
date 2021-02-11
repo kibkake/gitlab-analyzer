@@ -7,13 +7,16 @@ package main.java.ConnectToGitlab.Wrapper;
  */
 public class WrapperNote {
 
-    private final int ID;
-    private final String BODY;
-    private final String AUTHOR;
-    private final int SCORE;
-    private final int YEAR;
-    private final int MONTH;
-    private final int DAY;
+    private int ID;
+    private String BODY;
+    private String AUTHOR;
+    private int SCORE;
+    private int YEAR;
+    private int MONTH;
+    private int DAY;
+
+    public WrapperNote() {
+    }
 
     public WrapperNote(int id, String body, String author, int year, int month, int day) {
         this.ID = id;
