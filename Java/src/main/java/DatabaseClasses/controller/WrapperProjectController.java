@@ -34,6 +34,9 @@ public class WrapperProjectController {
         WrapperProject project = new WrapperProject ("cFzzy7QFRvHzfHGpgrr1", 6);
         List<WrapperMergedMergeRequest> mergedMergeRequests = project.getMergedMergeRequestsFromServer("cFzzy7QFRvHzfHGpgrr1", 6);
         projectRepository.save(project);
+        for(int i = 0; i < mergedMergeRequests.size(); i++){
+
+        }
         wrapperMergedMergeRequestRepository.saveAll(mergedMergeRequests);
     }
 

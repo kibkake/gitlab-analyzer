@@ -33,6 +33,7 @@ public class WrapperMergedMergeRequest {
     private int MERGE_DAY;
     private double MERGE_SCORE = 0.0;
     private List<WrapperCommit> MERGE_REQUEST_COMMITS = new ArrayList<>();
+    private List<String> mergeRequestCommitIds = new ArrayList<>();
     private List<WrapperCommitDiff> MERGE_DIFFS = new ArrayList<>();
     private List<WrapperNote> NOTES = new ArrayList<>();
 
@@ -89,6 +90,7 @@ public class WrapperMergedMergeRequest {
             WrapperCommit wrapperCommit = new WrapperCommit(token, PROJECT_ID, commitId, authorName, authorEmail, title, mergeDate[0],
                     mergeDate[1], mergeDate[2]);
             MERGE_REQUEST_COMMITS.add(wrapperCommit);
+            mergeRequestCommitIds.add(wrapperCommit.getId());
         }
     }
 
