@@ -1,10 +1,8 @@
-package main.java.ConnectToGitlab;
+package main.java.ConnectToGitlab.Issue;
 
 import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Wrapper.WrapperNote;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Document(value = "Issue")

@@ -1,4 +1,4 @@
-package main.java.ConnectToGitlab;
+package main.java.ConnectToGitlab.Issue;
 
 import main.java.ConnectToGitlab.Developer.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;

@@ -1,12 +1,10 @@
 package main.java.DatabaseClasses.Controller;
 
 import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Project.Project;
+import main.java.DatabaseClasses.Model.Project;
 import main.java.ConnectToGitlab.Project.ProjectConnection;
-import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +39,7 @@ public class ProjectController {
             return projectService.getAllProjects();
         }
     }
+
 
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {

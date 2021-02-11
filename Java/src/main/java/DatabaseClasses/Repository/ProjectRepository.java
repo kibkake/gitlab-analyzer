@@ -1,10 +1,8 @@
 package main.java.DatabaseClasses.Repository;
 
-import main.java.ConnectToGitlab.Project.Project;
+import main.java.DatabaseClasses.Model.Project;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /*
  This interface connects Spring app to MongoDB.

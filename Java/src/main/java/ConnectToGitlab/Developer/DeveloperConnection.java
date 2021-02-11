@@ -20,16 +20,13 @@ public class DeveloperConnection {
     private RestTemplate restTemplate;
  */
 
-
-    public static List<Developer> getDevelopers() {
+    public static List<Developer> getProjectDevelopers(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
-        String url = user.getServerUrl() + "users?admins=true&access_token=" + user.getToken();
-        // https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
-        ResponseEntity<List<Developer>> usersResponse = restTemplate.exchange(url,
+        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/users?access_token=" + user.getToken();
+        ResponseEntity<List<Developer>> commitsResponse = restTemplate.exchange(myUrl,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
-        List<Developer> developers = usersResponse.getBody();
-        return developers;
+        return commitsResponse.getBody();
     }
 
 

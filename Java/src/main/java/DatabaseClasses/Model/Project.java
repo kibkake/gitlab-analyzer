@@ -1,8 +1,8 @@
-package main.java.ConnectToGitlab.Project;
+package main.java.DatabaseClasses.Model;
 
 import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Issue;
+import main.java.ConnectToGitlab.Issue.Issue;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * spring
  */
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Document("Project")
