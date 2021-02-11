@@ -2,10 +2,12 @@ package main.java.ConnectToGitlab;
 
 import main.java.ConnectToGitlab.Developer.Developer;
 import main.java.ConnectToGitlab.Wrapper.WrapperNote;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Document(value = "Issue")
 public class Issue {
     private int id;
     private int iid;

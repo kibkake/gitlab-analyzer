@@ -15,6 +15,6 @@ import java.util.List;
  */
 @Repository
 public interface ProjectRepository extends MongoRepository <Project, Integer> {
-    List<Project> findByIdContaining(int id);
+    Project findProjectById(int id);
     // More functions can be added more here, or a new implementation class could be added
 }

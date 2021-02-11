@@ -1,7 +1,9 @@
 package main.java.ConnectToGitlab;
 
 import main.java.ConnectToGitlab.Developer.Developer;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(value = "Note")
 public class Note {
 
     private int id;

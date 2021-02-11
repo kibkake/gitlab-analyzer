@@ -2,6 +2,7 @@ package main.java.ConnectToGitlab.Developer;
 
 import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
  *  We call this class developer to not get confused between the user of our product and gitlab users. So we
  *  call gitlab users developers
  */
+@Document(value = "Developer")
 public class Developer {
     private int id;
     private String name;

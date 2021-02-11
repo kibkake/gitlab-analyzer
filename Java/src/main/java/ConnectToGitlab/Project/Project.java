@@ -4,6 +4,7 @@ import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Developer.Developer;
 import main.java.ConnectToGitlab.Issue;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Holds the different info for a project when getting a list of projects and is used for turning JSON to object with
@@ -12,6 +13,8 @@ import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+
+@Document("Project")
 public class Project {
     private int id;
     private String description;
