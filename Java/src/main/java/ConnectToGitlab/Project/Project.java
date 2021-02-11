@@ -1,9 +1,12 @@
 package main.java.ConnectToGitlab.Project;
 
+import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
+
 /**
  * Holds the different info for a project when getting a list of projects and is used for turning JSON to object with
  * spring
  */
+
 import java.util.ArrayList;
 import java.util.List;
 public class Project {
@@ -25,6 +28,8 @@ public class Project {
     private String star_count;
     private String last_activity_at;
     private List<nameSpace> namespace;
+    private List<MergeRequest> mergedRequests;
+
 
 
     public Project() {
