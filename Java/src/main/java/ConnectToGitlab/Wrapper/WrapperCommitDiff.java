@@ -7,13 +7,16 @@ package main.java.ConnectToGitlab.Wrapper;
  */
 public class WrapperCommitDiff {
 
-    private final String NEW_PATH;
-    private final String OLD_PATH;
-    private final boolean NEW_FILE;
-    private final boolean RENAMED_FILE;
-    private final boolean DELETED_FILE;
-    private final String DIFF;
-    private final double SCORE;
+    private String NEW_PATH;
+    private String OLD_PATH;
+    private boolean NEW_FILE;
+    private boolean RENAMED_FILE;
+    private boolean DELETED_FILE;
+    private String DIFF;
+    private double SCORE;
+
+    public WrapperCommitDiff() {
+    }
 
     public WrapperCommitDiff(String newPath, String oldPath, boolean newFile, boolean renamedFile, boolean deletedFile, String diff) {
         this.NEW_PATH = newPath;

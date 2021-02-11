@@ -143,7 +143,7 @@ public class WrapperProject {
             WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, mergeRequestId,mergeRequestIid,
                     mergeRequestProjectId, mergeRequestTitle, mergeDate[0], mergeDate[1], mergeDate[2]);
             mergeRequestIds.add(mergeRequest.getMergeRequestId());
-            mergerRequests.add(mergeRequest);
+            //mergerRequests.add(mergeRequest);
         }
         return mergerRequests;
     }
@@ -214,6 +214,11 @@ public class WrapperProject {
      */
     private static HttpURLConnection makeConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
+    }
+
+    public void addMergedMergeRequests(List<WrapperMergedMergeRequest> mergedMergeRequests){
+        MERGED_MERGE_REQUESTS = new ArrayList<>();
+        MERGED_MERGE_REQUESTS.addAll(mergedMergeRequests);
     }
 
     public int getGitlabProjectId() {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,15 +38,22 @@ public class WrapperProjectController {
     }
 
     @GetMapping("getproject")
-    public void getProject() throws IOException, ParseException {
+    public WrapperProject getProject() throws IOException, ParseException {
         Optional<WrapperProject> project = projectRepository.findById(6);
         List<Integer> mergeRequestIds = new ArrayList<>();
+        List<WrapperMergedMergeRequest> mergedMergeRequests = new ArrayList<>();
         if(project.isPresent()){
             mergeRequestIds = project.get().getMergeRequestIds();
+            Iterator<WrapperMergedMergeRequest> itr = wrapperMergedMergeRequestRepository.findAllById(project.get().getMergeRequestIds()).iterator();
+            while (itr.hasNext()){
+                mergedMergeRequests.add(itr.next());
+            }
+
+            project.get().addMergedMergeRequests(mergedMergeRequests);
+            return project.get();
+
         }
-        for(int i = 0; i < mergeRequestIds.size(); i++){
-            System.out.println(mergeRequestIds.get(i));
-        }
+        return null;
     }
 
 

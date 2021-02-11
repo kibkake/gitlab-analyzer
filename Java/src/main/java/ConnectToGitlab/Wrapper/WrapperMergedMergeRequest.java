@@ -24,17 +24,17 @@ public class WrapperMergedMergeRequest {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
     @Id
-    private final int ID;
-    private final int MERGE_REQUEST_IID;
-    private final int PROJECT_ID;
-    private final String MERGE_REQUEST_TITLE;
-    private final int MERGE_YEAR;
-    private final int MERGE_MONTH;
-    private final int MERGE_DAY;
+    private int ID;
+    private int MERGE_REQUEST_IID;
+    private int PROJECT_ID;
+    private String MERGE_REQUEST_TITLE;
+    private int MERGE_YEAR;
+    private int MERGE_MONTH;
+    private int MERGE_DAY;
     private double MERGE_SCORE = 0.0;
-    private final List<WrapperCommit> MERGE_REQUEST_COMMITS = new ArrayList<>();
-    private final List<WrapperCommitDiff> MERGE_DIFFS = new ArrayList<>();
-    private final List<WrapperNote> NOTES = new ArrayList<>();
+    private List<WrapperCommit> MERGE_REQUEST_COMMITS = new ArrayList<>();
+    private List<WrapperCommitDiff> MERGE_DIFFS = new ArrayList<>();
+    private List<WrapperNote> NOTES = new ArrayList<>();
 
     public WrapperMergedMergeRequest(String token, int mergeRequestId, int mergeRequestIid,
                                      int gitlabProjectId, String mergeRequestTitle, int mergeYear, int mergeMonth,
@@ -50,6 +50,9 @@ public class WrapperMergedMergeRequest {
         getSingleMergedMergeRequestChanges(token);
         calculateCommitScore();
         getMergeNotes(token);
+    }
+
+    public WrapperMergedMergeRequest() {
     }
 
     /**

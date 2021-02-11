@@ -17,16 +17,18 @@ import java.util.List;
 public class WrapperCommit {
 
     private static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    private final String ID;
-    private final String AUTHOR_NAME;
-    private final String AUTHOR_EMAIL;
-    private final String TITLE;
-    private final int COMMIT_YEAR;
-    private final int COMMIT_MONTH;
-    private final int COMMIT_DAY;
+    private String ID;
+    private String AUTHOR_NAME;
+    private String AUTHOR_EMAIL;
+    private String TITLE;
+    private int COMMIT_YEAR;
+    private int COMMIT_MONTH;
+    private int COMMIT_DAY;
     private double commitScore = 0.0;
-    private final List<WrapperCommitDiff> COMMIT_DIFFS = new ArrayList<>();
+    private List<WrapperCommitDiff> COMMIT_DIFFS = new ArrayList<>();
 
+    public WrapperCommit() {
+    }
 
     public WrapperCommit(String token, int projectId, String id, String authorName, String authorEmail, String title,
                          int commitYear, int commitMonth, int commitDay) throws IOException {
