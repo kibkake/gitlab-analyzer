@@ -11,6 +11,4 @@ public class Note {
     private int day;
     private String username;
     private String created_at;
-
-
 }

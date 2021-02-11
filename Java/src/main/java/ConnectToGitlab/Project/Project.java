@@ -1,5 +1,6 @@
 package main.java.ConnectToGitlab.Project;
 
+import main.java.ConnectToGitlab.Issue;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 
 /**
@@ -29,6 +30,7 @@ public class Project {
     private String last_activity_at;
     private List<nameSpace> namespace;
     private List<MergeRequest> mergedRequests;
+    private List<Issue> issues;
 
 
 
@@ -217,4 +219,19 @@ public class Project {
         this.last_activity_at = last_activity_at;
     }
 
+    public List<MergeRequest> getMergedRequests() {
+        return mergedRequests;
+    }
+
+    public void setMergedRequests(List<MergeRequest> mergedRequests) {
+        this.mergedRequests = mergedRequests;
+    }
+
+    public List<Issue> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(List<Issue> issues) {
+        this.issues = issues;
+    }
 }

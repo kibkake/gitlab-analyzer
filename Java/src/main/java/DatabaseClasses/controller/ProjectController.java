@@ -1,6 +1,7 @@
-package main.java.DatabaseClasses.controller;
+package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.model.Projects;
+import main.java.ConnectToGitlab.Project.Project;
+import main.java.ConnectToGitlab.Project.ProjectConnection;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.Query;
@@ -14,14 +15,14 @@ import java.util.List;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("git/")
-public class ProjectsController {
+@RequestMapping("api/v1/")
+public class ProjectController {
 
     @Autowired
-    private static ProjectRepository projectsRepository;
+    private static ProjectRepository projectRepository;
 
-    public ProjectsController(ProjectRepository projectsRepository) {
-        this.projectsRepository = projectsRepository;
+    public ProjectController(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
     }
 
 
@@ -29,9 +30,9 @@ public class ProjectsController {
 
     // Example of getting projects only with field of name
     @GetMapping("projects")
-    @Query(fields="{'project_NAME' : 1, 'project_ID' : 0}")
-    public List<Projects> getAllProjects() {
-        return projectsRepository.findAll();
+    public List<Project> getAllProjects() {
+        return ProjectConnection.getAllProjects();
+
     }
 
 
@@ -40,8 +41,9 @@ public class ProjectsController {
     // so consider this just as an example pseudocode
     @GetMapping("projects/{projectId}")
     @Query(value="{'project_ID': ?0}", fields="{'memberList' : 1, 'project_ID': 0}")
-    public List<Projects> getAllMembersOfSingleProject(@RequestParam int projectId) {
-        return projectsRepository.findByIdContaining(projectId);
+    public List<Project> getAllMembersOfSingleProject(@RequestParam int projectId) {
+        return projectRepository.findByIdContaining(projectId);
     }
 
 }
+

@@ -1,6 +1,6 @@
 package main.java.DatabaseClasses.Repository;
 
-import main.java.DatabaseClasses.model.Projects;
+import main.java.ConnectToGitlab.Project.Project;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ import java.util.List;
  without implementing these methods, in addition to our own defined methods
  */
 @Repository
-public interface ProjectRepository extends MongoRepository <Projects, Integer> {
-    List<Projects> findByIdContaining(int id);
+public interface ProjectRepository extends MongoRepository <Project, Integer> {
+    List<Project> findByIdContaining(int id);
     // More functions can be added more here, or a new implementation class could be added
 }
