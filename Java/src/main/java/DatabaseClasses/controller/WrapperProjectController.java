@@ -2,6 +2,7 @@ package main.java.DatabaseClasses.controller;
 
 
 import main.java.ConnectToGitlab.Wrapper.WrapperProject;
+import main.java.DatabaseClasses.repository.WrapperMergedMergeRequestRepository;
 import main.java.DatabaseClasses.repository.WrapperProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,9 @@ public class WrapperProjectController {
 
     @Autowired
     private WrapperProjectRepository projectRepository;
+
+    @Autowired
+    private WrapperMergedMergeRequestRepository wrapperMergedMergeRequestRepository;
 
 
     @GetMapping("addproject")

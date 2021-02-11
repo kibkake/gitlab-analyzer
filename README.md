@@ -15,4 +15,5 @@
 + org.springframework.boot:spring-boot-starter-test
 + com.google.code.gson:gson:2.8.5
   
+## Set the src folder as your root
 ## **[GitLab Test Server](https://cmpt373-1211-10.cmpt.sfu.ca/)**
