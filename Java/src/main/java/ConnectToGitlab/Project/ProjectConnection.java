@@ -1,5 +1,8 @@
 package main.java.ConnectToGitlab.Project;
 
+import main.java.ConnectToGitlab.Commit.Commit;
+import main.java.ConnectToGitlab.Developer.Developer;
+import main.java.ConnectToGitlab.Developer.DeveloperConnection;
 import main.java.ConnectToGitlab.Issue;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequestConnection;
 import main.java.ConnectToGitlab.Note;
@@ -33,20 +36,22 @@ public class ProjectConnection {
         List<Project> projects = usersResponse.getBody();
 
         for(Project project: projects) {
-            project.setIssues(getAllIssues(project.getId()));
+//            project.setIssues(getAllIssues(project.getId()));
             project.setMergedRequests(MergeRequestConnection.getProjectMergeRequests(project.getId()));
+            project.setCommits(getProjectCommits(project.getId()));
+            project.setDevelopers(DeveloperConnection.getDevelopers());
         }
         return projects;
     }
 
     private static List<Issue> getAllIssues(int projectId) {
         User user = User.getInstance();
-        String url =user.getServerUrl() + projectId + "/issues" + "?access_token=" + user.getToken();
+        String url =user.getServerUrl() + "projects/" + projectId + "/issues" + "?access_token=" + user.getToken();
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<Issue>> usersResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Issue>>() {});
-        List<Issue> issues = usersResponse.getBody();
 
+        List<Issue> issues = usersResponse.getBody();
         for(Issue issue: issues) {
             issue.setNotes(getAllNotes(issue.getProject_id(), issue.getIid()));
         }
@@ -55,11 +60,29 @@ public class ProjectConnection {
 
     private static List<Note> getAllNotes(int projectId , int issueIid) {
         User user = User.getInstance();
-        String url = user.getServerUrl() + "/" + projectId + "/issues/" + issueIid + "/notes" + "?access_token=" + user.getToken();
+        String url = user.getServerUrl() + "projects/" + projectId + "/issues/" + issueIid + "/notes" + "?access_token=" + user.getToken();
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<Note>> usersResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Note>>() {});
         List<Note> notes = usersResponse.getBody();
         return notes;
+    }
+
+    public static List<Commit> getProjectCommits(int projectId) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/repository/commits?with_stats=true" + "&access_token=" + user.getToken();
+        ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {});
+        return commitsResponse.getBody();
+    }
+
+    public static List<Developer> getProjectDevelopers(int projectId) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/users?access_token=" + user.getToken();
+        ResponseEntity<List<Developer>> commitsResponse = restTemplate.exchange(myUrl,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
+        return commitsResponse.getBody();
     }
 }

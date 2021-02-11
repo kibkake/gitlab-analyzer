@@ -1,5 +1,6 @@
 package main.java.ConnectToGitlab;
 
+import main.java.ConnectToGitlab.Developer.Developer;
 import main.java.ConnectToGitlab.Wrapper.WrapperNote;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public class Issue {
     private int id;
     private int iid;
     private int project_id;
-    private String author;
+    private Developer author;
     private String title;
     private String created_at;
     private String username;
@@ -43,11 +44,11 @@ public class Issue {
         this.project_id = project_id;
     }
 
-    public String getAuthor() {
+    public Developer getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Developer author) {
         this.author = author;
     }
 

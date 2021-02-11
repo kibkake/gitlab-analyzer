@@ -13,7 +13,7 @@ import java.util.List;
  * Calls to GitLab Api to get user information
  */
 @RestController
-public class DeveloperController {
+public class DeveloperConnection {
 
     /*  TODO change to autowired this is the proper way using beans, and not creating a rest template over and over
     @Autowired

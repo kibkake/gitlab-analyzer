@@ -19,7 +19,7 @@ public class MergeRequestConnection {
         //Example: 2021-01-01T00:00:00-08:00
         //-08:00 is offset from UTC
         String isoEnding = "T00:00:00-08:00";
-        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/merge_requests"
+        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/merge_requests";
 
         // https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
         ResponseEntity<List<MergeRequest>> commitsResponse = restTemplate.exchange(myUrl,
