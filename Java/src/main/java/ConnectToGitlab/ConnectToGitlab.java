@@ -23,57 +23,6 @@ public class ConnectToGitlab {
         System.out.println(jsonString);
     }
 
-    public static void testWrapperMethods(String token, WrapperProject project) throws IOException, ParseException {
-        System.out.println("project name: " + project.getGitlabProjectName());
-        System.out.println("project id: " + project.getGitlabProjectId());
-
-        for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
-        System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestTitle() + ": " + project.getMergedMergeRequests().get(i).getMergeScore());
-        System.out.println();
-        for(int j = 0; j <  project.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
-            System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getTitle());
-            System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName());
-            System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitScore());
-            for(int k = 0; k < project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getWrapperCommitDiffs().size(); k++){
-                //System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getWrapperCommitDiffs().get(k).getNewPath());
-                //System.out.println(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getWrapperCommitDiffs().get(k).getDiff());
-
-            }
-            System.out.println();
-            System.out.println();
-        }
-    }
-
-//get a user's merge requests
-        List<WrapperMergedMergeRequest> wrapperMergedMergeRequests = new ArrayList<>();
-        double userCommitsScore = 0.00;
-        for (int i = 0; i < project.getMergedMergeRequests().size(); i++){
-            boolean isUserPartOfMerge = false;
-            for(int j = 0; j <  project.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
-                if(project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName().equals("arahilin")){
-                    userCommitsScore += project.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitScore();
-                    isUserPartOfMerge = true;
-                }
-            }
-            if(isUserPartOfMerge){
-                wrapperMergedMergeRequests.add(project.getMergedMergeRequests().get(i));
-            }
-        }
-        System.out.println(userCommitsScore);
-
-        /*System.out.println(project.getAllIssues().size());
-
-
-        for (int i = 0; i < project.getAllIssues().size(); i++){
-            System.out.println(project.getAllIssues().get(i).getTitle());
-            System.out.println(project.getAllIssues().get(i).getAuthorName());
-        }*/
-
-        for (int i = 0; i < wrapperMergedMergeRequests.size(); i++){
-            //System.out.println(wrapperMergedMergeRequests.get(i).getMergeRequestTitle());
-        }
-    }
-
     //Get Ids of all commits pushed by a specific user (commits in a merged branch)
     public static List<String> getUserMergeCommitIds(String username, List<GitlabCommit> gitlabCommits){
         //Check which commits from a merge request are from the current user
