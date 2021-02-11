@@ -17,7 +17,7 @@ public class MongoDBConfig {
 
     public @Bean
     MongoTemplate mongoTemplate() {
-        return new MongoTemplate(mongoClient(), "gitlab");
+        return new MongoTemplate(mongoClient(), "test");
     }
 }
 
