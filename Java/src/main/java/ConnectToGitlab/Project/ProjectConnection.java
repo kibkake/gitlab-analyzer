@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -30,13 +29,14 @@ public class ProjectConnection {
     public static List<Project> getAllProjects() {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
-        String url = user.getServerUrl() + "projects?simple=true";
+        String url = user.getServerUrl() + "projects?simple=true&access_token=" + user.getToken();
         ResponseEntity<List<Project>> usersResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Project>>() {});
         List<Project> projects = usersResponse.getBody();
 
+        assert projects != null;
         for(Project project: projects) {
-//            project.setIssues(getAllIssues(project.getId()));
+            project.setIssues(getProjectIssues(project.getId()));
             project.setMergedRequests(MergeRequestConnection.getProjectMergeRequests(project.getId()));
             project.setCommits(getProjectCommits(project.getId()));
             project.setDevelopers(DeveloperConnection.getDevelopers());
@@ -44,7 +44,7 @@ public class ProjectConnection {
         return projects;
     }
 
-    private static List<Issue> getAllIssues(int projectId) {
+    private static List<Issue> getProjectIssues(int projectId) {
         User user = User.getInstance();
         String url =user.getServerUrl() + "projects/" + projectId + "/issues" + "?access_token=" + user.getToken();
         RestTemplate restTemplate = new RestTemplate();
@@ -52,13 +52,14 @@ public class ProjectConnection {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Issue>>() {});
 
         List<Issue> issues = usersResponse.getBody();
+        assert issues != null;
         for(Issue issue: issues) {
-            issue.setNotes(getAllNotes(issue.getProject_id(), issue.getIid()));
+            issue.setNotes(getIssueNotes(issue.getProject_id(), issue.getIid()));
         }
         return issues;
     }
 
-    private static List<Note> getAllNotes(int projectId , int issueIid) {
+    private static List<Note> getIssueNotes(int projectId , int issueIid) {
         User user = User.getInstance();
         String url = user.getServerUrl() + "projects/" + projectId + "/issues/" + issueIid + "/notes" + "?access_token=" + user.getToken();
         RestTemplate restTemplate = new RestTemplate();
