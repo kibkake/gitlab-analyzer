@@ -52,6 +52,8 @@ public class ProjectService {
         project.setMergedRequests(MergeRequestConnection.getProjectMergeRequests(projectId));
         project.setIssues(IssueConnection.getProjectIssues(projectId));
         project.setInfoSet(true);
+        projectRepository.save(project);
+        System.out.println(project);
     }
 
 
