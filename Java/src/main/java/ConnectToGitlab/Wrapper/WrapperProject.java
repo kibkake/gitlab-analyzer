@@ -29,7 +29,7 @@ public class WrapperProject {
     private String PROJECT_NAME;
     private List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS;
     //private final List<WrapperCommit> ALL_COMMITS = new ArrayList<>();
-    private final List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
+    private List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
     private List<Integer> mergeRequestIds = new ArrayList<>();
 
     public WrapperProject() {

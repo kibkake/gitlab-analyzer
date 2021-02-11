@@ -19,9 +19,9 @@ public class WrapperUser {
     public WrapperUser(String name, WrapperProject project) {
         this.NAME = name;
         getUserMergedMergeRequest(project);
-        getUserIssues(project);
+        //getUserIssues(project);
         calculateUserCommitScore();
-        calculateUserIssueScore();
+        //calculateUserIssueScore();
     }
 
     /**
@@ -106,7 +106,7 @@ public class WrapperUser {
      * Retrieves all issues where user has atleast one note in.
      * @param project the project object which includes all the necessary data about the repository.
      */
-    private void getUserIssues(WrapperProject project) {
+   /* private void getUserIssues(WrapperProject project) {
         boolean userIsPartOfIssue = false;
         for(int i = 0; i < project.getAllIssues().size(); i++){
             userIsPartOfIssue = checkUserIsPartOfIssue(project, i);
@@ -115,26 +115,26 @@ public class WrapperUser {
             }
         }
         removeIssueNotesFromOtherAuthors();
-    }
+    }*/
 
     /**
      * Checks if a user has atleast one note in an issue.
      * @param project the project object which includes all the necessary data about the repository.
      * @param index the index number of the issue that contains the notes.
      */
-    private boolean checkUserIsPartOfIssue(WrapperProject project, int index) {
+    /*private boolean checkUserIsPartOfIssue(WrapperProject project, int index) {
         for(int j = 0; j < project.getAllIssues().get(index).getNotes().size(); j++) {
             if(project.getAllIssues().get(index).getNotes().get(j).getAuthor().equals(NAME)) {
                 return true;
             }
         }
         return false;
-    }
+    }*/
 
     /**
      * Removes notes that do not belong to user.
      */
-    private void removeIssueNotesFromOtherAuthors() {
+    /*private void removeIssueNotesFromOtherAuthors() {
         for(int i = 0; i < ALL_ISSUES.size(); i++) {
             for (int j = 0; j < ALL_ISSUES.get(i).getNotes().size(); j++) {
                 if (!ALL_ISSUES.get(i).getNotes().get(j).getAuthor().equals(NAME)) {
@@ -143,7 +143,7 @@ public class WrapperUser {
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Adds up and calculates the score from all user commits in the repository that are in merged
@@ -164,11 +164,11 @@ public class WrapperUser {
      * Adds up and calculates the score from all user notes in the repository that are in merged
      * merge request.
      */
-    private void calculateUserIssueScore() {
+    /*private void calculateUserIssueScore() {
         for(int i = 0; i < ALL_ISSUES.size(); i++) {
             for (int j = 0; j < ALL_ISSUES.get(i).getNotes().size(); j++) {
                 issueScore += ALL_ISSUES.get(i).getNotes().get(j).getScore();
             }
         }
-    }
+    }*/
 }

@@ -40,7 +40,12 @@ public class WrapperProjectController {
     public void getProject() throws IOException, ParseException {
         Optional<WrapperProject> project = projectRepository.findById(6);
         List<Integer> mergeRequestIds = new ArrayList<>();
-
+        if(project.isPresent()){
+            mergeRequestIds = project.get().getMergeRequestIds();
+        }
+        for(int i = 0; i < mergeRequestIds.size(); i++){
+            System.out.println(mergeRequestIds.get(i));
+        }
     }
 
 

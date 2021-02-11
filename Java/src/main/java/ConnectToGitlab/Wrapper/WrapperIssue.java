@@ -25,7 +25,7 @@ public class WrapperIssue {
     private int ISSUE_YEAR;
     private int ISSUE_MONTH;
     private int ISSUE_DAY;
-    private final List<WrapperNote> NOTES = new ArrayList<>();
+    private List<WrapperNote> NOTES = new ArrayList<>();
 
     public WrapperIssue() {
     }
@@ -107,9 +107,9 @@ public class WrapperIssue {
         return (HttpURLConnection) url.openConnection();
     }
 
-    public void removeNote(int index) {
-        NOTES.remove(index);
-    }
+    //public void removeNote(int index) {
+        //NOTES.remove(index);
+    //}
 
     public int getProjectId() {
         return PROJECT_ID;

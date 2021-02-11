@@ -61,13 +61,13 @@ public class ConnectToGitlab {
         }
         System.out.println(userCommitsScore);
 
-        System.out.println(project.getAllIssues().size());
+        /*System.out.println(project.getAllIssues().size());
 
 
         for (int i = 0; i < project.getAllIssues().size(); i++){
             System.out.println(project.getAllIssues().get(i).getTitle());
             System.out.println(project.getAllIssues().get(i).getAuthorName());
-        }
+        }*/
 
         for (int i = 0; i < wrapperMergedMergeRequests.size(); i++){
             //System.out.println(wrapperMergedMergeRequests.get(i).getMergeRequestTitle());
