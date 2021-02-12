@@ -53,21 +53,6 @@ public class Developer {
         this.emails = emails;
     }
 
-    //https://stackoverflow.com/questions/122105/what-is-the-best-way-to-filter-a-java-collection/1385698
-    public List<Commit> getDevCommits(List<Commit> commits) {
-        List<Commit> filteredCommits = commits.stream()
-                .filter(p -> p.getAuthor_name().equals(this.name)).collect(Collectors.toList());
-        return filteredCommits;
-    }
-
-    public List<MergeRequest> getDevMergeRequests(List<MergeRequest> mergeRequests) {
-        List<MergeRequest> filteredList = mergeRequests.stream()
-                .filter(mrs -> mrs.getContributors().stream()
-                        .anyMatch(devs ->
-                                devs.getId() == this.id))
-                .collect(Collectors.toList());
-        return filteredList;
-    }
 
     @Override
     public String toString() {

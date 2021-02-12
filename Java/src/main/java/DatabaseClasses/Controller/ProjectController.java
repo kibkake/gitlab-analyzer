@@ -46,8 +46,9 @@ public class ProjectController {
 //        Project project = projectService.getProject(projectId);
 //        if (!project.isInfoSet()) {
             projectService.setProjectInfo(projectId);
-        Project project = projectService.getProject(projectId); // get project now that it has been modified
+//            project = projectService.getProject(projectId); // get project now that it has been modified
 //        }
+        Project project = projectService.getProject(projectId);
         return project;
     }
 
@@ -55,6 +56,11 @@ public class ProjectController {
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
         return projectService.getProjectDevelopers(projectId);
     }
+
+//    @GetMapping("projects/{projectId}/developers/{developerId}/graph")
+//    public List<Developer> getDevsGraphData(@PathVariable("projectId") int projectId, @PathVariable("developerId") int developerId) {
+//        return projectService.getDevsCommitsAndScores(projectId, developerId);
+//    }
 
 }
 

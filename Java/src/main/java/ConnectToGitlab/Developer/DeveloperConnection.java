@@ -28,21 +28,21 @@ public class DeveloperConnection {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
         List<Developer> devs = developerResponse.getBody();
 
-
-        for(Developer developer: devs) {
-            developer.setEmails(getDevsEmails(developer.getId()));
-        }
+//        for(Developer developer: devs) {
+//            developer.setEmails(getDevsEmails(developer.getId()));
+//        }
+        return devs;
     }
 
 
-    public static List<String> getDevsEmails(int userId) {
-        User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate();
-        String myUrl = user.getServerUrl() +"/users/" + userId + "/emails?access_token=" + user.getToken();
-        ResponseEntity<List<String>> commitsResponse = restTemplate.exchange(myUrl,
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {});
-        return commitsResponse.getBody();
-    }
+//    public static List<String> getDevsEmails(int userId) {
+//        User user = User.getInstance();
+//        RestTemplate restTemplate = new RestTemplate();
+//        String myUrl = user.getServerUrl() +"/users/" + userId + "/emails?access_token=" + user.getToken();
+//        ResponseEntity<List<String>> commitsResponse = restTemplate.exchange(myUrl,
+//                HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {});
+//        return commitsResponse.getBody();
+//    }
 
 
 }

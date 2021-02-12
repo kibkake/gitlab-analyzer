@@ -29,13 +29,6 @@ public class ProjectConnection {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Project>>() {});
         List<Project> projects = usersResponse.getBody();
 
-//        assert projects != null;
-//        for(Project project: projects) {
-//            project.setIssues(getProjectIssues(project.getId()));
-//            project.setMergedRequests(MergeRequestConnection.getProjectMergeRequests(project.getId()));
-//            project.setCommits(getProjectCommits(project.getId()));
-//            project.setDevelopers(DeveloperConnection.getDevelopers());
-//        }
         return projects;
     }
 }
