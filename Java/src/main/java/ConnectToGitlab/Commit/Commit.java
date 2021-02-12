@@ -163,13 +163,6 @@ public class Commit {
         this.sha = sha;
     }
 
-    public double getCommitScore() {
-        int additions = stats.getAdditions();
-        int deletions = stats.getDeletions();
-        double score = additions + (deletions * 0.2);
-        return score;
-    }
-
     public List<CommitDiff> getDiffs() {
         return diffs;
     }
