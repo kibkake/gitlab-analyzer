@@ -174,4 +174,24 @@ public class WrapperUser {
             }
         }
     }
+
+    public String getNAME() {
+        return NAME;
+    }
+
+    public List<WrapperMergedMergeRequest> getMERGED_MERGE_REQUESTS() {
+        return MERGED_MERGE_REQUESTS;
+    }
+
+    public List<WrapperIssue> getALL_ISSUES() {
+        return ALL_ISSUES;
+    }
+
+    public double getCommitScore() {
+        return commitScore;
+    }
+
+    public double getIssueScore() {
+        return issueScore;
+    }
 }

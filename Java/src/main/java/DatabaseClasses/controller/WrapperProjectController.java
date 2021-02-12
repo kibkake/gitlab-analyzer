@@ -28,7 +28,7 @@ import java.util.Optional;
 public class WrapperProjectController {
 
     private String token = "cFzzy7QFRvHzfHGpgrr1";
-    //set token
+    //set token, username
 
     @Autowired
     private WrapperProjectRepository projectRepository;
