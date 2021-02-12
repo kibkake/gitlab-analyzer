@@ -9,6 +9,7 @@ import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -82,6 +83,15 @@ public class ProjectController {
     @GetMapping("projects/{committerName}/numMergeRequests")
     public int getNumUserMergeRequests(@PathVariable("committerName") String committerName) {
         return projectService.getNumUserMergeRequests(committerName);
+    }
+
+    @GetMapping("projects/{committerName}/commitScoresPerDay")
+    public List<Integer> getUserCommitScoresPerDay(@PathVariable("committerName") String committerName) {
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        LocalDate end = LocalDate.now();
+        // Continue here - change this function so that it accepts start and end LocalDate params
+        // as additional path variables.
+        return projectService.getUserCommitScoresPerDay(committerName, start, end);
     }
 
 //    @GetMapping("projects/{projectId}/developers/{developerId}/graph")

@@ -10,12 +10,14 @@ import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequestConnection;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
+import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,24 +63,9 @@ public class ProjectService {
     }
 
     public int getNumUserCommits(String committerName) {
-        int numTotalCommits = 0;
-        List<Project> allProjects = projectRepository.findAll();
-        // Continue here - Works right now, but look for a way to only access
-        // projects that committerName is part of?
-        List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
-        // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
+        List<Commit> allCommits = this.getAllUserCommits(committerName);
 
-        for (Project currentProject : allProjects) {
-            List<Commit> projectCommits = currentProject.getCommits();
-            for (Commit currentCommit : projectCommits) {
-                if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                        currentCommit.getCommitter_name().equals(committerName)) {
-                    numTotalCommits++;
-                    commitIds.add(currentCommit.getId());
-                }
-            }
-        }
-        return numTotalCommits;
+        return allCommits.size();
     }
 
     public int getNumUserMergeRequests(String committerName) {
@@ -106,6 +93,36 @@ public class ProjectService {
         project.setIssues(IssueConnection.getProjectIssues(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
+    }
+
+    public List<Integer> getUserCommitScoresPerDay(String committerName, LocalDate start, LocalDate end) {
+        List<LocalDate> dates = LocalDateFunctions.generateRangeOfDates(start, end);
+        List<Project> allProjects = projectRepository.findAll();
+        // Continue here:
+        return null;
+
+        //for (LocalDate currentDate: dates) {
+        //
+        //}
+    }
+
+    public List<Commit> getAllUserCommits(String committerName) {
+        List<Project> allProjects = projectRepository.findAll();
+        List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
+        // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
+        List<Commit> return_var = new ArrayList<Commit>();
+
+        for (Project currentProject : allProjects) {
+            List<Commit> projectCommits = currentProject.getCommits();
+            for (Commit currentCommit : projectCommits) {
+                if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
+                        currentCommit.getCommitter_name().equals(committerName)) {
+                    return_var.add(currentCommit);
+                    commitIds.add(currentCommit.getId());
+                }
+            }
+        }
+        return return_var;
     }
 
 
