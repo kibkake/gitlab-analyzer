@@ -120,6 +120,17 @@ public class ProjectService {
         return returnVar;
     }
 
+    public int getTotalUserCommitScore(String committerName, LocalDate start, LocalDate end) {
+        List<DateScore> individualCommitScores = this.getUserCommitScoresPerDay(committerName,
+                                                                                start, end);
+        int totalCommitScore = 0;
+
+        for (DateScore currentDateScore: individualCommitScores) {
+            totalCommitScore += currentDateScore.getCommitScore();
+        }
+        return totalCommitScore;
+    }
+
     public List<Commit> getAllUserCommits(String committerName) {
         List<Project> allProjects = projectRepository.findAll();
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted

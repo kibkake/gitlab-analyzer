@@ -101,6 +101,14 @@ public class ProjectController {
         return projectService.getUserCommitScoresPerDay(committerName, start, end);
     }
 
+    @GetMapping("projects/{committerName}/totalCommitScore")
+    public int totalCommitScore(@PathVariable("committerName") String committerName) {
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        LocalDate end = LocalDate.now();
+        // Continue here - like in the above function, make these two dates path variables.
+        return projectService.getTotalUserCommitScore(committerName, start, end);
+    }
+
 //    @GetMapping("projects/{projectId}/developers/{developerId}/graph")
 //    public List<Developer> getDevsGraphData(@PathVariable("projectId") int projectId, @PathVariable("developerId") int developerId) {
 //        return projectService.getDevsCommitsAndScores(projectId, developerId);
