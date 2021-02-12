@@ -57,38 +57,4 @@ public class ProjectService {
         project.setInfoSet(true);
         projectRepository.save(project);
     }
-
-
-//    public List<Developer> getDevsCommitsAndScores(int projectId, int developerId) {
-//        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
-//                "Project with id " + projectId + " does not exist"));
-//
-//        Developer developer = project.getDevelopers().stream().filter(dev -> dev.getId() == developerId).findAny()
-//                .orElse(null);
-//
-//        List<Commit> devsCommits = project.getCommits().stream()
-//                .filter(mrs -> mrs.getContributors().stream().anyMatch(devs ->
-//                                devs.getId() == this.id))
-//                .collect(Collectors.toList());
-//
-//
-//
-//    }
-//
-//}
-//
-//    public List<Commit> getDevCommits(List<Commit> commits) {
-//        List<Commit> filteredCommits = commits.stream()
-//                .filter(p -> p.getAuthor_name().equals(this.name)).collect(Collectors.toList());
-//        return filteredCommits;
-//    }
-//
-//    public List<MergeRequest> getDevMergeRequests(List<MergeRequest> mergeRequests) {
-//        List<MergeRequest> filteredList = mergeRequests.stream()
-//                .filter(mrs -> mrs.getContributors().stream()
-//                        .anyMatch(devs ->
-//                                devs.getId() == this.id))
-//                .collect(Collectors.toList());
-//        return filteredList;
-//    }
 }
