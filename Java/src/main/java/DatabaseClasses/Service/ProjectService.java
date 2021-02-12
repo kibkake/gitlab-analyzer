@@ -7,7 +7,6 @@ import main.java.ConnectToGitlab.Developer.DeveloperConnection;
 import main.java.ConnectToGitlab.Issue.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequestConnection;
-import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;

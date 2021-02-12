@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @EnableMongoAuditing
 @EnableAutoConfiguration
 @Configuration
-public class MongoDBConfig {
+public class appConfig {
     private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
 
 
