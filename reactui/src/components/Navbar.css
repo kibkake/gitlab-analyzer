@@ -18,6 +18,29 @@
     font-size: 1.5rem;
 }
 
+
+.nav-icon {
+    color: #fff;
+    margin-top: 0px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 5px 5px;
+    border-radius: 8px;
+    position: absolute;
+    top:0;
+    left: 0;
+  }
+
+.nav-icon:hover{
+    background-color:darkturquoise ;
+    color: white;
+    transition-duration: .5s;
+    
+}
+
 .nav-links{
     display: flex;
     align-content: center;
@@ -26,8 +49,8 @@
 
 
 .nav-links a{
-    color: lightgray;
-    padding: 1rem 1rem;    
+    color: white;
+    margin-top: 10px;   
     font-size: 20px;
     width: 100%;
     height: 40px;
@@ -42,7 +65,7 @@
 .nav-links a:hover{
     background-color:darkturquoise ;
     color: white;
-    height: 100%;
+    height: 70%;
     transition-duration: .5s;
     
 
@@ -50,4 +73,24 @@
 
 span{
     margin-left: 7px;
+}
+
+.nav-links-signin a{
+    color: #fff;
+    margin-top: 10px;
+    display: flex;
+    width: 100px;
+    height: 40px;
+    border-radius: 8px;
+    position: absolute;
+    top:0;
+    right: 150px;
+    text-decoration: none;
+  }
+
+.nav-links-signin a:hover{
+    background-color:darkturquoise ;
+    color: white;
+    transition-duration: .5s;
+    
 }
