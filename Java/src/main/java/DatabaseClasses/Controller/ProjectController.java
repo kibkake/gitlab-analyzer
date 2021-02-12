@@ -3,6 +3,7 @@ package main.java.DatabaseClasses.Controller;
 import main.java.ConnectToGitlab.Developer.Developer;
 import main.java.ConnectToGitlab.Issue.Issue;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
+import main.java.DatabaseClasses.DateScore;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.ConnectToGitlab.Project.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
@@ -86,7 +87,7 @@ public class ProjectController {
     }
 
     @GetMapping("projects/{committerName}/commitScoresPerDay")
-    public List<Integer> getUserCommitScoresPerDay(@PathVariable("committerName") String committerName) {
+    public List<DateScore> getUserCommitScoresPerDay(@PathVariable("committerName") String committerName) {
         LocalDate start = LocalDate.of(2021, 1, 1);
         LocalDate end = LocalDate.now();
         // Continue here - change this function so that it accepts start and end LocalDate params

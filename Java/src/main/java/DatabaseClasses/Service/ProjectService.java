@@ -8,6 +8,7 @@ import main.java.ConnectToGitlab.Issue.Issue;
 import main.java.ConnectToGitlab.Issue.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequestConnection;
+import main.java.DatabaseClasses.DateScore;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.Functions.LocalDateFunctions;
@@ -95,11 +96,11 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public List<Integer> getUserCommitScoresPerDay(String committerName, LocalDate start, LocalDate end) {
+    public List<DateScore> getUserCommitScoresPerDay(String committerName, LocalDate start, LocalDate end) {
         List<LocalDate> dates = LocalDateFunctions.generateRangeOfDates(start, end);
         List<Project> allProjects = projectRepository.findAll();
-        // Continue here:
-        return null;
+        List<Commit> allUserCommits = this.getAllUserCommits(committerName);
+        // Continue here - Search through allUserCommits.
 
         //for (LocalDate currentDate: dates) {
         //
