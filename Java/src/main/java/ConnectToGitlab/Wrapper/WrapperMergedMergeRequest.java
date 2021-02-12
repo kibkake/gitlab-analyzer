@@ -53,6 +53,10 @@ public class WrapperMergedMergeRequest {
         getMergeNotes(token);
     }
 
+    public List<WrapperCommitDiff> getMERGE_DIFFS() {
+        return MERGE_DIFFS;
+    }
+
     public WrapperMergedMergeRequest() {
     }
 
@@ -77,6 +81,7 @@ public class WrapperMergedMergeRequest {
 
         Gson gson = new Gson();
         JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        List<WrapperCommit> commits = new ArrayList<>();
         for(int i = 0; i < jsonArray.size(); i++) {
             JsonElement jsonElement = jsonArray.get(i);
             JsonObject jsonObject = jsonElement.getAsJsonObject();
@@ -96,7 +101,7 @@ public class WrapperMergedMergeRequest {
             //MERGE_REQUEST_COMMITS.add(wrapperCommit);
             mergeRequestCommitIds.add(wrapperCommit.getId());
         }
-        return MERGE_REQUEST_COMMITS;
+        return commits;
     }
 
     /**
