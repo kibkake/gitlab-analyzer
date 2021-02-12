@@ -98,7 +98,7 @@ public class WrapperMergedMergeRequest {
             int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
             WrapperCommit wrapperCommit = new WrapperCommit(token, PROJECT_ID, commitId, authorName, authorEmail, title, mergeDate[0],
                     mergeDate[1], mergeDate[2]);
-            //MERGE_REQUEST_COMMITS.add(wrapperCommit);
+            MERGE_REQUEST_COMMITS.add(wrapperCommit);
             mergeRequestCommitIds.add(wrapperCommit.getId());
         }
         return commits;
