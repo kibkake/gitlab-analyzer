@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -97,33 +98,45 @@ public class ProjectService {
     }
 
     public List<DateScore> getUserCommitScoresPerDay(String committerName, LocalDate start, LocalDate end) {
-        List<LocalDate> dates = LocalDateFunctions.generateRangeOfDates(start, end);
-        List<Project> allProjects = projectRepository.findAll();
         List<Commit> allUserCommits = this.getAllUserCommits(committerName);
-        // Continue here - Search through allUserCommits.
+        List<DateScore> returnVar = new ArrayList<DateScore>();
 
-        //for (LocalDate currentDate: dates) {
-        //
-        //}
+        // Search through allUserCommits. If the commit's date is in the range of [start, end] then
+        // add a DateScore object for it.
+
+        for (Commit currentCommit: allUserCommits) {
+            LocalDate currentDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+            if (currentDate.compareTo(start) >= 0 && currentDate.compareTo(end) <= 0) {
+                // Date of the commit is in the range, so continue with it.
+                DateScore dateScore = new DateScore(currentDate, currentCommit.getCommitScore(),
+                                                    committerName);
+                returnVar.add(dateScore);
+            }
+        }
+
+        // Continue here - could go through the list and aggregate the scores for each Date, turning
+        // them into one DateScore object for that date.
+
+        return returnVar;
     }
 
     public List<Commit> getAllUserCommits(String committerName) {
         List<Project> allProjects = projectRepository.findAll();
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
         // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
-        List<Commit> return_var = new ArrayList<Commit>();
+        List<Commit> returnVar = new ArrayList<Commit>();
 
         for (Project currentProject : allProjects) {
             List<Commit> projectCommits = currentProject.getCommits();
             for (Commit currentCommit : projectCommits) {
                 if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
                         currentCommit.getCommitter_name().equals(committerName)) {
-                    return_var.add(currentCommit);
+                    returnVar.add(currentCommit);
                     commitIds.add(currentCommit.getId());
                 }
             }
         }
-        return return_var;
+        return returnVar;
     }
 
 

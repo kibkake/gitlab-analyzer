@@ -8,10 +8,10 @@ import java.time.LocalDate;
  */
 public class DateScore {
     private LocalDate date;
-    private int commitScore;
+    private double commitScore;
     private String userName;
 
-    public DateScore(LocalDate date, int commitScore, String userName) {
+    public DateScore(LocalDate date, double commitScore, String userName) {
         this.date = date;
         this.commitScore = commitScore;
         this.userName = userName;
@@ -21,7 +21,7 @@ public class DateScore {
         return date;
     }
 
-    public int getCommitScore() {
+    public double getCommitScore() {
         return commitScore;
     }
 
@@ -33,7 +33,7 @@ public class DateScore {
         this.date = date;
     }
 
-    public void setCommitScore(int commitScore) {
+    public void setCommitScore(double commitScore) {
         this.commitScore = commitScore;
     }
 
