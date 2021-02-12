@@ -24,12 +24,12 @@ public class DeveloperConnection {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String myUrl = user.getServerUrl() +"/projects/" + projectId + "/users?access_token=" + user.getToken();
-        ResponseEntity<List<Developer>> developers = restTemplate.exchange(myUrl,
+        ResponseEntity<List<Developer>> developerResponse = restTemplate.exchange(myUrl,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
+        List<Developer> devs = developerResponse.getBody();
 
 
-
-        for(Developer developer: developers) {
+        for(Developer developer: devs) {
             developer.setEmails(getDevsEmails(developer.getId()));
         }
     }
