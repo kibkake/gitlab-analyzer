@@ -1,42 +1,22 @@
 package main.java;
 
-import main.java.ConnectToGitlab.Commit.Commit;
-import main.java.ConnectToGitlab.Commit.CommitController;
 import main.java.ConnectToGitlab.ConnectToGitlab;
-import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Developer.DeveloperController;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequestController;
-import main.java.ConnectToGitlab.Project.Project;
-import main.java.ConnectToGitlab.Project.ProjectController;
-import main.java.ConnectToGitlab.User;
-import main.java.DatabaseClasses.model.Projects;
-import main.java.DatabaseClasses.repository.ProjectRepository;
-import main.java.Security.Authenticator;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
+import main.java.DatabaseClasses.Model.User;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.context.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-
 import java.io.IOException;
-import java.text.ParseException;
-import java.lang.IllegalArgumentException;
-import java.util.Arrays;
 import java.io.PrintWriter;
-import java.util.List;
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.util.Arrays;
 
 /**
  * The main application that invokes SpringBoot's bootRun
  */
 @SpringBootApplication
 public class Main {
-
-    @Autowired
-    ProjectRepository projectRepository;
 
     /**
      * This is the main method for running Spring Boot
@@ -48,22 +28,12 @@ public class Main {
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
-        try {
-            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
-        }catch(IOException | ParseException exception){
-            System.out.println(exception.getMessage());
-        }
+//        try {
+//            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
+//        }catch(IOException | ParseException exception){
+//            System.out.println(exception.getMessage());
+//        }
         SpringApplication.run(Main.class,args);
-
-        List<MergeRequest> mrs = MergeRequestController.getProjectMergeRequests(6, "2021-01-01",
-                "2021-02-01");
-//        System.out.println(mrs);
-
-        List<Developer> devs = DeveloperController.getDevelopers();
-        Developer testDevs = devs.get(4);
-        List<MergeRequest> mergeRequests = testDevs.getDevMergeRequests(mrs);
-        System.out.println(mergeRequests);
-
     }
 
     /**
@@ -90,17 +60,6 @@ public class Main {
 
             // indicate running status
             System.out.println("Server broadcasting on localhost:8080");
-
-
-            // very simple testing for DB cloud connection
-            // after running this, you can see the projects collection under gitlab db was created with this component
-            // after saving the object, should comment out the save function so there won't be duplicate
-            // you can use delete & save in turn
-
-            Projects projects = new Projects(4, "Testing1");
-//            projectRepository.save(projects);
-//            projectRepository.delete(projects);
-            System.out.println(projectRepository.findAll());
         };
     }
 }

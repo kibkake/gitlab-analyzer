@@ -1,8 +1,9 @@
-package main.java.DatabaseClasses.model.data;
+package main.java.DatabaseClasses.Model.Data;
 
+import main.java.DatabaseClasses.Model.Data.CommitDiff;
 import java.util.List;
 
-public class Commits {
+public class BigSaveOfCommits {
 
     private String ID;
     private String AUTHOR_NAME;
@@ -14,12 +15,12 @@ public class Commits {
     private double commitScore;
     private List<CommitDiff> COMMIT_DIFFS;
 
-    public Commits() {
+    public BigSaveOfCommits() {
     }
 
-    public Commits(String ID, String AUTHOR_NAME, String AUTHOR_EMAIL, String TITLE,
-                   int COMMIT_YEAR, int COMMIT_MONTH, int COMMIT_DAY,
-                   double commitScore, List<CommitDiff> COMMIT_DIFFS) {
+    public BigSaveOfCommits(String ID, String AUTHOR_NAME, String AUTHOR_EMAIL, String TITLE,
+                            int COMMIT_YEAR, int COMMIT_MONTH, int COMMIT_DAY,
+                            double commitScore, List<CommitDiff> COMMIT_DIFFS) {
         this.ID = ID;
         this.AUTHOR_NAME = AUTHOR_NAME;
         this.AUTHOR_EMAIL = AUTHOR_EMAIL;

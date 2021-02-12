@@ -1,5 +1,6 @@
-package main.java.DatabaseClasses.model.data;
+package main.java.DatabaseClasses.Model.Data;
 
+import main.java.DatabaseClasses.Model.Data.BigSaveOfCommits;
 import java.util.List;
 
 public class MergedRequest {
@@ -12,7 +13,7 @@ public class MergedRequest {
     private int MERGE_MONTH;
     private int MERGE_DAY;
     private double MERGE_SCORE;
-    private List<Commits> MERGE_REQUEST_COMMITS;
+    private List<BigSaveOfCommits> MERGE_REQUEST_COMMITS;
     private List<CommitDiff> MERGE_DIFFS;
     private List<Note> NOTES;
 
@@ -21,7 +22,7 @@ public class MergedRequest {
 
     public MergedRequest(int MERGE_REQUEST_ID, int MERGE_REQUEST_IID, int PROJECT_ID,
                          String MERGE_REQUEST_TITLE, int MERGE_YEAR, int MERGE_MONTH, int MERGE_DAY,
-                         double MERGE_SCORE, List<Commits> MERGE_REQUEST_COMMITS, List<CommitDiff> MERGE_DIFFS,
+                         double MERGE_SCORE, List<BigSaveOfCommits> MERGE_REQUEST_COMMITS, List<CommitDiff> MERGE_DIFFS,
                          List<Note> NOTES) {
         this.MERGE_REQUEST_ID = MERGE_REQUEST_ID;
         this.MERGE_REQUEST_IID = MERGE_REQUEST_IID;
