@@ -48,7 +48,6 @@ public class ProjectController {
             projectService.setProjectInfo(projectId);
             project = projectService.getProject(projectId); // get project now that it has been modified
         }
-        project = projectService.getProject(projectId);
         return project;
     }
 

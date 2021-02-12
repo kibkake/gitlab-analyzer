@@ -41,7 +41,7 @@ public class CommitConnection {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<CommitDiff>>() {});
         List<CommitDiff> commitDiffs = commitsResponse.getBody();
         for (CommitDiff singleDiff : commitDiffs) {
-            singleDiff.calculateCommitScoreSingleDiff();
+            singleDiff.calculateAndSetDiffScore();
         }
         return commitDiffs;
     }

@@ -26,33 +26,33 @@ public class CommitDiff {
      * Calculates the score from a diff string
      * the actual string containing the changes made to the file
      */
-    public double calculateCommitScoreSingleDiff() {
+    public void calculateAndSetDiffScore() {
         double score = 0.0;
-        for(int j = 0; j < diff.length(); j++){
-            if(diff.charAt(j) == '\n' && j < diff.length()-2){
+        for(int j = 0; j < this.diff.length(); j++){
+            if(this.diff.charAt(j) == '\n' && j < this.diff.length()-2){
                 j++;
-                if(diff.charAt(j) == '+'){
+                if(this.diff.charAt(j) == '+'){
                     j++;
-                    while(diff.charAt(j) == ' ' || diff.charAt(j) == '\t'){
+                    while(this.diff.charAt(j) == ' ' || this.diff.charAt(j) == '\t'){
                         j++;
                     }
-                    if(diff.charAt(j) == '\n'){
+                    if(this.diff.charAt(j) == '\n'){
                         j--;
-                    }else if(diff.charAt(j) == '/'){
+                    }else if(this.diff.charAt(j) == '/'){
                         score += 0.0;
 
-                    }else if(diff.charAt(j) == '}' || diff.charAt(j) == '{'){
+                    }else if(this.diff.charAt(j) == '}' || this.diff.charAt(j) == '{'){
                         score += 0.2;
                     }else{
                         score += 1.0;
                     }
                 }
-                if(diff.charAt(j) == '-'){
+                if(this.diff.charAt(j) == '-'){
                     score += 0.2;
                 }
             }
         }
-        return Math.round(score * 100.0) / 100.0;
+        this.score = score;
     }
 
     public String getNew_path() {
