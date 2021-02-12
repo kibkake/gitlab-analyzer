@@ -2,6 +2,7 @@ package main.java.DatabaseClasses.Controller;
 
 import main.java.ConnectToGitlab.Developer.Developer;
 import main.java.ConnectToGitlab.Issue.Issue;
+import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.ConnectToGitlab.Project.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
@@ -66,6 +67,16 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/description")
     public String getProjectDescription(@PathVariable("projectId") int projectId) {
         return projectService.getProjectDescription(projectId);
+    }
+
+    @GetMapping("projects/{projectId}/mergeRequests")
+    public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
+        return projectService.getProjectMRs(projectId);
+    }
+
+    @GetMapping("projects/{committerName}/numCommits")
+    public int getNumUserCommits(@PathVariable("committerName") String committerName) {
+        return projectService.getNumUserCommits(committerName);
     }
 
 //    @GetMapping("projects/{projectId}/developers/{developerId}/graph")

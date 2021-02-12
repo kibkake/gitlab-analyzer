@@ -57,6 +57,28 @@ public class ProjectService {
         return project.getDescription();
     }
 
+    public List<MergeRequest> getProjectMRs(int projectId) {
+        Project project = projectRepository.findProjectById(projectId);
+        return project.getMergedRequests();
+    }
+
+    public int getNumUserCommits(String committerName) {
+        int numTotalCommits = 0;
+        List<Project> allProjects = projectRepository.findAll();
+
+        for (Project currentProject: allProjects) {
+            List<Commit> projectCommits = currentProject.getCommits();
+
+            for (Commit currentCommit: projectCommits) {
+                if (currentCommit.getCommitter_name().equals(committerName)) {
+                    numTotalCommits++;
+                }
+            }
+        }
+
+        return numTotalCommits;
+    }
+
     @Transactional
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
