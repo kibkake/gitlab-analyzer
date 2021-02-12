@@ -11,11 +11,13 @@ import main.java.ConnectToGitlab.MergeRequests.MergeRequestConnection;
 import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
+import main.java.Functions.StringFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -65,13 +67,16 @@ public class ProjectService {
     public int getNumUserCommits(String committerName) {
         int numTotalCommits = 0;
         List<Project> allProjects = projectRepository.findAll();
+        List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
+        // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
 
         for (Project currentProject: allProjects) {
             List<Commit> projectCommits = currentProject.getCommits();
-
             for (Commit currentCommit: projectCommits) {
-                if (currentCommit.getCommitter_name().equals(committerName)) {
+                if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
+                    currentCommit.getCommitter_name().equals(committerName)) {
                     numTotalCommits++;
+                    commitIds.add(currentCommit.getId());
                 }
             }
         }
