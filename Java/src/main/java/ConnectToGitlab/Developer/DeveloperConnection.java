@@ -1,6 +1,6 @@
 package main.java.ConnectToGitlab.Developer;
 
-import main.java.ConnectToGitlab.User;
+import main.java.DatabaseClasses.Model.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -27,22 +27,7 @@ public class DeveloperConnection {
         ResponseEntity<List<Developer>> developerResponse = restTemplate.exchange(myUrl,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
         List<Developer> devs = developerResponse.getBody();
-
-//        for(Developer developer: devs) {
-//            developer.setEmails(getDevsEmails(developer.getId()));
-//        }
         return devs;
     }
-
-
-//    public static List<String> getDevsEmails(int userId) {
-//        User user = User.getInstance();
-//        RestTemplate restTemplate = new RestTemplate();
-//        String myUrl = user.getServerUrl() +"/users/" + userId + "/emails?access_token=" + user.getToken();
-//        ResponseEntity<List<String>> commitsResponse = restTemplate.exchange(myUrl,
-//                HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {});
-//        return commitsResponse.getBody();
-//    }
-
 
 }

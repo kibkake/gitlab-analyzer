@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.*;
+import org.springframework.data.annotation.Id;
+
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +26,7 @@ public class Commit {
     private String author_name;
     private String author_email;
     private String authored_date;
-    // TODO find difference b7etween committer and author
+    // TODO find difference between committer and author
     private String committer_name;
     private String committer_email;
     private String committed_date;
@@ -126,7 +128,7 @@ public class Commit {
         return committer_email;
     }
 
-    public void setCommitter_email(String co7mmitter_email) {
+    public void setCommitter_email(String committer_email) {
         this.committer_email = committer_email;
     }
 

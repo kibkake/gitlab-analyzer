@@ -1,5 +1,5 @@
 package main.java.ConnectToGitlab.Commit;
-import main.java.ConnectToGitlab.User;
+import main.java.DatabaseClasses.Model.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +41,7 @@ public class CommitConnection {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<CommitDiff>>() {});
         List<CommitDiff> commitDiffs = commitsResponse.getBody();
         for (CommitDiff singleDiff : commitDiffs) {
-            singleDiff.calculateCommitScoreSingleDiff();
+            singleDiff.calculateAndSetDiffScore();
         }
         return commitDiffs;
     }

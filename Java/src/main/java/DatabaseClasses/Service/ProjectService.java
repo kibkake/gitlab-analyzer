@@ -149,8 +149,7 @@ public class ProjectService {
         }
         return returnVar;
     }
-
-
+    
 //    public List<Developer> getDevsCommitsAndScores(int projectId, int developerId) {
 //        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
 //                "Project with id " + projectId + " does not exist"));
