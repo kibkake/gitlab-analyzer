@@ -8,7 +8,6 @@ import main.java.ConnectToGitlab.Issue.Issue;
 import main.java.ConnectToGitlab.Issue.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequestConnection;
-import main.java.ConnectToGitlab.User;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.Functions.StringFunctions;
@@ -19,9 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -67,21 +63,37 @@ public class ProjectService {
     public int getNumUserCommits(String committerName) {
         int numTotalCommits = 0;
         List<Project> allProjects = projectRepository.findAll();
+        // Continue here - Works right now, but look for a way to only access
+        // projects that committerName is part of?
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
         // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
 
-        for (Project currentProject: allProjects) {
+        for (Project currentProject : allProjects) {
             List<Commit> projectCommits = currentProject.getCommits();
-            for (Commit currentCommit: projectCommits) {
+            for (Commit currentCommit : projectCommits) {
                 if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                    currentCommit.getCommitter_name().equals(committerName)) {
+                        currentCommit.getCommitter_name().equals(committerName)) {
                     numTotalCommits++;
                     commitIds.add(currentCommit.getId());
                 }
             }
         }
-
         return numTotalCommits;
+    }
+
+    public int getNumUserMergeRequests(String committerName) {
+        int numTotalMRs = 0;
+        List<Project> allProjects = projectRepository.findAll();
+
+        for (Project currentProject: allProjects) {
+            List<MergeRequest> projectMRs = currentProject.getMergedRequests();
+            for (MergeRequest currentMR: projectMRs) {
+                if (currentMR.isAContributor(committerName)) {
+                    numTotalMRs++;
+                }
+            }
+        }
+        return numTotalMRs;
     }
 
     @Transactional
