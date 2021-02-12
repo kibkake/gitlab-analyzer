@@ -107,9 +107,9 @@ public class WrapperIssue {
         return (HttpURLConnection) url.openConnection();
     }
 
-    //public void removeNote(int index) {
-        //NOTES.remove(index);
-    //}
+    public void removeNote(int index) {
+        NOTES.remove(index);
+    }
 
     public int getProjectId() {
         return PROJECT_ID;

@@ -4,6 +4,7 @@ package main.java.DatabaseClasses.controller;
 import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
 import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
 import main.java.ConnectToGitlab.Wrapper.WrapperProject;
+import main.java.ConnectToGitlab.Wrapper.WrapperUser;
 import main.java.DatabaseClasses.repository.WrapperCommitRepository;
 import main.java.DatabaseClasses.repository.WrapperMergedMergeRequestRepository;
 import main.java.DatabaseClasses.repository.WrapperProjectRepository;
@@ -29,7 +30,6 @@ public class WrapperProjectController {
     private String token = "cFzzy7QFRvHzfHGpgrr1";
     //set token
 
-
     @Autowired
     private WrapperProjectRepository projectRepository;
 
@@ -38,7 +38,6 @@ public class WrapperProjectController {
 
     @Autowired
     private WrapperCommitRepository wrapperCommitRepository;
-
 
     @GetMapping("addproject")
     public void saveProject() throws IOException, ParseException {
@@ -54,9 +53,8 @@ public class WrapperProjectController {
     }
 
     @GetMapping("getuserstats/{pId}/{usrname}")
-        public WrapperProject getProject(@PathVariable String pId, @PathVariable String usrname)
+        public WrapperUser getProject(@PathVariable String pId, @PathVariable String usrname)
             throws IOException, ParseException {
-        System.out.println(Integer.parseInt(pId));
         int projectId = Integer.parseInt(pId);
         String userName = usrname;
 
@@ -91,8 +89,15 @@ public class WrapperProjectController {
             }
             project.get().getMergedMergeRequests().get(i).addMergedMergeRequestsCommits(commits);
         }
-        return project.get();
+
+        return getUserData(userName, project.get());
     }
+
+    private WrapperUser getUserData(String userName, WrapperProject project){
+        WrapperUser user = new WrapperUser(userName, project);
+        return user;
+    }
+
 
 }
 
