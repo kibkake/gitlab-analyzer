@@ -63,6 +63,11 @@ public class ProjectController {
         return projectService.getProjectIssues(projectId);
     }
 
+    @GetMapping("projects/{projectId}/description")
+    public String getProjectDescription(@PathVariable("projectId") int projectId) {
+        return projectService.getProjectDescription(projectId);
+    }
+
 //    @GetMapping("projects/{projectId}/developers/{developerId}/graph")
 //    public List<Developer> getDevsGraphData(@PathVariable("projectId") int projectId, @PathVariable("developerId") int developerId) {
 //        return projectService.getDevsCommitsAndScores(projectId, developerId);
