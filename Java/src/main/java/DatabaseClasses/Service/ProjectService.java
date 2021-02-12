@@ -4,6 +4,7 @@ import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Commit.CommitConnection;
 import main.java.ConnectToGitlab.Developer.Developer;
 import main.java.ConnectToGitlab.Developer.DeveloperConnection;
+import main.java.ConnectToGitlab.Issue.Issue;
 import main.java.ConnectToGitlab.Issue.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequestConnection;
@@ -44,6 +45,11 @@ public class ProjectService {
     public List<Developer> getProjectDevelopers(int projectId) {
         Project project = projectRepository.findProjectById(projectId);
         return project.getDevelopers();
+    }
+
+    public List<Issue> getProjectIssues(int projectId) {
+        Project project = projectRepository.findProjectById(projectId);
+        return project.getIssues();
     }
 
     @Transactional

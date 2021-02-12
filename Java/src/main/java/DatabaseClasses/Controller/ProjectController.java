@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.Controller;
 
 import main.java.ConnectToGitlab.Developer.Developer;
+import main.java.ConnectToGitlab.Issue.Issue;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.ConnectToGitlab.Project.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
@@ -55,6 +56,11 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/developers")
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
         return projectService.getProjectDevelopers(projectId);
+    }
+
+    @GetMapping("projects/{projectId}/issues")
+    public List<Issue> getProjectIssues(@PathVariable("projectId") int projectId) {
+        return projectService.getProjectIssues(projectId);
     }
 
 //    @GetMapping("projects/{projectId}/developers/{developerId}/graph")
