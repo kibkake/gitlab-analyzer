@@ -53,7 +53,6 @@ public class ProjectService {
         project.setIssues(IssueConnection.getProjectIssues(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
-        System.out.println(project);
     }
 
 

@@ -20,14 +20,29 @@ public class CommitConnection {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String myUrl = user.getServerUrl() +"/projects/" + projectId + "/repository/commits?access_token=" + user.getToken();
-
         // https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
         ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {});
-        return commitsResponse.getBody();
+        List<Commit> commits = commitsResponse.getBody();
+        for (Commit singleCommit : commits) {
+            singleCommit.setProjectId(projectId); // sets projectId if removing set project id a different way
+            singleCommit.setDiffs(getSingleCommitDiffs(projectId, singleCommit.getId()));
+            singleCommit.setCommitScore(singleCommit.calculateCommitScore()); // done after getting commits
+        }
+        return commits;
     }
 
-    public static void getSingleCommit(String identifier) {
-
+    private static List<CommitDiff> getSingleCommitDiffs(Integer projectId, String commitHash) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        String url = user.getServerUrl() + "/projects/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" +
+                "?access_token=" + user.getToken();
+        ResponseEntity<List<CommitDiff>> commitsResponse = restTemplate.exchange(url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<CommitDiff>>() {});
+        List<CommitDiff> commitDiffs = commitsResponse.getBody();
+        for (CommitDiff singleDiff : commitDiffs) {
+            singleDiff.calculateCommitScoreSingleDiff();
+        }
+        return commitDiffs;
     }
 }

@@ -43,11 +43,11 @@ public class ProjectController {
 
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {
-        Project project = projectService.getProject(projectId);
-        if (!project.isInfoSet()) {
+//        Project project = projectService.getProject(projectId);
+//        if (!project.isInfoSet()) {
             projectService.setProjectInfo(projectId);
-            project = projectService.getProject(projectId); // get project now that it has been modified
-        }
+        Project project = projectService.getProject(projectId); // get project now that it has been modified
+//        }
         return project;
     }
 

@@ -29,5 +29,16 @@ public class DeveloperConnection {
         return commitsResponse.getBody();
     }
 
+    https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/users/12/emails
+
+    public static List<Developer> getDevsEmails(int projectId) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/users?access_token=" + user.getToken();
+        ResponseEntity<List<Developer>> commitsResponse = restTemplate.exchange(myUrl,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
+        return commitsResponse.getBody();
+    }
+
 
 }

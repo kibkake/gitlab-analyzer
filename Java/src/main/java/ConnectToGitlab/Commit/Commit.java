@@ -1,11 +1,19 @@
 package main.java.ConnectToGitlab.Commit;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  *  Holds import information about commits and is used to convert JSON to an object with spring
  */
+
+@Document(collection = "commits")
 public class Commit {
+
+    @Id
     private String id;
     private String shortId;
     private String created_at;
@@ -15,36 +23,22 @@ public class Commit {
     private String author_name;
     private String author_email;
     private String authored_date;
-    // TODO find difference between committer and author
+    // TODO find difference b7etween committer and author
     private String committer_name;
     private String committer_email;
     private String committed_date;
     private String web_url;
     //holds add, delete and total changes of a single commit
     private Stats stats;
+    private List<CommitDiff> diffs;
+    private Date date;
+    private String sha;
+    private int projectId;
+    private double commitScore;
 
 //         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
 
     public Commit() {
-    }
-
-    public Commit(String id, String shortId, String created_at, ArrayList<String> parent_ids, String title,
-                  String message, String author_name, String author_email, String authored_date, String committer_name,
-                  String committer_email, String committed_date, String web_url, Stats stats) {
-        this.id = id;
-        this.shortId = shortId;
-        this.created_at = created_at;
-        this.parent_ids = parent_ids;
-        this.title = title;
-        this.message = message;
-        this.author_name = author_name;
-        this.author_email = author_email;
-        this.authored_date = authored_date;
-        this.committer_name = committer_name;
-        this.committer_email = committer_email;
-        this.committed_date = committed_date;
-        this.web_url = web_url;
-        this.stats = stats;
     }
 
     public String getId() {
@@ -131,7 +125,7 @@ public class Commit {
         return committer_email;
     }
 
-    public void setCommitter_email(String committer_email) {
+    public void setCommitter_email(String co7mmitter_email) {
         this.committer_email = committer_email;
     }
 
@@ -140,6 +134,8 @@ public class Commit {
     }
 
     public void setCommitted_date(String committed_date) {
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(committed_date);
+        setDate(Date.from(dateWithOffSet.toInstant()));
         this.committed_date = committed_date;
     }
 
@@ -159,12 +155,44 @@ public class Commit {
         this.stats = stats;
     }
 
-//    public double getCommitScore() {
-//        int additions = stats.getAdditions();
-//        int deletions = stats.getDeletions();
-//        double score = additions + (deletions * 0.2);
-//        return score;
-//    }
+    public String getSha() {
+        return sha;
+    }
+
+    public void setSha(String sha) {
+        this.sha = sha;
+    }
+
+    public double getCommitScore() {
+        int additions = stats.getAdditions();
+        int deletions = stats.getDeletions();
+        double score = additions + (deletions * 0.2);
+        return score;
+    }
+
+    public List<CommitDiff> getDiffs() {
+        return diffs;
+    }
+
+    public void setDiffs(List<CommitDiff> diffs) {
+        this.diffs = diffs;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
 
     @Override
     public String toString() {
@@ -186,4 +214,15 @@ public class Commit {
                 '}';
     }
 
+    public void setCommitScore(double commitScore) {
+        this.commitScore = commitScore;
+    }
+
+    public double calculateCommitScore(){
+        for(int i = 0; i < diffs.size(); i++){
+            commitScore += diffs.get(i).getScore();
+        }
+        commitScore = Math.round(commitScore * 100.0) / 100.0;
+        return 0;
+    }
 }
