@@ -24,19 +24,23 @@ public class DeveloperConnection {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String myUrl = user.getServerUrl() +"/projects/" + projectId + "/users?access_token=" + user.getToken();
-        ResponseEntity<List<Developer>> commitsResponse = restTemplate.exchange(myUrl,
+        ResponseEntity<List<Developer>> developers = restTemplate.exchange(myUrl,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
-        return commitsResponse.getBody();
+
+
+
+        for(Developer developer: developers) {
+            developer.setEmails(getDevsEmails(developer.getId()));
+        }
     }
 
-    https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/users/12/emails
 
-    public static List<Developer> getDevsEmails(int projectId) {
+    public static List<String> getDevsEmails(int userId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
-        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/users?access_token=" + user.getToken();
-        ResponseEntity<List<Developer>> commitsResponse = restTemplate.exchange(myUrl,
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
+        String myUrl = user.getServerUrl() +"/users/" + userId + "/emails?access_token=" + user.getToken();
+        ResponseEntity<List<String>> commitsResponse = restTemplate.exchange(myUrl,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {});
         return commitsResponse.getBody();
     }
 

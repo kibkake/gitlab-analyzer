@@ -20,23 +20,13 @@ public class Developer {
     private String state;
     private String avatar_url;
     private String web_url;
-    private String email;
+    private List<String> emails;
 
     public Developer() {
     }
 
     public Developer(int id) {
         this.id = id;
-    }
-
-    public Developer(int id, String name, String username, String state, String avatar_url, String web_url, String email) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.state = state;
-        this.avatar_url = avatar_url;
-        this.web_url = web_url;
-        this.email = email;
     }
 
     public int getId() {
@@ -53,6 +43,14 @@ public class Developer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<String> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<String> emails) {
+        this.emails = emails;
     }
 
     //https://stackoverflow.com/questions/122105/what-is-the-best-way-to-filter-a-java-collection/1385698
