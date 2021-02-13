@@ -1,9 +1,11 @@
 package main.java.ConnectToGitlab.MergeRequests;//package main.java.ConnectToGitlab.MergeRequests;
 
 import main.java.ConnectToGitlab.Developer.Developer;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Document(value = "MergeRequest")
 public class MergeRequest {
 
     private int id;
