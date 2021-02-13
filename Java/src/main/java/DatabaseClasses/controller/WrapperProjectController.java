@@ -12,22 +12,18 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @RestController("WrapperProjectController")
 //@RequestMapping(path="projects")
 public class WrapperProjectController {
 
-    private String token = "cFzzy7QFRvHzfHGpgrr1";
+    private String token = "ee";
     //set token, username
 
     @Autowired
@@ -39,8 +35,19 @@ public class WrapperProjectController {
     @Autowired
     private WrapperCommitRepository wrapperCommitRepository;
 
+    @PostMapping("settoken")
+    private void setToken(@RequestBody Map<String, String> requestBody) {
+        if(requestBody.get("token") != null) {
+            token = requestBody.get("token");
+            System.out.println(token);
+        }
+        else{
+            System.out.println("token is null!");
+        }
+    }
+
     @GetMapping("addproject")
-    public void saveProject() throws IOException, ParseException {
+    private void saveProject() throws IOException, ParseException {
         WrapperProject project = new WrapperProject ("cFzzy7QFRvHzfHGpgrr1", 6);
         List<WrapperMergedMergeRequest> mergedMergeRequests = project.getMergedMergeRequestsFromServer("cFzzy7QFRvHzfHGpgrr1", 6);
         List<WrapperCommit> commits = new ArrayList<>();
@@ -53,8 +60,8 @@ public class WrapperProjectController {
     }
 
     @GetMapping("getuserstats/{pId}/{usrname}")
-        public WrapperUser getProject(@PathVariable String pId, @PathVariable String usrname)
-            throws IOException, ParseException {
+    public WrapperUser getProject(@PathVariable String pId, @PathVariable String usrname)
+        throws IOException, ParseException {
         int projectId = Integer.parseInt(pId);
         String userName = usrname;
 
