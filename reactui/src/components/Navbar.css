@@ -18,6 +18,9 @@
     font-size: 1.5rem;
 }
 
+.navbar ul li{
+    position: relative;
+}
 
 .nav-icon {
     color: #fff;
@@ -44,7 +47,7 @@
 .nav-links{
     display: flex;
     align-content: center;
-    padding:8px 8px 8xp 16px;
+    padding:8px;
 }
 
 
