@@ -245,11 +245,11 @@ public class WrapperProject {
         this.mergedMergeRequests.addAll(mergedMergeRequests);
     }
 
-    public int getGitlabProjectId() {
+    public int getID() {
         return ID;
     }
 
-    public String getGitlabProjectName() {
+    public String getProjectName() {
         return projectName;
     }
 
@@ -260,10 +260,6 @@ public class WrapperProject {
     /*public List<WrapperCommit> getAllCommits() {
         return ALL_COMMITS;
     }*/
-
-    public String getProjectName() {
-        return projectName;
-    }
 
     public List<WrapperIssue> getIssues() {
         return issues;

@@ -93,8 +93,8 @@ public class WrapperProjectController {
 
         for(int i = 0; i < project.get().getMergedMergeRequests().size(); i++){
             List<WrapperCommit> commits = new ArrayList<>();
-            for(int j = 0; j < project.get().getMergedMergeRequests().get(i).getMergeRequestCommitIds().size(); j++ ){
-                commits.add(wrapperCommitRepository.findByID(project.get().getMergedMergeRequests().get(i).getMergeRequestCommitIds().get(j)));
+            for(int j = 0; j < project.get().getMergedMergeRequests().get(i).getmergeRequestCommitIds().size(); j++ ){
+                commits.add(wrapperCommitRepository.findByID(project.get().getMergedMergeRequests().get(i).getmergeRequestCommitIds().get(j)));
             }
             project.get().getMergedMergeRequests().get(i).addMergedMergeRequestsCommits(commits);
         }
