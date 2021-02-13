@@ -86,7 +86,7 @@ public class ProjectController {
         return projectService.getNumUserCommits(committerName);
     }
 
-    @GetMapping("projects/{projectId}/{committerName}/numMergeRequests")
+    @GetMapping("projects/numMergeRequests/{projectId}/{committerName}")
     public int getNumUserMergeRequests(@PathVariable("projectId") int projectId,
                                        @PathVariable("committerName") String committerName) {
         return projectService.getNumUserMergeRequests(projectId, committerName);
