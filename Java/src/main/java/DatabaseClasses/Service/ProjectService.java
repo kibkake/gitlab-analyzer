@@ -70,16 +70,14 @@ public class ProjectService {
         return allCommits.size();
     }
 
-    public int getNumUserMergeRequests(String committerName) {
+    public int getNumUserMergeRequests(int projectId, String committerName) {
         int numTotalMRs = 0;
-        List<Project> allProjects = projectRepository.findAll();
+        Project project = projectRepository.findProjectById(projectId);
 
-        for (Project currentProject: allProjects) {
-            List<MergeRequest> projectMRs = currentProject.getMergedRequests();
-            for (MergeRequest currentMR: projectMRs) {
-                if (currentMR.isAContributor(committerName)) {
-                    numTotalMRs++;
-                }
+        List<MergeRequest> projectMRs = project.getMergedRequests();
+        for (MergeRequest currentMR: projectMRs) {
+            if (currentMR.isAContributor(committerName)) {
+                numTotalMRs++;
             }
         }
         return numTotalMRs;
@@ -101,13 +99,9 @@ public class ProjectService {
         List<Commit> allUserCommits = this.getAllUserCommits(committerName);
         List<DateScore> returnVar = new ArrayList<DateScore>();
 
-        // Search through allUserCommits. If the commit's date is in the range of [start, end] then
-        // add a DateScore object for it.
-
         for (Commit currentCommit: allUserCommits) {
             LocalDate currentDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (currentDate.compareTo(start) >= 0 && currentDate.compareTo(end) <= 0) {
-                // Date of the commit is in the range, so continue with it.
                 DateScore dateScore = new DateScore(currentDate, currentCommit.getCommitScore(),
                                                     committerName);
                 returnVar.add(dateScore);
@@ -150,22 +144,6 @@ public class ProjectService {
         return returnVar;
     }
     
-//    public List<Developer> getDevsCommitsAndScores(int projectId, int developerId) {
-//        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
-//                "Project with id " + projectId + " does not exist"));
-//
-//        Developer developer = project.getDevelopers().stream().filter(dev -> dev.getId() == developerId).findAny()
-//                .orElse(null);
-//
-//        List<Commit> devsCommits = project.getCommits().stream()
-//                .filter(mrs -> mrs.getContributors().stream().anyMatch(devs ->
-//                                devs.getId() == this.id))
-//                .collect(Collectors.toList());
-//
-//
-//
-//    }
-//
 //}
 //
 //    public List<Commit> getDevCommits(List<Commit> commits) {

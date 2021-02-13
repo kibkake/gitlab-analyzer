@@ -86,9 +86,10 @@ public class ProjectController {
         return projectService.getNumUserCommits(committerName);
     }
 
-    @GetMapping("projects/{committerName}/numMergeRequests")
-    public int getNumUserMergeRequests(@PathVariable("committerName") String committerName) {
-        return projectService.getNumUserMergeRequests(committerName);
+    @GetMapping("projects/{projectId}/{committerName}/numMergeRequests")
+    public int getNumUserMergeRequests(@PathVariable("projectId") int projectId,
+                                       @PathVariable("committerName") String committerName) {
+        return projectService.getNumUserMergeRequests(projectId, committerName);
     }
 
     @GetMapping("projects/{committerName}/commitScoresPerDay")
