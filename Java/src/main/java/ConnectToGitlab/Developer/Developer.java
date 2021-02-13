@@ -2,6 +2,7 @@ package main.java.ConnectToGitlab.Developer;
 
 import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
  *  We call this class developer to not get confused between the user of our product and gitlab users. So we
  *  call gitlab users developers
  */
+@Document(value = "Developer")
 public class Developer {
     private int id;
     private String name;
@@ -18,23 +20,13 @@ public class Developer {
     private String state;
     private String avatar_url;
     private String web_url;
-    private String email;
+    private List<String> emails;
 
     public Developer() {
     }
 
     public Developer(int id) {
         this.id = id;
-    }
-
-    public Developer(int id, String name, String username, String state, String avatar_url, String web_url, String email) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.state = state;
-        this.avatar_url = avatar_url;
-        this.web_url = web_url;
-        this.email = email;
     }
 
     public int getId() {
@@ -53,21 +45,14 @@ public class Developer {
         this.name = name;
     }
 
-    //https://stackoverflow.com/questions/122105/what-is-the-best-way-to-filter-a-java-collection/1385698
-    public List<Commit> getDevCommits(List<Commit> commits) {
-        List<Commit> filteredCommits = commits.stream()
-                .filter(p -> p.getAuthor_name().equals(this.name)).collect(Collectors.toList());
-        return filteredCommits;
+    public List<String> getEmails() {
+        return emails;
     }
 
-    public List<MergeRequest> getDevMergeRequests(List<MergeRequest> mergeRequests) {
-        List<MergeRequest> filteredList = mergeRequests.stream()
-                .filter(mrs -> mrs.getContributors().stream()
-                        .anyMatch(devs ->
-                                devs.getId() == this.id))
-                .collect(Collectors.toList());
-        return filteredList;
+    public void setEmails(List<String> emails) {
+        this.emails = emails;
     }
+
 
     @Override
     public String toString() {

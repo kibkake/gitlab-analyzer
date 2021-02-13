@@ -1,13 +1,16 @@
 package test.DatabaseClasses;
 
 import main.java.DatabaseClasses.DatabaseFunctions;
+import main.java.DatabaseClasses.Model.User;
 import org.junit.Test;
+
+import static org.graalvm.compiler.options.OptionType.User;
 import static org.junit.Assert.*;
 
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import java.time.Duration;
+
 import java.time.LocalDate;
 /**
  * JUnit test class to test DatabaseFunctions class
@@ -59,8 +62,11 @@ public class DatabaseFunctionsTest{
                 pass: uss
                 token: DDG-37
          */
-
-        DatabaseFunctions.createUserAccount("Farragut","uss","DDG-37");
+        User user = new User();
+        user.setName("Farragut");
+        user.setPassword("uss");
+        user.setToken("DDG-37");
+        DatabaseFunctions.createUserAccount(user);
         String correctAnswer= "Farragut\nVFUUwPHbmuEztQ1FQ6IzJfxyV+OT9vvZatMKLUrOpRtndZfb1k7CI1b1i40NMcs6s9KNrmHNE3MgrFcEVq3S1A==\nDDG-37";
         assertEquals(correctAnswer, DatabaseFunctions.retrieveUserInfo("Farragut"));
     }
