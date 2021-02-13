@@ -17,29 +17,29 @@ import java.util.*;
  */
 public class WrapperIssue {
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    private int PROJECT_ID;
-    private int ISSUE_ID;
-    private int ISSUE_IID;
-    private String AUTHOR_NAME;
-    private String TITLE;
-    private int ISSUE_YEAR;
-    private int ISSUE_MONTH;
-    private int ISSUE_DAY;
-    private List<WrapperNote> NOTES = new ArrayList<>();
+    private int pId;
+    private int issueId;
+    private int issueIid;
+    private String authorName;
+    private String title;
+    private int issueYear;
+    private int issueMonth;
+    private int issueDay;
+    private List<WrapperNote> notes = new ArrayList<>();
 
     public WrapperIssue() {
     }
 
     public WrapperIssue(String token, int projectId, int issueId, int issueIid, String authorName, String title,
                         int year, int month, int day) throws IOException, ParseException {
-        this.PROJECT_ID = projectId;
-        this.ISSUE_ID = issueId;
-        this.ISSUE_IID = issueIid;
-        this.AUTHOR_NAME = authorName;
-        this.TITLE = title;
-        this.ISSUE_YEAR = year;
-        this.ISSUE_MONTH = month;
-        this.ISSUE_DAY = day;
+        this.pId = projectId;
+        this.issueId = issueId;
+        this.issueIid = issueIid;
+        this.authorName = authorName;
+        this.title = title;
+        this.issueYear = year;
+        this.issueMonth = month;
+        this.issueDay = day;
         getIssueNotes(token);
     }
 
@@ -48,7 +48,7 @@ public class WrapperIssue {
      * @param token the token provided by user of the class.
      */
     private void getIssueNotes(String token) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/issues/" + ISSUE_IID + "/notes" + "?access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + pId + "/issues/" + issueIid + "/notes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -76,7 +76,7 @@ public class WrapperIssue {
 
             WrapperNote wrapperNote = new WrapperNote(noteId, noteBody, authorName, noteDateParsed[0], noteDateParsed[1],
                     noteDateParsed[2]);
-            NOTES.add(wrapperNote);
+            notes.add(wrapperNote);
         }
     }
 
@@ -108,42 +108,42 @@ public class WrapperIssue {
     }
 
     public void removeNote(int index) {
-        NOTES.remove(index);
+        notes.remove(index);
     }
 
     public int getProjectId() {
-        return PROJECT_ID;
+        return pId;
     }
 
     public int getIssueId() {
-        return ISSUE_ID;
+        return issueId;
     }
 
     public int getIssueIid() {
-        return ISSUE_IID;
+        return issueIid;
     }
 
     public String getAuthorName() {
-        return AUTHOR_NAME;
+        return authorName;
     }
 
     public String getTitle() {
-        return TITLE;
+        return title;
     }
 
     public int getIssueYear() {
-        return ISSUE_YEAR;
+        return issueYear;
     }
 
     public int getIssueMonth() {
-        return ISSUE_MONTH;
+        return issueMonth;
     }
 
     public int getIssueDay() {
-        return ISSUE_DAY;
+        return issueDay;
     }
 
     public List<WrapperNote> getNotes() {
-        return NOTES;
+        return notes;
     }
 }
