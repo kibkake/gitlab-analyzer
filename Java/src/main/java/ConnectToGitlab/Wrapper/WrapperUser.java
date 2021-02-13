@@ -13,8 +13,8 @@ public class WrapperUser {
     private String NAME;
     private List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS = new ArrayList<>();
     private List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
-    private double commitScore = 0.0;
-    private double issueScore = 0.0;
+    private double totalCommitScore = 0.0;
+    private double totalIssueScore = 0.0;
 
     public WrapperUser() {
     }
@@ -155,10 +155,10 @@ public class WrapperUser {
     private void calculateUserCommitScore() {
         for(int i = 0; i < MERGED_MERGE_REQUESTS.size(); i++) {
             for (int j = 0; j < MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().size(); j++) {
-                commitScore += MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().get(j).getCommitScore();
+                totalCommitScore += MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().get(j).getCommitScore();
             }
             for (int k = 0; k < MERGED_MERGE_REQUESTS.get(i).getNotes().size(); k++) {
-                issueScore += MERGED_MERGE_REQUESTS.get(i).getNotes().get(k).getScore();
+                totalIssueScore += MERGED_MERGE_REQUESTS.get(i).getNotes().get(k).getScore();
             }
         }
     }
@@ -170,7 +170,7 @@ public class WrapperUser {
     private void calculateUserIssueScore() {
         for(int i = 0; i < ALL_ISSUES.size(); i++) {
             for (int j = 0; j < ALL_ISSUES.get(i).getNotes().size(); j++) {
-                issueScore += ALL_ISSUES.get(i).getNotes().get(j).getScore();
+                totalIssueScore += ALL_ISSUES.get(i).getNotes().get(j).getScore();
             }
         }
     }
@@ -188,10 +188,10 @@ public class WrapperUser {
     }
 
     public double getCommitScore() {
-        return commitScore;
+        return totalCommitScore;
     }
 
     public double getIssueScore() {
-        return issueScore;
+        return totalIssueScore;
     }
 }

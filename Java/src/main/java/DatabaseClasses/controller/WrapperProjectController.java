@@ -20,11 +20,9 @@ import java.util.*;
 
 
 @RestController("WrapperProjectController")
-//@RequestMapping(path="projects")
 public class WrapperProjectController {
 
     private String token = "cFzzy7QFRvHzfHGpgrr1";
-    //username
 
     @Autowired
     private WrapperProjectRepository projectRepository;
@@ -71,6 +69,7 @@ public class WrapperProjectController {
         List<WrapperMergedMergeRequest> mergedMergeRequests = new ArrayList<>();
 
         if(project.isEmpty()) {
+            System.out.println("empty");
             WrapperProject gitlabProject = new WrapperProject (token, projectId);
             List<WrapperMergedMergeRequest> gitlabMergedMergeRequests = gitlabProject.getMergedMergeRequestsFromServer
                     (token, projectId);
@@ -81,7 +80,9 @@ public class WrapperProjectController {
             }
             wrapperMergedMergeRequestRepository.saveAll(gitlabMergedMergeRequests);
             wrapperCommitRepository.saveAll(gitlabCommits);
+            project = projectRepository.findById(projectId);
         }
+        //System.out.println(project.get().getListOfMembers(token));
         mergeRequestIds = project.get().getMergeRequestIds();
         Iterator<WrapperMergedMergeRequest> itr = wrapperMergedMergeRequestRepository.findAllById(
                 project.get().getMergeRequestIds()).iterator();

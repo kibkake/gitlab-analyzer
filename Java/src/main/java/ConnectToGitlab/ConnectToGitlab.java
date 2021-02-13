@@ -17,13 +17,7 @@ import java.util.List;
 public class ConnectToGitlab {
 
     public static void connectGitlab(String token) throws IOException, ParseException {
-        WrapperProject project = new WrapperProject(token, 6);
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(project);
-        System.out.println(project.getListOfMembers(token));
-        System.out.println(jsonString);
-
-
+        //WrapperProject project = new WrapperProject(token, 6);
     }
 
     //Get Ids of all commits pushed by a specific user (commits in a merged branch)

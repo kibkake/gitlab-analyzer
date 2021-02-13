@@ -17,7 +17,7 @@ import java.util.List;
  * diffs, author's name, and the overall score from the entire commit. The score
  * is calcualted by adding up changes from all the diffs contained in the commit.
  */
-@Document("WrapperCommits")
+@Document("Commits")
 public class WrapperCommit {
 
     private static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
