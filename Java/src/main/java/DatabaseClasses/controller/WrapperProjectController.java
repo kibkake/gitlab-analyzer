@@ -23,8 +23,8 @@ import java.util.*;
 //@RequestMapping(path="projects")
 public class WrapperProjectController {
 
-    private String token = "ee";
-    //set token, username
+    private String token = "cFzzy7QFRvHzfHGpgrr1";
+    //username
 
     @Autowired
     private WrapperProjectRepository projectRepository;
@@ -35,6 +35,7 @@ public class WrapperProjectController {
     @Autowired
     private WrapperCommitRepository wrapperCommitRepository;
 
+    //curl -i -X POST -d "{\"token\":\"cFzzy7QFRvHzfHGpgrr1\"}" -H "Content-Type:application/json" http://localhost:8080/settoken
     @PostMapping("settoken")
     private void setToken(@RequestBody Map<String, String> requestBody) {
         if(requestBody.get("token") != null) {
