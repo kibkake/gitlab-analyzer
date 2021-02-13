@@ -3,3 +3,12 @@
     padding: 0;
     margin: 0;
 }
+
+.Developers, .Home, .Results, .Settings, .Repo, .Commits, .Comments, .CodeDiff,
+.Summary {
+    display: flex;
+    height: 90vh;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
