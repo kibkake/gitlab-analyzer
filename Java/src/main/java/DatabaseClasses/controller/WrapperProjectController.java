@@ -98,7 +98,6 @@ public class WrapperProjectController {
             }
             project.get().getMergedMergeRequests().get(i).addMergedMergeRequestsCommits(commits);
         }
-
         return getUserData(userName, project.get());
     }
 

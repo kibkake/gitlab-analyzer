@@ -92,8 +92,13 @@ public class WrapperMergedMergeRequest {
             JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
             String mergeRequestCommitDate = jsonPrimitiveCommitDate.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
-            WrapperCommit wrapperCommit = new WrapperCommit(token, Pid, commitId, authorName, authorEmail, title, mergeDate[0],
-                    mergeDate[1], mergeDate[2]);
+            DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date date = df1.parse(mergeRequestCommitDate);
+            df1.setTimeZone(TimeZone.getTimeZone("PT"));
+            String date2 = df1.format(date);
+
+            WrapperCommit wrapperCommit = new WrapperCommit(token, Pid, commitId, authorName, authorEmail, title, date2,
+                    mergeDate[0], mergeDate[1], mergeDate[2]);
             //MERGE_REQUEST_COMMITS.add(wrapperCommit);
             mergeRequestCommitIds.add(wrapperCommit.getId());
             commits.add(wrapperCommit);

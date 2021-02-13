@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,16 +32,18 @@ public class WrapperCommit {
     private int COMMIT_DAY;
     private double commitScore = 0.0;
     private List<WrapperCommitDiff> COMMIT_DIFFS = new ArrayList<>();
+    private String time;
 
     public WrapperCommit() {
     }
 
-    public WrapperCommit(String token, int projectId, String id, String authorName, String authorEmail, String title,
+    public WrapperCommit(String token, int projectId, String id, String authorName, String authorEmail, String title, String time,
                          int commitYear, int commitMonth, int commitDay) throws IOException {
         this.ID = id;
         this.AUTHOR_NAME = authorName;
         this.AUTHOR_EMAIL = authorEmail;
         this.TITLE = title;
+        this.time = time;
         this.COMMIT_YEAR = commitYear;
         this.COMMIT_MONTH = commitMonth;
         this.COMMIT_DAY = commitDay;
@@ -141,5 +144,9 @@ public class WrapperCommit {
 
     public List<WrapperCommitDiff> getWrapperCommitDiffs() {
         return COMMIT_DIFFS;
+    }
+
+    public String getTime() {
+        return time;
     }
 }

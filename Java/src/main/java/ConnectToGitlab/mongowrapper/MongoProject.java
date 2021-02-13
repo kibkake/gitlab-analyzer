@@ -100,9 +100,12 @@ public class MongoProject {
             JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
             String commitDate = jsonPrimitiveCommitDate.getAsString();
             int [] parsedCommitDate = parsIsoDate(commitDate);
+            DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date date = df1.parse(commitDate);
+            df1.setTimeZone(TimeZone.getTimeZone("PT"));
+            String date2 = df1.format(date);
 
-
-            WrapperCommit commit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title, parsedCommitDate[0],
+            WrapperCommit commit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title, date2, parsedCommitDate[0],
                     parsedCommitDate[1],parsedCommitDate[2]);
             //ALL_COMMITS.add(commit);
         }
