@@ -10,7 +10,7 @@ class Developers extends Component{
 
             <nav className="navbarItems">
 
-                <ul className='navMenu-sub'>
+                <ul className='navMenu'>
                     {MenuItems.map((item,index)=>{
                         return(
                             <li key={index} className={item.cName}>

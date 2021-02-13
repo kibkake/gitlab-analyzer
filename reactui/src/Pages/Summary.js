@@ -3,7 +3,8 @@ import BarChart from "../components/Chart";
 function Summary(){
     return(
         <div classname='Summary'>
-            <h1 style={{textAlign:'center'}}>Developers</h1>
+            <h1 style={{textAlign:'center'}}>Summary</h1>
+            <h4 style={{textAlign:'center'}}>code score/graph in the duration, comment wordCount/per day </h4>
             <BarChart/>
         </div>
 
@@ -13,24 +14,3 @@ function Summary(){
 }
 
 export default Summary;
-
-// import "../App.css"
-// import React,{ Component } from "react";
-//
-//
-// function Summary(){
-//
-//     return(
-//
-//         <div className='Summary'>
-//             <h1 style={{textAlign:'center'}}>
-//                 Summary : code score/graph in the duration, comment wordCount/per day
-//             </h1>
-//         </div>
-//
-//
-//     )
-//
-// }
-//
-// export default Summary;
