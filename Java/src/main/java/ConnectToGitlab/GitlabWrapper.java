@@ -67,36 +67,6 @@ public class GitlabWrapper {
 
     }
 
-    public static void getSingleMergedMergeRequestCommits(String token, int mergeIid) throws IOException {
-        URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/commits?" + "access_token=" + token);
-        HttpURLConnection connection = makeConnection(url);
-        connection.setRequestMethod("GET");
-        connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-        String reply = "";
-        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-        //System.out.println(reply);
-        getUserCommits("arahilin", reply);
-        connection.disconnect();
-    }
-
-    public static void getUserCommits(String username, String jsonString) {
-        Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-        List<String> userCommitHashes = new ArrayList<>();
-        for(int i = 0; i < jsonArray.size(); i++) {
-            JsonElement jsonElement = jsonArray.get(i);
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-            JsonPrimitive jsonPrimitiveName = jsonObject.getAsJsonPrimitive("committer_name");
-            if (jsonPrimitiveName.getAsString().equals(username)) {
-                JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
-                userCommitHashes.add(jsonPrimitiveId.getAsString());
-            }
-        }
-        //System.out.println(userCommitHashes);
-    }
-
     public static void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
         URL url = new URL(MAIN_URL + "/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
