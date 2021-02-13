@@ -208,8 +208,8 @@ public class WrapperProject {
         return result;
     }
 
-    public void getListOfMembers(String token) throws IOException {
-        URL url = new URL(MAIN_URL + "/" + ID + "/memebrs" +"?access_token=" + token);
+    public List<String> getListOfMembers(String token) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + ID + "/members" +"?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -217,8 +217,20 @@ public class WrapperProject {
 
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-        System.out.println(reply);
         connection.disconnect();
+
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        List<String> userNames = new ArrayList<>();
+        for(int i = 0; i< jsonArray.size(); i++) {
+            JsonElement jsonElement1 = jsonArray.get(i);
+            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
+            JsonPrimitive jsonPrimitiveUserName = jsonObject1.getAsJsonPrimitive("username");
+            String userName = jsonPrimitiveUserName.getAsString();
+
+            userNames.add(userName);
+        }
+        return userNames;
     }
 
     /**

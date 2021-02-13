@@ -20,7 +20,10 @@ public class ConnectToGitlab {
         WrapperProject project = new WrapperProject(token, 6);
         Gson gson = new Gson();
         String jsonString = gson.toJson(project);
+        System.out.println(project.getListOfMembers(token));
         System.out.println(jsonString);
+
+
     }
 
     //Get Ids of all commits pushed by a specific user (commits in a merged branch)
