@@ -218,11 +218,11 @@ public class Commit {
         return commitScore;
     }
 
-    public double calculateCommitScore(){
-        for(int i = 0; i < diffs.size(); i++){
+    public void calculateAndSetCommitScore(){
+        commitScore = 0;
+        for (int i = 0; i < diffs.size(); i++) {
             commitScore += diffs.get(i).getScore();
         }
         commitScore = Math.round(commitScore * 100.0) / 100.0;
-        return 0;
     }
 }
