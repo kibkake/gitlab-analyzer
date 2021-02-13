@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.Repository;
+package main.java.DatabaseClasses.repository;
 
 import main.java.ConnectToGitlab.Developer.Developer;
 import main.java.DatabaseClasses.Model.Project;
