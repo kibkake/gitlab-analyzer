@@ -1,7 +1,16 @@
 package main.java.Functions;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
+
+/*
+References:
+
+- https://stackoverflow.com/questions/21242110/convert-java-util-date-to-java-time-localdate
+  Used the first answer to figure out how to convert a Date to LocalDate.
+ */
 
 /**
  * This class contains helper functions which work with the LocalDate class.
@@ -31,5 +40,10 @@ public class LocalDateFunctions {
         }
 
         return rangeOfDates;
+    }
+
+    public static LocalDate convertDateToLocalDate(Date date) {
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return localDate;
     }
 }

@@ -1,12 +1,17 @@
 package main.java.DatabaseClasses.Controller;
 
+import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Developer.Developer;
+import main.java.ConnectToGitlab.Issue.Issue;
+import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
+import main.java.DatabaseClasses.DateScore;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.ConnectToGitlab.Project.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -54,6 +59,54 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/developers")
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
         return projectService.getProjectDevelopers(projectId);
+    }
+
+    @GetMapping("projects/{projectId}/issues")
+    public List<Issue> getProjectIssues(@PathVariable("projectId") int projectId) {
+        return projectService.getProjectIssues(projectId);
+    }
+
+    @GetMapping("projects/{projectId}/description")
+    public String getProjectDescription(@PathVariable("projectId") int projectId) {
+        return projectService.getProjectDescription(projectId);
+    }
+
+    @GetMapping("projects/{projectId}/mergeRequests")
+    public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
+        return projectService.getProjectMRs(projectId);
+    }
+
+    @GetMapping("projects/{committerName}/allCommits")
+    public List<Commit> getAllUserCommits(@PathVariable("committerName") String committerName) {
+        return projectService.getAllUserCommits(committerName);
+    }
+
+    @GetMapping("projects/{committerName}/numCommits")
+    public int getNumUserCommits(@PathVariable("committerName") String committerName) {
+        return projectService.getNumUserCommits(committerName);
+    }
+
+    @GetMapping("projects/{projectId}/{committerName}/numMergeRequests")
+    public int getNumUserMergeRequests(@PathVariable("projectId") int projectId,
+                                       @PathVariable("committerName") String committerName) {
+        return projectService.getNumUserMergeRequests(projectId, committerName);
+    }
+
+    @GetMapping("projects/{committerName}/commitScoresPerDay")
+    public List<DateScore> getUserCommitScoresPerDay(@PathVariable("committerName") String committerName) {
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        LocalDate end = LocalDate.now();
+        // Continue here - change this function so that it accepts start and end LocalDate params
+        // as additional path variables.
+        return projectService.getUserCommitScoresPerDay(committerName, start, end);
+    }
+
+    @GetMapping("projects/{committerName}/totalCommitScore")
+    public int totalCommitScore(@PathVariable("committerName") String committerName) {
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        LocalDate end = LocalDate.now();
+        // Continue here - like in the above function, make these two dates path variables.
+        return projectService.getTotalUserCommitScore(committerName, start, end);
     }
 
 //    @GetMapping("projects/{projectId}/developers/{developerId}/graph")

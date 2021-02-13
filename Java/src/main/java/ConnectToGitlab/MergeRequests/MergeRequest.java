@@ -3,6 +3,7 @@ package main.java.ConnectToGitlab.MergeRequests;//package main.java.ConnectToGit
 import main.java.ConnectToGitlab.Developer.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(value = "MergeRequest")
@@ -27,8 +28,17 @@ public class MergeRequest {
     private String sha;
 
     public MergeRequest() {
+        contributors = new ArrayList<>();
     }
 
+    public boolean isAContributor(String name) {
+        for (Developer currentDev: contributors) {
+            if (currentDev.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public int getId() {
         return id;

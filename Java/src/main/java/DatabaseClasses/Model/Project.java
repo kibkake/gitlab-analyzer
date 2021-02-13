@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * spring
  */
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,9 +31,13 @@ public class Project {
     private boolean infoSet;
     private Date infoSetDate;
 
-
-
     public Project() {
+        mergedRequests = new ArrayList<>();
+        issues = new ArrayList<>();
+        commits = new ArrayList<>();
+        developers = new ArrayList<>();
+        // The point of initializing them to empty arraylists is that, if they're not ever
+        // given values, they will be empty lists instead of equaling null.
     }
 
     public int getId() {
