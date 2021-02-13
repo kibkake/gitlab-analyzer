@@ -111,10 +111,10 @@ public class WrapperUser {
      */
     private void getUserIssues(WrapperProject project) {
         boolean userIsPartOfIssue = false;
-        for(int i = 0; i < project.getAllIssues().size(); i++){
+        for(int i = 0; i < project.getIssues().size(); i++){
             userIsPartOfIssue = checkUserIsPartOfIssue(project, i);
             if(userIsPartOfIssue) {
-                ALL_ISSUES.add(project.getAllIssues().get(i));
+                ALL_ISSUES.add(project.getIssues().get(i));
             }
         }
         removeIssueNotesFromOtherAuthors();
@@ -126,8 +126,8 @@ public class WrapperUser {
      * @param index the index number of the issue that contains the notes.
      */
     private boolean checkUserIsPartOfIssue(WrapperProject project, int index) {
-        for(int j = 0; j < project.getAllIssues().get(index).getNotes().size(); j++) {
-            if(project.getAllIssues().get(index).getNotes().get(j).getAuthor().equals(NAME)) {
+        for(int j = 0; j < project.getIssues().get(index).getNotes().size(); j++) {
+            if(project.getIssues().get(index).getNotes().get(j).getAuthor().equals(NAME)) {
                 return true;
             }
         }

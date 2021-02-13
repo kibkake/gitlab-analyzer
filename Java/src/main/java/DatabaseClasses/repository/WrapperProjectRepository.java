@@ -11,5 +11,4 @@ import java.util.List;
 @Repository
 public interface WrapperProjectRepository extends MongoRepository<WrapperProject, Integer> {
 
-
 }

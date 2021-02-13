@@ -2,7 +2,6 @@ package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,10 +25,10 @@ public class WrapperProject {
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
     @Id
     private int ID;
-    private String PROJECT_NAME;
-    private List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS;
+    private String projectName;
+    private List<WrapperMergedMergeRequest> mergedMergeRequests;
     //private final List<WrapperCommit> ALL_COMMITS = new ArrayList<>();
-    private List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
+    private List<WrapperIssue> issues = new ArrayList<>();
     private List<Integer> mergeRequestIds = new ArrayList<>();
 
     public WrapperProject() {
@@ -37,7 +36,7 @@ public class WrapperProject {
 
     public WrapperProject(String token, int gitlabProjectId) throws IOException, ParseException {
         this.ID = gitlabProjectId;
-        this.PROJECT_NAME = getProjectName(token);
+        this.projectName = getProjectName(token);
         //getMergedMergeRequests(token,gitlabProjectId);
         //getAllProjectCommits(token, gitlabProjectId);
         getAllProjectIssues(token);
@@ -185,7 +184,7 @@ public class WrapperProject {
 
             WrapperIssue wrapperIssue = new WrapperIssue(token, projectId, issueId, issueIid, authorName, issueTitle,
                     issueDateParsed[0], issueDateParsed[1], issueDateParsed[2]);
-            ALL_ISSUES.add(wrapperIssue);
+            issues.add(wrapperIssue);
         }
     }
 
@@ -242,8 +241,8 @@ public class WrapperProject {
     }
 
     public void addMergedMergeRequests(List<WrapperMergedMergeRequest> mergedMergeRequests){
-        MERGED_MERGE_REQUESTS = new ArrayList<>();
-        MERGED_MERGE_REQUESTS.addAll(mergedMergeRequests);
+        this.mergedMergeRequests = new ArrayList<>();
+        this.mergedMergeRequests.addAll(mergedMergeRequests);
     }
 
     public int getGitlabProjectId() {
@@ -251,19 +250,23 @@ public class WrapperProject {
     }
 
     public String getGitlabProjectName() {
-        return PROJECT_NAME;
+        return projectName;
     }
 
     public List<WrapperMergedMergeRequest> getMergedMergeRequests() {
-        return MERGED_MERGE_REQUESTS;
+        return mergedMergeRequests;
     }
 
     /*public List<WrapperCommit> getAllCommits() {
         return ALL_COMMITS;
     }*/
 
-    public List<WrapperIssue> getAllIssues() {
-        return ALL_ISSUES;
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public List<WrapperIssue> getIssues() {
+        return issues;
     }
 
     public List<Integer> getMergeRequestIds() {
