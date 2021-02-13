@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String>, UserRepositoryCustom {
+public interface UserRepository extends MongoRepository<User, String>, main.java.DatabaseClasses.Repository.UserRepositoryCustom {
 
     void createUserAccount(User user);
 
