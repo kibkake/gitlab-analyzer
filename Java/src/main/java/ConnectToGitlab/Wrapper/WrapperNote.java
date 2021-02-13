@@ -8,24 +8,24 @@ package main.java.ConnectToGitlab.Wrapper;
 public class WrapperNote {
 
     private int ID;
-    private String BODY;
-    private String AUTHOR;
-    private int SCORE;
-    private int YEAR;
-    private int MONTH;
-    private int DAY;
+    private String body;
+    private String author;
+    private int score;
+    private int year;
+    private int month;
+    private int day;
 
     public WrapperNote() {
     }
 
     public WrapperNote(int id, String body, String author, int year, int month, int day) {
         this.ID = id;
-        this.BODY = body;
-        this.AUTHOR = author;
-        this.SCORE = body.length();
-        this.YEAR = year;
-        this.MONTH = month;
-        this.DAY = day;
+        this.body = body;
+        this.author = author;
+        this.score = body.length();
+        this.year = year;
+        this.month = month;
+        this.day = day;
     }
 
     public int getId() {
@@ -33,26 +33,26 @@ public class WrapperNote {
     }
 
     public String getBody() {
-        return BODY;
+        return body;
     }
 
     public String getAuthor() {
-        return AUTHOR;
+        return author;
     }
 
     public int getScore() {
-        return SCORE;
+        return score;
     }
 
     public int getYear() {
-        return YEAR;
+        return year;
     }
 
     public int getMonth() {
-        return MONTH;
+        return month;
     }
 
     public int getDay() {
-        return DAY;
+        return day;
     }
 }

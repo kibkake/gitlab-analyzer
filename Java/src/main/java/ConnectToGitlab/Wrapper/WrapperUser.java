@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class WrapperUser {
 
-    private String NAME;
-    private List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS = new ArrayList<>();
-    private List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
+    private String Name;
+    private List<WrapperMergedMergeRequest> mergedMergeRequests = new ArrayList<>();
+    private List<WrapperIssue> allIssues = new ArrayList<>();
     private double totalCommitScore = 0.0;
     private double totalIssueScore = 0.0;
 
@@ -20,7 +20,7 @@ public class WrapperUser {
     }
 
     public WrapperUser(String name, WrapperProject project) {
-        this.NAME = name;
+        this.Name = name;
         getUserMergedMergeRequest(project);
         getUserIssues(project);
         calculateUserCommitScore();
@@ -40,7 +40,7 @@ public class WrapperUser {
                 userIsPartOfMerge = checkUserHasNoteInMerge(project, i);
             }
             if(userIsPartOfMerge) {
-                MERGED_MERGE_REQUESTS.add(project.getMergedMergeRequests().get(i));
+                mergedMergeRequests.add(project.getMergedMergeRequests().get(i));
             }
         }
         removeCommitsFromOtherAuthors();
@@ -55,7 +55,7 @@ public class WrapperUser {
      */
     private boolean checkUserIsPartOfMerge(WrapperProject project, int index) {
         for(int j = 0; j < project.getMergedMergeRequests().get(index).getMergeRequestCommits().size(); j++) {
-            if(project.getMergedMergeRequests().get(index).getMergeRequestCommits().get(j).getAuthorName().equals(NAME)) {
+            if(project.getMergedMergeRequests().get(index).getMergeRequestCommits().get(j).getAuthorName().equals(Name)) {
                 return true;
             }
         }
@@ -70,7 +70,7 @@ public class WrapperUser {
      */
     private boolean checkUserHasNoteInMerge(WrapperProject project, int index) {
         for(int j = 0; j < project.getMergedMergeRequests().get(index).getNotes().size(); j++) {
-            if(project.getMergedMergeRequests().get(index).getNotes().get(j).getAuthor().equals(NAME)) {
+            if(project.getMergedMergeRequests().get(index).getNotes().get(j).getAuthor().equals(Name)) {
                 return true;
             }
         }
@@ -81,10 +81,10 @@ public class WrapperUser {
      * Removes commits that do not belong to the user.
      */
     private void removeCommitsFromOtherAuthors() {
-        for(int i = 0; i < MERGED_MERGE_REQUESTS.size(); i++) {
-            for(int j = 0; j < MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().size(); j++) {
-                if(!MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().get(j).getAuthorName().equals(NAME)){
-                    MERGED_MERGE_REQUESTS.get(i).removeCommit(j);
+        for(int i = 0; i < mergedMergeRequests.size(); i++) {
+            for(int j = 0; j < mergedMergeRequests.get(i).getMergeRequestCommits().size(); j++) {
+                if(!mergedMergeRequests.get(i).getMergeRequestCommits().get(j).getAuthorName().equals(Name)){
+                    mergedMergeRequests.get(i).removeCommit(j);
                     j--;
                 }
             }
@@ -95,10 +95,10 @@ public class WrapperUser {
      * Removes notes that do not belong to the user.
      */
     private void removeMergeNotesFromOtherAuthors() {
-        for(int i = 0; i < MERGED_MERGE_REQUESTS.size(); i++) {
-            for(int j = 0; j < MERGED_MERGE_REQUESTS.get(i).getNotes().size(); j++) {
-                if(!MERGED_MERGE_REQUESTS.get(i).getNotes().get(j).getAuthor().equals(NAME)) {
-                    MERGED_MERGE_REQUESTS.get(i).removeNote(j);
+        for(int i = 0; i < mergedMergeRequests.size(); i++) {
+            for(int j = 0; j < mergedMergeRequests.get(i).getNotes().size(); j++) {
+                if(!mergedMergeRequests.get(i).getNotes().get(j).getAuthor().equals(Name)) {
+                    mergedMergeRequests.get(i).removeNote(j);
                     j--;
                 }
             }
@@ -114,7 +114,7 @@ public class WrapperUser {
         for(int i = 0; i < project.getIssues().size(); i++){
             userIsPartOfIssue = checkUserIsPartOfIssue(project, i);
             if(userIsPartOfIssue) {
-                ALL_ISSUES.add(project.getIssues().get(i));
+                allIssues.add(project.getIssues().get(i));
             }
         }
         removeIssueNotesFromOtherAuthors();
@@ -127,7 +127,7 @@ public class WrapperUser {
      */
     private boolean checkUserIsPartOfIssue(WrapperProject project, int index) {
         for(int j = 0; j < project.getIssues().get(index).getNotes().size(); j++) {
-            if(project.getIssues().get(index).getNotes().get(j).getAuthor().equals(NAME)) {
+            if(project.getIssues().get(index).getNotes().get(j).getAuthor().equals(Name)) {
                 return true;
             }
         }
@@ -138,10 +138,10 @@ public class WrapperUser {
      * Removes notes that do not belong to user.
      */
     private void removeIssueNotesFromOtherAuthors() {
-        for(int i = 0; i < ALL_ISSUES.size(); i++) {
-            for (int j = 0; j < ALL_ISSUES.get(i).getNotes().size(); j++) {
-                if (!ALL_ISSUES.get(i).getNotes().get(j).getAuthor().equals(NAME)) {
-                    ALL_ISSUES.get(i).removeNote(j);
+        for(int i = 0; i < allIssues.size(); i++) {
+            for (int j = 0; j < allIssues.get(i).getNotes().size(); j++) {
+                if (!allIssues.get(i).getNotes().get(j).getAuthor().equals(Name)) {
+                    allIssues.get(i).removeNote(j);
                     j--;
                 }
             }
@@ -153,12 +153,12 @@ public class WrapperUser {
      * merge request. Also adds up all note scores from merged merge requests as well.
      */
     private void calculateUserCommitScore() {
-        for(int i = 0; i < MERGED_MERGE_REQUESTS.size(); i++) {
-            for (int j = 0; j < MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().size(); j++) {
-                totalCommitScore += MERGED_MERGE_REQUESTS.get(i).getMergeRequestCommits().get(j).getCommitScore();
+        for(int i = 0; i < mergedMergeRequests.size(); i++) {
+            for (int j = 0; j < mergedMergeRequests.get(i).getMergeRequestCommits().size(); j++) {
+                totalCommitScore += mergedMergeRequests.get(i).getMergeRequestCommits().get(j).getCommitScore();
             }
-            for (int k = 0; k < MERGED_MERGE_REQUESTS.get(i).getNotes().size(); k++) {
-                totalIssueScore += MERGED_MERGE_REQUESTS.get(i).getNotes().get(k).getScore();
+            for (int k = 0; k < mergedMergeRequests.get(i).getNotes().size(); k++) {
+                totalIssueScore += mergedMergeRequests.get(i).getNotes().get(k).getScore();
             }
         }
     }
@@ -168,23 +168,23 @@ public class WrapperUser {
      * merge request.
      */
     private void calculateUserIssueScore() {
-        for(int i = 0; i < ALL_ISSUES.size(); i++) {
-            for (int j = 0; j < ALL_ISSUES.get(i).getNotes().size(); j++) {
-                totalIssueScore += ALL_ISSUES.get(i).getNotes().get(j).getScore();
+        for(int i = 0; i < allIssues.size(); i++) {
+            for (int j = 0; j < allIssues.get(i).getNotes().size(); j++) {
+                totalIssueScore += allIssues.get(i).getNotes().get(j).getScore();
             }
         }
     }
 
-    public String getNAME() {
-        return NAME;
+    public String getName() {
+        return Name;
     }
 
-    public List<WrapperMergedMergeRequest> getMERGED_MERGE_REQUESTS() {
-        return MERGED_MERGE_REQUESTS;
+    public List<WrapperMergedMergeRequest> getMergedMergeRequests() {
+        return mergedMergeRequests;
     }
 
-    public List<WrapperIssue> getALL_ISSUES() {
-        return ALL_ISSUES;
+    public List<WrapperIssue> getAllIssues() {
+        return allIssues;
     }
 
     public double getCommitScore() {
