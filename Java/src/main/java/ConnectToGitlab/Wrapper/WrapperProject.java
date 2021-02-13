@@ -208,6 +208,19 @@ public class WrapperProject {
         return result;
     }
 
+    public void getListOfMembers(String token) throws IOException {
+        URL url = new URL(MAIN_URL + "/" + ID + "/memebrs" +"?access_token=" + token);
+        HttpURLConnection connection = makeConnection(url);
+        connection.setRequestMethod("GET");
+        connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        String reply = "";
+        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+        System.out.println(reply);
+        connection.disconnect();
+    }
+
     /**
      * Creates a HttpURLConnection object
      * @param url the url object containing the full address of th serve
