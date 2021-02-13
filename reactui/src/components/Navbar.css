@@ -18,6 +18,16 @@
     font-size: 1.5rem;
 }
 
+.navMenu-sub{
+    display: grid;
+    grid-template-columns: repeat(5,auto);
+    grid-gap: 40px;
+    list-style: none;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
 .navbar ul li{
     position: relative;
 }
@@ -70,8 +80,6 @@
     color: white;
     height: 70%;
     transition-duration: .5s;
-    
-
 }
 
 span{
@@ -96,4 +104,8 @@ span{
     color: white;
     transition-duration: .5s;
     
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+    background-color: gray;
 }

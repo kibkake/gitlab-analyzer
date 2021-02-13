@@ -9,13 +9,14 @@ import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
 import Comments from "./Pages/Comments";
 import CodeDiff from "./Pages/CodeDiff";
+import Navbar_dropdown from "./components/storage/Navbar_dropdown";
 
 function App() {
   return (
     <>
       <Router> 
 
-      <Navbar/>
+      <Navbar_dropdown/>
         <Switch>
           <Route path="/" component={Home} exact/>
           <Route path='/Home' exact component={Home}/>

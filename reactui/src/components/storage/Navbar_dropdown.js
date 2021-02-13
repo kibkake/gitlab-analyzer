@@ -12,6 +12,7 @@ import {IoSettingsOutline} from "react-icons/io5";
 import {CgProfile} from "react-icons/cg";
 import Dropdown from "./Dropdown";
 import * as GoIcons from "react-icons/go";
+import Developers from "../../Pages/Developers";
 
 function Navbar_dropdown() {
     const [click, setClick] = useState(false);
@@ -63,11 +64,11 @@ function Navbar_dropdown() {
 
                     <li className='nav-links'
                         onMouseEnter={onMouseEnter}
-
+                        onMouseLeave={onMouseLeave}
                         onClick={extendElement}>
                         <Link to='/developers' onClick={closeMobileMenu}>
                             <HiIcons.HiOutlineUserGroup/>
-                            {dropdown && <Dropdown onCloseMobileMenu={closeMobileMenu}/>}
+                            {dropdown && <Developers onCloseMobileMenu={closeMobileMenu}/>}
                             Developers<i className='fas fa-caret-down'/>
                         </Link>
                     </li>
