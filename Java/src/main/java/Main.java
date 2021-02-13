@@ -1,22 +1,24 @@
 package main.java;
 
-import main.java.ConnectToGitlab.ConnectToGitlab;
 import main.java.DatabaseClasses.Model.User;
-import org.springframework.boot.CommandLineRunner;
+import main.java.DatabaseClasses.Repository.ProjectRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.*;
+import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.ParseException;
+
 import java.util.Arrays;
+import java.io.PrintWriter;
 
 /**
  * The main application that invokes SpringBoot's bootRun
  */
 @SpringBootApplication
 public class Main {
+
 
     /**
      * This is the main method for running Spring Boot
@@ -28,11 +30,6 @@ public class Main {
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
-//        try {
-//            ConnectToGitlab.connectGitlab("cFzzy7QFRvHzfHGpgrr1");
-//        }catch(IOException | ParseException exception){
-//            System.out.println(exception.getMessage());
-//        }
         SpringApplication.run(Main.class,args);
     }
 
@@ -59,7 +56,7 @@ public class Main {
             System.out.println("done");
 
             // indicate running status
-            System.out.println("Server broadcasting on localhost:8080");
+            System.out.println("Server broadcasting on localhost:8090");
         };
     }
 }
