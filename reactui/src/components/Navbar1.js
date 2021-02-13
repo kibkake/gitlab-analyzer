@@ -63,15 +63,13 @@ function Navbar1() {
 
                     <li className='nav-links'
                         onMouseEnter={onMouseEnter}
-                        onMouseLeave={onMouseLeave}
+
                         onClick={extendElement}>
-                        <Link to='/developers'
-                              onClick={closeMobileMenu}
-                             >
+                        <Link to='/developers' onClick={closeMobileMenu}>
                             <HiIcons.HiOutlineUserGroup/>
+                            {dropdown && <Dropdown onCloseMobileMenu={closeMobileMenu}/>}
                             Developers<i className='fas fa-caret-down'/>
                         </Link>
-                        {dropdown && <Dropdown onCloseMobileMenu={closeMobileMenu}/>}
                     </li>
 
                     <li className='nav-links'>

@@ -8,10 +8,10 @@ import Repo from './Pages/Repo';
 import Home from './Pages/Home';
 import Developers from './Pages/Developers';
 import Settings from './Pages/Settings';
-import Summary from "./Pages/DeveloperData/Summary";
-import Commits from "./Pages/DeveloperData/Commits";
-import Comments from "./Pages/DeveloperData/Comments";
-import CodeDiff from "./Pages/DeveloperData/CodeDiff";
+import Summary from "./Pages/Summary";
+import Commits from "./Pages/Commits";
+import Comments from "./Pages/Comments";
+import CodeDiff from "./Pages/CodeDiff";
 
 function App() {
   return (
@@ -24,10 +24,10 @@ function App() {
           <Route path='/Home' exact component={Home}/>
           <Route path='/Repo' exact component={Repo}/>
           <Route path='/Developers' exact component={Developers}/>
-            <Route path='/Summary' exact component={Summary}/>
-            <Route path='/Commits' exact component={Commits}/>
-            <Route path='/Comments' exact component={Comments}/>
-          <Route path='/CodeDiff' exact component={CodeDiff}/>
+            <Route path='/Developers/summary' exact component={Summary}/>
+            <Route path='/Developers/Commits' exact component={Commits}/>
+            <Route path='/Developers/Comments' exact component={Comments}/>
+          <Route path='/Developers/CodeDiff' exact component={CodeDiff}/>
 
           <Route path='/Settings' exact component={Settings}/>
         </Switch>

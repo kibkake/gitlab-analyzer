@@ -1,22 +1,22 @@
 export const MenuItems = [
     {
         title: 'Summary',
-        path: '/summary',
+        path: '/Developers/summary',
         cName: 'dropdown-link'
     },
     {
         title: 'Commits',
-        path: '/commits',
+        path: '/Developers/commits',
         cName: 'dropdown-link'
     },
     {
         title: 'Code Difference',
-        path: '/codediff',
+        path: '/Developers/codediff',
         cName: 'dropdown-link'
     },
     {
         title: 'Comments',
-        path: '/comments',
+        path: '/Developers/comments',
         cName: 'dropdown-link'
     }
 ];
