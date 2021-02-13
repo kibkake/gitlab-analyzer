@@ -1,9 +1,6 @@
 import './App.css';
-import Navbar_previous from './components/Navbar_previous';
 import Navbar from './components/Navbar';
-
 import {BrowserRouter as Router,Switch,Route, Redirect} from 'react-router-dom';
-
 import Repo from './Pages/Repo';
 import Home from './Pages/Home';
 import Developers from './Pages/Developers';
@@ -25,9 +22,9 @@ function App() {
           <Route path='/Repo' exact component={Repo}/>
           <Route path='/Developers' exact component={Developers}/>
             <Route path='/Developers/summary' exact component={Summary}/>
-            <Route path='/Developers/Commits' exact component={Commits}/>
-            <Route path='/Developers/Comments' exact component={Comments}/>
-          <Route path='/Developers/CodeDiff' exact component={CodeDiff}/>
+            <Route path='/Developers/commits' exact component={Commits}/>
+            <Route path='/Developers/comments' exact component={Comments}/>
+          <Route path='/Developers/codeDiff' exact component={CodeDiff}/>
 
           <Route path='/Settings' exact component={Settings}/>
         </Switch>
