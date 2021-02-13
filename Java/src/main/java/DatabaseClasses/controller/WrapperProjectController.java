@@ -89,6 +89,7 @@ public class WrapperProjectController {
         while (itr.hasNext()){
             mergedMergeRequests.add(itr.next());
         }
+
         project.get().addMergedMergeRequests(mergedMergeRequests);
 
         for(int i = 0; i < project.get().getMergedMergeRequests().size(); i++){

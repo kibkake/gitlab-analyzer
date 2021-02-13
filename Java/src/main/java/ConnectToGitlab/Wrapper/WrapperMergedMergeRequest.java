@@ -32,7 +32,7 @@ public class WrapperMergedMergeRequest {
     private int mergeMonth;
     private int mergeDay;
     private double mergeScore = 0.0;
-    private List<WrapperCommit> mergeRequestCommits;
+    private List<WrapperCommit> mergeRequestCommits = new ArrayList<>();
     private List<String> mergeRequestCommitIds = new ArrayList<>();
     private List<WrapperCommitDiff> mergeDiffs = new ArrayList<>();
     private List<WrapperNote> notes = new ArrayList<>();
@@ -232,7 +232,6 @@ public class WrapperMergedMergeRequest {
     }
 
     public void addMergedMergeRequestsCommits(List<WrapperCommit> commits){
-        mergeRequestCommits = new ArrayList<>();
         mergeRequestCommits.addAll(commits);
     }
 
