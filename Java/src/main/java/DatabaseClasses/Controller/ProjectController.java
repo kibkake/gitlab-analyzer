@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.controller;
+package main.java.DatabaseClasses.Controller;
 
 import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Developer.Developer;
