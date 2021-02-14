@@ -32,7 +32,7 @@ public class CommitConnection {
         return commits;
     }
 
-    private static List<CommitDiff> getSingleCommitDiffs(Integer projectId, String commitHash) {
+    public static List<CommitDiff> getSingleCommitDiffs(Integer projectId, String commitHash) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String url = user.getServerUrl() + "/projects/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" +

@@ -1,5 +1,6 @@
 package main.java.ConnectToGitlab.MergeRequests;//package main.java.ConnectToGitlab.MergeRequests;
 
+import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Developer.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,7 +26,9 @@ public class MergeRequest {
     private String created_at;
     private String created_before;
     private List<Developer> contributors;
+    List<Commit> commits;
     private String sha;
+    double score;
 
     public MergeRequest() {
         contributors = new ArrayList<>();
@@ -197,5 +200,21 @@ public class MergeRequest {
                 ", contributors=" + contributors +
                 ", sha='" + sha + '\'' +
                 '}';
+    }
+
+    public List<Commit> getCommits() {
+        return commits;
+    }
+
+    public void setCommits(List<Commit> commits) {
+        this.commits = commits;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 }
