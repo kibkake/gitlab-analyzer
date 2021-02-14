@@ -6,7 +6,7 @@ plugins {
 }
 
 version = '0.0.2-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '1.11'
 
 repositories {
     mavenCentral()
@@ -27,6 +27,7 @@ dependencies {
     testImplementation 'org.apache.httpcomponents:httpclient'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    implementation project(':reactui')
 }
 
 apply plugin : "java"
