@@ -58,6 +58,15 @@ public class WrapperProjectController {
         wrapperCommitRepository.saveAll(commits);
     }
 
+    @CrossOrigin
+    @GetMapping("getprojectmembers/{pId}")
+    public List<String> getProjectMember(@PathVariable String pId) throws IOException, ParseException {
+        int projectId = Integer.parseInt(pId);
+        WrapperProject project = new WrapperProject(token, projectId);
+        return  project.getListOfMembers(token);
+    }
+
+    @CrossOrigin
     @GetMapping("getuserstats/{pId}/{usrname}")
     public WrapperUser getProject(@PathVariable String pId, @PathVariable String usrname)
         throws IOException, ParseException {

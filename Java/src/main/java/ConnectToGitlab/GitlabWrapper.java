@@ -40,7 +40,7 @@ public class GitlabWrapper {
     }
 
 
-    public static void getListOfMembershipProjects(String token) throws IOException {
+    public static String getListOfMembershipProjects(String token) throws IOException {
         URL url = new URL(MAIN_URL + "?membership&" + "order_by=name&" + "simple=true" +"&access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -51,6 +51,7 @@ public class GitlabWrapper {
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
         System.out.println(reply);
         connection.disconnect();
+        return reply;
     }
 
     public static void getMergedMergeRequests(String token, int projectId) throws IOException {
