@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import {BrowserRouter as Router,Switch,Route, Redirect} from 'react-router-dom';
 import Repo from './Pages/Repo';
 import Home from './Pages/Home';
-import Developers from './Pages/Developers';
+import Developers from './Pages/Developers2';
 import Settings from './Pages/Settings';
 import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
