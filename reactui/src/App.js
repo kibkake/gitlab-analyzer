@@ -22,10 +22,11 @@ function App() {
           <Route path='/Home' exact component={Home}/>
           <Route path='/Repo' exact component={Repo}/>
           <Route path='/Developers' exact component={Developers}/>
+
             <Route path='/Developers/summary' exact component={Summary}/>
             <Route path='/Developers/commits' exact component={Commits}/>
             <Route path='/Developers/comments' exact component={Comments}/>
-          <Route path='/Developers/codeDiff' exact component={CodeDiff}/>
+            <Route path='/Developers/codeDiff' exact component={CodeDiff}/>
 
           <Route path='/Settings' exact component={Settings}/>
         </Switch>

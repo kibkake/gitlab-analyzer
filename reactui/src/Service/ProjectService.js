@@ -9,9 +9,9 @@ const PROJECT_REST_API_URL = "http://localhost:8080/";
 // For now can't really work on... The structure of DB & RestController should be set in the backend
 class ProjectService {
 
-    getAll() {
-        return axios.get(PROJECT_REST_API_URL);
-    }
+    // getAll() {
+    //     return axios.get(PROJECT_REST_API_URL);
+    // }
 }
 
 export default new ProjectService();
