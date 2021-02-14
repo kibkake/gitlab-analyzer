@@ -1,13 +1,13 @@
-package main.java.DatabaseClasses.controller;
+package main.java.DatabaseClasses.Controller;
 
 
 import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
 import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
 import main.java.ConnectToGitlab.Wrapper.WrapperProject;
 import main.java.ConnectToGitlab.Wrapper.WrapperUser;
-import main.java.DatabaseClasses.repository.WrapperCommitRepository;
-import main.java.DatabaseClasses.repository.WrapperMergedMergeRequestRepository;
-import main.java.DatabaseClasses.repository.WrapperProjectRepository;
+import main.java.DatabaseClasses.Repository.WrapperCommitRepository;
+import main.java.DatabaseClasses.Repository.WrapperMergedMergeRequestRepository;
+import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
