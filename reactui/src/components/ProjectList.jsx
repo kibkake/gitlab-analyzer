@@ -25,7 +25,7 @@ class ProjectList extends Component {
                         <th>Project ID</th>
                         <th>Project Name</th>
                         <th>Project Description</th>
-                        <th>Project Members</th>
+                        <th>Date Created</th>
                     </thead>
                     <tbody>
                         { this.state.projects.map(projects =>
@@ -33,10 +33,7 @@ class ProjectList extends Component {
                                 <td>{projects.id}</td>
                                 <td>{projects.name}</td>
                                 <td>{projects.description}</td>
-                                <td>{projects.developers.map(devs =>
-                                            devs.name).reduce((prev, curr) => [prev, ', ', curr]
-                                        )}
-                                </td>
+                                <td>{projects.created_at}</td>
                             </tr>
                             )}
                     </tbody>

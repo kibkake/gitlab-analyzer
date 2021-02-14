@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.controller;
+package main.java.DatabaseClasses.Controller;
 
 import main.java.DatabaseClasses.Model.User;
 import main.java.DatabaseClasses.Service.UserService;
