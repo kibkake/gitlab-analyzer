@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
  * autowiring.
  */
 
-public class UserRepositoryCustomImpl implements UserRepositoryCustom  {
+public class UserRepositoryCustomImpl implements main.java.DatabaseClasses.Repository.UserRepositoryCustom {
     private final MongoTemplate mongoTemplate;
 
     @Autowired

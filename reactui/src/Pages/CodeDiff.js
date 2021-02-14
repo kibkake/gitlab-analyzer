@@ -2,13 +2,13 @@ import "../App.css"
 import React,{ Component } from "react";
 
 
-function Home(){
+function CodeDiff(){
 
-    return(   
-        
-        <div>
+    return(
+
+        <div classname='CodeDiff'>
             <h1 style={{textAlign:'center'}}>
-                Welcome to Pluto Gitlab analyzer
+                Code Diff
             </h1>
         </div>
 
@@ -17,4 +17,4 @@ function Home(){
 
 }
 
-export default Home;
+export default CodeDiff;

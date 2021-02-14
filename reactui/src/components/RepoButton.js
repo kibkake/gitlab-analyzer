@@ -1,10 +1,7 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-
 import {RepoItems} from '../Pages/sampleRepo';
 import "./RepoButton.css"
-
 
 class RepoButton extends Component{
     render(){
@@ -25,12 +22,7 @@ class RepoButton extends Component{
                 })}
             </ul>
         )
-
     }
-
-
-
-
 }
 
 export default RepoButton;
