@@ -15,8 +15,8 @@ function CommentTable() {
     // }
     //
     // componentDidMount() {
-    //     ProjectService.getAll().then((response) => {
-    //         this.setState({project: response.data})
+    //     ProjectService.getCommentInfo().then((response) => {
+    //         this.setState({comments: response.data})
     //     });
     // }
 

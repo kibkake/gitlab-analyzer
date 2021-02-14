@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.Controller;
+package main.java.DatabaseClasses.controller;
 
 
 import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
