@@ -9,6 +9,7 @@ import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
 import Comments from "./Pages/Comments";
 import CodeDiff from "./Pages/CodeDiff";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar_dropdown from "./components/storage/Navbar_dropdown";
 
 function App() {
