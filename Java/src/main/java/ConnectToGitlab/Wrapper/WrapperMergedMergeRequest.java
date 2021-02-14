@@ -1,6 +1,9 @@
 package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,43 +19,53 @@ import java.util.*;
  * commits and notes. This class also has a list of its own merge diffs. These diffs represent
  * the changes that the merge request made to the master branch (branch it was merged into).
  */
+@Document("MergedMergeRequests")
 public class WrapperMergedMergeRequest {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    private final int MERGE_REQUEST_ID;
-    private final int MERGE_REQUEST_IID;
-    private final int PROJECT_ID;
-    private final String MERGE_REQUEST_TITLE;
-    private final int MERGE_YEAR;
-    private final int MERGE_MONTH;
-    private final int MERGE_DAY;
-    private double MERGE_SCORE = 0.0;
-    private final List<WrapperCommit> MERGE_REQUEST_COMMITS = new ArrayList<>();
-    private final List<WrapperCommitDiff> MERGE_DIFFS = new ArrayList<>();
-    private final List<WrapperNote> NOTES = new ArrayList<>();
+    @Id
+    private int ID;
+    private int mergeRequestIid;
+    private int Pid;
+    private String mergeRequestTitle;
+    private int mergeYear;
+    private int mergeMonth;
+    private int mergeDay;
+    private double mergeScore = 0.0;
+    private List<WrapperCommit> mergeRequestCommits = new ArrayList<>();
+    private List<String> mergeRequestCommitIds = new ArrayList<>();
+    private List<WrapperCommitDiff> mergeDiffs = new ArrayList<>();
+    private List<WrapperNote> notes = new ArrayList<>();
 
     public WrapperMergedMergeRequest(String token, int mergeRequestId, int mergeRequestIid,
                                      int gitlabProjectId, String mergeRequestTitle, int mergeYear, int mergeMonth,
                                      int mergeDay) throws IOException, ParseException {
-        this.MERGE_REQUEST_ID = mergeRequestId;
-        this.MERGE_REQUEST_IID = mergeRequestIid;
-        this.PROJECT_ID = gitlabProjectId;
-        this.MERGE_REQUEST_TITLE = mergeRequestTitle;
-        this.MERGE_YEAR = mergeYear;
-        this.MERGE_MONTH = mergeMonth;
-        this.MERGE_DAY = mergeDay;
-        getSingleMergedMergeRequestCommits(token);
+        this.ID = mergeRequestId;
+        this.mergeRequestIid = mergeRequestIid;
+        this.Pid = gitlabProjectId;
+        this.mergeRequestTitle = mergeRequestTitle;
+        this.mergeYear = mergeYear;
+        this.mergeMonth = mergeMonth;
+        this.mergeDay = mergeDay;
+        //getSingleMergedMergeRequestCommits(token);
         getSingleMergedMergeRequestChanges(token);
         calculateCommitScore();
         getMergeNotes(token);
+    }
+
+    public WrapperMergedMergeRequest() {
+    }
+
+    public List<String> getmergeRequestCommitIds() {
+        return mergeRequestCommitIds;
     }
 
     /**
      * Retrieves a single merged merge request from the server.
      * @param token the token provided by user of the class.
      */
-    private void getSingleMergedMergeRequestCommits(String token) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/commits" + "?access_token=" + token);
+    public List<WrapperCommit> getSingleMergedMergeRequestCommits(String token) throws IOException, ParseException {
+        URL url = new URL(MAIN_URL + "/" + Pid + "/merge_requests/" + mergeRequestIid + "/commits" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -64,6 +77,7 @@ public class WrapperMergedMergeRequest {
 
         Gson gson = new Gson();
         JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+        List<WrapperCommit> commits = new ArrayList<>();
         for(int i = 0; i < jsonArray.size(); i++) {
             JsonElement jsonElement = jsonArray.get(i);
             JsonObject jsonObject = jsonElement.getAsJsonObject();
@@ -78,10 +92,18 @@ public class WrapperMergedMergeRequest {
             JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
             String mergeRequestCommitDate = jsonPrimitiveCommitDate.getAsString();
             int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
-            WrapperCommit wrapperCommit = new WrapperCommit(token, PROJECT_ID, commitId, authorName, authorEmail, title, mergeDate[0],
-                    mergeDate[1], mergeDate[2]);
-            MERGE_REQUEST_COMMITS.add(wrapperCommit);
+            DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date date = df1.parse(mergeRequestCommitDate);
+            df1.setTimeZone(TimeZone.getTimeZone("PT"));
+            String date2 = df1.format(date);
+
+            WrapperCommit wrapperCommit = new WrapperCommit(token, Pid, commitId, authorName, authorEmail, title, date2,
+                    mergeDate[0], mergeDate[1], mergeDate[2]);
+            //MERGE_REQUEST_COMMITS.add(wrapperCommit);
+            mergeRequestCommitIds.add(wrapperCommit.getId());
+            commits.add(wrapperCommit);
         }
+        return commits;
     }
 
     /**
@@ -89,7 +111,7 @@ public class WrapperMergedMergeRequest {
      * @param token the token provided by user of the class.
      */
     private void getMergeNotes(String token) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/notes" + "?access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + Pid + "/merge_requests/" + mergeRequestIid + "/notes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -117,7 +139,7 @@ public class WrapperMergedMergeRequest {
 
         WrapperNote wrapperNote = new WrapperNote(noteId, noteBody, authorName, noteDateParsed[0], noteDateParsed[1],
                 noteDateParsed[2]);
-        NOTES.add(wrapperNote);
+        notes.add(wrapperNote);
         }
     }
 
@@ -145,7 +167,7 @@ public class WrapperMergedMergeRequest {
      * @param token the token provided by user of the class.
      */
     private void getSingleMergedMergeRequestChanges(String token) throws IOException {
-        URL url = new URL(MAIN_URL + "/" + PROJECT_ID + "/merge_requests/" + MERGE_REQUEST_IID + "/changes" + "?access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + Pid + "/merge_requests/" + mergeRequestIid + "/changes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         connection.getInputStream();
@@ -178,7 +200,7 @@ public class WrapperMergedMergeRequest {
             WrapperCommitDiff wrapperCommitDiff = new WrapperCommitDiff(newPath, oldPath, newFile, renamedFile,
                     deletedFile, diff);
 
-            MERGE_DIFFS.add(wrapperCommitDiff);
+            mergeDiffs.add(wrapperCommitDiff);
         }
     }
 
@@ -187,18 +209,18 @@ public class WrapperMergedMergeRequest {
      * commit diffs.
      */
     private void calculateCommitScore() {
-        for(int i = 0; i < MERGE_DIFFS.size(); i++){
-            MERGE_SCORE += MERGE_DIFFS.get(i).getScore();
+        for(int i = 0; i < mergeDiffs.size(); i++){
+            mergeScore += mergeDiffs.get(i).getScore();
         }
-        MERGE_SCORE = Math.round(MERGE_SCORE * 100.0) / 100.0;
+        mergeScore = Math.round(mergeScore * 100.0) / 100.0;
     }
 
     public void removeCommit(int index) {
-        MERGE_REQUEST_COMMITS.remove(index);
+        mergeRequestCommits.remove(index);
     }
 
     public void removeNote(int index) {
-        NOTES.remove(index);
+        notes.remove(index);
     }
 
     /**
@@ -209,43 +231,51 @@ public class WrapperMergedMergeRequest {
         return (HttpURLConnection) url.openConnection();
     }
 
+    public void addMergedMergeRequestsCommits(List<WrapperCommit> commits){
+        mergeRequestCommits.addAll(commits);
+    }
+
     public int getMergeRequestId() {
-        return MERGE_REQUEST_ID;
+        return ID;
     }
 
     public int getMergeRequestIid() {
-        return MERGE_REQUEST_IID;
+        return mergeRequestIid;
     }
 
-    public int getProjectId() {
-        return PROJECT_ID;
+    public int getPid() {
+        return Pid;
     }
 
     public String getMergeRequestTitle() {
-        return MERGE_REQUEST_TITLE;
+        return mergeRequestTitle;
     }
 
     public int getMergeYear() {
-        return MERGE_YEAR;
+        return mergeYear;
     }
 
     public int getMergeMonth() {
-        return MERGE_MONTH;
+        return mergeMonth;
     }
 
     public int getMergeDay() {
-        return MERGE_DAY;
+        return mergeDay;
     }
 
     public double getMergeScore() {
-        return MERGE_SCORE;
+        return mergeScore;
     }
 
     public List<WrapperCommit> getMergeRequestCommits() {
-        return MERGE_REQUEST_COMMITS;
+        return mergeRequestCommits;
     }
 
     public List<WrapperNote> getNotes() {
-        return NOTES;
+        return notes;
+    }
+
+    public List<WrapperCommitDiff> getMergeDiffs() {
+        return mergeDiffs;
     }
 }

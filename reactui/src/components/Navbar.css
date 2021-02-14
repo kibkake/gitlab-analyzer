@@ -18,16 +18,52 @@
     font-size: 1.5rem;
 }
 
+.navMenu-sub{
+    display: grid;
+    grid-template-columns: repeat(5,auto);
+    grid-gap: 40px;
+    list-style: none;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.navbar ul li{
+    position: relative;
+}
+
+.nav-icon {
+    color: #fff;
+    margin-top: 0px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 5px 5px;
+    border-radius: 8px;
+    position: absolute;
+    top:0;
+    left: 0;
+  }
+
+.nav-icon:hover{
+    background-color:darkturquoise ;
+    color: white;
+    transition-duration: .5s;
+    
+}
+
 .nav-links{
     display: flex;
     align-content: center;
-    padding:8px 8px 8xp 16px;
+    padding:8px;
 }
 
 
 .nav-links a{
-    color: lightgray;
-    padding: 1rem 1rem;    
+    color: white;
+    margin-top: 10px;   
     font-size: 20px;
     width: 100%;
     height: 40px;
@@ -42,12 +78,34 @@
 .nav-links a:hover{
     background-color:darkturquoise ;
     color: white;
-    height: 100%;
+    height: 70%;
     transition-duration: .5s;
-    
-
 }
 
 span{
     margin-left: 7px;
+}
+
+.nav-links-signin a{
+    color: #fff;
+    margin-top: 10px;
+    display: flex;
+    width: 100px;
+    height: 40px;
+    border-radius: 8px;
+    position: absolute;
+    top:0;
+    right: 150px;
+    text-decoration: none;
+  }
+
+.nav-links-signin a:hover{
+    background-color:darkturquoise ;
+    color: white;
+    transition-duration: .5s;
+    
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+    background-color: gray;
 }

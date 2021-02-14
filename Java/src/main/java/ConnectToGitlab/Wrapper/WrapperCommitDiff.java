@@ -7,22 +7,25 @@ package main.java.ConnectToGitlab.Wrapper;
  */
 public class WrapperCommitDiff {
 
-    private final String NEW_PATH;
-    private final String OLD_PATH;
-    private final boolean NEW_FILE;
-    private final boolean RENAMED_FILE;
-    private final boolean DELETED_FILE;
-    private final String DIFF;
-    private final double SCORE;
+    private String newPath;
+    private String oldPath;
+    private boolean newFile;
+    private boolean renamedFile;
+    private boolean deletedFile;
+    private String diff;
+    private double score;
+
+    public WrapperCommitDiff() {
+    }
 
     public WrapperCommitDiff(String newPath, String oldPath, boolean newFile, boolean renamedFile, boolean deletedFile, String diff) {
-        this.NEW_PATH = newPath;
-        this.OLD_PATH = oldPath;
-        this.NEW_FILE = newFile;
-        this.RENAMED_FILE = renamedFile;
-        this.DELETED_FILE = deletedFile;
-        this.DIFF = diff;
-        SCORE = calculateCommitScoreSingleDiff(diff);
+        this.newPath = newPath;
+        this.oldPath = oldPath;
+        this.newFile = newFile;
+        this.renamedFile = renamedFile;
+        this.deletedFile = deletedFile;
+        this.diff = diff;
+        score = calculateCommitScoreSingleDiff(diff);
     }
 
     /**
@@ -59,30 +62,30 @@ public class WrapperCommitDiff {
     }
 
     public String getNewPath() {
-        return NEW_PATH;
+        return newPath;
     }
 
     public String getOldPath() {
-        return OLD_PATH;
+        return oldPath;
     }
 
     public boolean isNewFile() {
-        return NEW_FILE;
+        return newFile;
     }
 
     public boolean isRenamedFile() {
-        return RENAMED_FILE;
+        return renamedFile;
     }
 
     public boolean isDeletedFile() {
-        return DELETED_FILE;
+        return deletedFile;
     }
 
     public String getDiff() {
-        return DIFF;
+        return diff;
     }
 
     public double getScore() {
-        return SCORE;
+        return score;
     }
 }

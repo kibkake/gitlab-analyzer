@@ -22,9 +22,11 @@
 + org.projectlombok:lombok:1.18.16
 + org.springframework.boot:spring-boot-starter-test
 + com.google.code.gson:gson:2.8.5
-  
+
 ### React UI:
 ### React.js is part of Node.js so you will need to install the package manager `npm` first
 ### Once you have npm, navigate to the `/reactui` folder and type `npm install`, then `npm start` 
+
+## Set the src folder as your root
   
 ## **[GitLab Test Server](https://cmpt373-1211-10.cmpt.sfu.ca/)**
