@@ -10,6 +10,7 @@ public class DateScore {
     private LocalDate date;
     private double commitScore;
     private String userName;
+    private double numCommits;
 
     public DateScore(LocalDate date, double commitScore, String userName) {
         this.date = date;
@@ -39,5 +40,9 @@ public class DateScore {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void addToScore(double score) {
+        this.commitScore += score;
     }
 }

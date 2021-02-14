@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -97,21 +98,24 @@ public class ProjectService {
     public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
                                                      LocalDate start, LocalDate end) {
         List<Commit> allUserCommits = this.getAllUserCommits(projectId, committerName);
-        List<DateScore> returnVar = new ArrayList<DateScore>();
 
+        HashMap<Date, DateScore> dateMap = new HashMap<Date, DateScore>();
+
+        int commitsPerDay = 0;
         for (Commit currentCommit: allUserCommits) {
             LocalDate currentDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (currentDate.compareTo(start) >= 0 && currentDate.compareTo(end) <= 0) {
-                DateScore dateScore = new DateScore(currentDate, currentCommit.getCommitScore(),
-                                                    committerName);
-                returnVar.add(dateScore);
+                if(!dateMap.containsKey(currentCommit.getDate())) {
+                    DateScore dateScore = new DateScore(currentDate, currentCommit.getCommitScore(),
+                            committerName);
+                    dateMap.put(currentCommit.getDate(), dateScore);
+                } else {
+                    dateMap.get(currentCommit.getDate()).addToScore(currentCommit.getCommitScore());
+                }
             }
         }
-
-        // Continue here - could go through the list and aggregate the scores for each Date, turning
-        // them into one DateScore object for that date.
-
-        return returnVar;
+        List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
+        return dateScores;
     }
 
     public double getTotalUserCommitScore(int projectId, String committerName,
