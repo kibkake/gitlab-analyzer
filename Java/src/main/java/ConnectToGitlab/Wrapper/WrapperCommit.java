@@ -1,12 +1,16 @@
 package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,26 +18,32 @@ import java.util.List;
  * diffs, author's name, and the overall score from the entire commit. The score
  * is calcualted by adding up changes from all the diffs contained in the commit.
  */
+@Document("Commits")
 public class WrapperCommit {
 
     private static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
-    private final String ID;
-    private final String AUTHOR_NAME;
-    private final String AUTHOR_EMAIL;
-    private final String TITLE;
-    private final int COMMIT_YEAR;
-    private final int COMMIT_MONTH;
-    private final int COMMIT_DAY;
+    @Id
+    private String ID;
+    private String AUTHOR_NAME;
+    private String AUTHOR_EMAIL;
+    private String TITLE;
+    private int COMMIT_YEAR;
+    private int COMMIT_MONTH;
+    private int COMMIT_DAY;
     private double commitScore = 0.0;
-    private final List<WrapperCommitDiff> COMMIT_DIFFS = new ArrayList<>();
+    private List<WrapperCommitDiff> COMMIT_DIFFS = new ArrayList<>();
+    private String time;
 
+    public WrapperCommit() {
+    }
 
-    public WrapperCommit(String token, int projectId, String id, String authorName, String authorEmail, String title,
+    public WrapperCommit(String token, int projectId, String id, String authorName, String authorEmail, String title, String time,
                          int commitYear, int commitMonth, int commitDay) throws IOException {
         this.ID = id;
         this.AUTHOR_NAME = authorName;
         this.AUTHOR_EMAIL = authorEmail;
         this.TITLE = title;
+        this.time = time;
         this.COMMIT_YEAR = commitYear;
         this.COMMIT_MONTH = commitMonth;
         this.COMMIT_DAY = commitDay;
@@ -134,5 +144,9 @@ public class WrapperCommit {
 
     public List<WrapperCommitDiff> getWrapperCommitDiffs() {
         return COMMIT_DIFFS;
+    }
+
+    public String getTime() {
+        return time;
     }
 }

@@ -40,7 +40,7 @@ public class GitlabWrapper {
     }
 
 
-    public static void getListOfMembershipProjects(String token) throws IOException {
+    public static String getListOfMembershipProjects(String token) throws IOException {
         URL url = new URL(MAIN_URL + "?membership&" + "order_by=name&" + "simple=true" +"&access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
@@ -51,6 +51,7 @@ public class GitlabWrapper {
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
         System.out.println(reply);
         connection.disconnect();
+        return reply;
     }
 
     public static void getMergedMergeRequests(String token, int projectId) throws IOException {
@@ -65,36 +66,6 @@ public class GitlabWrapper {
         //System.out.println(reply);
         connection.disconnect();
 
-    }
-
-    public static void getSingleMergedMergeRequestCommits(String token, int mergeIid) throws IOException {
-        URL url = new URL(MAIN_URL + "/6" + "/merge_requests/" + mergeIid + "/commits?" + "access_token=" + token);
-        HttpURLConnection connection = makeConnection(url);
-        connection.setRequestMethod("GET");
-        connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-        String reply = "";
-        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-        //System.out.println(reply);
-        getUserCommits("arahilin", reply);
-        connection.disconnect();
-    }
-
-    public static void getUserCommits(String username, String jsonString) {
-        Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-        List<String> userCommitHashes = new ArrayList<>();
-        for(int i = 0; i < jsonArray.size(); i++) {
-            JsonElement jsonElement = jsonArray.get(i);
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-            JsonPrimitive jsonPrimitiveName = jsonObject.getAsJsonPrimitive("committer_name");
-            if (jsonPrimitiveName.getAsString().equals(username)) {
-                JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
-                userCommitHashes.add(jsonPrimitiveId.getAsString());
-            }
-        }
-        //System.out.println(userCommitHashes);
     }
 
     public static void getSingleCommitDiffs(String token,  int projectId, String commitHash) throws IOException {
@@ -146,31 +117,6 @@ public class GitlabWrapper {
             JsonPrimitive jsonPrimitive = jsonObject1.getAsJsonPrimitive("diff");
             singleMergedMergeDiff.add(jsonPrimitive.getAsString());//file diff
             //System.out.println(jsonPrimitive.getAsString());
-        }
-    }
-
-    public static void getAllProjectIssues(String token, int mergeIid) throws IOException {
-        URL url = new URL(MAIN_URL + "/" + mergeIid + "/issues" + "?access_token=" + token);
-        HttpURLConnection connection = makeConnection(url);
-        connection.setRequestMethod("GET");
-        connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String reply = "";
-        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-
-        //System.out.println(reply);
-        Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
-        List<Integer> issueIids = new ArrayList<>();
-        for(int i = 0; i< jsonArray.size(); i++) {
-            JsonElement jsonElement1 = jsonArray.get(i);
-            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
-            JsonPrimitive jsonPrimitiveIssueIid = jsonObject1.getAsJsonPrimitive("iid");
-            //System.out.println(jsonPrimitiveIssueIid.getAsInt());
-            issueIids.add(jsonPrimitiveIssueIid.getAsInt());
-            JsonPrimitive jsonPrimitiveIssueTitle = jsonObject1.getAsJsonPrimitive("title");
-            //System.out.println(jsonPrimitiveIssueTitle.getAsString());
-
         }
     }
 

@@ -1,7 +1,11 @@
-package main.java.ConnectToGitlab.Wrapper;
+package main.java.ConnectToGitlab.mongowrapper;
 
 import com.google.gson.*;
+import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
+import main.java.ConnectToGitlab.Wrapper.WrapperIssue;
+import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,23 +24,23 @@ import java.util.*;
  * a project object.
  */
 @Document("Repository")
-public class WrapperProject {
+public class MongoProject {
 
     public static final String MAIN_URL = "https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/projects";
     @Id
     private int ID;
-    private String projectName;
-    private List<WrapperMergedMergeRequest> mergedMergeRequests;
+    private String PROJECT_NAME;
+    private List<WrapperMergedMergeRequest> MERGED_MERGE_REQUESTS;
     //private final List<WrapperCommit> ALL_COMMITS = new ArrayList<>();
-    private List<WrapperIssue> issues = new ArrayList<>();
+    private List<WrapperIssue> ALL_ISSUES = new ArrayList<>();
     private List<Integer> mergeRequestIds = new ArrayList<>();
 
-    public WrapperProject() {
+    public MongoProject() {
     }
 
-    public WrapperProject(String token, int gitlabProjectId) throws IOException, ParseException {
+    public MongoProject(String token, int gitlabProjectId) throws IOException, ParseException {
         this.ID = gitlabProjectId;
-        this.projectName = getProjectName(token);
+        this.PROJECT_NAME = getProjectName(token);
         //getMergedMergeRequests(token,gitlabProjectId);
         //getAllProjectCommits(token, gitlabProjectId);
         getAllProjectIssues(token);
@@ -101,7 +105,7 @@ public class WrapperProject {
             df1.setTimeZone(TimeZone.getTimeZone("PT"));
             String date2 = df1.format(date);
 
-            WrapperCommit commit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title,date2, parsedCommitDate[0],
+            WrapperCommit commit = new WrapperCommit(token, projectId, commitId, authorName, authorEmail, title, date2, parsedCommitDate[0],
                     parsedCommitDate[1],parsedCommitDate[2]);
             //ALL_COMMITS.add(commit);
         }
@@ -187,7 +191,7 @@ public class WrapperProject {
 
             WrapperIssue wrapperIssue = new WrapperIssue(token, projectId, issueId, issueIid, authorName, issueTitle,
                     issueDateParsed[0], issueDateParsed[1], issueDateParsed[2]);
-            issues.add(wrapperIssue);
+            ALL_ISSUES.add(wrapperIssue);
         }
     }
 
@@ -210,31 +214,6 @@ public class WrapperProject {
         return result;
     }
 
-    public List<String> getListOfMembers(String token) throws IOException {
-        URL url = new URL(MAIN_URL + "/" + ID + "/members" +"?access_token=" + token);
-        HttpURLConnection connection = makeConnection(url);
-        connection.setRequestMethod("GET");
-        connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-        String reply = "";
-        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-        connection.disconnect();
-
-        Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
-        List<String> userNames = new ArrayList<>();
-        for(int i = 0; i< jsonArray.size(); i++) {
-            JsonElement jsonElement1 = jsonArray.get(i);
-            JsonObject jsonObject1 = jsonElement1.getAsJsonObject();
-            JsonPrimitive jsonPrimitiveUserName = jsonObject1.getAsJsonPrimitive("username");
-            String userName = jsonPrimitiveUserName.getAsString();
-
-            userNames.add(userName);
-        }
-        return userNames;
-    }
-
     /**
      * Creates a HttpURLConnection object
      * @param url the url object containing the full address of th serve
@@ -244,28 +223,28 @@ public class WrapperProject {
     }
 
     public void addMergedMergeRequests(List<WrapperMergedMergeRequest> mergedMergeRequests){
-        this.mergedMergeRequests = new ArrayList<>();
-        this.mergedMergeRequests.addAll(mergedMergeRequests);
+        MERGED_MERGE_REQUESTS = new ArrayList<>();
+        MERGED_MERGE_REQUESTS.addAll(mergedMergeRequests);
     }
 
-    public int getID() {
+    public int getGitlabProjectId() {
         return ID;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public String getGitlabProjectName() {
+        return PROJECT_NAME;
     }
 
     public List<WrapperMergedMergeRequest> getMergedMergeRequests() {
-        return mergedMergeRequests;
+        return MERGED_MERGE_REQUESTS;
     }
 
     /*public List<WrapperCommit> getAllCommits() {
         return ALL_COMMITS;
     }*/
 
-    public List<WrapperIssue> getIssues() {
-        return issues;
+    public List<WrapperIssue> getAllIssues() {
+        return ALL_ISSUES;
     }
 
     public List<Integer> getMergeRequestIds() {
