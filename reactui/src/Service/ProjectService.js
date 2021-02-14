@@ -22,7 +22,7 @@ class ProjectService {
     }
 
     getCodeDiff() {
-
+        return axios.get("http://localhost:8080/getuserstats/6/arahilin");
     }
 
     getCommentInfo() {
