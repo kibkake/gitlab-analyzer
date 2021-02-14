@@ -38,6 +38,7 @@ ext {
 
 application {
     mainClassName = javaMainPointer
+    applicationDefaultJvmArgs =["-Djdk.tls.client.protocols=TLSv1.2"]
 }
 
 test{
