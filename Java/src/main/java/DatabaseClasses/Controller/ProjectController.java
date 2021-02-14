@@ -105,7 +105,7 @@ public class ProjectController {
     }
 
     @GetMapping("projects/totalCommitScore/{projectId}/{committerName}")
-    public int totalCommitScore(@PathVariable("projectId") int projectId,
+    public double totalCommitScore(@PathVariable("projectId") int projectId,
                                 @PathVariable("committerName") String committerName) {
         LocalDate start = LocalDate.of(2021, 1, 1);
         LocalDate end = LocalDate.now();

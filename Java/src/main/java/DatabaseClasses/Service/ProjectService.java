@@ -114,12 +114,11 @@ public class ProjectService {
         return returnVar;
     }
 
-    public int getTotalUserCommitScore(int projectId, String committerName,
+    public double getTotalUserCommitScore(int projectId, String committerName,
                                        LocalDate start, LocalDate end) {
         List<DateScore> individualCommitScores = this.getUserCommitScoresPerDay(projectId, committerName,
                                                                                 start, end);
-        int totalCommitScore = 0;
-
+        double totalCommitScore = 0;
         for (DateScore currentDateScore: individualCommitScores) {
             totalCommitScore += currentDateScore.getCommitScore();
         }
