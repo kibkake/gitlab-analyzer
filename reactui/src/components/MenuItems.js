@@ -1,9 +1,10 @@
 import * as GoIcons from "react-icons/go";
 import * as HiIcons from "react-icons/hi";
-import {AiOutlineExport} from "react-icons/ai";
-
-
+import * as AIIcons from "react-icons/ai";
+import {CgProfile} from 'react-icons/cg';
+import {IoSettingsOutline} from 'react-icons/io5';
 export const MenuItems=[
+
     {
         title: 'Repositories',
         url: '/Repo',
@@ -22,11 +23,19 @@ export const MenuItems=[
         title: 'Export',
         url: '/Export',
         cName: 'nav-links',
-        icon: <AiOutlineExport/>
+        icon: <AIIcons.AiOutlineExport/>
     },
     {
-        title: 'Signup',
+        title: 'Settings',
+        url: '/Settings',
+        cName: 'nav-links',
+        icon: <IoSettingsOutline/>
+    },
+
+    {
+        title: 'Profile',
         url: '#',
-        cName: 'nav-links'
+        cName: 'nav-links-signin',
+        icon:<CgProfile/>
     }
 ]

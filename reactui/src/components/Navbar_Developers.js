@@ -1,15 +1,19 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
 import {AiOutlineHome} from 'react-icons/ai';
-import '../components/Navbar.css';
-import {MenuItems} from "../components/MenuItem_Developers";
+import './Navbar.css';
+import {MenuItems} from "./MenuItem_Developers";
 
-class Developers extends Component{
+
+class Navbar_Developers extends Component{
     render(){
         return(
-
             <nav className="navbarItems">
-
+                <div>
+                    <Link to='/Developers' className='nav-icon'>
+                        <AiOutlineHome size={30} />
+                    </Link>
+                </div>
                 <ul className='navMenu'>
                     {MenuItems.map((item,index)=>{
                         return(
@@ -20,7 +24,6 @@ class Developers extends Component{
                             </li>
                         )
                     })}
-
                 </ul>
                 <div>
                 </div>
@@ -29,4 +32,4 @@ class Developers extends Component{
         )
     }
 }
-export default Developers;
+export default Navbar_Developers;

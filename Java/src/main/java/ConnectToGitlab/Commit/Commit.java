@@ -2,6 +2,7 @@ package main.java.ConnectToGitlab.Commit;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.*;
 import org.springframework.data.annotation.Id;
@@ -213,11 +214,15 @@ public class Commit {
         this.commitScore = commitScore;
     }
 
-    public double calculateCommitScore(){
-        for(int i = 0; i < diffs.size(); i++){
+    public double getCommitScore() {
+        return commitScore;
+    }
+
+    public void calculateAndSetCommitScore(){
+        commitScore = 0;
+        for (int i = 0; i < diffs.size(); i++) {
             commitScore += diffs.get(i).getScore();
         }
         commitScore = Math.round(commitScore * 100.0) / 100.0;
-        return 0;
     }
 }

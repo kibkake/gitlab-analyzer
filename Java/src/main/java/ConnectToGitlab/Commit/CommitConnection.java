@@ -27,7 +27,7 @@ public class CommitConnection {
         for (Commit singleCommit : commits) {
             singleCommit.setProjectId(projectId); // sets projectId if removing set project id a different way
             singleCommit.setDiffs(getSingleCommitDiffs(projectId, singleCommit.getId()));
-            singleCommit.setCommitScore(singleCommit.calculateCommitScore()); // done after getting commits
+            singleCommit.calculateAndSetCommitScore(); // done after getting commits
         }
         return commits;
     }
