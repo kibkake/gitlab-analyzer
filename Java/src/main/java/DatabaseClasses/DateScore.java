@@ -16,6 +16,7 @@ public class DateScore {
         this.date = date;
         this.commitScore = commitScore;
         this.userName = userName;
+        this.numCommits = 0;
     }
 
     public LocalDate getDate() {
@@ -44,5 +45,9 @@ public class DateScore {
 
     public void addToScore(double score) {
         this.commitScore += score;
+    }
+
+    public void incrementNumberOfCommitsBy1() {
+        this.numCommits = this.numCommits + 1;
     }
 }

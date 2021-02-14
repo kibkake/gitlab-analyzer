@@ -101,7 +101,6 @@ public class ProjectService {
 
         HashMap<Date, DateScore> dateMap = new HashMap<Date, DateScore>();
 
-        int commitsPerDay = 0;
         for (Commit currentCommit: allUserCommits) {
             LocalDate currentDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (currentDate.compareTo(start) >= 0 && currentDate.compareTo(end) <= 0) {
@@ -111,6 +110,7 @@ public class ProjectService {
                     dateMap.put(currentCommit.getDate(), dateScore);
                 } else {
                     dateMap.get(currentCommit.getDate()).addToScore(currentCommit.getCommitScore());
+                    dateMap.get(currentCommit.getDate()).incrementNumberOfCommitsBy1();
                 }
             }
         }
