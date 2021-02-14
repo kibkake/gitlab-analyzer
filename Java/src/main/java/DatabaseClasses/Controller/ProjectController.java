@@ -76,14 +76,16 @@ public class ProjectController {
         return projectService.getProjectMRs(projectId);
     }
 
-    @GetMapping("projects/{committerName}/allCommits")
-    public List<Commit> getAllUserCommits(@PathVariable("committerName") String committerName) {
-        return projectService.getAllUserCommits(committerName);
+    @GetMapping("projects/allCommits/{projectId}/{committerName}")
+    public List<Commit> getAllUserCommits(@PathVariable("projectId") int projectId,
+                                          @PathVariable("committerName") String committerName) {
+        return projectService.getAllUserCommits(projectId, committerName);
     }
 
-    @GetMapping("projects/{committerName}/numCommits")
-    public int getNumUserCommits(@PathVariable("committerName") String committerName) {
-        return projectService.getNumUserCommits(committerName);
+    @GetMapping("projects/numCommits/{projectId}/{committerName}")
+    public int getNumUserCommits(@PathVariable("projectId") int projectId,
+                                 @PathVariable("committerName") String committerName) {
+        return projectService.getNumUserCommits(projectId, committerName);
     }
 
     @GetMapping("projects/numMergeRequests/{projectId}/{committerName}")
@@ -92,21 +94,23 @@ public class ProjectController {
         return projectService.getNumUserMergeRequests(projectId, committerName);
     }
 
-    @GetMapping("projects/{committerName}/commitScoresPerDay")
-    public List<DateScore> getUserCommitScoresPerDay(@PathVariable("committerName") String committerName) {
+    @GetMapping("projects/commitScoresPerDay/{projectId}/{committerName}")
+    public List<DateScore> getUserCommitScoresPerDay(@PathVariable("projectId") int projectId,
+                                                     @PathVariable("committerName") String committerName) {
         LocalDate start = LocalDate.of(2021, 1, 1);
         LocalDate end = LocalDate.now();
         // Continue here - change this function so that it accepts start and end LocalDate params
         // as additional path variables.
-        return projectService.getUserCommitScoresPerDay(committerName, start, end);
+        return projectService.getUserCommitScoresPerDay(projectId, committerName, start, end);
     }
 
-    @GetMapping("projects/{committerName}/totalCommitScore")
-    public int totalCommitScore(@PathVariable("committerName") String committerName) {
+    @GetMapping("projects/totalCommitScore/{projectId}/{committerName}")
+    public int totalCommitScore(@PathVariable("projectId") int projectId,
+                                @PathVariable("committerName") String committerName) {
         LocalDate start = LocalDate.of(2021, 1, 1);
         LocalDate end = LocalDate.now();
         // Continue here - like in the above function, make these two dates path variables.
-        return projectService.getTotalUserCommitScore(committerName, start, end);
+        return projectService.getTotalUserCommitScore(projectId, committerName, start, end);
     }
 
 //    @GetMapping("projects/{projectId}/developers/{developerId}/graph")

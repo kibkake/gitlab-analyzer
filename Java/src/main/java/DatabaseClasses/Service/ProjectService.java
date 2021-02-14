@@ -64,9 +64,8 @@ public class ProjectService {
         return project.getMergedRequests();
     }
 
-    public int getNumUserCommits(String committerName) {
-        List<Commit> allCommits = this.getAllUserCommits(committerName);
-
+    public int getNumUserCommits(int projectId, String committerName) {
+        List<Commit> allCommits = this.getAllUserCommits(projectId, committerName);
         return allCommits.size();
     }
 
@@ -95,8 +94,9 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public List<DateScore> getUserCommitScoresPerDay(String committerName, LocalDate start, LocalDate end) {
-        List<Commit> allUserCommits = this.getAllUserCommits(committerName);
+    public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
+                                                     LocalDate start, LocalDate end) {
+        List<Commit> allUserCommits = this.getAllUserCommits(projectId, committerName);
         List<DateScore> returnVar = new ArrayList<DateScore>();
 
         for (Commit currentCommit: allUserCommits) {
@@ -114,8 +114,9 @@ public class ProjectService {
         return returnVar;
     }
 
-    public int getTotalUserCommitScore(String committerName, LocalDate start, LocalDate end) {
-        List<DateScore> individualCommitScores = this.getUserCommitScoresPerDay(committerName,
+    public int getTotalUserCommitScore(int projectId, String committerName,
+                                       LocalDate start, LocalDate end) {
+        List<DateScore> individualCommitScores = this.getUserCommitScoresPerDay(projectId, committerName,
                                                                                 start, end);
         int totalCommitScore = 0;
 
@@ -125,20 +126,18 @@ public class ProjectService {
         return totalCommitScore;
     }
 
-    public List<Commit> getAllUserCommits(String committerName) {
-        List<Project> allProjects = projectRepository.findAll();
+    public List<Commit> getAllUserCommits(int projectId, String committerName) {
+        Project project = projectRepository.findProjectById(projectId);
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
         // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
         List<Commit> returnVar = new ArrayList<Commit>();
 
-        for (Project currentProject : allProjects) {
-            List<Commit> projectCommits = currentProject.getCommits();
-            for (Commit currentCommit : projectCommits) {
-                if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                        currentCommit.getCommitter_name().equals(committerName)) {
-                    returnVar.add(currentCommit);
-                    commitIds.add(currentCommit.getId());
-                }
+        List<Commit> projectCommits = project.getCommits();
+        for (Commit currentCommit : projectCommits) {
+            if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
+                    currentCommit.getCommitter_name().equals(committerName)) {
+                returnVar.add(currentCommit);
+                commitIds.add(currentCommit.getId());
             }
         }
         return returnVar;
