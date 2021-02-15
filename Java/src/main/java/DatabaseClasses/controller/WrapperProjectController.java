@@ -77,7 +77,7 @@ public class WrapperProjectController {
         List<Integer> mergeRequestIds = new ArrayList<>();
         List<WrapperMergedMergeRequest> mergedMergeRequests = new ArrayList<>();
 
-        if(project.isEmpty()) {
+        if(!project.isPresent()) {
             System.out.println("empty");
             WrapperProject gitlabProject = new WrapperProject (token, projectId);
             List<WrapperMergedMergeRequest> gitlabMergedMergeRequests = gitlabProject.getMergedMergeRequestsFromServer

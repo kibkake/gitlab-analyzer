@@ -18,6 +18,8 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,19 +100,22 @@ public class ProjectService {
     public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
                                                      LocalDate start, LocalDate end) {
         List<Commit> allUserCommits = this.getAllUserCommits(projectId, committerName);
-        HashMap<Date, DateScore> dateMap = new HashMap<Date, DateScore>();
+        HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
+
 
         for (Commit currentCommit: allUserCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
-
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
-                if(!dateMap.containsKey(currentCommit.getDate())) {
+                if(!dateMap.containsKey(commitDate.toString())) {
                     DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
                             committerName);
-                    dateMap.put(currentCommit.getDate(), dateScore);
+                    dateMap.put(commitDate.toString(), dateScore);
                 } else {
-                    dateMap.get(currentCommit.getDate()).addToScore(currentCommit.getCommitScore());
-                    dateMap.get(currentCommit.getDate()).incrementNumberOfCommitsBy1();
+                    DateScore dateScore = dateMap.get(commitDate.toString());
+
+                    dateScore.addToScore(currentCommit.getCommitScore());
+                    dateScore.incrementNumberOfCommitsBy1();
+
                 }
             }
         }

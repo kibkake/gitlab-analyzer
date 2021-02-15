@@ -10,13 +10,13 @@ public class DateScore {
     private LocalDate date;
     private double commitScore;
     private String userName;
-    private double numCommits;
+    private int numCommits;
 
     public DateScore(LocalDate date, double commitScore, String userName) {
         this.date = date;
         this.commitScore = commitScore;
         this.userName = userName;
-        this.numCommits = 0;
+        this.numCommits = 1;
     }
 
     public LocalDate getDate() {
@@ -47,7 +47,25 @@ public class DateScore {
         this.commitScore += score;
     }
 
+    public int getNumCommits() {
+        return numCommits;
+    }
+
+    public void setNumCommits(int numCommits) {
+        this.numCommits = numCommits;
+    }
+
     public void incrementNumberOfCommitsBy1() {
         this.numCommits = this.numCommits + 1;
+    }
+
+    @Override
+    public String toString() {
+        return "DateScore{" +
+                "date=" + date +
+                ", commitScore=" + commitScore +
+                ", userName='" + userName + '\'' +
+                ", numCommits=" + numCommits +
+                '}';
     }
 }
