@@ -9,6 +9,7 @@ import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
 import Comments from "./Pages/Comments";
 import CodeDiff from "./Pages/CodeDiff";
+import Profile from "./Pages/Profile";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar_dropdown from "./components/storage/Navbar_dropdown";
 
@@ -30,6 +31,7 @@ function App() {
             <Route path='/Developers/codeDiff' exact component={CodeDiff}/>
 
           <Route path='/Settings' exact component={Settings}/>
+          <Route path='/Profile' exact component={Profile}/>
         </Switch>
       </Router>
     </>

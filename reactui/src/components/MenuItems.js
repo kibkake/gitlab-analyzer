@@ -34,7 +34,7 @@ export const MenuItems=[
 
     {
         title: 'Profile',
-        url: '#',
+        url: '/Profile',
         cName: 'nav-links-signin',
         icon:<CgProfile/>
     }
