@@ -9,11 +9,11 @@ export const MenuItems = [
         url: '/Developers/commits',
         cName: 'nav-links'
     },
-    // {
-    //     title: 'Code Diff',
-    //     url: '/Developers/codediff',
-    //     cName: 'nav-links'
-    // },
+    {
+        title: 'Single Commit Diff',
+        url: '/Developers/codediff',
+        cName: 'nav-links'
+    },
     {
         title: 'Comment Contribution',
         url: '/Developers/comments',
