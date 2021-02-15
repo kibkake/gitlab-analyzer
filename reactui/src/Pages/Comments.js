@@ -1,16 +1,17 @@
 import CommentTable from "../components/CommentTable";
 import RadioButtons from "../components/RadioButton";
 import CustomizedRadios from "../components/RadioButton";
+import '../App.css';
+
 function Comments() {
     return (
-        <div classname='Comments'>
+        <div>
             <h1 style={{textAlign:'center'}}>Comment For Each Note</h1>
-            <br>
-            </br>
             <h4 style={{textAlign:'center'}}>display only top 10 comments by word Count or something </h4>
-            <br>
-            </br>
-            <CustomizedRadios style = {{marginBottom: "0", align: 'center'}} />
+            <br></br>
+            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+            <CustomizedRadios/>
+            </div>
             <CommentTable/>
         </div>
     )

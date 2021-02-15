@@ -9,6 +9,8 @@ const PROJECT_REST_API_URL = "http://localhost:8080/";
 // For now can't really work on... The structure of DB & RestController should be set in the backend
 class ProjectService {
 
+    // Just fake functions by content, free to modify
+
     getAllProject() {
         // return axios.get(PROJECT_REST_API_URL);
     }
@@ -18,6 +20,10 @@ class ProjectService {
     }
 
     getCodeScore() {
+
+    }
+
+    getCommentScore(){
 
     }
 
