@@ -1,16 +1,25 @@
 import BarChart from "../components/Chart";
+import SummaryScoreTable from "../components/SummaryScoreTable";
+import Navbar_Developers from "../components/Navbar_Developers";
+import React from "react";
 
 function Summary(){
     return(
         <div classname='Summary'>
+            <Navbar_Developers/>
             <h1 style={{textAlign:'center'}}>Summary</h1>
-            <h4 style={{textAlign:'center'}}>code score/graph in the duration, comment wordCount/per day </h4>
+            <br>
+            </br>
+            <h4 style={{textAlign:'center'}}>Code / Comment score per day</h4>
             <BarChart/>
+            <br>
+            </br>
+            <h4 style={{textAlign:'center'}}>Total score for each part (should change to some other display option)</h4>
+
+            <SummaryScoreTable/>
         </div>
 
     )
-
-
 }
 
 export default Summary;
