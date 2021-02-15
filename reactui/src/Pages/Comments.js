@@ -1,15 +1,19 @@
-import "../App.css"
-import React,{ Component } from "react";
-import ProjectService from "../Service/ProjectService";
 import CommentTable from "../components/CommentTable";
-
-function Comments(){
-
-    return(
-        <div className='Comments'>
+import RadioButtons from "../components/RadioButton";
+import CustomizedRadios from "../components/RadioButton";
+function Comments() {
+    return (
+        <div classname='Comments'>
             <h1 style={{textAlign:'center'}}>Comment For Each Note</h1>
-             <CommentTable/>
+            <br>
+            </br>
+            <h4 style={{textAlign:'center'}}>display only top 10 comments by word Count or something </h4>
+            <br>
+            </br>
+            <CustomizedRadios style = {{align: 'center'}} />
+            <CommentTable/>
         </div>
     )
 }
-export default Comments;
+
+export default Comments

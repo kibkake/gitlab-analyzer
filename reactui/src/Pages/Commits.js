@@ -10,6 +10,7 @@ function Commits(){
             <h1 style={{textAlign:'center'}}>
                 Commits??
             </h1>
+
         </div>
 
 

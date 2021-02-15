@@ -5,14 +5,18 @@ function Summary(){
     return(
         <div classname='Summary'>
             <h1 style={{textAlign:'center'}}>Summary</h1>
-            <h4 style={{textAlign:'center'}}>code score/graph in the duration, comment wordCount/per day </h4>
+            <br>
+            </br>
+            <h4 style={{textAlign:'center'}}>Total score for each part</h4>
+
             <SummaryScoreTable/>
+            <br>
+            </br>
+            <h4 style={{textAlign:'center'}}>Number of Commits/MR per day</h4>
             <BarChart/>
         </div>
 
     )
-
-
 }
 
 export default Summary;

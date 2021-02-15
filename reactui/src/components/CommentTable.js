@@ -19,6 +19,7 @@ function CommentTable() {
     // }
 
 
+
     // Fake data for testing
     const comments = [
         {date: 204, wordCount: 20, comments: "very good", author: true},
