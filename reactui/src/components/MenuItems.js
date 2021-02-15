@@ -12,8 +12,6 @@ export const MenuItems=[
         icon: <GoIcons.GoRepo/>
     },
     {
-
-
         title: 'Developers',
         url: '/Developers',
         cName: 'nav-links',
