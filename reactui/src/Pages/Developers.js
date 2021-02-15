@@ -13,8 +13,12 @@ class Developers extends Component{
                 <Navbar_Developers/>
                 <br>
                 </br>
-                <h4 style={{textAlign:'center'}}>Add list of developer component here</h4>
+                <header >This is not dynamically changed right now. After the repository page sends client to a page
+                which includes the project number, the list will be changed dynamically. This list is from project 6</header>
+                <ul className='Footer'>
+                    <Developers2Button/>
 
+</ul>
             </div>
         )
     }
