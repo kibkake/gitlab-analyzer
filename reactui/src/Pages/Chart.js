@@ -1,10 +1,12 @@
+import CommitChart from "../components/CommitChart";
 
 function Chart(){
 
     return(
-        <div>
-            Helloooo
+        <div classname='Rest'>
+            <CommitChart/>
         </div>
+
     )
 }
 
