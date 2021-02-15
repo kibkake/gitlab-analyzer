@@ -4,6 +4,7 @@ import {Table} from 'react-bootstrap'
 
 // class CodeDiffTable extends Component{
 function CodeDiffTable() {
+
     // TODO: Do not delete, will be used once the API is set
     // constructor(props) {
     //     super(props);
@@ -14,7 +15,7 @@ function CodeDiffTable() {
     //
     // componentDidMount() {
     //     ProjectService.getCodeDiff().then((response) => {
-    //         this.setState({WrapperUser: response.data})
+    //         this.setState({WrapperUser: response.data})??
     //     });
     // }
 

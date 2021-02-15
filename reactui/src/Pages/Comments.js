@@ -7,7 +7,8 @@ function Comments(){
 
     return(
         <div className='Comments'>
-        <CommentTable/>
+            <h1 style={{textAlign:'center'}}>Comment For Each Note</h1>
+             <CommentTable/>
         </div>
     )
 }

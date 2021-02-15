@@ -1,7 +1,5 @@
 import "../App.css"
 import React,{ Component } from "react";
-import ProjectService from "../Service/ProjectService";
-import * as ReactBootStrap from "react-bootstrap"
 import {Table} from 'react-bootstrap'
 
 function CommentTable() {
