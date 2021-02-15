@@ -25,7 +25,8 @@ function App() {
           <Route path='/Developers' exact component={Developers}/>
             <Route path='/Developers/summary' exact component={Summary}/>
             <Route path='/Developers/commits' exact component={Commits}/>
-            <Route path='/Developers/comments' exact component={Comments}/>
+            <Route path='/Developers/codediff' exact component={CodeDiff}/>
+          <Route path='/Developers/comments' exact component={Comments}/>
 
           <Route path='/Settings' exact component={Settings}/>
         </Switch>
