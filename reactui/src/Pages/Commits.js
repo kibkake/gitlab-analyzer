@@ -9,6 +9,8 @@ function Commits(){
     return(
 
         <div classname='Commits'>
+            <h1 style={{textAlign:'center'}}>Code Contribution</h1>
+            <br></br>
             <h4 style={{textAlign:'center'}}>
                 # of Commits and Merge Requests per day
             </h4>

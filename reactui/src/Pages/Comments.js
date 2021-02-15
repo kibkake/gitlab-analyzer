@@ -6,12 +6,12 @@ import '../App.css';
 function Comments() {
     return (
         <div>
-            <h1 style={{textAlign:'center'}}>Comment For Each Note</h1>
-            <h4 style={{textAlign:'center'}}>display only top 10 comments by word Count or something </h4>
+            <h1 style={{textAlign:'center'}}>Comment Contribution</h1>
             <br></br>
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
             <CustomizedRadios/>
             </div>
+            <h4 style={{textAlign:'center'}}>display only top 10 comments by word Count or something </h4>
             <CommentTable/>
         </div>
     )
