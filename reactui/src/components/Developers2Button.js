@@ -19,7 +19,7 @@ class Developers2Button extends Component{
         var str = window.location.pathname;
         var strArr = str.split("/");
         let url = 'http://localhost:8080/getuserstats/6/arahilin'
-        let url2 = 'http://localhost:8080/getprojectmembers/' + strArr[1]
+        let url2 = 'http://localhost:8080/getprojectmembers/6'
         fetch(url2, {
             method: 'GET',
             headers: {
@@ -44,11 +44,32 @@ class Developers2Button extends Component{
         console.log(DataArray);
 
         return(
-            <div> Component </div>
+            //<div> Name: {DataArray} </div>
+
+            <ul>
+                {DataArray.map(item => {
+                    return <li>
+                        <a href= {"Developers/" + item }target= "_blank">
+                            <Button className="repoButton" to={item.url}
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        window.location.href=  window.location.pathname + "/" + item;
+
+                                    }}
+                            >
+                                <span >{item}</span>
+                            </Button>
+                        </a>
+                    </li>;
+                })}
+            </ul>
+
+
+
         );
 
     }
-
 }
 
 export default Developers2Button;
