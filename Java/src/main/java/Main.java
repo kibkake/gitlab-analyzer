@@ -3,12 +3,14 @@ package main.java;
 import main.java.DatabaseClasses.Model.User;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 
+import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
+import main.java.DatabaseClasses.Service.WrapperProjectFunctions;
 
 import java.util.Arrays;
 import java.io.PrintWriter;
@@ -19,7 +21,8 @@ import java.io.PrintWriter;
 @SpringBootApplication
 public class Main {
 
-
+    @Autowired
+    private WrapperProjectRepository projectRepository;
     /**
      * This is the main method for running Spring Boot
      *
@@ -57,6 +60,8 @@ public class Main {
 
             // indicate running status
             System.out.println("Server broadcasting on localhost:8080");
+
         };
     }
+
 }
