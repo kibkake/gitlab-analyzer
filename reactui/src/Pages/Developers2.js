@@ -1,10 +1,10 @@
+import Developers2Button from "../components/Developers2Button";
 
 function Developer2(){
     return(
-        <div>
-            Hello World
+        <div classname='Rest'>
+            <Developers2Button/>
         </div>
-
     )
 
 }
