@@ -9,6 +9,7 @@ import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
 import Comments from "./Pages/Comments";
 import CodeDiff from "./Pages/CodeDiff";
+import Chart from "./Pages/Chart";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar_dropdown from "./components/storage/Navbar_dropdown";
 
@@ -28,6 +29,7 @@ function App() {
             <Route path='/Developers/commits' exact component={Commits}/>
             <Route path='/Developers/comments' exact component={Comments}/>
             <Route path='/Developers/codeDiff' exact component={CodeDiff}/>
+            <Route path='/Developers/chart' exact component={Chart}/>
 
           <Route path='/Settings' exact component={Settings}/>
         </Switch>
