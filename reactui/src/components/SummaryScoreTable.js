@@ -31,7 +31,7 @@ function SummaryScoreTable() {
                     <td>Commit</td>
                     <td>Merge Request</td>
                     <td>Word Count for Comments</td>
-                    <td># of Comments per Day</td>
+                    <td>Average # of Comments per Day</td>
                 </tr>
                 {
                     scoreSummary.map((item, index)=>

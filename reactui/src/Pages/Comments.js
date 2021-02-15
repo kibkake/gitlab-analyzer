@@ -10,7 +10,7 @@ function Comments() {
             <h4 style={{textAlign:'center'}}>display only top 10 comments by word Count or something </h4>
             <br>
             </br>
-            <CustomizedRadios style = {{align: 'center'}} />
+            <CustomizedRadios style = {{marginBottom: "0", align: 'center'}} />
             <CommentTable/>
         </div>
     )
