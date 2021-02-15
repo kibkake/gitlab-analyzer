@@ -112,5 +112,29 @@ public class WProjectController {
         return user;
     }
 
+    @CrossOrigin
+    @GetMapping("getuserstats/{pId}/{usrname}/{yr}/{mnth}/{da}")
+    private List<String> getUserCommitPerDay(@PathVariable String pId, @PathVariable String usrname, @PathVariable String yr,
+                                             @PathVariable String mnth, @PathVariable String da) throws IOException, ParseException {
+
+        WrapperUser user = getProject(pId, usrname);
+        int year = Integer.parseInt(yr);
+        int month = MonthConverter.convertLetterToInt(mnth);
+        int day = Integer.parseInt(da);
+        int commitNumber = 0;
+        for(int i = 0; i < user.getMergedMergeRequests().size(); i++) {
+            for(int j = 0; j < user.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
+                if(user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName().equals(usrname)
+                        &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitYear() == year
+                        &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitMonth() == month
+                        &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitDay() == day){
+                    commitNumber += 1;
+                }
+            }
+        }
+        List<String> commits = new ArrayList<>();
+        commits.add(Integer.toString(commitNumber));
+        return commits;
+    }
 }
 
