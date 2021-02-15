@@ -1,13 +1,9 @@
-package main.java.ConnectToGitlab.Commit;
+package main.java.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.*;
-import org.springframework.data.annotation.Id;
-
-import java.util.stream.Collectors;
 
 /**
  *  Holds import information about commits and is used to convert JSON to an object with spring

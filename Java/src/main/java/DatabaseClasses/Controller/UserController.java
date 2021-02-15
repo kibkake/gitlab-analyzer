@@ -1,6 +1,6 @@
 package main.java.DatabaseClasses.controller;
 
-import main.java.DatabaseClasses.Model.User;
+import main.java.Model.User;
 import main.java.DatabaseClasses.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

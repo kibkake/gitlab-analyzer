@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses;
+package main.java.DatabaseClasses.Model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

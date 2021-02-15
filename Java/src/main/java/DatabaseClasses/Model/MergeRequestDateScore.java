@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses;
+package main.java.DatabaseClasses.Model;
 
 import javax.swing.text.Document;
 import java.time.LocalDate;

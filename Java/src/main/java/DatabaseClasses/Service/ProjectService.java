@@ -1,16 +1,16 @@
 package main.java.DatabaseClasses.Service;
 
-import main.java.ConnectToGitlab.Commit.Commit;
-import main.java.ConnectToGitlab.Commit.CommitConnection;
-import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Developer.DeveloperConnection;
-import main.java.ConnectToGitlab.Issue.Issue;
-import main.java.ConnectToGitlab.Issue.IssueConnection;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequestConnection;
-import main.java.DatabaseClasses.CommitDateScore;
-import main.java.DatabaseClasses.MergeRequestDateScore;
-import main.java.DatabaseClasses.Model.Project;
+import main.java.Model.Commit;
+import main.java.ConnectToGitlab.CommitConnection;
+import main.java.Model.Developer;
+import main.java.ConnectToGitlab.DeveloperConnection;
+import main.java.Model.Issue;
+import main.java.ConnectToGitlab.IssueConnection;
+import main.java.Model.MergeRequest;
+import main.java.ConnectToGitlab.MergeRequestConnection;
+import main.java.DatabaseClasses.Model.CommitDateScore;
+import main.java.DatabaseClasses.Model.MergeRequestDateScore;
+import main.java.Model.Project;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
@@ -96,23 +96,21 @@ public class ProjectService {
 
     public List<CommitDateScore> getUserCommitScoresPerDay(int projectId, String committerName,
                                                            LocalDate start, LocalDate end) {
-        List<Commit> allUserCommits = this.getAllUserCommits(projectId, committerName);
+        List<Commit> allUserCommits = this.getAllUserCommits(projectId, committerName, start, end);
         HashMap<String, CommitDateScore> dateMap = new HashMap<String, CommitDateScore>();
 
         for (Commit currentCommit: allUserCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
-            if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
-                if(!dateMap.containsKey(commitDate.toString())) {
-                    CommitDateScore commitDateScore = new CommitDateScore(commitDate, currentCommit.getCommitScore(),
-                            committerName, currentCommit.getId());
-                    dateMap.put(commitDate.toString(), commitDateScore);
-                } else {
-                    CommitDateScore commitDateScore = dateMap.get(commitDate.toString());
+            if(!dateMap.containsKey(commitDate.toString())) {
+                CommitDateScore commitDateScore = new CommitDateScore(commitDate, currentCommit.getCommitScore(),
+                        committerName, currentCommit.getId());
+                dateMap.put(commitDate.toString(), commitDateScore);
+            } else {
+                CommitDateScore commitDateScore = dateMap.get(commitDate.toString());
 
-                    commitDateScore.addToScore(currentCommit.getCommitScore());
-                    commitDateScore.incrementNumberOfCommitsBy1();
-                    commitDateScore.addCommitIds(currentCommit.getId());
-                }
+                commitDateScore.addToScore(currentCommit.getCommitScore());
+                commitDateScore.incrementNumberOfCommitsBy1();
+                commitDateScore.addCommitIds(currentCommit.getId());
             }
         }
         List<CommitDateScore> commitDateScores = new ArrayList<CommitDateScore>(dateMap.values());
@@ -131,7 +129,7 @@ public class ProjectService {
         return totalCommitScore;
     }
 
-    public List<Commit> getAllUserCommits(int projectId, String committerName) {
+    public List<Commit> getAllUserCommits(int projectId, String committerName, LocalDate start, LocalDate end) {
         Project project = projectRepository.findProjectById(projectId);
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
         // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
@@ -139,10 +137,13 @@ public class ProjectService {
 
         List<Commit> projectCommits = project.getCommits();
         for (Commit currentCommit : projectCommits) {
-            if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                    currentCommit.getCommitter_name().equals(committerName)) {
-                userCommits.add(currentCommit);
-                commitIds.add(currentCommit.getId());
+            LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+            if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
+                if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
+                        currentCommit.getCommitter_name().equals(committerName)) {
+                    userCommits.add(currentCommit);
+                    commitIds.add(currentCommit.getId());
+                }
             }
         }
         return userCommits;

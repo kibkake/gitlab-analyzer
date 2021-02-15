@@ -1,9 +1,6 @@
 package main.java.DatabaseClasses.Repository;
 
-import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.DatabaseClasses.Model.Project;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import main.java.Model.Project;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

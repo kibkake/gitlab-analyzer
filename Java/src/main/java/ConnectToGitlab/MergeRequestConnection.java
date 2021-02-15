@@ -1,29 +1,15 @@
-package main.java.ConnectToGitlab.MergeRequests;//package main.java.ConnectToGitlab.MergeRequests;
+package main.java.ConnectToGitlab;//package main.java.ConnectToGitlab.MergeRequests;
 
-import com.google.gson.*;
-import main.java.ConnectToGitlab.Commit.Commit;
-import main.java.ConnectToGitlab.Commit.CommitConnection;
-import main.java.ConnectToGitlab.Commit.Stats;
-import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
-import main.java.DatabaseClasses.Model.User;
+import main.java.Model.Commit;
+import main.java.Model.Developer;
+import main.java.Model.MergeRequest;
+import main.java.Model.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 public class MergeRequestConnection {
 

@@ -1,12 +1,12 @@
 package main.java.DatabaseClasses.controller;
 
-import main.java.ConnectToGitlab.Commit.Commit;
-import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Issue.Issue;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
-import main.java.DatabaseClasses.CommitDateScore;
-import main.java.DatabaseClasses.Model.Project;
-import main.java.ConnectToGitlab.Project.ProjectConnection;
+import main.java.Model.Commit;
+import main.java.Model.Developer;
+import main.java.Model.Issue;
+import main.java.Model.MergeRequest;
+import main.java.DatabaseClasses.Model.CommitDateScore;
+import main.java.Model.Project;
+import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
 import main.java.Functions.LocalDateFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,10 +80,16 @@ public class ProjectController {
         return projectService.getProjectMRs(projectId);
     }
 
-    @GetMapping("projects/{projectId}/allCommits/{committerName}")
+    @GetMapping("projects/{projectId}/allCommits/{committerName}/{startDate}/{endDate}")
     public List<Commit> getAllUserCommits(@PathVariable("projectId") int projectId,
-                                          @PathVariable("committerName") String committerName) {
-        return projectService.getAllUserCommits(projectId, committerName);
+                                          @PathVariable("committerName") String committerName,
+                                          @PathVariable("start") String start,
+                                          @PathVariable("end")String end) throws ParseException {
+        Date startDate= new SimpleDateFormat("dd-MM-yyyy").parse(start);
+        Date endDate= new SimpleDateFormat("dd-MM-yyyy").parse(end);
+        LocalDate StartLocalTime = LocalDateFunctions.convertDateToLocalDate(startDate);
+        LocalDate endLocalTime = LocalDateFunctions.convertDateToLocalDate(endDate);
+        return projectService.getAllUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/numCommits/{projectId}/{committerName}")
@@ -107,7 +113,6 @@ public class ProjectController {
         System.out.println("user com score");
         Date startDate= new SimpleDateFormat("dd-MM-yyyy").parse(start);
         Date endDate= new SimpleDateFormat("dd-MM-yyyy").parse(end);
-
         LocalDate StartLocalTime = LocalDateFunctions.convertDateToLocalDate(startDate);
         LocalDate endLocalTime = LocalDateFunctions.convertDateToLocalDate(endDate);
 
@@ -123,10 +128,6 @@ public class ProjectController {
         return projectService.getTotalUserCommitScore(projectId, committerName, start, end);
     }
 
-//    @GetMapping("projects/{projectId}/user/{committerName}/mergeRequests")
-//    public List<MergeRequest> getUserMergeRequests(@PathVariable("projectId") int projectId,
-//                                     @PathVariable("committerName") String committerName) {
-//        return projectService.getUserMergeRequests(projectId, committerName);
-//    }
+
 }
 

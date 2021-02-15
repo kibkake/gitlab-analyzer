@@ -1,6 +1,6 @@
-package main.java.ConnectToGitlab.Issue;
+package main.java.Model;
 
-import main.java.ConnectToGitlab.Developer.Developer;
+import main.java.Model.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(value = "Note")

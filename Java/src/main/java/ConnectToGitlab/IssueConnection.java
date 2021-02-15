@@ -1,6 +1,8 @@
-package main.java.ConnectToGitlab.Issue;
+package main.java.ConnectToGitlab;
 
-import main.java.DatabaseClasses.Model.User;
+import main.java.Model.Issue;
+import main.java.Model.Note;
+import main.java.Model.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;

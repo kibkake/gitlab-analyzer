@@ -1,7 +1,7 @@
-package main.java.ConnectToGitlab.MergeRequests;//package main.java.ConnectToGitlab.MergeRequests;
+package main.java.Model;//package main.java.ConnectToGitlab.MergeRequests;
 
-import main.java.ConnectToGitlab.Commit.Commit;
-import main.java.ConnectToGitlab.Developer.Developer;
+import main.java.Model.Commit;
+import main.java.Model.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.OffsetDateTime;

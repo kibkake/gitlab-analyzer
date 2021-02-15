@@ -1,4 +1,4 @@
-package main.java.ConnectToGitlab.Commit;
+package main.java.Model;
 
 public class CommitDiff {
     private String new_path;
