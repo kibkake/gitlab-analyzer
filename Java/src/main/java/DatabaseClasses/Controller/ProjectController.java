@@ -4,7 +4,7 @@ import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Developer.Developer;
 import main.java.ConnectToGitlab.Issue.Issue;
 import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
-import main.java.DatabaseClasses.DateScore;
+import main.java.DatabaseClasses.CommitDateScore;
 import main.java.DatabaseClasses.Model.Project;
 import main.java.ConnectToGitlab.Project.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -99,11 +98,11 @@ public class ProjectController {
         return projectService.getNumUserMergeRequests(projectId, committerName);
     }
 
-    @GetMapping("projects/commitScoresPerDay/{projectId}/{committerName}/{start}/{end}")
-    public List<DateScore> getUserCommitScoresPerDay(@PathVariable("projectId") int projectId,
-                                                     @PathVariable("committerName") String committerName,
-                                                     @PathVariable("start") String start,
-                                                     @PathVariable("end")String end) throws ParseException {
+    @GetMapping("projects/commitScoresPerDay/{projectId}/user/{committerName}/start/{start}/end/{end}")
+    public List<CommitDateScore> getUserCommitScoresPerDay(@PathVariable("projectId") int projectId,
+                                                           @PathVariable("committerName") String committerName,
+                                                           @PathVariable("start") String start,
+                                                           @PathVariable("end")String end) throws ParseException {
 
 
         Date startDate= new SimpleDateFormat("dd-MM-yyyy").parse(start);
@@ -115,7 +114,7 @@ public class ProjectController {
         return projectService.getUserCommitScoresPerDay(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/totalCommitScore/{projectId}/{committerName}")
+    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}")
     public double totalCommitScore(@PathVariable("projectId") int projectId,
                                 @PathVariable("committerName") String committerName) {
         LocalDate start = LocalDate.of(2021, 1, 1);
@@ -124,5 +123,10 @@ public class ProjectController {
         return projectService.getTotalUserCommitScore(projectId, committerName, start, end);
     }
 
+    @GetMapping("projects/{pojectId}/user/{committerName}/mergeRequests")
+    public List<MergeRequest> getUserMergeRequests(@PathVariable("projectId") int pojectId,
+                                     @PathVariable("committerName") String committerName) {
+        return projectService.getUserMergeRequests(pojectId, committerName);
+    }
 }
 

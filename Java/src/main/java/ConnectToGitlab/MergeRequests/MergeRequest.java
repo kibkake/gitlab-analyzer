@@ -4,7 +4,9 @@ import main.java.ConnectToGitlab.Commit.Commit;
 import main.java.ConnectToGitlab.Developer.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document(value = "MergeRequest")
@@ -29,6 +31,7 @@ public class MergeRequest {
     List<Commit> commits;
     private String sha;
     double score;
+    private Date mergedDate;
 
     public MergeRequest() {
         contributors = new ArrayList<>();
@@ -95,7 +98,10 @@ public class MergeRequest {
         return merged_at;
     }
 
+    // Spring calls this to create a mergeRequest object use it to create a Date
     public void setMerged_at(String merged_at) {
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(merged_at);
+        setMergedDate(Date.from(dateWithOffSet.toInstant()));
         this.merged_at = merged_at;
     }
 
@@ -177,6 +183,14 @@ public class MergeRequest {
 
     public void setSha(String sha) {
         this.sha = sha;
+    }
+
+    public Date getMergedDate() {
+        return mergedDate;
+    }
+
+    public void setMergedDate(Date mergedDate) {
+        this.mergedDate = mergedDate;
     }
 
     @Override
