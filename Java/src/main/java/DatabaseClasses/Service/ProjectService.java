@@ -98,14 +98,14 @@ public class ProjectService {
     public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
                                                      LocalDate start, LocalDate end) {
         List<Commit> allUserCommits = this.getAllUserCommits(projectId, committerName);
-
         HashMap<Date, DateScore> dateMap = new HashMap<Date, DateScore>();
 
         for (Commit currentCommit: allUserCommits) {
-            LocalDate currentDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
-            if (currentDate.compareTo(start) >= 0 && currentDate.compareTo(end) <= 0) {
+            LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+
+            if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
                 if(!dateMap.containsKey(currentCommit.getDate())) {
-                    DateScore dateScore = new DateScore(currentDate, currentCommit.getCommitScore(),
+                    DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
                             committerName);
                     dateMap.put(currentCommit.getDate(), dateScore);
                 } else {
@@ -145,21 +145,4 @@ public class ProjectService {
         }
         return returnVar;
     }
-    
-//}
-//
-//    public List<Commit> getDevCommits(List<Commit> commits) {
-//        List<Commit> filteredCommits = commits.stream()
-//                .filter(p -> p.getAuthor_name().equals(this.name)).collect(Collectors.toList());
-//        return filteredCommits;
-//    }
-//
-//    public List<MergeRequest> getDevMergeRequests(List<MergeRequest> mergeRequests) {
-//        List<MergeRequest> filteredList = mergeRequests.stream()
-//                .filter(mrs -> mrs.getContributors().stream()
-//                        .anyMatch(devs ->
-//                                devs.getId() == this.id))
-//                .collect(Collectors.toList());
-//        return filteredList;
-//    }
 }
