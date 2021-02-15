@@ -116,6 +116,7 @@ public class ProjectService {
             }
         }
         List<CommitDateScore> commitDateScores = new ArrayList<CommitDateScore>(dateMap.values());
+        System.out.println(commitDateScores);
         return commitDateScores;
     }
 
@@ -182,6 +183,7 @@ public class ProjectService {
 
 
     public List<MergeRequest> getUserMergeRequests(int projectId, String committerName) {
+        System.out.println("MergeRequests");
         Project project = projectRepository.findProjectById(projectId);
         List<MergeRequest> mergeRequests = project.getMergedRequests();
         List<MergeRequest> userMergeRequests = new ArrayList<>();

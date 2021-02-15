@@ -80,7 +80,7 @@ public class ProjectController {
         return projectService.getProjectMRs(projectId);
     }
 
-    @GetMapping("projects/allCommits/{projectId}/{committerName}")
+    @GetMapping("projects/{projectId}/allCommits/{committerName}")
     public List<Commit> getAllUserCommits(@PathVariable("projectId") int projectId,
                                           @PathVariable("committerName") String committerName) {
         return projectService.getAllUserCommits(projectId, committerName);
@@ -98,13 +98,13 @@ public class ProjectController {
         return projectService.getNumUserMergeRequests(projectId, committerName);
     }
 
-    @GetMapping("projects/commitScoresPerDay/{projectId}/user/{committerName}/start/{start}/end/{end}")
+    @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
     public List<CommitDateScore> getUserCommitScoresPerDay(@PathVariable("projectId") int projectId,
                                                            @PathVariable("committerName") String committerName,
                                                            @PathVariable("start") String start,
                                                            @PathVariable("end")String end) throws ParseException {
 
-
+        System.out.println("user com score");
         Date startDate= new SimpleDateFormat("dd-MM-yyyy").parse(start);
         Date endDate= new SimpleDateFormat("dd-MM-yyyy").parse(end);
 
@@ -123,10 +123,10 @@ public class ProjectController {
         return projectService.getTotalUserCommitScore(projectId, committerName, start, end);
     }
 
-    @GetMapping("projects/{pojectId}/user/{committerName}/mergeRequests")
-    public List<MergeRequest> getUserMergeRequests(@PathVariable("projectId") int pojectId,
-                                     @PathVariable("committerName") String committerName) {
-        return projectService.getUserMergeRequests(pojectId, committerName);
-    }
+//    @GetMapping("projects/{projectId}/user/{committerName}/mergeRequests")
+//    public List<MergeRequest> getUserMergeRequests(@PathVariable("projectId") int projectId,
+//                                     @PathVariable("committerName") String committerName) {
+//        return projectService.getUserMergeRequests(projectId, committerName);
+//    }
 }
 
