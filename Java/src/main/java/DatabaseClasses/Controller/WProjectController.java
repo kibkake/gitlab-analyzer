@@ -1,10 +1,6 @@
 package main.java.DatabaseClasses.Controller;
 
-
-import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
-import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
-import main.java.ConnectToGitlab.Wrapper.WrapperProject;
-import main.java.ConnectToGitlab.Wrapper.WrapperUser;
+import main.java.ConnectToGitlab.Wrapper.*;
 import main.java.DatabaseClasses.Repository.WrapperCommitRepository;
 import main.java.DatabaseClasses.Repository.WrapperMergedMergeRequestRepository;
 import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
@@ -20,7 +16,7 @@ import java.util.*;
 
 
 @RestController("WrapperProjectController")
-public class WrapperProjectController {
+public class WProjectController {
 
     private String token = "cFzzy7QFRvHzfHGpgrr1";
 
@@ -69,7 +65,7 @@ public class WrapperProjectController {
     @CrossOrigin
     @GetMapping("getuserstats/{pId}/{usrname}")
     public WrapperUser getProject(@PathVariable String pId, @PathVariable String usrname)
-        throws IOException, ParseException {
+            throws IOException, ParseException {
         int projectId = Integer.parseInt(pId);
         String userName = usrname;
 
@@ -115,7 +111,6 @@ public class WrapperProjectController {
         WrapperUser user = new WrapperUser(userName, project);
         return user;
     }
-
 
 }
 
