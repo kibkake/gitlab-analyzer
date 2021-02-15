@@ -1,9 +1,12 @@
 import BarChart from "../components/Chart";
 import SummaryScoreTable from "../components/SummaryScoreTable";
+import Navbar_Developers from "../components/Navbar_Developers";
+import React from "react";
 
 function Summary(){
     return(
         <div classname='Summary'>
+            <Navbar_Developers/>
             <h1 style={{textAlign:'center'}}>Summary</h1>
             <br>
             </br>

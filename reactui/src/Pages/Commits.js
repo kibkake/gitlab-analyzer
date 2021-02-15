@@ -2,6 +2,7 @@ import "../App.css"
 import React,{ Component } from "react";
 import ChartCommit from "../components/ChartCommit";
 import FullDiffTable from "../components/FullDiffTable";
+import Navbar_Developers from "../components/Navbar_Developers";
 
 
 function Commits(){
@@ -9,6 +10,7 @@ function Commits(){
     return(
 
         <div classname='Commits'>
+            <Navbar_Developers/>
             <h1 style={{textAlign:'center'}}>Code Contribution</h1>
             <br></br>
             <h4 style={{textAlign:'center'}}>
