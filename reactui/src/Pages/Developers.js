@@ -3,11 +3,12 @@ import {Link} from 'react-router-dom';
 import {AiOutlineHome} from 'react-icons/ai';
 import '../components/Navbar.css';
 import {MenuItems} from "../components/MenuItem_Developers";
+import Developers2Button from "../components/Developers2Button";
 
 class Developers extends Component{
     render(){
         return(
-
+<ul>
             <nav className="navbarItems">
 
                 <ul className='navMenu'>
@@ -21,11 +22,15 @@ class Developers extends Component{
                         )
                     })}
 
-                </ul>
-                <div>
-                </div>
-            </nav>
 
+                </ul>
+
+            </nav>
+    <ul className='Footer'>
+        <Developers2Button/>
+
+    </ul>
+</ul>
         )
     }
 }
