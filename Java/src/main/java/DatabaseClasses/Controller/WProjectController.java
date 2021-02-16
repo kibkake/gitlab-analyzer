@@ -1,10 +1,7 @@
 package main.java.DatabaseClasses.Controller;
 
 
-import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
-import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
-import main.java.ConnectToGitlab.Wrapper.WrapperProject;
-import main.java.ConnectToGitlab.Wrapper.WrapperUser;
+import main.java.ConnectToGitlab.Wrapper.*;
 import main.java.DatabaseClasses.Repository.WrapperCommitRepository;
 import main.java.DatabaseClasses.Repository.WrapperMergedMergeRequestRepository;
 import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
