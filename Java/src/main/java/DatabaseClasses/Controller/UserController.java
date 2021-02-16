@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Sets up REST endpoints for getting and adding user info.
  */
+@CrossOrigin
 @RestController
 @RequestMapping(path = "api/v1/user")
 public class UserController {
