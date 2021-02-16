@@ -49,7 +49,7 @@ public class UserController {
 
     @GetMapping("getUserLoggedInStatus/{username}")
     public boolean getUserLoggedInStatus(@PathVariable("username") String username) {
-        return userService.retrieveUserIsLoggedIn(username);
+        return DatabaseFunctions.getUserLoggedInStatus(username);
     }
 
 

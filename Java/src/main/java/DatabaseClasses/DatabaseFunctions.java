@@ -155,6 +155,16 @@ public class DatabaseFunctions {
         userCollection.updateOne(filter, updateOperation, options);
     }
 
+    public static boolean getUserLoggedInStatus(String username) {
+        MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
+
+        Document user = usersCollection.find(eq("username", username))
+                .projection(Projections.fields(Projections.include("isLoggedIn"), Projections.excludeId()))
+                .first();
+
+        return user.getBoolean("isLoggedIn");
+    }
+
     /**
      * Searches for a document storing the token for the user, and if it exists,
      * it is removed from the "users" collection.
