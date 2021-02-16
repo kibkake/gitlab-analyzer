@@ -1,5 +1,6 @@
-import React,{ Component } from "react";
-import ProfileService from "../Service/ProfileService";
+import React, {Component, useState} from "react";
+import LoginService from "../Service/LoginService";
+import {Redirect} from "react-router-dom";
 
 class Form extends React.Component {
     constructor(props) {
@@ -7,7 +8,8 @@ class Form extends React.Component {
         this.state = {
             username:'',
             password:'',
-            response: []
+            response: [],
+            redirect: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -19,8 +21,17 @@ class Form extends React.Component {
     };
 
     handleSubmit = (event) => {
-        this.state.response = ProfileService.checkUserCredentials(this.state.username, this.state.password);
-        alert('Login: ' + this.state.response);
+        this.state.response = LoginService.checkUserCredentials(this.state.username, this.state.password);
+        this.state.response.then((response) => {
+            console.log(response.data);
+            alert('Login: ' + response.data)
+            if(response.data === true){
+                setUser();
+            }
+        }, (error) => {
+            console.log(error);
+        });
+
         event.preventDefault();
     };
 
