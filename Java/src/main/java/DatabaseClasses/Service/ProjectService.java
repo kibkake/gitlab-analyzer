@@ -216,23 +216,23 @@ public class ProjectService {
     }
 
 
-    public List<Note> getUserNotes(int projectId, String userName, LocalDate start, LocalDate end) {
-        Project project = projectRepository.findProjectById(projectId);
-        List<Issue> issues = project.getIssues();
-        List<Note> userNotes = new ArrayList<>();
-        for (Issue issue : issues) {
-            LocalDate modifiedDate = LocalDate.parse(issue.getModified_at());
-            LocalDate createdAt = LocalDate.parse(issue.getCreated_at());
-            if (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0 &&
-                    createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
-                List<Note> notes = issue.getNotes();
-                for (Note note: notes)  {
-                    if (note.getUsername().equals(userName)) {
-                        userIssues.add(issue);
-                    }
-                }
-            }
-        }
-        return userIssues;
-    }
+//    public List<Note> getUserNotes(int projectId, String userName, LocalDate start, LocalDate end) {
+//        Project project = projectRepository.findProjectById(projectId);
+//        List<Issue> issues = project.getIssues();
+//        List<Note> userNotes = new ArrayList<>();
+//        for (Issue issue : issues) {
+//            LocalDate modifiedDate = LocalDate.parse(issue.getModified_at());
+//            LocalDate createdAt = LocalDate.parse(issue.getCreated_at());
+//            if (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0 &&
+//                    createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
+//                List<Note> notes = issue.getNotes();
+//                for (Note note: notes)  {
+//                    if (note.getUsername().equals(userName)) {
+//                        userIssues.add(issue);
+//                    }
+//                }
+//            }
+//        }
+//        return userIssues;
+//    }
 }
