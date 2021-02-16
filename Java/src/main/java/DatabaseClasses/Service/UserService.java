@@ -32,4 +32,9 @@ public class UserService {
     public User retrieveUserInfo(String username) {
         return userRepository.retrieveUserInfo(username);
     }
+
+    public String retrieveUserPassword(String username) {
+        User user = userRepository.retrieveUserInfo(username);
+        return user.getPassword();
+    }
 }
