@@ -38,7 +38,6 @@ class ProjectList extends Component {
 
                                         }}>{projects.id}</button>
 
-                                <td>{projects.id}</td>
                                 <td>{projects.name}</td>
                                 <td>{projects.description}</td>
                                 <td>{projects.created_at}</td>

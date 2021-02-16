@@ -17,8 +17,8 @@ class Developers2Button extends Component{
 
     componentDidMount() {
         var str = window.location.pathname;
-        var strArr = str.split("/");
-        let url2 = 'http://localhost:8080/getprojectmembers/6'
+        var repNum = str.split("/")[2];
+        let url2 = 'http://localhost:8080/getprojectmembers/' + repNum
         fetch(url2, {
             method: 'GET',
             headers: {

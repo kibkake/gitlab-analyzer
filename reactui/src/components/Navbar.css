@@ -32,6 +32,12 @@
     font-size: 1.5rem;
 }
 
+.Button{
+    color: black;
+    font-size: 30px;
+
+}
+
 .navMenu-sub{
     display: grid;
     grid-template-columns: repeat(5,auto);
