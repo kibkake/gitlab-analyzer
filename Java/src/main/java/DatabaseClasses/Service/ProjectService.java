@@ -1,17 +1,13 @@
 package main.java.DatabaseClasses.Service;
 
 import com.sun.org.apache.bcel.internal.generic.ISUB;
-import main.java.Model.Commit;
+import main.java.Model.*;
 import main.java.ConnectToGitlab.CommitConnection;
-import main.java.Model.Developer;
 import main.java.ConnectToGitlab.DeveloperConnection;
-import main.java.Model.Issue;
 import main.java.ConnectToGitlab.IssueConnection;
-import main.java.Model.MergeRequest;
 import main.java.ConnectToGitlab.MergeRequestConnection;
 import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
-import main.java.Model.Project;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
@@ -21,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -180,7 +177,6 @@ public class ProjectService {
     }
 
 
-
     public List<MergeRequest> getUserMergeRequests(int projectId, String committerName, LocalDate start, LocalDate end) {
         System.out.println("MergeRequests");
         Project project = projectRepository.findProjectById(projectId);
@@ -196,24 +192,47 @@ public class ProjectService {
                 }
             }
         }
-            return mergeRequests;
+            return userMergeRequests;
     }
 
-//    public List<Issue> getUserIssues(int projectId, String userName, LocalDate start, LocalDate end) {
-//        Project project = projectRepository.findProjectById(projectId);
-//        List<Issue> issues = project.getIssues();
-//
-//        for (Issue issue : issues) {
-//            LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(issue.getModified_at());
-//            if (mergedDate.compareTo(start) >= 0 && mergedDate.compareTo(end) <= 0) {
-//                for (Developer dev : issue.getContributors()) {
-//                    if (dev.getName().equals(committerName)) {
-//                        userMergeRequests.add(issue);
-//                    }
-//                }
-//            }
-//        }
-//        return mergeRequests;
-//
-//    }
+    public List<Issue> getUserIssues(int projectId, String userName, LocalDate start, LocalDate end) {
+        Project project = projectRepository.findProjectById(projectId);
+        List<Issue> issues = project.getIssues();
+        List<Issue> userIssues = new ArrayList<>();
+        for (Issue issue : issues) {
+            LocalDate modifiedDate = LocalDate.parse(issue.getModified_at());
+            LocalDate createdAt = LocalDate.parse(issue.getCreated_at());
+            if (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0 &&
+                    createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
+                List<Note> notes = issue.getNotes();
+                for (Note note: notes)  {
+                    if (note.getUsername().equals(userName)) {
+                        userIssues.add(issue);
+                    }
+                }
+            }
+        }
+        return userIssues;
+    }
+
+
+    public List<Note> getUserNotes(int projectId, String userName, LocalDate start, LocalDate end) {
+        Project project = projectRepository.findProjectById(projectId);
+        List<Issue> issues = project.getIssues();
+        List<Note> userNotes = new ArrayList<>();
+        for (Issue issue : issues) {
+            LocalDate modifiedDate = LocalDate.parse(issue.getModified_at());
+            LocalDate createdAt = LocalDate.parse(issue.getCreated_at());
+            if (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0 &&
+                    createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
+                List<Note> notes = issue.getNotes();
+                for (Note note: notes)  {
+                    if (note.getUsername().equals(userName)) {
+                        userIssues.add(issue);
+                    }
+                }
+            }
+        }
+        return userIssues;
+    }
 }

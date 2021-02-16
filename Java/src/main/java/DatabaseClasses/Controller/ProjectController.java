@@ -35,10 +35,6 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-
-    // Just a couple of examples to show how querying works, should be changed
-
-    // Example of getting projects only with field of name
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
@@ -81,13 +77,13 @@ public class ProjectController {
 
     }
 
-//    @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
-//    public List<Issue> getUserIssues(@PathVariable("projectId") int projectId, @PathVariable String end,
-//                                     @PathVariable String start, @PathVariable String userName) {
-//        LocalDate StartLocalTime = LocalDate.parse(start);
-//        LocalDate endLocalTime = LocalDate.parse(end);
-//        return projectService.getUserIssues(projectId, userName, StartLocalTime, endLocalTime);
-//    }
+    @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
+    public List<Issue> getUserIssues(@PathVariable("projectId") int projectId, @PathVariable String end,
+                                     @PathVariable String start, @PathVariable String userName) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getUserIssues(projectId, userName, StartLocalTime, endLocalTime);
+    }
 
     @GetMapping("projects/{projectId}/description")
     public String getProjectDescription(@PathVariable("projectId") int projectId) {
