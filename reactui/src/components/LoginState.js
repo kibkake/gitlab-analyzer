@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import LoginService from "../Service/LoginService";
+import {RiLoginBoxLine} from "react-icons/all";
 
 /*
     LoginState was created with the guidance of DigitalOcean, Inc.
@@ -13,10 +14,11 @@ function LoginState({ setUser }) {
 
     function attemptLogin(username,password) {
         LoginService.checkUserCredentials(username,password).then((response) => {
-            alert('Login: ' + response.data)
             if(response.data === true){
                 setUser(username);
                 window.location.reload();
+            }else{
+                alert('Login Failed: Credentials Invalid!');
             }
         }, (error) => {
             console.log(error);
@@ -40,7 +42,7 @@ function LoginState({ setUser }) {
                 <h5>Password:</h5>
                 <input name="password" type="password"  onChange={event => setPassword(event.target.value)} />
             </label>
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="submit" > <RiLoginBoxLine/> Login</button>
         </form>
     );
 }export default LoginState;
