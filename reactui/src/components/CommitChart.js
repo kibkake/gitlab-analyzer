@@ -112,6 +112,7 @@ class CommitChart extends Component {
                                     {
                                         ticks:{
                                             beginAtZero: true,
+                                            stepSize: 1,
                                         },
                                     }
                                 ]
