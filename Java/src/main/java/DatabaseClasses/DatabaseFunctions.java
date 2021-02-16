@@ -108,6 +108,7 @@ public class DatabaseFunctions {
         Document user = usersCollection.find(eq("username", username))
                 .projection(Projections.fields(Projections.include("password"), Projections.excludeId()))
                 .first();
+        if(user == null) return false;
         String pass = user.getString("password");
         // matches encrypted password for security reasons
         return Authenticator.encrypt(password).equals(pass);
