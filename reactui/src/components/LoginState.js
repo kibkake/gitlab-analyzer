@@ -13,10 +13,10 @@ function LoginState({ setUser }) {
 
     function attemptLogin(username,password) {
         LoginService.checkUserCredentials(username,password).then((response) => {
-            console.log(response.data);
             alert('Login: ' + response.data)
             if(response.data === true){
                 setUser(username);
+                window.location.reload();
             }
         }, (error) => {
             console.log(error);

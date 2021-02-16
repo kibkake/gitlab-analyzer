@@ -13,12 +13,14 @@ import CodeDiff from "./Pages/CodeDiff";
 import Profile from "./Pages/Profile";
 import LoginState from "./components/LoginState";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import useToken from "./useToken";
 import Navbar_dropdown from "./components/storage/Navbar_dropdown";
 
 function App() {
-  const [user, setUser] = useState();
+  const { user, setUser } = useToken();
+  const signed = sessionStorage.getItem('user');
   // requires a authentication token to proceed
-  if(!user) {
+  if(!signed) {
     return (
         <>
           <Router>
