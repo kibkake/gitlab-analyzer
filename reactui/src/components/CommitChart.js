@@ -55,13 +55,17 @@ class CommitChart extends Component {
 
        this.setState({data: arr})
     }
-
+//1/17/2021
     render() {
 
         var getDaysArray = function(start, end) {
             for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
 
-                arr.push(new Date(dt).toDateString());
+                var day3 = new Date(dt).toLocaleDateString().split("/")[1];
+                var month3 = new Date(dt).toLocaleDateString().split("/")[0];
+                var year3 = new Date(dt).toLocaleDateString().split("/")[2];
+                var completeDate = month3 + "-" + day3 + "-" + year3
+                arr.push(completeDate);
             }
             return arr;
         };
@@ -70,7 +74,7 @@ class CommitChart extends Component {
         d = d.split(' ')[0];
 
         var comarr = this.state.data;
-        const daylist = getDaysArray(new Date("2021-01-11"),new Date("2021-02-22"));
+        const daylist = getDaysArray(new Date("1-11-2021"),new Date("2-22-2021"));
 
         //console.log(daylist);
         return (
@@ -94,13 +98,13 @@ class CommitChart extends Component {
                                 e.preventDefault();
                                 const chart = elements[0]._chart;
                                 const element = chart.getElementAtEvent(e)[0];
-                                const dataset = chart.data.datasets[element._datasetIndex];
                                 const xLabel = chart.data.labels[element._index];
                                 var month = xLabel.toString().split(" ")[1]
                                 var day = xLabel.toString().split(" ")[2]
                                 var year = xLabel.toString().split(" ")[3]
-
-                                window.location.href=  window.location.pathname + "/commits/" + day + "/" + month + "/" + year;
+                                //var khar = xLabel.toString().
+                                console.log(xLabel)
+                                window.location.href=  window.location.pathname + "/" + xLabel;
 
                             } , maintainAspectRatio:true,
                             scales: {

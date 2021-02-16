@@ -24,13 +24,14 @@ function App() {
           <Route path="/" component={Home} exact/>
           <Route path='/Home' exact component={Home}/>
           <Route path='/Repo' exact component={Repo}/>
+
           <Route path='/Repo/*/Developers/*/commits' exact component={Chart}/>
           <Route path='/Repo/*/Developers' exact component={Developers2}/>
-          <Route path='/Repo/*/Developers/*' exact component={Developers}/>
-          <Route path='/Developers/summary' exact component={Summary}/>
-            <Route path='/Developers/commits' exact component={Commits}/>
-            <Route path='/Developers/codediff' exact component={CodeDiff}/>
-          <Route path='/Developers/comments' exact component={Comments}/>
+          <Route path='/Repo/*/Developers/*/summary' exact component={Summary}/>
+
+          <Route path='/Repo/*/Developers/*/codeContribution' exact component={Commits}/>
+            <Route path='/Repo/*/Developers/*/codediff' exact component={CodeDiff}/>
+          <Route path='/Repo/*/Developers/*/comments' exact component={Comments}/>
 
           <Route path='/Settings' exact component={Settings}/>
         </Switch>
