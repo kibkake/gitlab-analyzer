@@ -29,6 +29,7 @@ function App() {
         </>
     );
   }
+  // will not show the rest of the pages until user is logged in
   return (
     <>
       <Router> 
