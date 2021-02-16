@@ -18,6 +18,7 @@ export default class ProfileComponent extends Component {
         const user = sessionStorage.getItem('user');
         ProfileService.getUserInfo(user).then((response) => {
             this.setState(response.data);
+            sessionStorage.setItem('token',response.data.token);
         }, (error) => {
             console.log(error);
         });
@@ -33,7 +34,7 @@ export default class ProfileComponent extends Component {
             return (
                 <>
                     {window.location.reload()}
-                    <Redirect to='/#'/>
+                    <Redirect to='/Home'/>
                 </>
             )
         }
