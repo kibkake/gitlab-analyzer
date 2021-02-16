@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ProjectService from "../Service/ProjectService";
 
 class ProfileComponent extends Component {
     render() {
