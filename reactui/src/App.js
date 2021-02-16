@@ -1,6 +1,7 @@
 import './App.css';
 import Navbar from './components/Navbar';
 import {BrowserRouter as Router,Switch,Route, Redirect} from 'react-router-dom';
+import React, { useState } from 'react';
 import Repo from './Pages/Repo';
 import Home from './Pages/Home';
 import Developers from './Pages/Developers';
@@ -10,10 +11,24 @@ import Commits from "./Pages/Commits";
 import Comments from "./Pages/Comments";
 import CodeDiff from "./Pages/CodeDiff";
 import Profile from "./Pages/Profile";
+import LoginState from "./components/LoginState";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar_dropdown from "./components/storage/Navbar_dropdown";
 
 function App() {
+  const [user, setUser] = useState();
+  // requires a authentication token to proceed
+  if(!user) {
+    return (
+        <>
+          <Router>
+            <Navbar/>
+          </Router>
+          <h1> Please Login to Continue</h1>
+          <LoginState setUser={setUser} />
+        </>
+    );
+  }
   return (
     <>
       <Router> 
