@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import ProjectService from "../Service/ProjectService";
+
 
 const data = [
+    {
+
+    }
     {
         name: 'Page A',
         uv: 4000,
@@ -46,13 +51,29 @@ const data = [
     },
 ];
 
-export default class Example extends PureComponent {
+export default class StackedBarChart extends PureComponent {
+
+    constructor(props) {
+        super();
+        this.state = {
+            codeScore: []
+        }
+    }
+
+    var str = window.location.pathname;
+    var repNum = str.split("/")[2];
+    let url2 = 'http://localhost:8080/getprojectmembers/' + repNum
+
+    componentDidMount() {
+        ProjectService.getCodeScore(6, ara)
+    }
+
     static jsfiddleUrl = 'https://jsfiddle.net/alidingling/90v76x08/';
 
     render() {
         return (
             <BarChart
-                width={500}
+                width={1500}
                 height={300}
                 data={data}
                 margin={{
@@ -63,12 +84,12 @@ export default class Example extends PureComponent {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-                <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+                <Bar dataKey="code" stackId="a" fill="#8884d8" />
+                <Bar dataKey="comment" stackId="a" fill="#82ca9d" />
             </BarChart>
         );
     }
