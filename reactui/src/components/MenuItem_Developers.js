@@ -9,11 +9,12 @@ export const MenuItems = [
         url: '/Repo/' + rep + '/Developers/' + user + '/summary',
         cName: 'nav-links'
     },
-    {
-        title: 'Code Contribution',
-        url: '/Repo/' + rep + '/Developers/' + user + '/codeContribution',
-        cName: 'nav-links'
-    },
+    //{
+        //title: 'Code',
+        //url: '/Repo/' + rep + '/Developers/' + user + '/codeContribution',
+        //cName: 'nav-links'
+    //}
+    ,
     {
         title: 'Single Commit Diff',
         url: '/Repo/' + rep + '/Developers/' + user + '/codediff',
@@ -27,6 +28,11 @@ export const MenuItems = [
     {
         title: 'Commits',
         url: '/Repo/' + rep + '/Developers/' + user + '/commits',
+        cName: 'nav-links'
+    },
+    {
+        title: 'Developers',
+        url: '/Repo/' + rep + '/Developers',
         cName: 'nav-links'
     }
 ];
