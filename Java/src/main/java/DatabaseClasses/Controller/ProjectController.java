@@ -13,6 +13,7 @@ import main.java.Functions.LocalDateFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -27,6 +28,12 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/")
 public class ProjectController {
+
+    // Wants
+    // User name and 2 dates -> list of number comitts per date just list filled with zero
+    // Commits per day get those commits
+    // Notes -> enum
+    //
 
     private final ProjectService projectService;
 
@@ -127,7 +134,7 @@ public class ProjectController {
     }
 
     @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
-    public List<CommitDateScore> getUserCommitScoresPerDay(@PathVariable("projectId") int projectId,
+    public List<CommitDateScore> getUserCommitScoresWithDates(@PathVariable("projectId") int projectId,
                                                            @PathVariable("committerName") String committerName,
                                                            @PathVariable("start") String start,
                                                            @PathVariable("end")String end) {

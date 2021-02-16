@@ -32,6 +32,7 @@ public class MergeRequest {
     private String sha;
     double score;
     private Date mergedDate;
+    List<Note> notes;
 
     public MergeRequest() {
         contributors = new ArrayList<>();
@@ -232,5 +233,11 @@ public class MergeRequest {
         this.score = score;
     }
 
+    public List<Note> getNotes() {
+        return notes;
+    }
 
+    public void setNotes(List<Note> notes9) {
+        this.notes = notes;
+    }
 }

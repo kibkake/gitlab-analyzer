@@ -1,5 +1,6 @@
 package main.java.Model;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import main.java.Model.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,10 +16,7 @@ public class Note {
     private int day;
     private String username;
     private String created_at;
-    private enum type {
-        MERGEREQUEST,
-        ISSUE
-    }
+    private Boolean isIssueNote;
 
     public int getId() {
         return id;
@@ -90,5 +88,14 @@ public class Note {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+
+    public Boolean getIssueNote() {
+        return isIssueNote;
+    }
+
+    public void setIssueNote(Boolean issueNote) {
+        isIssueNote = issueNote;
     }
 }

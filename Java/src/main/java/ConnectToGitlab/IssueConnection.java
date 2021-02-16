@@ -34,6 +34,9 @@ public class IssueConnection {
         ResponseEntity<List<Note>> usersResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Note>>() {});
         List<Note> notes = usersResponse.getBody();
+        for(Note note: notes) {
+            note.setIssueNote(true);
+        }
         return notes;
     }
 }

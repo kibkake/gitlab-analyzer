@@ -1,9 +1,6 @@
 package main.java.ConnectToGitlab;//package main.java.ConnectToGitlab.MergeRequests;
 
-import main.java.Model.Commit;
-import main.java.Model.Developer;
-import main.java.Model.MergeRequest;
-import main.java.Model.User;
+import main.java.Model.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +25,8 @@ public class MergeRequestConnection {
         for (MergeRequest mergeRequest : mergeRequests) {
             mergeRequest.setContributors(getMergeRequestContributors(projectId, mergeRequest.getIid()));
             mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getIid()));
-            mergeRequest.setScore(calcMergeRequestScore(mergeRequest.getCommits())); // done after commit list gnerated
+            mergeRequest.setScore(calcMergeRequestScore(mergeRequest.getCommits())); // done after commit list generated
+            mergeRequest.setNotes(getMergeRequestNotes(projectId, mergeRequest.getIid()));
         }
         return mergeRequests;
     }
@@ -69,6 +67,23 @@ public class MergeRequestConnection {
             score += commit.getCommitScore();
         }
         return score;
+    }
+
+    public static List<Note> getMergeRequestNotes(int projectId, int mergeRequestIid) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        String url = (user.getServerUrl() +"projects/"  + projectId  + "/merge_requests/" + mergeRequestIid + "/notes"
+                + "?access_token=" + user.getToken());
+
+        ResponseEntity<List<Note>> commitsResponse = restTemplate.exchange(url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Note>>() {});
+        List<Note> mergeNotes = commitsResponse.getBody();
+
+        for (Note note : mergeNotes) {
+            note.setIssueNote(false);
+        }
+        return mergeNotes;
+
     }
 
 
