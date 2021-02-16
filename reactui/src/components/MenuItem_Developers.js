@@ -1,3 +1,8 @@
+import {user} from './Navbar_Developers'
+import {rep} from './Navbar_Developers'
+
+
+import Navbar_Developers from "./Navbar_Developers";
 export const MenuItems = [
     {
         title: 'Summary',
@@ -17,6 +22,11 @@ export const MenuItems = [
     {
         title: 'Comment Contribution',
         url: '/Developers/comments',
+        cName: 'nav-links'
+    },
+    {
+        title: 'Commits',
+        url: '/Repo/' + rep + '/Developers/' + user + '/commits',
         cName: 'nav-links'
     }
 ];

@@ -46,10 +46,11 @@ class Developers2Button extends Component{
             //<div> Name: {DataArray} </div>
 
             <ul>
+                <header></header>
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">
-                            <Button className="repoButton" to={item.url}
+                            <Button className="Footer" to={item.url}
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();

@@ -13,6 +13,9 @@ class CommitChart extends Component {
 
     async componentDidMount() {
 
+            var str = window.location.pathname;
+            var developerName = str.split("/")[4];
+
             var dateStr1 = new Date("1-11-2021").toLocaleDateString();
             //month/day/2021
             //2/12/2021
@@ -32,7 +35,7 @@ class CommitChart extends Component {
 
 
 //http://localhost:8080/getuserstats/6/arahilin/1-11-2021/2-22-2021
-            let url3 = 'http://localhost:8080/getuserstats/6/arahilin/' + completeFromDate + "/" + completeToDate
+            let url3 = 'http://localhost:8080/getuserstats/6/' + developerName + '/' + completeFromDate + "/" + completeToDate
             const result = await fetch(url3, {
                 method: 'GET',
                 headers: {

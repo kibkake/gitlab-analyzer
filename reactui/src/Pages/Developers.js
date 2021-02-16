@@ -13,10 +13,6 @@ class Developers extends Component{
                 <Navbar_Developers/>
                 <br>
                 </br>
-                <ul className='Footer'>
-                    <Developers2Button/>
-
-</ul>
             </div>
         )
     }

@@ -1,11 +1,16 @@
 import CommitChart from "../components/CommitChart";
+import Navbar_Developers from "../components/Navbar_Developers";
+import React from "react";
 
 function Chart(){
 
     return(
-        <div classname='Rest'>
+
+
+        <header classname='Rest'>
+            <Navbar_Developers/>
             <CommitChart/>
-        </div>
+        </header>
 
     )
 }
