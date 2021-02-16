@@ -1,5 +1,4 @@
-package main.java.DatabaseClasses.Controller;
-
+package main.java.DatabaseClasses.Service;
 
 import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
 import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
@@ -8,7 +7,6 @@ import main.java.ConnectToGitlab.Wrapper.WrapperUser;
 import main.java.DatabaseClasses.Repository.WrapperCommitRepository;
 import main.java.DatabaseClasses.Repository.WrapperMergedMergeRequestRepository;
 import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +15,7 @@ import java.text.ParseException;
 import java.util.*;
 
 
-@RestController("WrapperProjectController")
-public class WProjectController {
+public class WrapperProjectFunctions {
 
     private String token = "cFzzy7QFRvHzfHGpgrr1";
 
@@ -31,9 +28,7 @@ public class WProjectController {
     @Autowired
     private WrapperCommitRepository wrapperCommitRepository;
 
-    //curl -i -X POST -d "{\"token\":\"cFzzy7QFRvHzfHGpgrr1\"}" -H "Content-Type:application/json" http://localhost:8080/settoken
-    @PostMapping("settoken")
-    private void setToken(@RequestBody Map<String, String> requestBody) {
+    private void setToken(Map<String, String> requestBody) {
         if(requestBody.get("token") != null) {
             token = requestBody.get("token");
             System.out.println(token);
@@ -43,7 +38,6 @@ public class WProjectController {
         }
     }
 
-    @GetMapping("addproject")
     private void saveProject() throws IOException, ParseException {
         WrapperProject project = new WrapperProject ("cFzzy7QFRvHzfHGpgrr1", 6);
         List<WrapperMergedMergeRequest> mergedMergeRequests = project.getMergedMergeRequestsFromServer("cFzzy7QFRvHzfHGpgrr1", 6);
@@ -56,18 +50,14 @@ public class WProjectController {
         wrapperCommitRepository.saveAll(commits);
     }
 
-    @CrossOrigin
-    @GetMapping("getprojectmembers/{pId}")
-    public List<String> getProjectMember(@PathVariable String pId) throws IOException, ParseException {
+    public List<String> getProjectMember(String pId) throws IOException, ParseException {
         int projectId = Integer.parseInt(pId);
         WrapperProject project = new WrapperProject(token, projectId);
         return  project.getListOfMembers(token);
     }
 
-    @CrossOrigin
-    @GetMapping("getuserstats/{pId}/{usrname}")
-    public WrapperUser getProject(@PathVariable String pId, @PathVariable String usrname)
-            throws IOException, ParseException {
+    public WrapperUser getProject(String pId, String usrname)
+        throws IOException, ParseException {
         int projectId = Integer.parseInt(pId);
         String userName = usrname;
 
@@ -114,29 +104,5 @@ public class WProjectController {
         return user;
     }
 
-    @CrossOrigin
-    @GetMapping("getuserstats/{pId}/{usrname}/{yr}/{mnth}/{da}")
-    private List<String> getUserCommitPerDay(@PathVariable String pId, @PathVariable String usrname, @PathVariable String yr,
-                                             @PathVariable String mnth, @PathVariable String da) throws IOException, ParseException {
-
-        WrapperUser user = getProject(pId, usrname);
-        int year = Integer.parseInt(yr);
-        int month = MonthConverter.convertLetterToInt(mnth);
-        int day = Integer.parseInt(da);
-        int commitNumber = 0;
-        for(int i = 0; i < user.getMergedMergeRequests().size(); i++) {
-            for(int j = 0; j < user.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
-                if(user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName().equals(usrname)
-                        &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitYear() == year
-                        &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitMonth() == month
-                        &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitDay() == day){
-                    commitNumber += 1;
-                }
-            }
-        }
-        List<String> commits = new ArrayList<>();
-        commits.add(Integer.toString(commitNumber));
-        return commits;
-    }
 }
 
