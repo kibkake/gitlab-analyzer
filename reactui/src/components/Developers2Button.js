@@ -17,8 +17,8 @@ class Developers2Button extends Component{
 
     componentDidMount() {
         var str = window.location.pathname;
-        var strArr = str.split("/");
-        let url2 = 'http://localhost:8080/getprojectmembers/6'
+        var repNum = str.split("/")[2];
+        let url2 = 'http://localhost:8080/getprojectmembers/' + repNum
         fetch(url2, {
             method: 'GET',
             headers: {
@@ -46,14 +46,15 @@ class Developers2Button extends Component{
             //<div> Name: {DataArray} </div>
 
             <ul>
+                <header></header>
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">
-                            <Button className="repoButton" to={item.url}
+                            <Button className="Footer" to={item.url}
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        window.location.href=  window.location.pathname + "/" + item;
+                                        window.location.href=  window.location.pathname + "/" + item + "/summary";
 
                                     }}
                             >
