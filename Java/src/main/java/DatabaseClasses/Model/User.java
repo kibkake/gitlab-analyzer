@@ -18,6 +18,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private boolean isLoggedIn;
 
 
     private static User singleton = new User( );
@@ -93,6 +94,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
     }
 
     @Override

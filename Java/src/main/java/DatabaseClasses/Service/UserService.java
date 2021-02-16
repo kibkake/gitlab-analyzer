@@ -37,4 +37,8 @@ public class UserService {
         User user = userRepository.retrieveUserInfo(username);
         return user.getPassword();
     }
+
+    public boolean retrieveUserIsLoggedIn(String username) {
+        return userRepository.retrieveUserInfo(username).isLoggedIn();
+    }
 }

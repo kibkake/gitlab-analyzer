@@ -47,6 +47,19 @@ public class UserController {
         return userService.retrieveUserPassword(username);
     }
 
+    @GetMapping("getUserLoggedInStatus/{username}")
+    public boolean getUserLoggedInStatus(@PathVariable("username") String username) {
+        return userService.retrieveUserIsLoggedIn(username);
+    }
+
+
+    @RequestMapping("setUserLoggedInStatus/{username}/{isLoggedIn}")
+    public void setUserLoggedInStatus(@PathVariable("username") String username,
+                                      @PathVariable("isLoggedIn") boolean isLoggedIn) {
+        DatabaseFunctions.setUserLoggedInStatus(username, isLoggedIn);
+    }
+
+
 //    @GetMapping(value = "users/{userName}")
 //    public Optional<User> getUsers(@PathVariable("userName") String userName) {
 //        return userRepository.findById(userName);
