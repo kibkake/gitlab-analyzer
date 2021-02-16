@@ -5,9 +5,6 @@ import ProjectService from "../Service/ProjectService";
 
 const data = [
     {
-
-    }
-    {
         name: 'Page A',
         uv: 4000,
         pv: 2400,
@@ -52,23 +49,24 @@ const data = [
 ];
 
 export default class StackedBarChart extends PureComponent {
-
+    // static jsfiddleUrl = 'https://jsfiddle.net/alidingling/90v76x08/';
     constructor(props) {
         super();
         this.state = {
-            codeScore: []
+            score: []
         }
     }
 
-    var str = window.location.pathname;
-    var repNum = str.split("/")[2];
-    let url2 = 'http://localhost:8080/getprojectmembers/' + repNum
+    path1 = window.location.pathname;
+    id = path1.split("/")[4];
+    developer = path1.split("/")[5];
 
     componentDidMount() {
-        ProjectService.getCodeScore(6, ara)
+        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
+            this.setState({score: response.data})
+        });
     }
 
-    static jsfiddleUrl = 'https://jsfiddle.net/alidingling/90v76x08/';
 
     render() {
         return (
