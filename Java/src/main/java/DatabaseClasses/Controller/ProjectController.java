@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses.controller;
 
+import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.Model.Commit;
 import main.java.Model.Developer;
 import main.java.Model.Issue;
@@ -62,6 +63,10 @@ public class ProjectController {
 
     @GetMapping("projects/{projectId}/developers")
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
+        Project project = projectService.getProject(projectId);
+        if (!project.isInfoSet()) {
+            projectService.setProjectInfo(projectId);
+        }
         return projectService.getProjectDevelopers(projectId);
     }
 
@@ -69,6 +74,20 @@ public class ProjectController {
     public List<Issue> getProjectIssues(@PathVariable("projectId") int projectId) {
         return projectService.getProjectIssues(projectId);
     }
+
+    @GetMapping("setProjectInfo/{projectId}")
+    public void setProjectInfo(@PathVariable int projectId) {
+        projectService.setProjectInfo(projectId);
+
+    }
+
+//    @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
+//    public List<Issue> getUserIssues(@PathVariable("projectId") int projectId, @PathVariable String end,
+//                                     @PathVariable String start, @PathVariable String userName) {
+//        LocalDate StartLocalTime = LocalDate.parse(start);
+//        LocalDate endLocalTime = LocalDate.parse(end);
+//        return projectService.getUserIssues(projectId, userName, StartLocalTime, endLocalTime);
+//    }
 
     @GetMapping("projects/{projectId}/description")
     public String getProjectDescription(@PathVariable("projectId") int projectId) {
@@ -80,42 +99,45 @@ public class ProjectController {
         return projectService.getProjectMRs(projectId);
     }
 
-    @GetMapping("projects/{projectId}/allCommits/{committerName}/{startDate}/{endDate}")
+    @GetMapping("projects/{projectId}/mergeRequests/{userName}/{start}/{end}")
+    public List<MergeRequest> getUsersMergeRequests(@PathVariable("projectId") int projectId,
+                                                    @PathVariable("projectId") String userName,
+                                                    @PathVariable("start") String start,
+                                                    @PathVariable("end") String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getUserMergeRequests(projectId, userName, StartLocalTime, endLocalTime);
+    }
+
+    @GetMapping("projects/{projectId}/mergeRequestScoresPerDay/{committerName}/{start}/{end}")
+    public List<MergeRequestDateScore> getUsersMergeRequestsScorePerDay(@PathVariable("projectId") int projectId,
+                                                                        @PathVariable("committerName") String committerName,
+                                                                        @PathVariable("start") String start,
+                                                                        @PathVariable("end")String end) {
+
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getUsersMergeRequestScorePerDay(projectId, committerName, StartLocalTime, endLocalTime);
+    }
+
+    @GetMapping("projects/{projectId}/Commits/{committerName}/{start}/{end}")
     public List<Commit> getAllUserCommits(@PathVariable("projectId") int projectId,
                                           @PathVariable("committerName") String committerName,
                                           @PathVariable("start") String start,
                                           @PathVariable("end")String end) throws ParseException {
-        Date startDate= new SimpleDateFormat("dd-MM-yyyy").parse(start);
-        Date endDate= new SimpleDateFormat("dd-MM-yyyy").parse(end);
-        LocalDate StartLocalTime = LocalDateFunctions.convertDateToLocalDate(startDate);
-        LocalDate endLocalTime = LocalDateFunctions.convertDateToLocalDate(endDate);
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getAllUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
-    }
-
-    @GetMapping("projects/numCommits/{projectId}/{committerName}")
-    public int getNumUserCommits(@PathVariable("projectId") int projectId,
-                                 @PathVariable("committerName") String committerName) {
-        return projectService.getNumUserCommits(projectId, committerName);
-    }
-
-    @GetMapping("projects/numMergeRequests/{projectId}/{committerName}")
-    public int getNumUserMergeRequests(@PathVariable("projectId") int projectId,
-                                       @PathVariable("committerName") String committerName) {
-        return projectService.getNumUserMergeRequests(projectId, committerName);
     }
 
     @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
     public List<CommitDateScore> getUserCommitScoresPerDay(@PathVariable("projectId") int projectId,
                                                            @PathVariable("committerName") String committerName,
                                                            @PathVariable("start") String start,
-                                                           @PathVariable("end")String end) throws ParseException {
+                                                           @PathVariable("end")String end) {
 
-        System.out.println("user com score");
-        Date startDate= new SimpleDateFormat("dd-MM-yyyy").parse(start);
-        Date endDate= new SimpleDateFormat("dd-MM-yyyy").parse(end);
-        LocalDate StartLocalTime = LocalDateFunctions.convertDateToLocalDate(startDate);
-        LocalDate endLocalTime = LocalDateFunctions.convertDateToLocalDate(endDate);
-
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getUserCommitScoresPerDay(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
@@ -124,7 +146,7 @@ public class ProjectController {
                                 @PathVariable("committerName") String committerName) {
         LocalDate start = LocalDate.of(2021, 1, 1);
         LocalDate end = LocalDate.now();
-        // Continue here - like in the above function, make these two dates path variables.
+        //TODO: Continue here - like in the above function, make these two dates path variables.
         return projectService.getTotalUserCommitScore(projectId, committerName, start, end);
     }
 

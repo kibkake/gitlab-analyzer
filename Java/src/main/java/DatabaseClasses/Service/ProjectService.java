@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses.Service;
 
+import com.sun.org.apache.bcel.internal.generic.ISUB;
 import main.java.Model.Commit;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.Model.Developer;
@@ -64,8 +65,8 @@ public class ProjectService {
         return project.getMergedRequests();
     }
 
-    public int getNumUserCommits(int projectId, String committerName) {
-        List<Commit> allCommits = this.getAllUserCommits(projectId, committerName);
+    public int getNumUserCommits(int projectId, String committerName, LocalDate start, LocalDate end ) {
+        List<Commit> allCommits = this.getAllUserCommits(projectId, committerName, start, end);
         return allCommits.size();
     }
 
@@ -151,30 +152,27 @@ public class ProjectService {
 
     public List<MergeRequestDateScore> getUsersMergeRequestScorePerDay(int projectId, String committerName,
                                                                        LocalDate start, LocalDate end) {
-        List<MergeRequest> userMergeRequest = this.getUserMergeRequests(projectId, committerName);
+        List<MergeRequest> userMergeRequest = this.getUserMergeRequests(projectId, committerName, start, end);
         HashMap<String, MergeRequestDateScore> dateMap = new HashMap<String, MergeRequestDateScore>();
 
         for (MergeRequest mergeRequest : userMergeRequest) {
             LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
 
             List<String> commitIds = new ArrayList<>();
-            for(Commit commit: mergeRequest.getCommits()) {
+            for (Commit commit : mergeRequest.getCommits()) {
                 commitIds.add(commit.getId());
             }
+            if (!dateMap.containsKey(mergedDate.toString())) {
+                MergeRequestDateScore MergeRequestDateScore = new MergeRequestDateScore(mergedDate, mergeRequest.getScore(),
+                        committerName, 1, mergeRequest.getId(), commitIds);
+                dateMap.put(mergedDate.toString(), MergeRequestDateScore);
+            } else {
+                MergeRequestDateScore MergeRequestDateScore = dateMap.get(mergedDate.toString());
 
-            if (mergedDate.compareTo(start) >= 0 && mergedDate.compareTo(end) <= 0) {
-                if (!dateMap.containsKey(mergedDate.toString())) {
-                    MergeRequestDateScore MergeRequestDateScore = new MergeRequestDateScore(mergedDate, mergeRequest.getScore(),
-                            committerName, 1,mergeRequest.getId(), commitIds);
-                    dateMap.put(mergedDate.toString(), MergeRequestDateScore);
-                } else {
-                    MergeRequestDateScore MergeRequestDateScore = dateMap.get(mergedDate.toString());
-
-                    MergeRequestDateScore.addToScore(mergeRequest.getScore());
-                    MergeRequestDateScore.incrementNumMergeRequests();
-                    MergeRequestDateScore.addCommitIds(commitIds);
-                    MergeRequestDateScore.addMergeRequestIds(mergeRequest.getId());
-                }
+                MergeRequestDateScore.addToScore(mergeRequest.getScore());
+                MergeRequestDateScore.incrementNumMergeRequests();
+                MergeRequestDateScore.addCommitIds(commitIds);
+                MergeRequestDateScore.addMergeRequestIds(mergeRequest.getId());
             }
         }
         List<MergeRequestDateScore> MergeRequestDateScores = new ArrayList<MergeRequestDateScore>(dateMap.values());
@@ -183,18 +181,39 @@ public class ProjectService {
 
 
 
-    public List<MergeRequest> getUserMergeRequests(int projectId, String committerName) {
+    public List<MergeRequest> getUserMergeRequests(int projectId, String committerName, LocalDate start, LocalDate end) {
         System.out.println("MergeRequests");
         Project project = projectRepository.findProjectById(projectId);
         List<MergeRequest> mergeRequests = project.getMergedRequests();
         List<MergeRequest> userMergeRequests = new ArrayList<>();
         for (MergeRequest mergeRequest : mergeRequests) {
-            for (Developer dev: mergeRequest.getContributors()) {
-                if(dev.getName().equals(committerName)) {
-                    userMergeRequests.add(mergeRequest);
+            LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
+            if (mergedDate.compareTo(start) >= 0 && mergedDate.compareTo(end) <= 0) {
+                for (Developer dev : mergeRequest.getContributors()) {
+                    if (dev.getName().equals(committerName)) {
+                        userMergeRequests.add(mergeRequest);
+                    }
                 }
             }
         }
             return mergeRequests;
     }
+
+//    public List<Issue> getUserIssues(int projectId, String userName, LocalDate start, LocalDate end) {
+//        Project project = projectRepository.findProjectById(projectId);
+//        List<Issue> issues = project.getIssues();
+//
+//        for (Issue issue : issues) {
+//            LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(issue.getModified_at());
+//            if (mergedDate.compareTo(start) >= 0 && mergedDate.compareTo(end) <= 0) {
+//                for (Developer dev : issue.getContributors()) {
+//                    if (dev.getName().equals(committerName)) {
+//                        userMergeRequests.add(issue);
+//                    }
+//                }
+//            }
+//        }
+//        return mergeRequests;
+//
+//    }
 }

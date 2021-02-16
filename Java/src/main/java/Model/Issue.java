@@ -4,6 +4,7 @@ import main.java.Model.Developer;
 import main.java.Model.Note;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Document(value = "Issue")
@@ -14,6 +15,7 @@ public class Issue {
     private Developer author;
     private String title;
     private String created_at;
+    private String modified_at;
     private String username;
     private List<Note> notes;
 
@@ -83,5 +85,13 @@ public class Issue {
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+    }
+
+    public String getModified_at() {
+        return modified_at;
+    }
+
+    public void setModified_at(String modified_at) {
+        this.modified_at = modified_at;
     }
 }
