@@ -41,7 +41,9 @@ gradlew
 gradlew.bat
 gradle/*
 
-# localization: gradle ignore build config
+############################################################
+## localization: gradle ignore build config
+############################################################
 Java/.gradle/
 Java/build/
 Java/gradle/
@@ -49,6 +51,13 @@ Java/log.txt
 Java/out/*
 Java/package-lock.json
 
-# React.js
+##############################
+## React.js
+##############################
 reactui/.gradle/*
 reactui/build/*
+
+##############################
+## package files
+##############################
+*.json
