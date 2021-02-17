@@ -1,3 +1,6 @@
+import SingleCommitDiffs from "../components/SingleCommitDiffs";
+import Navbar_Developers from "../components/Navbar_Developers";
+import React from "react";
 
 function SingleCommit(){
 
@@ -5,7 +8,8 @@ function SingleCommit(){
 
 
         <header classname='Rest'>
-            hello
+            <Navbar_Developers/>
+            <SingleCommitDiffs/>
         </header>
 
     )
