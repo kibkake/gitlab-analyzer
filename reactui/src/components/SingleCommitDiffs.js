@@ -10,6 +10,7 @@ import {Table} from "react-bootstrap";
 
 
 
+
 class SingleCommitDiff extends Component{
     constructor(props){
         super(props);
@@ -44,6 +45,35 @@ class SingleCommitDiff extends Component{
 
     }
 
+
+
+    splitToLines = (par) => {
+        var lineBegin = 0;
+        var wholeString;
+        var strArray = [];
+        for (var n = 0; n < par.length-1; n++) {
+            if(par[n] == '\n') {
+                const line1 = par.substring(lineBegin, n);
+                strArray.push(<span className="highlight"> {line1}</span>);
+                strArray.push("\n");
+                strArray.push(<span className="highlight"> the second line</span>);
+                strArray.push("\n");
+
+                strArray.push(<span className="highlight"> the third line</span>);
+                strArray.push("\n");
+
+
+                return strArray;
+                    //return strArray[0];
+
+            }
+        }
+
+
+
+        //return wholeString;
+    }
+
     render() {
 
         var data = JSON.stringify(this.state.data);
@@ -64,11 +94,10 @@ class SingleCommitDiff extends Component{
                         {DataArray.map((item) =>
                         item.wrapperCommitDiffs.map((item2, index) =>
                             <tr key ={index}>
+                                <td>{item2.newPath}</td>
+                                <td>{this.splitToLines(item2.diff)}</td>
 
-                            <td>{item2.newPath}</td>
-                                <td>{item2.diff}</td>
-
-                            </tr>
+                                </tr>
 
 
                         ))}
