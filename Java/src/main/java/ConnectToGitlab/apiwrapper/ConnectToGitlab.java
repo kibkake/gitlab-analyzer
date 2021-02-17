@@ -1,4 +1,4 @@
-package main.java.ConnectToGitlab;
+package main.java.ConnectToGitlab.apiwrapper;
 
 import org.gitlab.api.AuthMethod;
 import org.gitlab.api.GitlabAPI;
