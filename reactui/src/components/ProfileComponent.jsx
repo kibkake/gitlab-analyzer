@@ -42,7 +42,7 @@ export default class ProfileComponent extends Component {
 
         return (
             <>
-                <div class="profile">
+                <div className="profile">
                     <h2>Profile</h2>
                     <br/>
                     <h5>Username:</h5>
