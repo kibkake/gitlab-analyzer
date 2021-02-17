@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import Highlight from 'react-highlight'
 import Popup from "./Popup";
+import {useState} from "react";
 
 // class CodeDiffTable extends Component{
 function CodeDiffTable() {
@@ -27,6 +28,8 @@ function CodeDiffTable() {
         {mergeRequestId:8, date: 304, score: 0, commitMsg: "check out commit", codeDiff: "@@ -1,5 +1,9 @@\n public class NewClass {\n \n+    //f1-2a\n+    //f1-2a\n     //f1-1a\n     //f1-1a\n+    //f1-2a\n+    //f1-2a\n }\n"},
     ];
 
+    const [buttonPopup, setButtonPopup] = useState(false);
+
 
     return (
         <div className="CodeDiffTable">
@@ -46,8 +49,8 @@ function CodeDiffTable() {
                             <td>{item.date}</td>
                             <td>{item.score}</td>
                             <td>{item.commitMsg}</td>
-                            <button> Difference in code</button>
-                            <Popup trigger={true}>
+                            <button onClick={()=> setButtonPopup(true)}> Difference in code</button>
+                            <Popup trigger={buttonPopup} setTrigger = {setButtonPopup} >
                                 <Highlight className="highlighted-text">{item.codeDiff}</Highlight>
                             </Popup>
 
