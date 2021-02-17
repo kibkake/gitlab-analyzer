@@ -95,16 +95,18 @@ class CommitChart extends Component {
 
                     options={
                         {onClick: (e, elements) => {
-                                e.preventDefault();
-                                const chart = elements[0]._chart;
-                                const element = chart.getElementAtEvent(e)[0];
-                                const xLabel = chart.data.labels[element._index];
-                                var month = xLabel.toString().split(" ")[1]
-                                var day = xLabel.toString().split(" ")[2]
-                                var year = xLabel.toString().split(" ")[3]
-                                //var khar = xLabel.toString().
-                                console.log(xLabel)
-                                window.location.href=  window.location.pathname + "/" + xLabel;
+                                if (elements[0] != null) {
+                                    e.preventDefault();
+                                    const chart = elements[0]._chart;
+                                    const element = chart.getElementAtEvent(e)[0];
+                                    const xLabel = chart.data.labels[element._index];
+                                    var month = xLabel.toString().split(" ")[1]
+                                    var day = xLabel.toString().split(" ")[2]
+                                    var year = xLabel.toString().split(" ")[3]
+                                    //var khar = xLabel.toString().
+                                    console.log(xLabel)
+                                    window.location.href = window.location.pathname + "/" + xLabel;
+                                }
 
                             } , maintainAspectRatio:true,
                             scales: {
