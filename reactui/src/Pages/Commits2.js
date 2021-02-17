@@ -1,12 +1,15 @@
-import CommitChart from "../components/CommitChart";
+import CommitsPerDay from "../components/CommitsPerDay";
+import Navbar_Developers from "../components/Navbar_Developers";
+import React from "react";
 
 function Commits2(){
 
     return(
 
 
-        <header>
-         Hello
+        <header classname='Rest'>
+            <Navbar_Developers/>
+            <CommitsPerDay/>
         </header>
 
     )

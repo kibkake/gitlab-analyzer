@@ -9,6 +9,7 @@ import Settings from './Pages/Settings';
 import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
 import Commits2 from "./Pages/Commits2";
+import SingleCommit from "./Pages/SingleCommit";
 import Comments from "./Pages/Comments";
 import CodeDiff from "./Pages/CodeDiff";
 import Chart from "./Pages/Chart";
@@ -33,6 +34,7 @@ function App() {
           <Route path='/Repo/*/Developers/*/codeContribution' exact component={Commits}/>
             <Route path='/Repo/*/Developers/*/codediff' exact component={CodeDiff}/>
           <Route path='/Repo/*/Developers/*/comments' exact component={Comments}/>
+          <Route path='/Repo/*/Developers/*/commits/*/*' exact component={SingleCommit}/>
           <Route path='/Repo/*/Developers/*/commits/*' exact component={Commits2}/>
 
           <Route path='/Settings' exact component={Settings}/>
