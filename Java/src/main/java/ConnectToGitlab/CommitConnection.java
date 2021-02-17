@@ -1,6 +1,6 @@
 package main.java.ConnectToGitlab;
 import main.java.Model.Commit;
-import main.java.Model.CommitDiff;
+import main.java.Model.Diff;
 import main.java.Model.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -34,17 +34,17 @@ public class CommitConnection {
         return commits;
     }
 
-    public static List<CommitDiff> getSingleCommitDiffs(Integer projectId, String commitHash) {
+    public static List<Diff> getSingleCommitDiffs(Integer projectId, String commitHash) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String url = user.getServerUrl() + "/projects/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" +
                 "?access_token=" + user.getToken();
-        ResponseEntity<List<CommitDiff>> commitsResponse = restTemplate.exchange(url,
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<CommitDiff>>() {});
-        List<CommitDiff> commitDiffs = commitsResponse.getBody();
-        for (CommitDiff singleDiff : commitDiffs) {
+        ResponseEntity<List<Diff>> commitsResponse = restTemplate.exchange(url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Diff>>() {});
+        List<Diff> diffs = commitsResponse.getBody();
+        for (Diff singleDiff : diffs) {
             singleDiff.calculateAndSetDiffScore();
         }
-        return commitDiffs;
+        return diffs;
     }
 }

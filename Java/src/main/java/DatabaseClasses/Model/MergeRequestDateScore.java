@@ -13,15 +13,13 @@ public class MergeRequestDateScore {
     private List<Integer> mergeRequestIds;
     private List<String> commitIds;
 
-    public MergeRequestDateScore(LocalDate date, double score, String userName, Integer numMergeRequests, Integer mergeRequestId,
-                                 List<String> commitIds) {
+    public MergeRequestDateScore(LocalDate date, double score, String userName, Integer numMergeRequests, Integer mergeRequestId) {
         this.date = date;
         this.score = score;
         this.userName = userName;
         this.numMergeRequests = numMergeRequests;
         this.mergeRequestIds = new ArrayList<Integer>();
         this.mergeRequestIds.add(mergeRequestId);
-        this.commitIds = commitIds;
     }
 
     public LocalDate getDate() {

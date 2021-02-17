@@ -24,8 +24,9 @@ public class MergeRequestConnection {
         List<MergeRequest> mergeRequests = commitsResponse.getBody();
         for (MergeRequest mergeRequest : mergeRequests) {
             mergeRequest.setContributors(getMergeRequestContributors(projectId, mergeRequest.getIid()));
-            mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getIid()));
-            mergeRequest.setScore(calcMergeRequestScore(mergeRequest.getCommits())); // done after commit list generated
+//            mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getIid()));
+            mergeRequest.setDiffs(getMergeDiffs(projectId, mergeRequest.getIid()));
+            mergeRequest.setMrScore(calcMergeRequestScore(mergeRequest.getDiffs())); // must be done after diffs
             mergeRequest.setNotes(getMergeRequestNotes(projectId, mergeRequest.getIid()));
         }
         return mergeRequests;
@@ -61,10 +62,10 @@ public class MergeRequestConnection {
         return mergeCommits;
     }
 
-    public static double calcMergeRequestScore(List<Commit> commits) {
+    public static double calcMergeRequestScore(List<Diff> diffs) {
         double score = 0;
-        for (Commit commit: commits) {
-            score += commit.getCommitScore();
+        for (Diff diff: diffs) {
+            score += diff.getDiffScore();
         }
         return score;
     }
@@ -75,16 +76,33 @@ public class MergeRequestConnection {
         String url = (user.getServerUrl() +"projects/"  + projectId  + "/merge_requests/" + mergeRequestIid + "/notes"
                 + "?access_token=" + user.getToken());
 
-        ResponseEntity<List<Note>> commitsResponse = restTemplate.exchange(url,
+        ResponseEntity<List<Note>> mergeNoteResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Note>>() {});
-        List<Note> mergeNotes = commitsResponse.getBody();
+        List<Note> mergeNotes = mergeNoteResponse.getBody();
 
         for (Note note : mergeNotes) {
             note.setIssueNote(false);
         }
         return mergeNotes;
-
     }
+
+    public static List<Diff> getMergeDiffs(int projectId, int mergeRequestIid) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        String url = (user.getServerUrl() +"projects/"  + projectId  + "/merge_requests/" + mergeRequestIid + "/changes"
+                + "?access_token=" + user.getToken());
+
+        ResponseEntity<MergeRequestDiff> mergeDiffResponse = restTemplate.exchange(url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<MergeRequestDiff>() {});
+        MergeRequestDiff mergeRequestDiff = mergeDiffResponse.getBody();
+
+        List<Diff> mrDiffs = mergeRequestDiff.getChanges();
+        for(Diff diff: mrDiffs) {
+            diff.calculateAndSetDiffScore();
+        }
+        return mrDiffs;
+    }
+
 
 
 

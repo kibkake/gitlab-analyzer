@@ -1,7 +1,5 @@
 package main.java.Model;//package main.java.ConnectToGitlab.MergeRequests;
 
-import main.java.Model.Commit;
-import main.java.Model.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.OffsetDateTime;
@@ -30,9 +28,10 @@ public class MergeRequest {
     private List<Developer> contributors;
     List<Commit> commits;
     private String sha;
-    double score;
+    double mrScore;
     private Date mergedDate;
     List<Note> notes;
+    List<Diff> diffs;
 
     public MergeRequest() {
         contributors = new ArrayList<>();
@@ -225,12 +224,12 @@ public class MergeRequest {
         this.commits = commits;
     }
 
-    public double getScore() {
-        return score;
+    public double getMrScore() {
+        return mrScore;
     }
 
-    public void setScore(double score) {
-        this.score = score;
+    public void setMrScore(double mrScore) {
+        this.mrScore = mrScore;
     }
 
     public List<Note> getNotes() {
@@ -239,5 +238,13 @@ public class MergeRequest {
 
     public void setNotes(List<Note> notes9) {
         this.notes = notes;
+    }
+
+    public List<Diff> getDiffs() {
+        return diffs;
+    }
+
+    public void setDiffs(List<Diff> diffs) {
+        this.diffs = diffs;
     }
 }

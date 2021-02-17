@@ -1,25 +1,25 @@
 package main.java.Model;
 
-public class CommitDiff {
+public class Diff {
     private String new_path;
     private String old_path;
     private boolean new_file;
     private boolean renamed_file;
     private boolean deleted_file;
     private String diff;
-    private double score;
+    private double diffScore;
 
-    public CommitDiff(String new_path, String old_path, boolean new_file, boolean renamed_file, boolean deleted_file, String diff, double score) {
+    public Diff(String new_path, String old_path, boolean new_file, boolean renamed_file, boolean deleted_file, String diff, double diffScore) {
         this.new_path = new_path;
         this.old_path = old_path;
         this.new_file = new_file;
         this.renamed_file = renamed_file;
         this.deleted_file = deleted_file;
         this.diff = diff;
-        this.score = score;
+        this.diffScore = diffScore;
     }
 
-    public CommitDiff() {
+    public Diff() {
     }
 
     /**
@@ -52,7 +52,7 @@ public class CommitDiff {
                 }
             }
         }
-        this.score = score;
+        this.diffScore = score;
     }
 
     public String getNew_path() {
@@ -103,11 +103,11 @@ public class CommitDiff {
         this.diff = diff;
     }
 
-    public double getScore() {
-        return score;
+    public double getDiffScore() {
+        return diffScore;
     }
 
-    public void setScore(double score) {
-        this.score = score;
+    public void setDiffScore(double diffScore) {
+        this.diffScore = diffScore;
     }
 }
