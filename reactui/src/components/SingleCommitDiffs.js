@@ -49,29 +49,56 @@ class SingleCommitDiff extends Component{
 
     splitToLines = (par) => {
         var lineBegin = 0;
-        var wholeString;
         var strArray = [];
-        for (var n = 0; n < par.length-1; n++) {
-            if(par[n] == '\n') {
-                const line1 = par.substring(lineBegin, n);
+        var index = 0;
+        while (par[index] !== '\n') {
+            index++;
+        }
+        if(par[lineBegin] === '+'){
+            const line1 = par.substring(lineBegin, index);
+            strArray.push(<span className="highlight"> {line1}</span>);
+            strArray.push("\n");
+        }else if(par[lineBegin] === '-'){
+            const line1 = par.substring(lineBegin, index);
+            strArray.push(<span className="highlight2"> {line1}</span>);
+            strArray.push("\n");
+        }else {
+            const line1 = par.substring(lineBegin, index);
+            strArray.push(<span> {line1}</span>);
+            strArray.push("\n");
+        }
+        index++;
+        lineBegin = index;
+
+        for (index; index < par.length-1; index++) {
+            lineBegin = index;
+            if(par[index] === '+'){
+                while(par[index] !== '\n' && index < par.length-1){
+                    index++;
+                }
+                const line1 = par.substring(lineBegin, index);
                 strArray.push(<span className="highlight"> {line1}</span>);
                 strArray.push("\n");
-                strArray.push(<span className="highlight"> the second line</span>);
+
+            }else if(par[index] === '-'){
+                while(par[index] !== '\n' && index < par.length-1){
+                    index++;
+                }
+                const line2 = par.substring(lineBegin, index);
+                strArray.push(<span className="highlight2"> {line2}</span>);
                 strArray.push("\n");
 
-                strArray.push(<span className="highlight"> the third line</span>);
+            }else{
+                while(par[index] !== '\n' && index < par.length-1){
+                    index++;
+                }
+                const line3 = par.substring(lineBegin, index);
+                strArray.push(<span> {line3}</span>);
                 strArray.push("\n");
-
-
-                return strArray;
-                    //return strArray[0];
 
             }
         }
-
-
-
-        //return wholeString;
+        return strArray;
     }
 
     render() {

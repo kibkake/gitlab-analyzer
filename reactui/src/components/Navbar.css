@@ -12,9 +12,12 @@ div {
     white-space: pre-wrap;
 }
 .highlight {
-    background: green;
+    background: lightgreen;
 }
 
+.highlight2 {
+    background: lightcoral;
+}
 
 .Footer {
     color: white;
