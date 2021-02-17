@@ -1,6 +1,6 @@
 import "../App.css"
 import React, { Component } from "react";
-import {Table} from 'react-bootstrap'
+import {Button, Table} from 'react-bootstrap'
 import Highlight from 'react-highlight'
 import axios from "axios";
 
@@ -52,6 +52,7 @@ class CodeDiffTable extends Component{
                         <td>Score</td>
                         <td>Commit Message</td>
                         <td>Code Diff</td>
+                        <td></td>
                     </tr>
                     {
                         this.state.commits.map((item, index)=>
@@ -60,7 +61,8 @@ class CodeDiffTable extends Component{
                                 <td>{item.date}</td>
                                 <td>{item.commitScore}</td>
                                 <td>{item.message}</td>
-                                <td><Highlight className="highlighted-text">{item.codeDiff}</Highlight></td>
+                                <td><Highlight className="highlighted-text">{item.diffs.length} files changed </Highlight></td>
+                                <td><Button className="CommitInfoModal">See More</Button></td>
                             </tr>
                         )}
                     </tbody>
