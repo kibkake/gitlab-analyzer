@@ -4,7 +4,6 @@ import main.java.DatabaseClasses.DatabaseFunctions;
 import main.java.Model.User;
 import org.junit.Test;
 
-//import static org.graalvm.compiler.options.OptionType.User;
 import static org.junit.Assert.*;
 
 import org.slf4j.LoggerFactory;

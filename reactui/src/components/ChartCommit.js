@@ -8,7 +8,7 @@ const BarChart = () => {
 
             datasets: [
                     {
-                    label: 'code score',
+                    label: 'commit',
                     data: [56, 34, 5, 50, 12],
                     backgroundColor:'orange',
                     borderColor:[
@@ -21,7 +21,7 @@ const BarChart = () => {
                     borderWidth:5,
                     },
                 {
-                    label: 'word # of comments',
+                    label: 'merge request',
                     data:[5,6,25,12,4],
                     backgroundColor: 'cyan',
                     borderColor: 'black',

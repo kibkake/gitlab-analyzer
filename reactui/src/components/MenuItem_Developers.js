@@ -5,17 +5,17 @@ export const MenuItems = [
         cName: 'nav-links'
     },
     {
-        title: 'Commits',
+        title: 'Code Contribution',
         url: '/Developers/commits',
         cName: 'nav-links'
     },
     {
-        title: 'Code Difference',
+        title: 'Single Commit Diff',
         url: '/Developers/codediff',
         cName: 'nav-links'
     },
     {
-        title: 'Comments',
+        title: 'Comment Contribution',
         url: '/Developers/comments',
         cName: 'nav-links'
     }
