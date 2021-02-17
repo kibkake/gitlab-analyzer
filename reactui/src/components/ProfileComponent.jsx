@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {RiLogoutBoxRLine} from "react-icons/all";
 import ProfileService from "../Service/ProfileService";
 import {Redirect} from "react-router-dom";
+import './ProfileComponent.css';
 
 export default class ProfileComponent extends Component {
 
@@ -41,13 +42,16 @@ export default class ProfileComponent extends Component {
 
         return (
             <>
-                <h1>Profile</h1>
-                <br/>
-                <h4>Username:</h4>
-                <p>{this.state.username}</p>
-                <h4>Token:</h4>
-                <p>{this.state.token}</p>
-                <button onClick={this.handleLogout}>Logout <RiLogoutBoxRLine/></button>
+                <div class="profile">
+                    <h2>Profile</h2>
+                    <br/>
+                    <h5>Username:</h5>
+                    <p>{this.state.username}</p>
+                    <h5>Token:</h5>
+                    <p>{this.state.token}</p>
+                    <br/>
+                    <button className="logout" onClick={this.handleLogout}>Logout <RiLogoutBoxRLine/></button>
+                </div>
             </>
         )
     }

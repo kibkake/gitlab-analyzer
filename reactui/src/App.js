@@ -23,11 +23,14 @@ function App() {
   if(!signed) {
     return (
         <>
-          <Router>
-            <Navbar/>
-          </Router>
-          <h1> Please Login to Continue</h1>
-          <LoginState setUser={setUser} />
+            <Router>
+                <Navbar/>
+            </Router>
+            <div class="loginwrapper">
+                <h2> Please Login to Continue</h2>
+                <br/>
+                <LoginState setUser={setUser} />
+            </div>
         </>
     );
   }

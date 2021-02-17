@@ -1,0 +1,22 @@
+.profile{
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.logout{
+    padding: 5px;
+}
+
+.logout:hover{
+    border-style: groove;
+    border-width: 3px;
+    color:darkcyan;
+    font-weight: bold;
+}
+
+.logout:active{
+    border-style: ridge;
+    border-width: 3px;
+    background-color: darkcyan;
+    color:white;
+}

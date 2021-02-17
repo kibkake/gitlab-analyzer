@@ -39,11 +39,14 @@ function LoginState({ setUser }) {
                 <h5>Username:</h5>
                 <input name="username" type="text"  onChange={event => setUsername(event.target.value)} />
             </label>
+            <br/>
             <label>
                 <h5>Password:</h5>
                 <input name="password" type="password"  onChange={event => setPassword(event.target.value)} />
             </label>
-            <button type="submit" > <RiLoginBoxLine/> Login</button>
+            <br/>
+            <br/>
+            <button className="login" type="submit" > <RiLoginBoxLine/> Login</button>
         </form>
     );
 }export default LoginState;
