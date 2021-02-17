@@ -2,6 +2,7 @@ import "../App.css"
 import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import Highlight from 'react-highlight'
+import Popup from "./Popup";
 
 // class CodeDiffTable extends Component{
 function CodeDiffTable() {
@@ -45,7 +46,11 @@ function CodeDiffTable() {
                             <td>{item.date}</td>
                             <td>{item.score}</td>
                             <td>{item.commitMsg}</td>
-                            <td><Highlight className="highlighted-text">{item.codeDiff}</Highlight></td>
+                            <button> Difference in code</button>
+                            <Popup trigger={true}>
+                                <Highlight className="highlighted-text">{item.codeDiff}</Highlight>
+                            </Popup>
+
                         </tr>
                     )}
                 </tbody>
