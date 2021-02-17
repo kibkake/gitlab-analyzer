@@ -68,7 +68,6 @@ class SingleCommitDiff extends Component{
             strArray.push("\n");
         }
         index++;
-        lineBegin = index;
 
         for (index; index < par.length-1; index++) {
             lineBegin = index;
@@ -107,10 +106,18 @@ class SingleCommitDiff extends Component{
         var DataArray = JSON.parse(data)
 
 
-        console.log(DataArray);
 
         return (
+    <div>
+        <div>
+            { DataArray.map(projects =>
+                <span>
+                    <td className="commitscore">Commit Score = {projects.commitScore}</td>
+                </span>
+            )}
+        </div>
             <div className="CodeDiffTable">
+
                 <Table striped bordered hover>
                     <tbody>
                         <tr>
@@ -124,7 +131,7 @@ class SingleCommitDiff extends Component{
                                 <td>{item2.newPath}</td>
                                 <td>{this.splitToLines(item2.diff)}</td>
 
-                                </tr>
+                            </tr>
 
 
                         ))}
@@ -137,6 +144,7 @@ class SingleCommitDiff extends Component{
                 </Table>
 
             </div>
+                </div>
         );
     }
 }
