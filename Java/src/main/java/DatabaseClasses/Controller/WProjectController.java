@@ -154,5 +154,32 @@ public class WProjectController {
         }
         return commits;
     }
+
+    @CrossOrigin
+    @GetMapping("getuserstats/{pId}/{username}/commit/{date}")
+    private List<String> getUserCommitOnSpecificDay(@PathVariable String pId, @PathVariable String username, @PathVariable String date)
+            throws IOException, ParseException {
+        WrapperUser user = getProject(pId, username);
+//1-15-2021
+
+        int Month = Integer.parseInt(date.split("-")[0]);
+        int Day = Integer.parseInt(date.split("-")[1]);
+        int Year = Integer.parseInt(date.split("-")[2]);
+
+        List<String> commits = new ArrayList<>();
+
+        for(int i = 0; i < user.getMergedMergeRequests().size(); i++) {
+            for(int j = 0; j < user.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
+                if(user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName().equals(username)
+                        &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitYear() == Year
+                        &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitMonth() == Month
+                        &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitDay() == Day){
+                    commits.add(user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getId());
+                }
+            }
+        }
+
+        return commits;
+    }
 }
 
