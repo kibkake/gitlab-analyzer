@@ -1,0 +1,40 @@
+.signupform{
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.cancel{
+    padding: 5px;
+}
+
+.cancel:hover{
+    border-style: groove;
+    border-width: 3px;
+    color:red;
+    font-weight: bold;
+}
+
+.cancel:active{
+    border-style: ridge;
+    border-width: 3px;
+    background-color: red;
+    color:white;
+}
+
+.signup{
+    padding: 5px;
+}
+
+.signup:hover{
+    border-style: groove;
+    border-width: 3px;
+    color:darkcyan;
+    font-weight: bold;
+}
+
+.signup:active{
+    border-style: ridge;
+    border-width: 3px;
+    background-color: darkcyan;
+    color:white;
+}
