@@ -4,6 +4,12 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import main.java.Model.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.StringTokenizer;
+
 @Document(value = "Note")
 public class Note {
 
@@ -16,7 +22,9 @@ public class Note {
     private int day;
     private String username;
     private String created_at;
+    private Date createdDate;
     private Boolean isIssueNote;
+    private int wordCount;
 
     public int getId() {
         return id;
@@ -88,8 +96,17 @@ public class Note {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(created_at);
+        setCreatedDate(Date.from(dateWithOffSet.toInstant()));
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public Boolean getIssueNote() {
         return isIssueNote;
@@ -98,4 +115,18 @@ public class Note {
     public void setIssueNote(Boolean issueNote) {
         isIssueNote = issueNote;
     }
+
+    public int getWordCount() {
+        return wordCount;
+    }
+
+    public void setWordCount(int wordCount) {
+        this.wordCount = wordCount;
+    }
+
+    public int countWords(String noteBody) {
+        int numWords = new StringTokenizer(noteBody).countTokens();
+        return numWords;
+    }
+
 }

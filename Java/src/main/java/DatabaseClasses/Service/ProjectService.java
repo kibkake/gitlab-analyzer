@@ -6,7 +6,6 @@ import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
 import main.java.ConnectToGitlab.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequestConnection;
-import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
@@ -15,9 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -225,24 +223,43 @@ public class ProjectService {
         return userIssues;
     }
 
+    public List<Note> getTopTenUserNotes(int projectID, String userName, LocalDate start, LocalDate end) {
+        List<Note> userNotes = getUserNotes(projectID, userName, start, end);
+        userNotes.sort(Comparator.comparingInt(Note::getWordCount));
+        Collections.reverse(userNotes);
+        List<Note> topTenNotes = userNotes.stream().limit(10).collect(Collectors.toList());
+        return topTenNotes;
+    }
 
-//    public List<Note> getUserNotes(int projectId, String userName, LocalDate start, LocalDate end) {
-//        Project project = projectRepository.findProjectById(projectId);
-//        List<Issue> issues = project.getIssues();
-//        List<Note> userNotes = new ArrayList<>();
-//        for (Issue issue : issues) {
-//            LocalDate modifiedDate = LocalDate.parse(issue.getModified_at());
-//            LocalDate createdAt = LocalDate.parse(issue.getCreated_at());
-//            if (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0 &&
-//                    createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
-//                List<Note> notes = issue.getNotes();
-//                for (Note note: notes)  {
-//                    if (note.getUsername().equals(userName)) {
-//                        userIssues.add(issue);
-//                    }
-//                }
-//            }
-//        }
-//        return userIssues;
-//    }
+
+    public List<Note> getUserNotes(int projectId, String userName, LocalDate start, LocalDate end) {
+        Project project = projectRepository.findProjectById(projectId);
+        List<Issue> issues = project.getIssues();
+        List<Note> userNotes = new ArrayList<>();
+        for (Issue issue : issues) {
+            List<Note> issueNotes = issue.getNotes();
+            if (issueNotes != null) {
+                for (Note note : issueNotes) {
+                    LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0) {
+                        userNotes.add(note);
+                    }
+                }
+            }
+        }
+        List<MergeRequest> mergeRequests = project.getMergedRequests();
+        for (MergeRequest mergeRequest : mergeRequests) {
+            List<Note> mrNotes = mergeRequest.getNotes();
+            if (mrNotes != null) {
+                for (Note note : mrNotes) {
+                    LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0) {
+                        userNotes.add(note);
+                    }
+                }
+            }
+        }
+        return userNotes;
+    }
+
 }

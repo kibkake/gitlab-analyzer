@@ -36,6 +36,7 @@ public class IssueConnection {
         List<Note> notes = usersResponse.getBody();
         for(Note note: notes) {
             note.setIssueNote(true);
+            note.setWordCount(note.countWords(note.getBody()));
         }
         return notes;
     }

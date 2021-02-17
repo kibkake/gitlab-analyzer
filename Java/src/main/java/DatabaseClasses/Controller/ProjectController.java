@@ -1,12 +1,7 @@
 package main.java.DatabaseClasses.Controller;
 
 import main.java.DatabaseClasses.Model.DateScore;
-import main.java.DatabaseClasses.Model.MergeRequestDateScore;
-import main.java.Model.Commit;
-import main.java.Model.Developer;
-import main.java.Model.Issue;
-import main.java.Model.MergeRequest;
-import main.java.Model.Project;
+import main.java.Model.*;
 import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +111,6 @@ public class ProjectController {
 
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        System.out.println(endLocalTime);
         return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
@@ -124,7 +118,7 @@ public class ProjectController {
     public List<Commit> getAllUserCommits(@PathVariable("projectId") int projectId,
                                           @PathVariable("committerName") String committerName,
                                           @PathVariable("start") String start,
-                                          @PathVariable("end")String end) throws ParseException {
+                                          @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getAllUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
@@ -139,6 +133,16 @@ public class ProjectController {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getUserCommitScoresPerDay(projectId, committerName, StartLocalTime, endLocalTime);
+    }
+
+    @GetMapping("projects/{projectId}/topTenUserNotes/{committerName}/{start}/{end}")
+    public List<Note> getTopTenUserNotes(@PathVariable("projectId") int projectId,
+                                         @PathVariable("committerName") String committerName,
+                                         @PathVariable("start") String start,
+                                         @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getTopTenUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/totalCommitScore/{committerName}")

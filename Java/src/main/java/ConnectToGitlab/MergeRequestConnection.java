@@ -24,7 +24,6 @@ public class MergeRequestConnection {
         List<MergeRequest> mergeRequests = commitsResponse.getBody();
         for (MergeRequest mergeRequest : mergeRequests) {
             mergeRequest.setContributors(getMergeRequestContributors(projectId, mergeRequest.getIid()));
-//            mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getIid()));
             mergeRequest.setDiffs(getMergeDiffs(projectId, mergeRequest.getIid()));
             mergeRequest.setMrScore(calcMergeRequestScore(mergeRequest.getDiffs())); // must be done after diffs
             mergeRequest.setNotes(getMergeRequestNotes(projectId, mergeRequest.getIid()));
@@ -37,7 +36,6 @@ public class MergeRequestConnection {
         RestTemplate restTemplate = new RestTemplate();
         String url = user.getServerUrl() +"/projects/" + projectId + "/merge_requests/" + merge_request_iid
                 + "/participants?access_token=" + user.getToken();
-//        ?access_token=" + user.getToken();
 
         ResponseEntity<List<Developer>> commitsResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
@@ -82,6 +80,7 @@ public class MergeRequestConnection {
 
         for (Note note : mergeNotes) {
             note.setIssueNote(false);
+            note.setWordCount(note.countWords(note.getBody()));
         }
         return mergeNotes;
     }
@@ -102,8 +101,5 @@ public class MergeRequestConnection {
         }
         return mrDiffs;
     }
-
-
-
 
 }
