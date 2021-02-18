@@ -4,10 +4,10 @@ import {Button, Table} from 'react-bootstrap'
 import Highlight from 'react-highlight'
 import axios from "axios";
 import Popup from "./Popup";
-import {useState} from "react";
+import {useState,useEffect} from "react";
 
-class CodeDiffTable extends Component{
-// function CodeDiffTable() {
+// class CodeDiffTable extends Component{
+function CodeDiffTable() {
 
     // TODO: Do not delete, will be used once the API is set
     // constructor(props) {
@@ -24,26 +24,23 @@ class CodeDiffTable extends Component{
     // }
 
     //Fake data for table creation testing
-    // const codeDiff = [
-    //     {mergeRequestId:3, date: 204, score: 2, commitMsg: "initial commit", codeDiff: "@@ -5,7 +5,10 @@ public class Main {\n         // f1-1a\n         //f1-1a\n \n+        //f1-2a\n+\n+\n+        //f1-2a\n \n-        //f1-1a\n     }\n }\n"},
-    //     {mergeRequestId:8, date: 304, score: 0, commitMsg: "check out commit", codeDiff: "@@ -1,5 +1,9 @@\n public class NewClass {\n \n+    //f1-2a\n+    //f1-2a\n     //f1-1a\n     //f1-1a\n+    //f1-2a\n+    //f1-2a\n }\n"},
-    // ];
+    const codeDiff = [
+        {mergeRequestId:3, date: 204, score: 2, commitMsg: "initial commit", codeDiff: "@@ -5,7 +5,10 @@ public class Main {\n         // f1-1a\n         //f1-1a\n \n+        //f1-2a\n+\n+\n+        //f1-2a\n \n-        //f1-1a\n     }\n }\n"},
+        {mergeRequestId:8, date: 304, score: 0, commitMsg: "check out commit", codeDiff:[{diff:"@@ -1,5 +1,9 @@\n public class NewClass {\n \n+    //f1-2a\n+    //f1-2a\n     //f1-1a\n     //f1-1a\n+    //f1-2a\n+    //f1-2a\n }\n"},{diff:"testing\n"}]},
+    ];
 
-    state={
-        commits:[]
-    }
 
-    componentDidMount(){
+    const [commits,getCommits]=useState([]);
+    const [buttonPopup, setButtonPopup] = useState(false);
+    useEffect(()=>{
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         var name = str.split("/")[4];
         axios.get("http://localhost:8080/api/v1/projects/allCommits/"+repNum+"/"+name)
         .then(response=>{
-            const commits = response.data
-            this.setState({commits})
-        })
-    }
-    render(){
+            getCommits(response.data)
+        });
+    });
         return (
             <div className="CodeDiffTable">
                 <Table striped bordered hover>
@@ -57,14 +54,19 @@ class CodeDiffTable extends Component{
                         <td></td>
                     </tr>
                     {
-                        this.state.commits.map((item, index)=>
+                        commits.map((item, index)=>
                             <tr key ={index}>
                                 <td>{item.id}</td>
                                 <td>{item.date}</td>
                                 <td>{item.commitScore}</td>
                                 <td>{item.message}</td>
-                                <td><Highlight className="highlighted-text">{item.diffs.length} files changed </Highlight></td>
-                                <td><Button className="CommitInfoModal">See More</Button></td>
+                                <td>{item.diffs.length} files changed</td>
+                                <td>                      
+                                    <button onClick={()=> setButtonPopup(true)}> Difference in code</button>
+                                    <Popup trigger={buttonPopup} setTrigger = {setButtonPopup} >
+                                        <Highlight className="highlighted-text">{item.diffs}</Highlight>
+                                    </Popup>
+                                </td>
                             </tr>
                         )}
                     </tbody>
@@ -72,38 +74,37 @@ class CodeDiffTable extends Component{
             </div>
         );
     }
-    const [buttonPopup, setButtonPopup] = useState(false);
 
 
-    return (
-        <div className="CodeDiffTable">
-            <Table striped bordered hover>
-                <tbody>
-                <tr>
-                    <td>MR ID</td>
-                    <td>Date</td>
-                    <td>Score</td>
-                    <td>Commit Message</td>
-                    <td>Code Diff</td>
-                </tr>
-                {
-                    codeDiff.map((item, index)=>
-                        <tr key ={index}>
-                            <td>{item.mergeRequestId}</td>
-                            <td>{item.date}</td>
-                            <td>{item.score}</td>
-                            <td>{item.commitMsg}</td>
-                            <button onClick={()=> setButtonPopup(true)}> Difference in code</button>
-                            <Popup trigger={buttonPopup} setTrigger = {setButtonPopup} >
-                                <Highlight className="highlighted-text">{item.codeDiff}</Highlight>
-                            </Popup>
 
-                        </tr>
-                    )}
-                </tbody>
-            </Table>
-        </div>
-    );
+    // return (
+    //     <div className="CodeDiffTable">
+    //         <Table striped bordered hover>
+    //             <tbody>
+    //             <tr>
+    //                 <td>MR ID</td>
+    //                 <td>Date</td>
+    //                 <td>Score</td>
+    //                 <td>Commit Message</td>
+    //                 <td>Code Diff</td>
+    //             </tr>
+    //             {
+    //                 codeDiff.map((item, index)=>
+    //                     <tr key ={index}>
+    //                         <td>{item.mergeRequestId}</td>
+    //                         <td>{item.date}</td>
+    //                         <td>{item.score}</td>
+    //                         <td>{item.commitMsg}</td>
+    //                         <button onClick={()=> setButtonPopup(true)}> Difference in code</button>
+    //                         <Popup trigger={buttonPopup} setTrigger = {setButtonPopup} >
+    //                             <Highlight className="highlighted-text">{item.codeDiff}</Highlight>
+    //                         </Popup>
+    //                     </tr>
+    //                 )}
+    //             </tbody>
+    //         </Table>
+    //     </div>
+    // );
 }
 
 export default CodeDiffTable;

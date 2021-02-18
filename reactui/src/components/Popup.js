@@ -6,6 +6,10 @@ function Popup(props){
         <div className="popup">
             <div className="popup-inner">
                 <button className="close-btn" onClick={()=> props.setTrigger(false)}>close</button>
+                {/* {React.Children.map(props.children,child=>(
+                    <div>{child.new_path}</div>
+
+                ))} */}
                 {props.children}
             </div>
         </div>
