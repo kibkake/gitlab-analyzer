@@ -32,6 +32,9 @@ public class UserController {
         userService.createUserAccount(user);
     }
 
+    @PostMapping(path = "changePass")
+    public void changePassword(@RequestBody User user){userService.changePassword(user);}
+
     @GetMapping(path = "{username}")
     public User getUser(@PathVariable("username") String username) {
         return userService.retrieveUserInfo(username);

@@ -58,9 +58,7 @@ public class DatabaseFunctions {
 
     /**
      * Creates a user account with an optional token and stores it securely on the database.
-     * username the unique username to be created
-     * password the password for the account
-     * token (optional) the token used to access gitlab api.
+     * @param user
      */
     public static void createUserAccount(User user){
         MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
@@ -78,6 +76,23 @@ public class DatabaseFunctions {
         if (token!=null){
             updateOperation = set("token", token);
         }
+        userCollection.updateOne(filter, updateOperation, options);
+    }
+
+    /**
+     * changes the password of a user from the users collection in MongoDB
+     * @param user
+     */
+    public static void changePassword(User user){
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+        String username = user.getUsername();
+        String password = user.getPassword();
+
+        // Setup filter and upsert options so that usernames remain unique.
+        Bson filter = eq("username", username);
+        // sets the password
+        Bson updateOperation = set("password", Authenticator.encrypt(password));
+        UpdateOptions options = new UpdateOptions().upsert(true);
         userCollection.updateOne(filter, updateOperation, options);
     }
 

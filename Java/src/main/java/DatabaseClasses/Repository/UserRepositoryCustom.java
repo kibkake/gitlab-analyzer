@@ -10,6 +10,7 @@ import main.java.DatabaseClasses.Model.User;
 public interface UserRepositoryCustom {
 
     void createUserAccount(User user);
+    void changePassword(User user);
 
     User retrieveUserInfo(String username);
 }

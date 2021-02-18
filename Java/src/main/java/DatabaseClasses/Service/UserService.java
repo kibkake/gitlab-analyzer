@@ -29,6 +29,8 @@ public class UserService {
         userRepository.createUserAccount(user);
     }
 
+    public void changePassword(User user){userRepository.changePassword(user);}
+
     public User retrieveUserInfo(String username) {
         return userRepository.retrieveUserInfo(username);
     }
