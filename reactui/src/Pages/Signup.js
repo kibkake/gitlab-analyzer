@@ -1,5 +1,4 @@
 import SignupComponent from "../components/SignupComponent";
-import {Redirect} from "react-router-dom";
 
 export default function Signup(){
     if(sessionStorage.getItem('new')) {
@@ -10,5 +9,9 @@ export default function Signup(){
                 </div>
             </>
         )
-    }return <Redirect to='/Home'/>;
+    }else return(
+        <>
+            <p>If not redirected, then please click on the home button</p>
+        </>
+    );
 }
