@@ -9,7 +9,8 @@ export default class StackedBarChart extends PureComponent {
 //        this.
 //    }
 
-    state = {date: null, code:0, comment:0};
+    state = {
+        date: null, code:0, comment:0 };
 
 
     componentDidMount() {
@@ -17,9 +18,18 @@ export default class StackedBarChart extends PureComponent {
         var id = path1.split("/")[1];
         var developer = path1.split("/")[3];
 
-        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
-            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
-        });
+        axios.get("http://localhost:8080/api/v1/projects/allCommits/"+repNum+"/"+name)
+                .then(response=>{
+                    const commits = response.data
+                    this.setState({commits})
+                })
+            }
+
+
+
+//        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
+//            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
+//        });
     }
 
     render() {
