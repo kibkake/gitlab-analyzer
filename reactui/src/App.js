@@ -65,8 +65,7 @@ function App() {
 
           <Navbar/>
             <Switch>
-              <Route path="/" component={Home} exact/>
-              <Route path='/Home' exact component={Home}/>
+              <Route path={["/Home", "/"]} exact component={Home}/>
               <Route path='/Repo' exact component={Repo}/>
               <Route path='/Developers' exact component={Developers}/>
                 <Route path='/Developers/summary' exact component={Summary}/>
@@ -78,6 +77,9 @@ function App() {
               <Route path='/Profile' exact component={Profile}/>
             </Switch>
           </Router>
+            {!sessionStorage.getItem('new')  && window.location.pathname==="/Signup" &&
+                <p>If not redirected, then please click on the home button and refresh the page</p>
+            }
         </>
       );
   }
