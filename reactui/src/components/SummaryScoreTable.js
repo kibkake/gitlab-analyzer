@@ -29,8 +29,8 @@ function SummaryScoreTable(){
 
 //Fake data until getting the data from backend
 const scoreSummary = [
-   {commitScore:3, scoreMR: 204, wordCountComment: 100, numCommentPerDay: 1},
-   {commitScore:2, scoreMR: 12, wordCountComment: 200, numCommentPerDay: 0.5},
+   {commitScore:3, scoreMR: 204, wordCountComment: 100},
+   {commitScore:2, scoreMR: 12, wordCountComment: 200},
 ];
 
 
@@ -43,7 +43,6 @@ const scoreSummary = [
                     <td>Commit</td>
                     <td>Merge Request</td>
                     <td>Word Count for Comments</td>
-                    <td>Average # of Comments per Day</td>
                 </tr>
                 {
                     scoreSummary.map((item, index)=>
@@ -51,7 +50,6 @@ const scoreSummary = [
                             <td>{item.commitScore}</td>
                             <td>{item.scoreMR}</td>
                             <td>{item.wordCountComment}</td>
-                            <td>{item.numCommentPerDay}</td>
                             </tr>
                     )}
                 </tbody>
