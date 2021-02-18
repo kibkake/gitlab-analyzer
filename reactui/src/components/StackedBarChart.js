@@ -3,41 +3,45 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend } fro
 import ProjectService from "../Service/ProjectService";
 import axios from "axios";
 
+//'https://jsfiddle.net/alidingling/90v76x08/']
 export default class StackedBarChart extends PureComponent {
-    // static jsfiddleUrl = 'https://jsfiddle.net/alidingling/90v76x08/';
-    constructor(props) {
-        super(props);
-        this.state = { score:[] }
+
+    constructor() {
+        super();
+        this.state = {
+            codeScore:[]
+        }
     }
 
     componentDidMount(){
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
         var developer = pathArray[4];
+
+        //request ref: http://localhost:8080/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-10
         axios.get("http://localhost:8080/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
             .then(response => {
                 const score = response.data
-                this.setState({score})
-            });
-        // .then((response)=> response.json())
-                // .then((responseJson)=> {
-                // this.setState({score: responseJson.feed.entry});
-                // })
-                // .catch((error) => {
-                //     console.error(error);
-                // });
-    }
+                console.log(score)
 
+                // TODO: parsing into the object
+                this.setState({date: score.date, commit_score: score.commitScore, MR_score: score.mergeRequestScore})
+            }).catch((error) => {
+                    console.error(error);
+                });
+
+    }
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
 //            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
 //        });
 
     render() {
+        // const {score} = this.state;
         return (
-            <BarChart
+        <BarChart
                 width={1500}
                 height={300}
-                data={this.state.score.data}
+                data={this.state.codeScore}
                 margin={{
                     top: 20,
                     right: 30,
@@ -46,11 +50,11 @@ export default class StackedBarChart extends PureComponent {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey={this.state.score} />
+                <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey={this.state.commitScore} stackId="a" fill="#8884d8" />
+                <Bar dataKey="commitScore" stackId="a" fill="#8884d8" />
                 <Bar dataKey="mergeRequestScore" stackId="a" fill="#82ca9d" />
             </BarChart>
         );

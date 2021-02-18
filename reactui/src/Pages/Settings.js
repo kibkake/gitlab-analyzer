@@ -6,11 +6,11 @@ import DateFnsUtils from '@date-io/date-fns';
 
 function Settings(){
     
-    const [selectedStartDate,setSelectedStartDate] =React.useState(
+    const [selectedStartDate,setSelectedStartDate] = React.useState(
         new Date('2021-02-08T12:00:00')
     )
     
-    const [selectedEndDate,setSelectedEndDate] =React.useState(
+    const [selectedEndDate,setSelectedEndDate] = React.useState(
         new Date('2021-02-08T12:00:00')
     )
     const handleStartDateChange= (date) =>{

@@ -7,7 +7,6 @@ import ProjectService from "../Service/ProjectService";
 
 class CommentTable extends Component{
 
-    // TODO: Do not delete, will be used once the API is set
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +18,9 @@ class CommentTable extends Component{
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
         var developer = pathArray[4];
-        axios.get("http://localhost:8080/api/v1/projects/" + id + "/topTenUserNotes/"+developer +"/2021-01-01/2021-02-15")
+
+        //request ref: http://localhost:8080/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-02-15
+        axios.get("http://localhost:8080/api/v1/projects/" + id + "/topTenUserNotes/"+ developer +"/2021-01-01/2021-02-15")
             .then(response => {
                 const comments = response.data
                 this.setState({comments})

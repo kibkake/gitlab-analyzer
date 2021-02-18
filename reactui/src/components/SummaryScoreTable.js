@@ -5,7 +5,6 @@ import axios from "axios";
 
 
 class SummaryScoreTable extends Component{
-//     TODO: Do not delete, will be used once the API is set
      constructor(props) {
          super(props);
          this.state = {
@@ -15,13 +14,14 @@ class SummaryScoreTable extends Component{
 
      componentDidMount() {
          const path1 = window.location.pathname;
-         const id = path1.split("/")[1];
-         const developer = path1.split("/")[3];
+         const id = path1.split("/")[2];
+         const developer = path1.split("/")[4];
 
+         //request ref: http://localhost:8080/api/v1/projects/Repo/totalCommitScore/Developers/01-01-2021/02-15-2021
+         //the current http request returns error for total commit score
          //TODO: This mapping request can't be used for here, the all score should be sent altogether
          //for commit, MR, word...
-         // And the current http request returns error? for total commit score
-         axios.get("http://localhost:8080/api/v1/projects/" +id+ "/totalCommitScore/"+developer +"01-01-2021/02-15-2021")
+         axios.get("http://localhost:8080/api/v1/projects/" + id + "/totalCommitScore/"+ developer +"/01-01-2021/02-15-2021")
              .then(response => {
                 const scoreSummary = response.data
                 this.setState({scoreSummary})

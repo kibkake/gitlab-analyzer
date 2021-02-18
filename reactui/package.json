@@ -19,6 +19,7 @@
     "jquery": "^1.9.1",
     "popper.js": "^1.16.1",
     "react": "^17.0.1",
+    "react-bar-chart": "^0.1.2",
     "react-bootstrap": "^1.4.3",
     "react-chartjs-2": "^2.11.1",
     "react-datetime": "^3.0.4",
