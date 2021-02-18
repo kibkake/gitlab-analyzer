@@ -1,14 +1,10 @@
-package main.java.ConnectToGitlab;
+package main.java.ConnectToGitlab.apiwrapper;
 
-import com.google.gson.Gson;
-import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
-import main.java.ConnectToGitlab.Wrapper.WrapperProject;
-import main.java.ConnectToGitlab.Wrapper.WrapperUser;
 import org.gitlab.api.AuthMethod;
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.*;
-import org.gitlab.api.models.GitlabMergeRequest;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;

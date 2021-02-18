@@ -1,13 +1,9 @@
-package main.java.ConnectToGitlab.Commit;
+package main.java.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.*;
-import org.springframework.data.annotation.Id;
-
-import java.util.stream.Collectors;
 
 /**
  *  Holds import information about commits and is used to convert JSON to an object with spring
@@ -33,7 +29,7 @@ public class Commit {
     private String web_url;
     //holds add, delete and total changes of a single commit
     private Stats stats;
-    private List<CommitDiff> diffs;
+    private List<Diff> diffs;
     private Date date;
     private String sha;
     private int projectId;
@@ -166,11 +162,11 @@ public class Commit {
         this.sha = sha;
     }
 
-    public List<CommitDiff> getDiffs() {
+    public List<Diff> getDiffs() {
         return diffs;
     }
 
-    public void setDiffs(List<CommitDiff> diffs) {
+    public void setDiffs(List<Diff> diffs) {
         this.diffs = diffs;
     }
 
@@ -221,7 +217,7 @@ public class Commit {
     public void calculateAndSetCommitScore(){
         commitScore = 0;
         for (int i = 0; i < diffs.size(); i++) {
-            commitScore += diffs.get(i).getScore();
+            commitScore += diffs.get(i).getDiffScore();
         }
         commitScore = Math.round(commitScore * 100.0) / 100.0;
     }

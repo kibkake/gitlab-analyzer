@@ -1,6 +1,8 @@
-package main.java.ConnectToGitlab.Issue;
+package main.java.ConnectToGitlab;
 
-import main.java.DatabaseClasses.Model.User;
+import main.java.Model.Issue;
+import main.java.Model.Note;
+import main.java.Model.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,10 @@ public class IssueConnection {
         ResponseEntity<List<Note>> usersResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Note>>() {});
         List<Note> notes = usersResponse.getBody();
+        for(Note note: notes) {
+            note.setIssueNote(true);
+            note.setWordCount(note.countWords(note.getBody()));
+        }
         return notes;
     }
 }
