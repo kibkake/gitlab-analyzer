@@ -36,7 +36,7 @@ function CodeDiffTable() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         var name = str.split("/")[4];
-        axios.get("http://localhost:8080/api/v1/projects/allCommits/"+repNum+"/"+name)
+        axios.get("http://localhost:8080/api/v1/projects/"+repNum+"/Commits/"+name+"/2021-01-01/2021-05-09")
         .then(response=>{
             getCommits(response.data)
         });
@@ -74,7 +74,7 @@ function CodeDiffTable() {
             </div>
         );
     }
-
+    export default CodeDiffTable;
 
 
     // return (
@@ -105,6 +105,5 @@ function CodeDiffTable() {
     //         </Table>
     //     </div>
     // );
-}
 
-export default CodeDiffTable;
+
