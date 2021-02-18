@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import {ImCancelCircle, ImClipboard, RiLockPasswordLine, RiLogoutBoxRLine, SiJsonwebtokens} from "react-icons/all";
+import {
+    GiToken,
+    ImClipboard,
+    RiLockPasswordLine,
+    RiLogoutBoxRLine,
+} from "react-icons/all";
 import ProfileService from "../Service/ProfileService";
 import {Redirect} from "react-router-dom";
 import './ProfileComponent.css';
@@ -13,10 +18,11 @@ export default class ProfileComponent extends Component {
             info:[],
             logout:false,
             pass:false,
-            token:false,
+            ctoken:false,
             oldpassword:"",
             newpassword:"",
             conpassword:"",
+            newtoken:"",
             passok:false,
             passconfirm:true
         };
@@ -51,7 +57,7 @@ export default class ProfileComponent extends Component {
 
     handleToken(event){
         event.preventDefault();
-        this.setState({token:true});
+        this.setState({ctoken:true});
     }
 
     handleChange(event) {
@@ -70,6 +76,17 @@ export default class ProfileComponent extends Component {
         this.setState({pass:false,passok:false,passconfirm:true});
     }
 
+    async tokenChangeHandler(event){
+        event.preventDefault();
+        if(this.state.newtoken===""){
+            alert("Token Cannot Be Empty");
+        }else{
+            await ProfileService.changeUserToken(sessionStorage.getItem('user'),this.state.newtoken);
+            alert("Successfully Changed Token!");
+        }
+        this.setState({token:false});
+    }
+
     async checkPass(event){
         event.preventDefault();
         await this.checkAuthenticated(event);
@@ -79,6 +96,10 @@ export default class ProfileComponent extends Component {
         }
         if(this.state.passok === false){
             alert("Old Password Did Not Match With Database!");
+        }
+        if(this.state.newpassword===""){
+            alert("Password Cannot Be Blank");
+            this.setState({passok:false});
         }
     }
 
@@ -110,14 +131,14 @@ export default class ProfileComponent extends Component {
                     <h5>Token:</h5>
                     <p>{this.state.token}</p>
                     <br/>
-                    <button className="tokenChange" onClick={this.handleToken}>Change Token <SiJsonwebtokens/></button>
-                    {this.state.token &&
+                    <button className="tokenChange" onClick={this.handleToken}>Change Token <GiToken/></button>
+                    {this.state.ctoken &&
                         <form>
                             <label>
                                 <h5>New Token:</h5>
-                                <input className="oldpass" name="oldpassword" type="password" onChange={this.handleChange}/>
+                                <input className="newtoken" name="newtoken" type="text" onChange={this.handleChange}/>
                             </label>
-                            <button className="signup" onClick={this.passChangeHandler}>Confirm <ImClipboard/></button>
+                            <button className="signup" onClick={this.tokenChangeHandler}>Confirm <ImClipboard/></button>
                         </form>
                     }
                     <br/>
