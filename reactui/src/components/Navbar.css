@@ -8,6 +8,24 @@
 
 }
 
+div {
+    white-space: pre-wrap;
+}
+.highlight {
+    background: lightgreen;
+}
+
+.highlight2 {
+    background: lightcoral;
+}
+.commitscore {
+    margin-left: 200px;
+    font-size: 30px;
+    height: 40px;
+
+
+}
+
 .Footer {
     color: white;
     margin-top: 30px;
