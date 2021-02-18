@@ -142,6 +142,13 @@ public class ProjectController {
         return commitsArray;
     }
 
+    @GetMapping("projects/{projectId}/Commit/{hash}")
+    public List<Commit> getACommit(@PathVariable("projectId") int projectId,
+                                   @PathVariable("hash") String hash) {
+
+        return projectService.getCommitByHash(projectId, hash);
+    }
+
     @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
     public List<DateScore> getUserCommitScoresWithDates(@PathVariable("projectId") int projectId,
                                                         @PathVariable("committerName") String committerName,
