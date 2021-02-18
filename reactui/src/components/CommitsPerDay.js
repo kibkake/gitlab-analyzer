@@ -40,6 +40,9 @@ class CommitsPerDay extends Component{
     }
 
     render(){
+
+        str = "iirfomr";
+        str.substring()
         var str = window.location.pathname;
         var strArr = str.split("/");
         var data = JSON.stringify(this.state.data);
@@ -61,7 +64,7 @@ class CommitsPerDay extends Component{
 
                                     }}
                             >
-                                <span >{item.id}</span>
+                                <span >{item.id}          commited at:      {item.created_at.substring(11,19)}</span>
                             </Button>
                         </a>
                     </li>;
