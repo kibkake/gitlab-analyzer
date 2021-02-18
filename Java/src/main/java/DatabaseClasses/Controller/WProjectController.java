@@ -1,17 +1,18 @@
 package main.java.DatabaseClasses.Controller;
 
 
-import main.java.ConnectToGitlab.Wrapper.*;
+import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
+import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
+import main.java.ConnectToGitlab.Wrapper.WrapperProject;
+import main.java.ConnectToGitlab.Wrapper.WrapperUser;
 import main.java.DatabaseClasses.Repository.WrapperCommitRepository;
 import main.java.DatabaseClasses.Repository.WrapperMergedMergeRequestRepository;
 import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
