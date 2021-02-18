@@ -1,9 +1,10 @@
-package main.java.ConnectToGitlab.MergeRequests;//package main.java.ConnectToGitlab.MergeRequests;
+package main.java.Model;//package main.java.ConnectToGitlab.MergeRequests;
 
-import main.java.ConnectToGitlab.Developer.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document(value = "MergeRequest")
@@ -25,7 +26,12 @@ public class MergeRequest {
     private String created_at;
     private String created_before;
     private List<Developer> contributors;
+    List<Commit> commits;
     private String sha;
+    double mrScore;
+    private Date mergedDate;
+    List<Note> notes;
+    List<Diff> diffs;
 
     public MergeRequest() {
         contributors = new ArrayList<>();
@@ -92,7 +98,10 @@ public class MergeRequest {
         return merged_at;
     }
 
+    // Spring calls this to create a mergeRequest object use it to create a Date
     public void setMerged_at(String merged_at) {
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(merged_at);
+        setMergedDate(Date.from(dateWithOffSet.toInstant()));
         this.merged_at = merged_at;
     }
 
@@ -176,6 +185,14 @@ public class MergeRequest {
         this.sha = sha;
     }
 
+    public Date getMergedDate() {
+        return mergedDate;
+    }
+
+    public void setMergedDate(Date mergedDate) {
+        this.mergedDate = mergedDate;
+    }
+
     @Override
     public String toString() {
         return "MergeRequest{" +
@@ -197,5 +214,37 @@ public class MergeRequest {
                 ", contributors=" + contributors +
                 ", sha='" + sha + '\'' +
                 '}';
+    }
+
+    public List<Commit> getCommits() {
+        return commits;
+    }
+
+    public void setCommits(List<Commit> commits) {
+        this.commits = commits;
+    }
+
+    public double getMrScore() {
+        return mrScore;
+    }
+
+    public void setMrScore(double mrScore) {
+        this.mrScore = mrScore;
+    }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes9) {
+        this.notes = notes;
+    }
+
+    public List<Diff> getDiffs() {
+        return diffs;
+    }
+
+    public void setDiffs(List<Diff> diffs) {
+        this.diffs = diffs;
     }
 }

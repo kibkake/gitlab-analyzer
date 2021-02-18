@@ -1,12 +1,12 @@
-package main.java.ConnectToGitlab.mongowrapper;
+package main.java.ConnectToGitlab.MongoWrapper;
 
 import com.google.gson.*;
 import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
 import main.java.ConnectToGitlab.Wrapper.WrapperIssue;
 import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
