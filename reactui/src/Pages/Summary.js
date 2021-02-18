@@ -2,6 +2,7 @@ import BarChart from "../components/Chart";
 import SummaryScoreTable from "../components/SummaryScoreTable";
 import Navbar_Developers from "../components/Navbar_Developers";
 import ChartContainer from "../components/StackedBar";
+import StackedBarChart from "../components/StackedBarChart";
 
 import React from "react";
 
@@ -13,7 +14,7 @@ function Summary(){
             <br>
             </br>
             <h4 style={{textAlign:'center'}}>Code / Comment score per day</h4>
-            <ChartContainer/>
+            <StackedBarChart/>
             <br>
             </br>
             <h4 style={{textAlign:'center'}}>Total score for each part (should change to some other display option)</h4>
