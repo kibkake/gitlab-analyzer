@@ -184,6 +184,30 @@ public class ProjectService {
         return userCommits;
     }
 
+    public List<String> getAllUserCommitsArray(int projectId, String committerName, LocalDate start, LocalDate end) {
+        Project project = projectRepository.findProjectById(projectId);
+        List<String> commitIds = new ArrayList<String>();
+        List<Commit> projectCommits = project.getCommits();
+        List<String> commitsArray = new ArrayList<>();
+
+        for (LocalDate time = start; time.isBefore(end.plusDays(1)); time = time.plusDays(1)){
+            List<Commit> commits = new ArrayList<>();
+
+            for (Commit currentCommit : projectCommits) {
+                LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+                if (commitDate.compareTo(time) == 0) {
+                    if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
+                            currentCommit.getCommitter_name().equals(committerName)) {
+                        commits.add(currentCommit);
+                        commitIds.add(currentCommit.getId());
+                    }
+                }
+            }
+            commitsArray.add(Integer.toString(commits.size()));
+        }
+        return commitsArray;
+    }
+
     public List<Commit> getCommitByHash(int projectId, String hash) {
         Project project = projectRepository.findProjectById(projectId);
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -133,12 +135,7 @@ public class ProjectController {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         List<String> commitsArray = new ArrayList<>();
-        for (LocalDate time = StartLocalTime; time.isBefore(endLocalTime.plusDays(1)); time = time.plusDays(1))
-        {
-            List<Commit> commits = new ArrayList<>();
-            commits = projectService.getAllUserCommits(projectId, committerName, time, time);
-            commitsArray.add(Integer.toString(commits.size()));
-        }
+        commitsArray = projectService.getAllUserCommitsArray(projectId, committerName, StartLocalTime, endLocalTime);
         return commitsArray;
     }
 
