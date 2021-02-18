@@ -84,7 +84,8 @@ class CommitChart extends Component {
     }
 //1/17/2021
     render() {
-
+        var greenArr = [];
+        var blackArr = [];
         var getDaysArray = function(start, end) {
             for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
 
@@ -104,8 +105,10 @@ class CommitChart extends Component {
                     month3 = month3temp;
                 }
 
-                var completeDate = year3 + "-" + month3 + "-" + day3
+                var completeDate = year3 + "-" + month3 + "-" + day3;
                 arr.push(completeDate);
+                greenArr.push('rgba(123, 239, 178, 1)')
+                blackArr.push('rgba(0, 0, 0, 0.5)')
             }
             return arr;
         };
@@ -125,7 +128,7 @@ class CommitChart extends Component {
                     data={{labels: daylist,
                         datasets: [
                             {label: 'Number of Commits',
-                                data: comarr
+                                data: comarr, backgroundColor: greenArr,borderWidth: 2,  borderColor:blackArr,
                             },
                         ],
 

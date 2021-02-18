@@ -18,9 +18,10 @@ class SingleCommitDiff extends Component{
             data: []
         };
     }
-//http://localhost:8080/getuserstats/6/arahilin/commitdiff/aea93f2c57387d310f02768d4ca6c2ed71a60b41
+//http://localhost:8080/api/v1/projects/6/Commit/39979003d3aeb6aa8fd832d7a89e34d5272e4e3a
 
     //http://localhost:3000/Repo/6/Developers/user2/commits/1-24-2021/ac108a6cab6e2b63c8e2d4a1150ac67ba82849d0
+
     componentDidMount() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
@@ -30,7 +31,7 @@ class SingleCommitDiff extends Component{
 
 
 
-        let url2 = 'http://localhost:8080/getuserstats/' + repNum + '/' + userName + '/commitdiff/' + hash
+        let url2 = 'http://localhost:8080/api/v1/projects/' + repNum + '/Commit/' + hash;
         fetch(url2, {
             method: 'GET',
             headers: {
@@ -126,9 +127,9 @@ class SingleCommitDiff extends Component{
                         </tr>
 
                         {DataArray.map((item) =>
-                        item.wrapperCommitDiffs.map((item2, index) =>
+                        item.diffs.map((item2, index) =>
                             <tr key ={index}>
-                                <td>{item2.newPath}</td>
+                                <td>{item2.new_path}</td>
                                 <td>{this.splitToLines(item2.diff)}</td>
 
                             </tr>
