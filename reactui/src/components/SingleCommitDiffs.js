@@ -18,9 +18,6 @@ class SingleCommitDiff extends Component{
             data: []
         };
     }
-//http://localhost:8080/api/v1/projects/6/Commit/39979003d3aeb6aa8fd832d7a89e34d5272e4e3a
-
-    //http://localhost:3000/Repo/6/Developers/user2/commits/1-24-2021/ac108a6cab6e2b63c8e2d4a1150ac67ba82849d0
 
     componentDidMount() {
         var str = window.location.pathname;
@@ -136,11 +133,6 @@ class SingleCommitDiff extends Component{
 
 
                         ))}
-
-
-
-
-
                     </tbody>
                 </Table>
 
