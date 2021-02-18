@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -122,6 +123,23 @@ public class ProjectController {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getAllUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
+    }
+
+    @GetMapping("projects/{projectId}/Commitsarray/{committerName}/{start}/{end}")
+    public List<String> getCommitsArray(@PathVariable("projectId") int projectId,
+                                           @PathVariable("committerName") String committerName,
+                                           @PathVariable("start") String start,
+                                           @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        List<String> commitsArray = new ArrayList<>();
+        for (LocalDate time = StartLocalTime; time.isBefore(endLocalTime.plusDays(1)); time = time.plusDays(1))
+        {
+            List<Commit> commits = new ArrayList<>();
+            commits = projectService.getAllUserCommits(projectId, committerName, time, time);
+            commitsArray.add(Integer.toString(commits.size()));
+        }
+        return commitsArray;
     }
 
     @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
