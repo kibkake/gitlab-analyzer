@@ -5,28 +5,29 @@ import axios from "axios";
 
 export default class StackedBarChart extends PureComponent {
     // static jsfiddleUrl = 'https://jsfiddle.net/alidingling/90v76x08/';
-    constructor(props) {
-        super(props);
-        this.state = { score:[] }
-    }
-
-    getData(){
-        var path1 = window.location.pathname;
-        var id = path1.split("/")[1];
-        var developer = path1.split("/")[3];
-        return fetch("http://localhost:8080/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
-                .then((response)=> response.json())
-                .then((responseJson)=> {
-                this.setState({score: responseJson.feed.entry});
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+    constructor() {
+        super();
+        this.state = { scores:[] }
     }
 
     componentDidMount(){
-        this.getData();
+        var pathArray = window.location.pathname.split('/');
+        var id = pathArray[1];
+        var developer = pathArray[3];
+        axios.get("http://localhost:8080/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
+            .then(response => {
+                const score = response.data
+                this.setState({score})
+            })
+        // .then((response)=> response.json())
+                // .then((responseJson)=> {
+                // this.setState({score: responseJson.feed.entry});
+                // })
+                // .catch((error) => {
+                //     console.error(error);
+                // });
     }
+
 
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
 //            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
@@ -46,7 +47,7 @@ export default class StackedBarChart extends PureComponent {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
+                <XAxis dataKey={this.state.scores.date} />
                 <YAxis />
                 <Tooltip />
                 <Legend />

@@ -1,9 +1,6 @@
-import BarChart from "../components/Chart";
 import SummaryScoreTable from "../components/SummaryScoreTable";
 import Navbar_Developers from "../components/Navbar_Developers";
-import ChartContainer from "../components/StackedBar";
 import StackedBarChart from "../components/StackedBarChart";
-
 import React from "react";
 
 function Summary(){
@@ -24,7 +21,7 @@ function Summary(){
             </br>
 
             <h4 style={{textAlign:'center'}}>Comment score per day</h4>
-            //TODO: chart for commet score will be placed here, but for now there's no mapping function for that
+            //TODO: chart for comment score will be placed here, but for now there's no mapping function for that
         </div>
 
     )
