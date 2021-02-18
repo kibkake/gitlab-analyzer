@@ -30,6 +30,7 @@ export default class ProfileComponent extends Component {
         this.handlePass=this.handlePass.bind(this);
         this.handleToken=this.handleToken.bind(this);
         this.handleChange=this.handleChange.bind(this);
+        this.tokenChangeHandler=this.tokenChangeHandler.bind(this);
         this.passChangeHandler=this.passChangeHandler.bind(this);
         this.checkPass=this.checkPass.bind(this);
         this.checkAuthenticated=this.checkAuthenticated.bind(this);
@@ -83,8 +84,9 @@ export default class ProfileComponent extends Component {
         }else{
             await ProfileService.changeUserToken(sessionStorage.getItem('user'),this.state.newtoken);
             alert("Successfully Changed Token!");
+            window.location.reload();
         }
-        this.setState({token:false});
+        await this.setState({ctoken:false});
     }
 
     async checkPass(event){

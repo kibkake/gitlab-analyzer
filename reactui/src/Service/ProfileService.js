@@ -13,6 +13,15 @@ export default class ProfileService {
         });
     }
 
+    static changeUserToken(username,token){
+        const userInfo = JSON.stringify({ 'username': username,'token':token });
+        return axios.post(REST_API+"/changeToken", userInfo, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
     static getUserInfo(username){
         return axios.get(REST_API+"/"+username);
     }

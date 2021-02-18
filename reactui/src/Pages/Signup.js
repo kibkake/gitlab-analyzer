@@ -11,7 +11,7 @@ export default function Signup(){
         )
     }else return(
         <>
-            <p>If not redirected, then please click on the home button</p>
+            <navbar/>
         </>
     );
 }

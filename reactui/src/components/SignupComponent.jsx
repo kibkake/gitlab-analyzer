@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {Redirect} from "react-router-dom";
+import {Redirect, Route} from "react-router-dom";
 import {
+    BsInfoCircle,
     BsQuestionCircle, BsXCircle,
     FaCheckCircle,
     ImCancelCircle,
@@ -25,6 +26,7 @@ export default class SignupComponent extends Component {
             avail:null
         };
         this.handleChange=this.handleChange.bind(this);
+        this.termHandler = this.termHandler.bind(this);
         this.checkUser=this.checkUser.bind(this);
         this.updateUser = this.updateUser.bind(this);
         this.signupHandler = this.signupHandler.bind(this);
@@ -35,6 +37,11 @@ export default class SignupComponent extends Component {
         this.setState({
             [event.target.name]: event.target.value
         });
+    }
+
+    termHandler(){
+        // placeholder right now
+        window.open('https://www.termsfeed.com/public/uploads/2019/04/terms-of-use-template.pdf','_blank');
     }
 
     checkUser(event){
@@ -52,11 +59,15 @@ export default class SignupComponent extends Component {
             })
     }
 
-    signupHandler(event){
+    async signupHandler(event){
         event.preventDefault();
+        if(!window.confirm("By signing up, you hereby agree to the terms and conditions")){
+            await this.cancelHandler();
+            return;
+        }
         this.updateUser();
         if(this.state.info==="NaN" && this.state.password!=="" && this.state.token!==""){
-            LoginService.createNewAccount(this.state.username,this.state.password,this.state.token);
+            await LoginService.createNewAccount(this.state.username,this.state.password,this.state.token);
             sessionStorage.removeItem('new');
             sessionStorage.setItem('user',this.state.username);
             sessionStorage.setItem('token',this.state.token);
@@ -100,6 +111,7 @@ export default class SignupComponent extends Component {
         }
 
         return (
+
             <>
                 <div className="signupform">
                     <h2>Sign Up</h2>
@@ -123,6 +135,8 @@ export default class SignupComponent extends Component {
                         <button className="cancel" onClick={this.cancelHandler}>Cancel <ImCancelCircle/></button>
                         <button className="signup" onClick={this.signupHandler} onMouseOver={this.checkUser}>Confirm <ImClipboard/></button>
                     </form>
+                    <br/>
+                    <p>Before clicking on Confirm, please take a look at our <button className="signup" onClick={this.termHandler}><BsInfoCircle/> Terms and Conditions</button></p>
                 </div>
             </>
         )

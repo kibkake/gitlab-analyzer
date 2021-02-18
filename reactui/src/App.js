@@ -52,12 +52,14 @@ function App() {
   }else if(sessionStorage.getItem('new')){ // signup
       return(
           <Router>
+
               <Navbar/>
               <Redirect to='/Signup'/>
               <SignupComponent/>
           </Router>
       );
-  }else{
+  }
+  else{
       // will not show the rest of the pages until user is logged in
       return (
         <>
