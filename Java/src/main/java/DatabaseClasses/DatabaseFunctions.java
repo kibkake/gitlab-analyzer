@@ -97,6 +97,23 @@ public class DatabaseFunctions {
     }
 
     /**
+     * changes the user token from the users collection from MongoDB
+     * @param user
+     */
+    public static void changeToken(User user){
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+        String username = user.getUsername();
+        String token = user.getToken();
+
+        // Setup filter and upsert options so that usernames remain unique.
+        Bson filter = eq("username", username);
+        // sets the token
+        Bson updateOperation = set("token", token);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        userCollection.updateOne(filter, updateOperation, options);
+    }
+
+    /**
      * retrieves information regarding the users from the database. Usually, only used for testing purposes.
      * @param username the unique username of the user
      * @return a line by line string of the entries of the username, encrypted password, and token from the database.

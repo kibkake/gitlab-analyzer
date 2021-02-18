@@ -11,6 +11,7 @@ public interface UserRepositoryCustom {
 
     void createUserAccount(User user);
     void changePassword(User user);
+    void changeToken(User user);
 
     User retrieveUserInfo(String username);
 }

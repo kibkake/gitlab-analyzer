@@ -31,6 +31,8 @@ public class UserService {
 
     public void changePassword(User user){userRepository.changePassword(user);}
 
+    public void changeToken(User user){userRepository.changeToken(user);}
+
     public User retrieveUserInfo(String username) {
         return userRepository.retrieveUserInfo(username);
     }

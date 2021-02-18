@@ -29,6 +29,9 @@ public class UserRepositoryCustomImpl implements main.java.DatabaseClasses.Repos
     public void changePassword(User user){ DatabaseFunctions.changePassword(user);}
 
     @Override
+    public void changeToken(User user){ DatabaseFunctions.changeToken(user);}
+
+    @Override
     public User retrieveUserInfo(String username) {
         return DatabaseFunctions.retrieveUserInfo(username);
     }
