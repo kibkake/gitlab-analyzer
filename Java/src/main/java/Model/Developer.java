@@ -1,11 +1,8 @@
-package main.java.ConnectToGitlab.Developer;
+package main.java.Model;
 
-import main.java.ConnectToGitlab.Commit.Commit;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *  Class hold information about the different users on gitlab used to convert JSON to an object with spring

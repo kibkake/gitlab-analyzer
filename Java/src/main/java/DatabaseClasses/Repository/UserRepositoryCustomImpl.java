@@ -1,7 +1,7 @@
 package main.java.DatabaseClasses.Repository;
 
 import main.java.DatabaseClasses.DatabaseFunctions;
-import main.java.DatabaseClasses.Model.User;
+import main.java.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 

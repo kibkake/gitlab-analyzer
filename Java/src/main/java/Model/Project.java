@@ -1,9 +1,5 @@
-package main.java.DatabaseClasses.Model;
+package main.java.Model;
 
-import main.java.ConnectToGitlab.Commit.Commit;
-import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Issue.Issue;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
