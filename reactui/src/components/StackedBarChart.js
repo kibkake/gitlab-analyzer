@@ -5,20 +5,20 @@ import axios from "axios";
 
 export default class StackedBarChart extends PureComponent {
     // static jsfiddleUrl = 'https://jsfiddle.net/alidingling/90v76x08/';
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = { score:[] }
     }
 
     componentDidMount(){
         var pathArray = window.location.pathname.split('/');
-        var id = pathArray[1];
-        var developer = pathArray[3];
+        var id = pathArray[2];
+        var developer = pathArray[4];
         axios.get("http://localhost:8080/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
             .then(response => {
                 const score = response.data
                 this.setState({score})
-            })
+            });
         // .then((response)=> response.json())
                 // .then((responseJson)=> {
                 // this.setState({score: responseJson.feed.entry});
@@ -37,7 +37,7 @@ export default class StackedBarChart extends PureComponent {
             <BarChart
                 width={1500}
                 height={300}
-                data={this.state.score}
+                data={this.state.score.data}
                 margin={{
                     top: 20,
                     right: 30,
@@ -46,7 +46,7 @@ export default class StackedBarChart extends PureComponent {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey={this.state.score.date} />
+                <XAxis dataKey={this.state.score} />
                 <YAxis />
                 <Tooltip />
                 <Legend />

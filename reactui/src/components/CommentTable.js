@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
 import * as comments from "react-bootstrap/ElementChildren";
+import ProjectService from "../Service/ProjectService";
 
 class CommentTable extends Component{
 
@@ -23,17 +24,11 @@ class CommentTable extends Component{
                 const comments = response.data
                 this.setState({comments})
             });
-        // ProjectService.getCommentInfo().then((response) => {
+        // ProjectService.getCommentInfo(id, developer, '2021-01-01','2021-02-15').then((response) => {
         //     this.setState({comments: response.data})
         // });
     }
 
-    // Fake data for testing
-    // const comments = [
-    //     {date: 204, wordCount: 20, comments: "very good", author: true},
-    //     {date: 22, wordCount: 50, comments: "very bad", author: false },
-    //     {date: 210, wordCount: 100, comments: "not bad", author: false }
-    // ]
 
     render() {
         return (
