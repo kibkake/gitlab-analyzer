@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import {Button, Table} from 'react-bootstrap'
 import Highlight from 'react-highlight'
 import axios from "axios";
+import Popup from "./Popup";
+import {useState} from "react";
 
 class CodeDiffTable extends Component{
 // function CodeDiffTable() {
@@ -70,6 +72,38 @@ class CodeDiffTable extends Component{
             </div>
         );
     }
+    const [buttonPopup, setButtonPopup] = useState(false);
+
+
+    return (
+        <div className="CodeDiffTable">
+            <Table striped bordered hover>
+                <tbody>
+                <tr>
+                    <td>MR ID</td>
+                    <td>Date</td>
+                    <td>Score</td>
+                    <td>Commit Message</td>
+                    <td>Code Diff</td>
+                </tr>
+                {
+                    codeDiff.map((item, index)=>
+                        <tr key ={index}>
+                            <td>{item.mergeRequestId}</td>
+                            <td>{item.date}</td>
+                            <td>{item.score}</td>
+                            <td>{item.commitMsg}</td>
+                            <button onClick={()=> setButtonPopup(true)}> Difference in code</button>
+                            <Popup trigger={buttonPopup} setTrigger = {setButtonPopup} >
+                                <Highlight className="highlighted-text">{item.codeDiff}</Highlight>
+                            </Popup>
+
+                        </tr>
+                    )}
+                </tbody>
+            </Table>
+        </div>
+    );
 }
 
 export default CodeDiffTable;
