@@ -11,6 +11,7 @@ function Summary(){
 
              //TODO: Additional mapping request required for here, the all score should be sent altogether
              //for commit, MR, word...
+            // And the current http request returns error for total commit score
              <h4 style={{textAlign:'center'}}>Total scores</h4>
              <SummaryScoreTable/>
             <br>

@@ -7,7 +7,7 @@ export default class StackedBarChart extends PureComponent {
     // static jsfiddleUrl = 'https://jsfiddle.net/alidingling/90v76x08/';
     constructor() {
         super();
-        this.state = { scores:[] }
+        this.state = { score:[] }
     }
 
     componentDidMount(){
@@ -28,7 +28,6 @@ export default class StackedBarChart extends PureComponent {
                 // });
     }
 
-
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
 //            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
 //        });
@@ -47,11 +46,11 @@ export default class StackedBarChart extends PureComponent {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey={this.state.scores.date} />
+                <XAxis dataKey={this.state.score.date} />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="commitScore" stackId="a" fill="#8884d8" />
+                <Bar dataKey={this.state.commitScore} stackId="a" fill="#8884d8" />
                 <Bar dataKey="mergeRequestScore" stackId="a" fill="#82ca9d" />
             </BarChart>
         );

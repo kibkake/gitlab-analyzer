@@ -145,6 +145,7 @@ public class ProjectController {
         return projectService.getTopTenUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
+    //TODO: This doesn't work?
     @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
     public double totalCommitScore(@PathVariable("projectId") int projectId,
                                 @PathVariable("committerName") String committerName,
