@@ -14,9 +14,9 @@ class CommitsPerDay extends Component{
             data: []
         };
     }
-//http://localhost:8080/getuserstats/6/arahilin/commit/1-23-2021
+//http://localhost:3000/Repo/6/Developers/user2/commits/2021-01-24
 
-    //http://localhost:3000/Repo/6/Developers/user2/commits/1-24-2021
+    //http://localhost:8080/api/v1/projects/6/Commits/arahilin/2021-01-24/2021-01-24
     componentDidMount() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
@@ -24,8 +24,7 @@ class CommitsPerDay extends Component{
         var date = str.split("/")[6];
 
 
-        let url2 = 'http://localhost:8080/getuserstats/' + repNum + '/' + userName + '/commit/' + date
-        console.log(url2)
+        let url2 = 'http://localhost:8080/api/v1/projects/' + repNum + '/Commits/' + userName + '/' + date + "/" + date
         fetch(url2, {
             method: 'GET',
             headers: {
@@ -46,9 +45,6 @@ class CommitsPerDay extends Component{
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
 
-
-        console.log(DataArray);
-
         return(
             //<div> Name: {DataArray} </div>
 
@@ -57,15 +53,15 @@ class CommitsPerDay extends Component{
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">
-                            <Button className="Footer" to={item.url}
+                            <Button className="Footer" to={item.id}
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        window.location.href=  window.location.pathname + "/" + item;
+                                        window.location.href=  window.location.pathname + "/" + item.id;
 
                                     }}
                             >
-                                <span >{item}</span>
+                                <span >{item.id}</span>
                             </Button>
                         </a>
                     </li>;
