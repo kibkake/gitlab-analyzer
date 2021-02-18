@@ -89,7 +89,11 @@ public class DatabaseFunctions {
     public static User retrieveUserInfo(String username){
         MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
         Document userDoc = userCollection.find(eq("username", username)).first();
-//        return user.getString("username")+"\n"+user.getString("password")+"\n"+user.getString("token");
+        if(userDoc==null){
+            User noUser = new User();
+            noUser.setPassword("NaN");
+            return noUser;
+        }
         User foundUser = new User();
         foundUser.setUsername(userDoc.getString("username"));
         foundUser.setPassword(userDoc.getString("password"));
