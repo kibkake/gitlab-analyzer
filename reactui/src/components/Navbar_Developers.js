@@ -4,9 +4,15 @@ import {AiOutlineHome} from 'react-icons/ai';
 import './Navbar.css';
 import {MenuItems} from "./MenuItem_Developers";
 
+export var rep = window.location.pathname.split("/")[2]
+export var user = window.location.pathname.split("/")[4]
 
-class Navbar_Developers extends Component{
+
+export class Navbar_Developers extends Component{
+
+
     render(){
+        //console.log(something)
         return(
             <nav className="navbarItems">
                 <div>
