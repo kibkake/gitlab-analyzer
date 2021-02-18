@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -122,6 +125,25 @@ public class ProjectController {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getAllUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
+    }
+
+    @GetMapping("projects/{projectId}/Commitsarray/{committerName}/{start}/{end}")
+    public List<String> getCommitsArray(@PathVariable("projectId") int projectId,
+                                           @PathVariable("committerName") String committerName,
+                                           @PathVariable("start") String start,
+                                           @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        List<String> commitsArray = new ArrayList<>();
+        commitsArray = projectService.getAllUserCommitsArray(projectId, committerName, StartLocalTime, endLocalTime);
+        return commitsArray;
+    }
+
+    @GetMapping("projects/{projectId}/Commit/{hash}")
+    public List<Commit> getACommit(@PathVariable("projectId") int projectId,
+                                   @PathVariable("hash") String hash) {
+
+        return projectService.getCommitByHash(projectId, hash);
     }
 
     @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
