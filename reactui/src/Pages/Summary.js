@@ -11,15 +11,20 @@ function Summary(){
         <div classname='Summary'>
             <Navbar_Developers/>
             <h1 style={{textAlign:'center'}}>Summary</h1>
+
+             //TODO: Additional mapping request required for here, the all score should be sent altogether
+             //for commit, MR, word...
+             <h4 style={{textAlign:'center'}}>Total scores</h4>
+             <SummaryScoreTable/>
             <br>
             </br>
-            <h4 style={{textAlign:'center'}}>Code / Comment score per day</h4>
+            <h4 style={{textAlign:'center'}}>Code / MR score per day</h4>
             <StackedBarChart/>
             <br>
             </br>
-            <h4 style={{textAlign:'center'}}>Total score for each part (should change to some other display option)</h4>
 
-            <SummaryScoreTable/>
+            <h4 style={{textAlign:'center'}}>Comment score per day</h4>
+            //TODO: chart for commet score will be placed here, but for now there's no mapping function for that
         </div>
 
     )

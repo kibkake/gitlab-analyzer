@@ -145,13 +145,14 @@ public class ProjectController {
         return projectService.getTopTenUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}")
+    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
     public double totalCommitScore(@PathVariable("projectId") int projectId,
-                                @PathVariable("committerName") String committerName) {
-        LocalDate start = LocalDate.of(2021, 1, 1);
-        LocalDate end = LocalDate.now();
-        //TODO: Continue here - like in the above function, make these two dates path variables.
-        return projectService.getTotalUserCommitScore(projectId, committerName, start, end);
+                                @PathVariable("committerName") String committerName,
+                                @PathVariable("start") String start,
+                                   @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getTotalUserCommitScore(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/commit/{commitId}")
