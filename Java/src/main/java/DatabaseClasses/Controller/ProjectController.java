@@ -154,5 +154,15 @@ public class ProjectController {
         return projectService.getTotalUserCommitScore(projectId, committerName, start, end);
     }
 
+    @GetMapping("projects/{projectId}/commit/{commitId}")
+    public Commit getCommit(@PathVariable String commitId, @PathVariable int projectId) {
+        return projectService.getCommit(projectId, commitId);
+    }
+
+    @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
+    public MergeRequest getMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
+        return projectService.getMergeRequest(projectId, mrId);
+    }
+
 }
 

@@ -262,4 +262,24 @@ public class ProjectService {
         return userNotes;
     }
 
+    public Commit getCommit(int projectId, String commitId) {
+        Project project = projectRepository.findProjectById(projectId);
+        List<Commit> commits = project.getCommits();
+        Commit commit = commits.stream()
+        .filter(c -> commitId.equals(c.getId()))
+                .findAny()
+                .orElse(null);
+        return commit;
+    }
+
+    public MergeRequest getMergeRequest(int projectId, int commitId) {
+        Project project = projectRepository.findProjectById(projectId);
+        List<MergeRequest> mergeRequests = project.getMergedRequests();
+        MergeRequest mergeRequest = mergeRequests.stream()
+                .filter(mr -> commitId == mr.getId())
+                .findAny()
+                .orElse(null);
+        return mergeRequest;
+    }
+
 }
