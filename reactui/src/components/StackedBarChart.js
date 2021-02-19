@@ -22,13 +22,11 @@ export default class StackedBarChart extends PureComponent {
         axios.get("http://localhost:8080/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
             .then(response => {
                 const score = response.data
-                console.log(score)
-
-                // TODO: parsing into the object
-                this.setState({date: score.date, commit_score: score.commitScore, MR_score: score.mergeRequestScore})
+                this.setState({codeScore: score})
+                console.log(this.state.codeScore);
             }).catch((error) => {
                     console.error(error);
-                });
+            });
 
     }
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
@@ -36,11 +34,11 @@ export default class StackedBarChart extends PureComponent {
 //        });
 
     render() {
-        // const {score} = this.state;
         return (
         <BarChart
                 width={1500}
                 height={300}
+
                 data={this.state.codeScore}
                 margin={{
                     top: 20,
