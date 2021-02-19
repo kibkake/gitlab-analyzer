@@ -78,8 +78,6 @@ class CommitChart extends Component {
             })
         console.log(arr)
 
-
-
        this.setState({data: arr})
     }
 //1/17/2021

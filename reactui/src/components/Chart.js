@@ -4,7 +4,7 @@ import { Bar } from 'react-chartjs-2'
 const BarChart = () => {
     return <div>
         <Bar data={{
-            //lables x for the axis
+            //labels x for the axis
             labels: ['time', 'time', 'time', 'time', 'time'],
             //data displayed in graph
             datasets: [
