@@ -20,10 +20,13 @@ function Summary(){
             <br>
             </br>
 
-            <h4 style={{textAlign:'center'}}>Summary of scores</h4>
+            <h4 style={{textAlign:'center'}}>Summary of Mr/Commits</h4>
             <BarChart/>
             <br>
             </br>
+
+            <h4 style={{textAlign:'center'}}>Comment score per day</h4>
+            <CommentChart/>
         </div>
 
     )

@@ -2,7 +2,7 @@ import React from 'react'
 import { Bar} from 'react-chartjs-2'
 
 
-// creating a barchart
+// creating a stacked barchart for mr/commits
 const BarChart = () => {
     return <div>
         <Bar data={{
@@ -12,19 +12,13 @@ const BarChart = () => {
             datasets: [
                     {
                     label: 'commits',
-                    data: [56, 34, 5, 50, 12],
+                    data: [5, 3, 7, 8, 3],
                     backgroundColor:'orange',
                     borderColor:'black'
                     },
                 {
-                    label: 'comments',
-                    data:[5,6,25,12,4],
-                    backgroundColor: 'red',
-                    borderColor: 'black',
-                },
-                {
                     label: 'merge requests',
-                    data:[12,1,20,7,10],
+                    data:[7,5,9,10,6],
                     backgroundColor: 'cyan',
                     borderColor: 'black',
                 }
@@ -40,10 +34,10 @@ const BarChart = () => {
                      }],
                     yAxes:[
                         {
-                            stacked:true
-                            /*ticks:{
+                            stacked:true,
+                            ticks:{
                                 beginAtZero: true,
-                            }*/
+                            }
                         }
                     ]
                  }
