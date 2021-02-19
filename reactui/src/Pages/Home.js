@@ -1,15 +1,14 @@
 import "../App.css"
 import React,{ Component } from "react";
-
+import ProfileComponent from "../components/ProfileComponent";
+import HomeInfo from "../components/HomeInfo";
 
 function Home(){
 
     return(   
         
         <div>
-            <h1 style={{textAlign:'center'}}>
-                Welcome to Pluto Gitlab analyzer
-            </h1>
+            <HomeInfo/>
         </div>
 
 
