@@ -1,6 +1,7 @@
 package main.java.ConnectToGitlab.Wrapper;
 
 import com.google.gson.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

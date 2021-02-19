@@ -8,20 +8,37 @@
 
 }
 
-.Footer {
-    color: white;
-    margin-top: 100px;
-    margin-left: 400px;
-    font-size: 50px;
-    width: 100%;
-    height: 40px;
-    display: flex;
-    padding: 5px 16px;
-    border-radius: 8px;
-    text-align: center;
-    text-decoration: none;
+div {
+    white-space: pre-wrap;
+}
+.highlight {
+    background: lightgreen;
 }
 
+.highlight2 {
+    background: lightcoral;
+}
+.commitscore {
+    margin-left: 200px;
+    font-size: 30px;
+    height: 40px;
+
+
+}
+
+.Footer {
+    color: white;
+    margin-top: 30px;
+    margin-left: 400px;
+    font-size: 30px;
+    width: 50%;
+    height: 40px;
+    flex: 1;
+
+}
+.footer {
+    padding: inherit;
+}
 .navMenu{
     display: grid;
     grid-template-columns: repeat(5,auto);
@@ -30,6 +47,12 @@
     text-align: center;
     justify-content: center;
     font-size: 1.5rem;
+}
+
+.Button{
+    color: black;
+    font-size: 30px;
+
 }
 
 .navMenu-sub{

@@ -30,7 +30,14 @@ class ProjectList extends Component {
                     <tbody>
                         { this.state.projects.map(projects =>
                             <tr>
-                                <td>{projects.id}</td>
+                                <button className="Button" to={projects.url}
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            window.location.href=  window.location.pathname + "/" + projects.id + "/Developers";
+
+                                        }}>{projects.id}</button>
+
                                 <td>{projects.name}</td>
                                 <td>{projects.description}</td>
                                 <td>{projects.created_at}</td>

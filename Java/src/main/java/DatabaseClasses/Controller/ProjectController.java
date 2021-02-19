@@ -1,17 +1,17 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.ConnectToGitlab.Commit.Commit;
-import main.java.ConnectToGitlab.Developer.Developer;
-import main.java.ConnectToGitlab.Issue.Issue;
-import main.java.ConnectToGitlab.MergeRequests.MergeRequest;
-import main.java.DatabaseClasses.DateScore;
-import main.java.DatabaseClasses.Model.Project;
-import main.java.ConnectToGitlab.Project.ProjectConnection;
+import main.java.DatabaseClasses.Model.DateScore;
+import main.java.Model.*;
+import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +23,12 @@ import java.util.List;
 @RequestMapping("api/v1/")
 public class ProjectController {
 
+    // Wants
+    // User name and 2 dates -> list of number comitts per date just list filled with zero
+    // Commits per day get those commits
+    // Notes -> enum
+    //
+
     private final ProjectService projectService;
 
     @Autowired
@@ -30,10 +36,6 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-
-    // Just a couple of examples to show how querying works, should be changed
-
-    // Example of getting projects only with field of name
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
@@ -58,12 +60,30 @@ public class ProjectController {
 
     @GetMapping("projects/{projectId}/developers")
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
+        Project project = projectService.getProject(projectId);
+        if (!project.isInfoSet()) {
+            projectService.setProjectInfo(projectId);
+        }
         return projectService.getProjectDevelopers(projectId);
     }
 
     @GetMapping("projects/{projectId}/issues")
     public List<Issue> getProjectIssues(@PathVariable("projectId") int projectId) {
         return projectService.getProjectIssues(projectId);
+    }
+
+    @GetMapping("setProjectInfo/{projectId}")
+    public void setProjectInfo(@PathVariable int projectId) {
+        projectService.setProjectInfo(projectId);
+
+    }
+
+    @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
+    public List<Issue> getUserIssues(@PathVariable("projectId") int projectId, @PathVariable String end,
+                                     @PathVariable String start, @PathVariable String userName) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getUserIssues(projectId, userName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/description")
@@ -76,47 +96,109 @@ public class ProjectController {
         return projectService.getProjectMRs(projectId);
     }
 
-    @GetMapping("projects/allCommits/{projectId}/{committerName}")
+    @GetMapping("projects/{projectId}/mergeRequests/{userName}/{start}/{end}")
+    public List<MergeRequest> getUsersMergeRequests(@PathVariable("projectId") int projectId,
+                                                    @PathVariable("projectId") String userName,
+                                                    @PathVariable("start") String start,
+                                                    @PathVariable("end") String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getUserMergeRequests(projectId, userName, StartLocalTime, endLocalTime);
+    }
+
+    @GetMapping("projects/{projectId}/MRsAndCommitScoresPerDay/{committerName}/{start}/{end}")
+    public List<DateScore> getUserMRsAndCommitScorePerDay(@PathVariable("projectId") int projectId,
+                                                                        @PathVariable("committerName") String committerName,
+                                                                        @PathVariable("start") String start,
+                                                                        @PathVariable("end")String end) {
+
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime);
+    }
+
+    @GetMapping("projects/{projectId}/Commits/{committerName}/{start}/{end}")
     public List<Commit> getAllUserCommits(@PathVariable("projectId") int projectId,
-                                          @PathVariable("committerName") String committerName) {
-        return projectService.getAllUserCommits(projectId, committerName);
+                                          @PathVariable("committerName") String committerName,
+                                          @PathVariable("start") String start,
+                                          @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getAllUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/numCommits/{projectId}/{committerName}")
-    public int getNumUserCommits(@PathVariable("projectId") int projectId,
-                                 @PathVariable("committerName") String committerName) {
-        return projectService.getNumUserCommits(projectId, committerName);
+    @GetMapping("projects/{projectId}/Commitsarray/{committerName}/{start}/{end}")
+    public List<String> getCommitsArray(@PathVariable("projectId") int projectId,
+                                           @PathVariable("committerName") String committerName,
+                                           @PathVariable("start") String start,
+                                           @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        List<String> commitsArray = new ArrayList<>();
+        commitsArray = projectService.getAllUserCommitsArray(projectId, committerName, StartLocalTime, endLocalTime);
+        return commitsArray;
     }
 
-    @GetMapping("projects/numMergeRequests/{projectId}/{committerName}")
-    public int getNumUserMergeRequests(@PathVariable("projectId") int projectId,
-                                       @PathVariable("committerName") String committerName) {
-        return projectService.getNumUserMergeRequests(projectId, committerName);
+    @GetMapping("projects/{projectId}/Commit/{hash}")
+    public List<Commit> getACommit(@PathVariable("projectId") int projectId,
+                                   @PathVariable("hash") String hash) {
+
+        return projectService.getCommitByHash(projectId, hash);
     }
 
-    @GetMapping("projects/commitScoresPerDay/{projectId}/{committerName}")
-    public List<DateScore> getUserCommitScoresPerDay(@PathVariable("projectId") int projectId,
-                                                     @PathVariable("committerName") String committerName) {
-        LocalDate start = LocalDate.of(2021, 1, 1);
-        LocalDate end = LocalDate.now();
-        // Continue here - change this function so that it accepts start and end LocalDate params
-        // as additional path variables.
-        return projectService.getUserCommitScoresPerDay(projectId, committerName, start, end);
+    @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
+    public List<DateScore> getUserCommitScoresWithDates(@PathVariable("projectId") int projectId,
+                                                        @PathVariable("committerName") String committerName,
+                                                        @PathVariable("start") String start,
+                                                        @PathVariable("end")String end) {
+
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getUserCommitScoresPerDay(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/totalCommitScore/{projectId}/{committerName}")
+    @GetMapping("projects/{projectId}/topTenUserNotes/{committerName}/{start}/{end}")
+    public List<Note> getTopTenUserNotes(@PathVariable("projectId") int projectId,
+                                         @PathVariable("committerName") String committerName,
+                                         @PathVariable("start") String start,
+                                         @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getTopTenUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
+    }
+
+    //TODO: This doesn't work?
+    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
     public double totalCommitScore(@PathVariable("projectId") int projectId,
-                                @PathVariable("committerName") String committerName) {
-        LocalDate start = LocalDate.of(2021, 1, 1);
-        LocalDate end = LocalDate.now();
-        // Continue here - like in the above function, make these two dates path variables.
-        return projectService.getTotalUserCommitScore(projectId, committerName, start, end);
+                                @PathVariable("committerName") String committerName,
+                                @PathVariable("start") String start,
+                                   @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getTotalUserCommitScore(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-//    @GetMapping("projects/{projectId}/developers/{developerId}/graph")
-//    public List<Developer> getDevsGraphData(@PathVariable("projectId") int projectId, @PathVariable("developerId") int developerId) {
-//        return projectService.getDevsCommitsAndScores(projectId, developerId);
-//    }
+    @GetMapping("projects/{projectId}/commit/{commitId}")
+    public Commit getCommit(@PathVariable String commitId, @PathVariable int projectId) {
+        return projectService.getCommit(projectId, commitId);
+    }
 
+    @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
+    public MergeRequest getMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
+        return projectService.getMergeRequest(projectId, mrId);
+    }
+
+
+    //TODO: to get dates from frontend setting
+    @PostMapping("/dates/start")
+    public LocalDate createStartDate(@RequestBody LocalDate date) {
+        // probably should be parsed here, input is not likely to be the localdate object
+        return date;
+    }
+
+    @PostMapping("/dates/end")
+    public LocalDate createEndDate(@RequestBody LocalDate date) {
+        return date;
+    }
 }
 

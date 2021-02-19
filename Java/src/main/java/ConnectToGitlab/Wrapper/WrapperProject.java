@@ -3,6 +3,7 @@ package main.java.ConnectToGitlab.Wrapper;
 import com.google.gson.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

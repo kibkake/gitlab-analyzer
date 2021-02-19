@@ -12,12 +12,6 @@ export const MenuItems=[
         icon: <GoIcons.GoRepo/>
     },
     {
-        title: 'Developers',
-        url: '/Developers',
-        cName: 'nav-links',
-        icon: <HiIcons.HiOutlineUserGroup/>
-    },
-    {
         title: 'Export',
         url: '/Export',
         cName: 'nav-links',

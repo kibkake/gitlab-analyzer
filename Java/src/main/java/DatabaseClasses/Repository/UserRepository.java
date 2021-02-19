@@ -1,6 +1,6 @@
 package main.java.DatabaseClasses.Repository;
 
-import main.java.DatabaseClasses.Model.User;
+import main.java.Model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
