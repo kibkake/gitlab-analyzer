@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.Controller;
 
 import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Model.AllScores;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
@@ -186,6 +187,15 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
     public MergeRequest getMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
         return projectService.getMergeRequest(projectId, mrId);
+    }
+
+    @GetMapping("projects/{projectId}/{username}/{start}/{end}/allTotalScores")
+    public AllScores getAllTotalScores(@PathVariable int projectId, @PathVariable String username,
+                                       @PathVariable String start, @PathVariable String end) {
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+
+        return projectService.getAllScores(projectId, username, startDate, endDate);
     }
 
 }

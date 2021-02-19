@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.Service;
 
 import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Model.AllScores;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
@@ -320,6 +321,12 @@ public class ProjectService {
                 .findAny()
                 .orElse(null);
         return mergeRequest;
+    }
+
+    public AllScores getAllScores(int projectId, String username,
+                                  LocalDate startDate, LocalDate endDate) {
+
+        return new AllScores(); // TODO - temporary.
     }
 
 }
