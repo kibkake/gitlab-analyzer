@@ -167,13 +167,15 @@ public class ProjectController {
         return projectService.getTopTenUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}")
+    //TODO: This doesn't work?
+    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
     public double totalCommitScore(@PathVariable("projectId") int projectId,
-                                @PathVariable("committerName") String committerName) {
-        LocalDate start = LocalDate.of(2021, 1, 1);
-        LocalDate end = LocalDate.now();
-        //TODO: Continue here - like in the above function, make these two dates path variables.
-        return projectService.getTotalUserCommitScore(projectId, committerName, start, end);
+                                @PathVariable("committerName") String committerName,
+                                @PathVariable("start") String start,
+                                   @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getTotalUserCommitScore(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/commit/{commitId}")
@@ -186,5 +188,17 @@ public class ProjectController {
         return projectService.getMergeRequest(projectId, mrId);
     }
 
+
+    //TODO: to get dates from frontend setting
+    @PostMapping("/dates/start")
+    public LocalDate createStartDate(@RequestBody LocalDate date) {
+        // probably should be parsed here, input is not likely to be the localdate object
+        return date;
+    }
+
+    @PostMapping("/dates/end")
+    public LocalDate createEndDate(@RequestBody LocalDate date) {
+        return date;
+    }
 }
 
