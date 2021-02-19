@@ -5,6 +5,7 @@ import Highlight from 'react-highlight'
 import axios from "axios";
 import Popup from "./Popup";
 import {useState,useEffect} from "react";
+import { MenuItems } from "./MenuItem_Developers";
 
 // class CodeDiffTable extends Component{
 function CodeDiffTable() {
@@ -61,10 +62,11 @@ function CodeDiffTable() {
                                 <td>{item.commitScore}</td>
                                 <td>{item.message}</td>
                                 <td>{item.diffs.length} files changed</td>
+
                                 <td>                      
                                     <button onClick={()=> setButtonPopup(true)}> Difference in code</button>
-                                    <Popup trigger={buttonPopup} setTrigger = {setButtonPopup} >
-                                        <Highlight className="highlighted-text">{item.diffs}</Highlight>
+                                    <Popup closeOnOutsideClick={true} trigger={buttonPopup} setTrigger = {setButtonPopup} >
+                                        {item.diffs}
                                     </Popup>
                                 </td>
                             </tr>
@@ -78,6 +80,12 @@ function CodeDiffTable() {
 
 
     // return (
+
+        // <td>{item.diffs.map((test,ind)=>{
+        //     return(
+        //         <div key={ind}>{test.diff}</div>
+        //     )}
+        // )};</td>
     //     <div className="CodeDiffTable">
     //         <Table striped bordered hover>
     //             <tbody>
