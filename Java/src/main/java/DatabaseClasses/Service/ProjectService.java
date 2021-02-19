@@ -184,6 +184,47 @@ public class ProjectService {
         return userCommits;
     }
 
+    public List<String> getAllUserCommitsArray(int projectId, String committerName, LocalDate start, LocalDate end) {
+        Project project = projectRepository.findProjectById(projectId);
+        List<String> commitIds = new ArrayList<String>();
+        List<Commit> projectCommits = project.getCommits();
+        List<String> commitsArray = new ArrayList<>();
+
+        for (LocalDate time = start; time.isBefore(end.plusDays(1)); time = time.plusDays(1)){
+            List<Commit> commits = new ArrayList<>();
+
+            for (Commit currentCommit : projectCommits) {
+                LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+                if (commitDate.compareTo(time) == 0) {
+                    if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
+                            currentCommit.getCommitter_name().equals(committerName)) {
+                        commits.add(currentCommit);
+                        commitIds.add(currentCommit.getId());
+                    }
+                }
+            }
+            commitsArray.add(Integer.toString(commits.size()));
+        }
+        return commitsArray;
+    }
+
+    public List<Commit> getCommitByHash(int projectId, String hash) {
+        Project project = projectRepository.findProjectById(projectId);
+        List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
+        // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
+        List<Commit> userCommits = new ArrayList<Commit>();
+
+        List<Commit> projectCommits = project.getCommits();
+        for (Commit currentCommit : projectCommits) {
+            LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+            if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
+                    currentCommit.getId().equals(hash)) {
+                userCommits.add(currentCommit);
+                commitIds.add(currentCommit.getId());
+            }
+        }
+        return userCommits;
+    }
 
     public List<MergeRequest> getUserMergeRequests(int projectId, String committerName, LocalDate start, LocalDate end) {
         System.out.println("MergeRequests");
@@ -230,7 +271,6 @@ public class ProjectService {
         List<Note> topTenNotes = userNotes.stream().limit(10).collect(Collectors.toList());
         return topTenNotes;
     }
-
 
     public List<Note> getUserNotes(int projectId, String userName, LocalDate start, LocalDate end) {
         Project project = projectRepository.findProjectById(projectId);
