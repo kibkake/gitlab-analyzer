@@ -1,5 +1,7 @@
 import React from 'react'
-import { Bar } from 'react-chartjs-2'
+import { Bar} from 'react-chartjs-2'
+
+
 // creating a barchart
 const BarChart = () => {
     return <div>
@@ -9,21 +11,20 @@ const BarChart = () => {
             //data displayed in graph
             datasets: [
                     {
-                    label: 'code score',
+                    label: 'commits',
                     data: [56, 34, 5, 50, 12],
                     backgroundColor:'orange',
-                    borderColor:[
-                        'rgba(255,99,132,0.2',
-                        'rgba(255,99,132,0.2',
-                        'rgba(255,99,132,0.2',
-                        'rgba(255,99,132,0.2',
-                        'rgba(255,99,132,0.2',
-                    ],
-                    borderWidth:5,
+                    borderColor:'black'
                     },
                 {
-                    label: 'word # of comments',
+                    label: 'comments',
                     data:[5,6,25,12,4],
+                    backgroundColor: 'red',
+                    borderColor: 'black',
+                },
+                {
+                    label: 'merge requests',
+                    data:[12,1,20,7,10],
                     backgroundColor: 'cyan',
                     borderColor: 'black',
                 }
@@ -34,11 +35,15 @@ const BarChart = () => {
              options ={{
                 maintainAspectRatio: false,
                  scales:{
+                     xAxes: [{
+                         stacked: true
+                     }],
                     yAxes:[
                         {
-                            ticks:{
+                            stacked:true
+                            /*ticks:{
                                 beginAtZero: true,
-                            }
+                            }*/
                         }
                     ]
                  }
