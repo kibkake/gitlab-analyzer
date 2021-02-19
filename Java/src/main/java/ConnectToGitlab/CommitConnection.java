@@ -3,10 +3,14 @@ import main.java.Model.Commit;
 import main.java.Model.Diff;
 import main.java.Model.User;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Calls to GitLab Api to get Commit information
@@ -21,11 +25,23 @@ public class CommitConnection {
     public static List<Commit> getProjectCommits(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
-        String myUrl = user.getServerUrl() +"/projects/" + projectId + "/repository/commits?access_token=" + user.getToken();
-        // https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
-        ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {});
-        List<Commit> commits = commitsResponse.getBody();
+        String pageNumber = "1";
+        List<Commit> commits = new ArrayList<>();
+        do {
+            String myUrl = user.getServerUrl() + "/projects/" + projectId +
+                    "/repository/commits?all=true&per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
+            // https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
+            ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
+                    HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {
+                    });
+
+            commits.addAll(Objects.requireNonNull(commitsResponse.getBody()));
+            HttpHeaders headers = commitsResponse.getHeaders();
+            pageNumber = headers.getFirst("X-Next-Page");
+            System.out.println(headers);
+            System.out.println(pageNumber);
+        }while (!pageNumber.equals(""));
+
         for (Commit singleCommit : commits) {
             singleCommit.setProjectId(projectId); // sets projectId if removing set project id a different way
             singleCommit.setDiffs(getSingleCommitDiffs(projectId, singleCommit.getId()));
