@@ -189,9 +189,12 @@ public class ProjectController {
         return projectService.getMergeRequest(projectId, mrId);
     }
 
-    @GetMapping("projects/{projectId}/{username}/{start}/{end}/allTotalScores")
-    public AllScores getAllTotalScores(@PathVariable int projectId, @PathVariable String username,
-                                       @PathVariable String start, @PathVariable String end) {
+    @GetMapping("projects/{projectId}/allTotalScores/{username}/{start}/{end}")
+    public AllScores allTotalScores(@PathVariable ("projectId") int projectId,
+                                       @PathVariable ("username") String username,
+                                       @PathVariable ("start") String start,
+                                       @PathVariable ("end") String end) {
+
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
 

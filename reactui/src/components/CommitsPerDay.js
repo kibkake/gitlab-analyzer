@@ -24,7 +24,7 @@ class CommitsPerDay extends Component{
         var date = str.split("/")[6];
 
 
-        let url2 = 'http://localhost:8080/api/v1/projects/' + repNum + '/Commits/' + userName + '/' + date + "/" + date
+        let url2 = 'http://localhost:8090/api/v1/projects/' + repNum + '/Commits/' + userName + '/' + date + "/" + date
         fetch(url2, {
             method: 'GET',
             headers: {

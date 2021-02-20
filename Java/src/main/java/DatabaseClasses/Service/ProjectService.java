@@ -323,10 +323,34 @@ public class ProjectService {
         return mergeRequest;
     }
 
+    public double getTotalUserMRScore(int projectId, String username,
+                                       LocalDate start, LocalDate end) {
+        // TODO - write function.
+
+        return 0;
+    }
+
+    public double getTotalUserCommentScore(int projectId, String username,
+                                       LocalDate start, LocalDate end) {
+        // TODO - write function.
+
+        return 0;
+    }
+
     public AllScores getAllScores(int projectId, String username,
                                   LocalDate startDate, LocalDate endDate) {
+        AllScores allScores = new AllScores(startDate, endDate, 0, 0, 0);
+        double totalCommitScore = this.getTotalUserCommitScore(projectId, username,
+                                                               startDate, endDate);
+        allScores.setTotalCommitScore(totalCommitScore);
+        double totalMergeRequestScore = this.getTotalUserMRScore(projectId, username,
+                                                                 startDate, endDate);
+        allScores.setTotalMergeRequestScore(totalMergeRequestScore);
+        double totalCommentScore = this.getTotalUserCommentScore(projectId, username, startDate,
+                                                             endDate);
+        allScores.setTotalCommentScore(totalCommentScore);
 
-        return new AllScores(); // TODO - temporary.
+        return allScores;
     }
 
 }
