@@ -25,6 +25,30 @@ public class AllScores {
         this.totalMergeRequestScore = totalMergeRequestScore;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public double getTotalCommentScore() {
+        return totalCommentScore;
+    }
+
+    public double getTotalMergeRequestScore() {
+        return totalMergeRequestScore;
+    }
+
     public void setTotalCommitScore(double totalCommitScore) {
         this.totalCommitScore = totalCommitScore;
     }
