@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const REST_API = "http://142.58.22.166:8090/api/v1/user";
+const REST_API = "/api/v1/user";
 
 export default class LoginService {
 
