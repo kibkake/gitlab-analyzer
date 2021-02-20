@@ -1,6 +1,8 @@
 import React from 'react'
-import { Bar } from 'react-chartjs-2'
-// creating a barchart
+import { Bar} from 'react-chartjs-2'
+
+
+// creating a stacked barchart for mr/commits
 const BarChart = () => {
     return <div>
         <Bar data={{
@@ -9,21 +11,14 @@ const BarChart = () => {
             //data displayed in graph
             datasets: [
                     {
-                    label: 'code score',
-                    data: [56, 34, 5, 50, 12],
+                    label: 'commits',
+                    data: [5, 3, 7, 8, 3],
                     backgroundColor:'orange',
-                    borderColor:[
-                        'rgba(255,99,132,0.2',
-                        'rgba(255,99,132,0.2',
-                        'rgba(255,99,132,0.2',
-                        'rgba(255,99,132,0.2',
-                        'rgba(255,99,132,0.2',
-                    ],
-                    borderWidth:5,
+                    borderColor:'black'
                     },
                 {
-                    label: 'word # of comments',
-                    data:[5,6,25,12,4],
+                    label: 'merge requests',
+                    data:[7,5,9,10,6],
                     backgroundColor: 'cyan',
                     borderColor: 'black',
                 }
@@ -34,8 +29,12 @@ const BarChart = () => {
              options ={{
                 maintainAspectRatio: false,
                  scales:{
+                     xAxes: [{
+                         stacked: true
+                     }],
                     yAxes:[
                         {
+                            stacked:true,
                             ticks:{
                                 beginAtZero: true,
                             }
