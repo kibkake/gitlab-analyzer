@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import BarChart from 'react-bar-chart';
 import axios from "axios";
+import { Bar} from 'react-chartjs-2'
 
+/*
 const margin = {top: 20, right: 20, bottom: 30, left: 40};
 
 class CommentChart extends Component {
@@ -32,7 +33,7 @@ class CommentChart extends Component {
             console.error(error);
         });
     }
-
+/*
     render() {
         var output = this.state.commentScore.map(function(item) {
             return {
@@ -46,8 +47,8 @@ class CommentChart extends Component {
             <div ref='root'>
                 <div style={{width: '50%'}}>
                     <BarChart ylabel='Score'
-                              width={1500}
-                              height={500}
+                              width={200}
+                              height={200}
                               margin={margin}
                               data={output}
 
@@ -56,6 +57,38 @@ class CommentChart extends Component {
             </div>
         );
     }
+}*/
+// creating a stacked barchart for mr/commits
+const CommentChart = () => {
+    return <div>
+        <Bar data={{
+            //labels x for the axis
+            labels: ['time', 'time', 'time', 'time', 'time'],
+            //data displayed in graph
+            datasets: [
+                {
+                    label: 'comments',
+                    data: [56, 34, 5, 50, 12],
+                    backgroundColor:'lightGreen',
+                    borderColor:'black'
+                },
+            ]
+        }}
+             height={200}
+             width={200}
+             options ={{
+                 maintainAspectRatio: false,
+                 scales:{
+                     yAxes:[
+                         {
+                             ticks:{
+                                 beginAtZero: true,
+                             }
+                         }
+                     ]
+                 }
+             }}
+        />
+    </div>
 }
-
 export default CommentChart

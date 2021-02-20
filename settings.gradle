@@ -1,4 +1,0 @@
-rootProject.name = 'gitLabanalyzer'
-
-include 'reactui'
-include 'Java'

@@ -1,5 +1,6 @@
 import SummaryScoreTable from "../components/SummaryScoreTable";
 import Navbar_Developers from "../components/Navbar_Developers";
+import BarChart from "../components/Chart";
 import StackedBarChart from "../components/StackedBarChart";
 import React from "react";
 import CommentChart from "../components/CommentChart";
@@ -19,8 +20,8 @@ function Summary(){
             <br>
             </br>
 
-            <h4 style={{textAlign:'center'}}>Code / MR score per day</h4>
-            <StackedBarChart/>
+            <h4 style={{textAlign:'center'}}>Summary of Mr/Commits</h4>
+            <BarChart/>
             <br>
             </br>
 
