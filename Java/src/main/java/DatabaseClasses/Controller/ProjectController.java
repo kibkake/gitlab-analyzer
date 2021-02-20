@@ -13,6 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class manages API mapping for functions to be called from frontend.
@@ -199,6 +200,17 @@ public class ProjectController {
     @PostMapping("/dates/end")
     public LocalDate createEndDate(@RequestBody LocalDate date) {
         return date;
+    }
+
+    @PostMapping("/setdate")
+    public String setDate(@RequestBody Map<String, String> requestBody) {
+
+        if(requestBody.get("starttime") != null) {
+            System.out.println(requestBody.get("starttime"));
+        }
+        System.out.println("got it!!");
+        return "in";
+
     }
 }
 
