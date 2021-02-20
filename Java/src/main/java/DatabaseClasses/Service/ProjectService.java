@@ -114,10 +114,10 @@ public class ProjectService {
 
     public double getTotalUserCommitScore(int projectId, String committerName,
                                        LocalDate start, LocalDate end) {
-        List<DateScore> individualCommitScores = this.getUserCommitScoresPerDay(projectId, committerName,
+        List<DateScore> individualDateScores = this.getUserCommitScoresPerDay(projectId, committerName,
                                                                                 start, end);
         double totalCommitScore = 0;
-        for (DateScore currentDateScore : individualCommitScores) {
+        for (DateScore currentDateScore : individualDateScores) {
             totalCommitScore += currentDateScore.getCommitScore();
         }
         return totalCommitScore;
@@ -325,9 +325,12 @@ public class ProjectService {
 
     public double getTotalUserMRScore(int projectId, String username,
                                        LocalDate start, LocalDate end) {
-        // TODO - write function.
-
-        return 0;
+        double totalMRScore = 0.0;
+        List<MergeRequest> userMRs = this.getUserMergeRequests(projectId, username, start, end);
+        for (MergeRequest currentMR: userMRs) {
+            totalMRScore += currentMR.getMrScore();
+        }
+        return totalMRScore;
     }
 
     public double getTotalUserCommentScore(int projectId, String username,
