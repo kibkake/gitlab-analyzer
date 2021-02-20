@@ -13,12 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 
-import javax.xml.datatype.Duration;
 import java.util.Arrays;
 import java.io.PrintWriter;
 import java.util.List;
@@ -28,7 +25,6 @@ import java.util.List;
  */
 @SpringBootApplication
 public class Main {
-
 
     @Autowired
     private WrapperProjectRepository projectRepository;
