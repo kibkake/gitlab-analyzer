@@ -61,7 +61,7 @@ class CommitChart extends Component {
             var arr=[];
 
 //http://localhost:8090/getuserstats/6/arahilin/1-11-2021/2-22-2021
-            let url3 = ' http://localhost:8090/api/v1/projects/' + projNum + '/Commitsarray/' + developerName + '/' +
+            let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + developerName + '/' +
                 completeFromDate + "/" + completeToDate
             const result = await fetch(url3, {
                 method: 'GET',

@@ -23,7 +23,7 @@ class CommentChart extends Component {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
         var developer = pathArray[4];
-        axios.get("http://localhost:8090/api/v1/projects/" + id + "/topTenUserNotes/"+ developer +"/2021-01-01/2021-02-15")
+        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/"+ developer +"/2021-01-01/2021-02-15")
             .then(response => {
                 const commentInfo = response.data;
                 this.setState({commentScore: commentInfo})
