@@ -31,6 +31,9 @@ public class ProjectController {
     //
 
     private final ProjectService projectService;
+    private String startDate = "2021-01-11T20:59:00.000Z";
+    private String endDate = "2021-02-22T20:59:00.000Z";
+
 
     @Autowired
     public ProjectController(ProjectService projectService) {
@@ -202,15 +205,14 @@ public class ProjectController {
         return date;
     }
 
-    @PostMapping("/setdate")
-    public String setDate(@RequestBody Map<String, String> requestBody) {
-
+    @PostMapping("/setstartdate")
+    public void setDate(@RequestBody Map<String, String> requestBody) {
         if(requestBody.get("starttime") != null) {
-            System.out.println(requestBody.get("starttime"));
+            startDate = requestBody.get("starttime");
+            System.out.println(startDate);
         }
-        System.out.println("got it!!");
-        return "in";
-
     }
+
+
 }
 
