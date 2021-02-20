@@ -6,26 +6,25 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  * Calls to GitLab Api to get Commit information
  */
 public class CommitConnection {
 
+    /*  TODO change to autowired this is the proper way using beans, and not creating a rest template over and over
+        @Autowired
+        private RestTemplate restTemplate;
+     */
 
-    public static List<Commit> getProjectCommitsFromGitLab(int projectId) {
+    public static List<Commit> getProjectCommits(int projectId) {
         User user = User.getInstance();
-
-        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+        RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Commit> commits = new ArrayList<>();
         do {
@@ -51,7 +50,7 @@ public class CommitConnection {
 
     public static List<Diff> getSingleCommitDiffs(Integer projectId, String commitHash) {
         User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+        RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Diff> diffs = new ArrayList<>();
         do {
@@ -69,12 +68,4 @@ public class CommitConnection {
         }
         return diffs;
     }
-    private static ClientHttpRequestFactory getClientHttpRequestFactory() {
-        int timeout = 12000;
-        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
-                new HttpComponentsClientHttpRequestFactory();
-        clientHttpRequestFactory.setConnectTimeout(timeout);
-        return clientHttpRequestFactory;
-    }
-
 }

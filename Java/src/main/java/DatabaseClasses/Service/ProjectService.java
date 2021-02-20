@@ -1,11 +1,11 @@
 package main.java.DatabaseClasses.Service;
 
-import main.java.ConnectToGitlab.DeveloperConnection;
-import main.java.ConnectToGitlab.IssueConnection;
-import main.java.ConnectToGitlab.MergeRequestConnection;
 import main.java.DatabaseClasses.Model.DateScore;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.CommitConnection;
+import main.java.ConnectToGitlab.DeveloperConnection;
+import main.java.ConnectToGitlab.IssueConnection;
+import main.java.ConnectToGitlab.MergeRequestConnection;
 import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
@@ -80,14 +80,20 @@ public class ProjectService {
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
-
-        project.setDevelopers(DeveloperConnection.getProjectDevelopersFromGitLab(projectId));
-        project.setCommits(CommitConnection.getProjectCommitsFromGitLab(projectId));
-        project.setMergedRequests(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
-        project.setIssues(IssueConnection.getProjectIssuesFromGitLab(projectId));
+        project.setDevelopers(DeveloperConnection.getProjectDevelopers(projectId));
+        project.setCommits(CommitConnection.getProjectCommits(projectId));
+        project.setMergedRequests(MergeRequestConnection.getProjectMergeRequests(projectId));
+        project.setIssues(IssueConnection.getProjectIssues(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
     }
+
+    public void setProjectCommits(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+    }
+
+
 
     public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
                                                      LocalDate start, LocalDate end) {

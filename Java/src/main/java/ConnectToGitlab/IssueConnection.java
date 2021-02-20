@@ -8,20 +8,17 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 public class IssueConnection {
 
-    public static List<Issue> getProjectIssuesFromGitLab(int projectId) {
+    public static List<Issue> getProjectIssues(int projectId) {
         User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+        RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Issue> issues = new ArrayList<>();
         do {
@@ -45,7 +42,7 @@ public class IssueConnection {
 
     private static List<Note> getIssueNotes(int projectId , int issueIid) {
         User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+        RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Note> notes = new ArrayList<>();
         do {
@@ -64,12 +61,5 @@ public class IssueConnection {
             note.setWordCount(note.countWords(note.getBody()));
         }
         return notes;
-    }
-    private static ClientHttpRequestFactory getClientHttpRequestFactory() {
-        int timeout = 12000;
-        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
-                new HttpComponentsClientHttpRequestFactory();
-        clientHttpRequestFactory.setConnectTimeout(timeout);
-        return clientHttpRequestFactory;
     }
 }
