@@ -7,12 +7,15 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 
 /**
  * Calls to GitLab Api to get Project information
@@ -25,9 +28,9 @@ public class ProjectConnection {
     private RestTemplate restTemplate;
  */
 
-    public static List<Project> getAllProjects() {
+    public static List<Project> getAllProjectsFromGitLab() {
         User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         String pageNumber = "1";
         List<Project> projects = new ArrayList<>();
         do {
@@ -43,5 +46,12 @@ public class ProjectConnection {
         } while (!pageNumber.equals(""));
 
         return projects;
+    }
+    private static ClientHttpRequestFactory getClientHttpRequestFactory() {
+        int timeout = 12000;
+        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
+                new HttpComponentsClientHttpRequestFactory();
+        clientHttpRequestFactory.setConnectTimeout(timeout);
+        return clientHttpRequestFactory;
     }
 }

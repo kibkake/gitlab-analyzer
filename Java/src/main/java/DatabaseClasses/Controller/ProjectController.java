@@ -7,11 +7,8 @@ import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,7 +36,7 @@ public class ProjectController {
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = ProjectConnection.getAllProjects();
+            List<Project> projects = ProjectConnection.getAllProjectsFromGitLab();
             projectService.saveNewProjects(projects);
             return projects;
         } else {

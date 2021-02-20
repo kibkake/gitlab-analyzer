@@ -5,16 +5,19 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 public class MergeRequestConnection {
 
-    public static List<MergeRequest> getProjectMergeRequests(int projectId) {
-        RestTemplate restTemplate = new RestTemplate();
+    public static List<MergeRequest> getProjectMergeRequestsFromGitLab(int projectId) {
+        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         User user = User.getInstance();
         String pageNumber = "1";
         List<MergeRequest> mergeRequests = new ArrayList<>();
@@ -43,7 +46,7 @@ public class MergeRequestConnection {
 
     public static List<Developer> getMergeRequestContributors(int projectId, int merge_request_iid) {
         User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         String url = user.getServerUrl() +"/projects/" + projectId + "/merge_requests/" + merge_request_iid
                 + "/participants?access_token=" + user.getToken();
 
@@ -54,7 +57,7 @@ public class MergeRequestConnection {
 
     public static List<Commit> getMergeRequestCommits(int projectId, int mergeRequestIid) {
         User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         String url = (user.getServerUrl() +"projects/"  + projectId  + "/merge_requests/" + mergeRequestIid + "/commits"
                 + "?access_token=" + user.getToken());
 
@@ -80,7 +83,7 @@ public class MergeRequestConnection {
 
     public static List<Note> getMergeRequestNotes(int projectId, int mergeRequestIid) {
         User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         String pageNumber = "1";
         List<Note> mergeNotes = new ArrayList<>();
         do {
@@ -104,7 +107,7 @@ public class MergeRequestConnection {
 
     public static List<Diff> getMergeDiffs(int projectId, int mergeRequestIid) {
         User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         String pageNumber = "1";
         List<MergeRequestDiff> mergeRequestDiff = new ArrayList<>();
         do {
@@ -125,6 +128,14 @@ public class MergeRequestConnection {
             diff.calculateAndSetDiffScore();
         }
         return mrDiffs;
+    }
+
+    private static ClientHttpRequestFactory getClientHttpRequestFactory() {
+        int timeout = 12000;
+        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
+                new HttpComponentsClientHttpRequestFactory();
+        clientHttpRequestFactory.setConnectTimeout(timeout);
+        return clientHttpRequestFactory;
     }
 
 }
