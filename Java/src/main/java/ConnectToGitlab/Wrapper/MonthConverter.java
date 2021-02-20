@@ -3,20 +3,21 @@
 public class MonthConverter {
 
     public static int convertLetterToInt(String month) {
-        return switch (month) {
-            case "Jan" -> 1;
-            case "Feb" -> 2;
-            case "Mar" -> 3;
-            case "Apr" -> 4;
-            case "May" -> 5;
-            case "Jun" -> 6;
-            case "Jul" -> 7;
-            case "Aug" -> 8;
-            case "Sep" -> 9;
-            case "Oct" -> 10;
-            case "Nov" -> 11;
-            default -> 12;
+        int num=0;
+        switch (month) {
+            case "Jan" :num=1; break;
+            case "Feb" : num=2;break;
+            case "Mar" : num=3;break;
+            case "Apr" : num=4;break;
+            case "May" : num=5;break;
+            case "Jun" : num=6;break;
+            case "Jul" : num=7;break;
+            case "Aug" : num=8;break;
+            case "Sep" : num=9;break;
+            case "Oct" : num=10;break;
+            case "Nov" : num=11;break;
+            default : num=12;break;
         };
-
+        return num;
     }
 }*/

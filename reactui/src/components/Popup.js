@@ -6,11 +6,15 @@ function Popup(props){
         <div className="popup">
             <div className="popup-inner">
                 <button className="close-btn" onClick={()=> props.setTrigger(false)}>close</button>
-                {/* {React.Children.map(props.children,child=>(
-                    <div>{child.new_path}</div>
-
-                ))} */}
-                {props.children}
+                {props.children.map((item,index)=>{
+                    return(
+                        <ul key={index}>
+                            <h5 className="filename">{item.new_path}</h5>
+                            <li className="PopupCode">{item.diff}</li>
+                        </ul>
+                        
+                    )
+                })}
             </div>
         </div>
     ) :"";

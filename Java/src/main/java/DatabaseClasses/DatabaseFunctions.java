@@ -58,9 +58,7 @@ public class DatabaseFunctions {
 
     /**
      * Creates a user account with an optional token and stores it securely on the database.
-     * username the unique username to be created
-     * password the password for the account
-     * token (optional) the token used to access gitlab api.
+     * @param user
      */
     public static void createUserAccount(User user){
         MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
@@ -82,6 +80,40 @@ public class DatabaseFunctions {
     }
 
     /**
+     * changes the password of a user from the users collection in MongoDB
+     * @param user
+     */
+    public static void changePassword(User user){
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+        String username = user.getUsername();
+        String password = user.getPassword();
+
+        // Setup filter and upsert options so that usernames remain unique.
+        Bson filter = eq("username", username);
+        // sets the password
+        Bson updateOperation = set("password", Authenticator.encrypt(password));
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        userCollection.updateOne(filter, updateOperation, options);
+    }
+
+    /**
+     * changes the user token from the users collection from MongoDB
+     * @param user
+     */
+    public static void changeToken(User user){
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+        String username = user.getUsername();
+        String token = user.getToken();
+
+        // Setup filter and upsert options so that usernames remain unique.
+        Bson filter = eq("username", username);
+        // sets the token
+        Bson updateOperation = set("token", token);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        userCollection.updateOne(filter, updateOperation, options);
+    }
+
+    /**
      * retrieves information regarding the users from the database. Usually, only used for testing purposes.
      * @param username the unique username of the user
      * @return a line by line string of the entries of the username, encrypted password, and token from the database.
@@ -89,7 +121,11 @@ public class DatabaseFunctions {
     public static User retrieveUserInfo(String username){
         MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
         Document userDoc = userCollection.find(eq("username", username)).first();
-//        return user.getString("username")+"\n"+user.getString("password")+"\n"+user.getString("token");
+        if(userDoc==null){
+            User noUser = new User();
+            noUser.setPassword("NaN");
+            return noUser;
+        }
         User foundUser = new User();
         foundUser.setUsername(userDoc.getString("username"));
         foundUser.setPassword(userDoc.getString("password"));
@@ -108,6 +144,7 @@ public class DatabaseFunctions {
         Document user = usersCollection.find(eq("username", username))
                 .projection(Projections.fields(Projections.include("password"), Projections.excludeId()))
                 .first();
+        if(user == null) return false;
         String pass = user.getString("password");
         // matches encrypted password for security reasons
         return Authenticator.encrypt(password).equals(pass);
@@ -145,6 +182,24 @@ public class DatabaseFunctions {
         Bson updateOperation = set("token", token);
         UpdateOptions options = new UpdateOptions().upsert(true);
         userCollection.updateOne(filter, updateOperation, options);
+    }
+
+    public static void setUserLoggedInStatus(String username, boolean status) {
+        MongoCollection<Document> userCollection = gitlabDB.getCollection("users");
+        Bson filter = eq("username", username);
+        Bson updateOperation = set("isLoggedIn", status);
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        userCollection.updateOne(filter, updateOperation, options);
+    }
+
+    public static boolean getUserLoggedInStatus(String username) {
+        MongoCollection<Document> usersCollection = gitlabDB.getCollection("users");
+
+        Document user = usersCollection.find(eq("username", username))
+                .projection(Projections.fields(Projections.include("isLoggedIn"), Projections.excludeId()))
+                .first();
+
+        return user.getBoolean("isLoggedIn");
     }
 
     /**

@@ -1,28 +1,41 @@
 // class CodeDiffTable extends Component{
 import {Table} from "react-bootstrap";
-import React from "react";
+import React, {Component} from "react";
+import axios from "axios";
 
-function SummaryScoreTable() {
-    // TODO: Do not delete, will be used once the API is set
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         score:[]
-    //     }
-    // }
-    //
-    // componentDidMount() {
-    //     ProjectService.getCodeDiff().then((response) => {
-    //         this.setState({WrapperUser: response.data})??
-    //     });
-    // }
 
-    //Fake data for table creation testing
-    const scoreSummary = [
-        {commitScore:3, scoreMR: 204, wordCountComment: 100, numCommentPerDay: 1},
-        {commitScore:2, scoreMR: 12, wordCountComment: 200, numCommentPerDay: 0.5},
-    ];
+class SummaryScoreTable extends Component{
+     constructor(props) {
+         super(props);
+         this.state = {
+             scoreSummary:[]
+         }
+     }
 
+     componentDidMount() {
+         const path1 = window.location.pathname;
+         const id = path1.split("/")[2];
+         const developer = path1.split("/")[4];
+
+         //request ref: http://localhost:8080/api/v1/projects/Repo/totalCommitScore/Developers/01-01-2021/02-15-2021
+         //the current http request returns error for total commit score
+         //TODO: This mapping request can't be used for here, the all score should be sent altogether
+         //for commit, MR, word...
+         axios.get("http://localhost:8080/api/v1/projects/" + id + "/totalCommitScore/"+ developer +"/01-01-2021/02-15-2021")
+             .then(response => {
+                const scoreSummary = response.data
+                this.setState({scoreSummary})
+             })
+     }
+
+//Fake data until getting the data from backend
+// const scoreSummary = [
+//    {commitScore:3, scoreMR: 204, wordCountComment: 100},
+//    {commitScore:2, scoreMR: 12, wordCountComment: 200},
+// ];
+
+
+   render () {
     return (
         <div className="CodeDiffTable">
             <Table striped bordered hover>
@@ -30,16 +43,13 @@ function SummaryScoreTable() {
                 <tr>
                     <td>Commit</td>
                     <td>Merge Request</td>
-                    <td>Word Count for Comments</td>
-                    <td>Average # of Comments per Day</td>
+                    {/*<td>Word Count for Comments</td>*/}
                 </tr>
                 {
-                    scoreSummary.map((item, index)=>
+                    this.state.scoreSummary.map((item, index)=>
                         <tr key ={index}>
                             <td>{item.commitScore}</td>
                             <td>{item.scoreMR}</td>
-                            <td>{item.wordCountComment}</td>
-                            <td>{item.numCommentPerDay}</td>
                             </tr>
                     )}
                 </tbody>
@@ -47,6 +57,7 @@ function SummaryScoreTable() {
 
         </div>
     );
+   }
 }
 
 export default SummaryScoreTable;

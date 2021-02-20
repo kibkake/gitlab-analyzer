@@ -29,7 +29,20 @@ public class UserService {
         userRepository.createUserAccount(user);
     }
 
+    public void changePassword(User user){userRepository.changePassword(user);}
+
+    public void changeToken(User user){userRepository.changeToken(user);}
+
     public User retrieveUserInfo(String username) {
         return userRepository.retrieveUserInfo(username);
+    }
+
+    public String retrieveUserPassword(String username) {
+        User user = userRepository.retrieveUserInfo(username);
+        return user.getPassword();
+    }
+
+    public boolean retrieveUserIsLoggedIn(String username) {
+        return userRepository.retrieveUserInfo(username).isLoggedIn();
     }
 }

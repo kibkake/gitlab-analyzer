@@ -7,8 +7,7 @@ import Navbar_Developers from "../components/Navbar_Developers";
 
 function Commits(){
 
-    return(
-
+    return (
         <div classname='Commits'>
             <Navbar_Developers/>
             <h1 style={{textAlign:'center'}}>Code Contribution</h1>
@@ -25,10 +24,7 @@ function Commits(){
             <br></br>
             <FullDiffTable/>
         </div>
-
-
     )
-
 }
 
 export default Commits;
