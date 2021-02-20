@@ -51,7 +51,6 @@ public class WrapperProject {
         URL url = new URL(MAIN_URL + "/" + ID + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
         String reply = "";
@@ -74,7 +73,6 @@ public class WrapperProject {
         URL url = new URL(MAIN_URL + "/" + ID + "/repository/commits" +  "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
         String reply = "";
@@ -114,28 +112,33 @@ public class WrapperProject {
      * @param projectId the id of the project.
      */
     public List<WrapperMergedMergeRequest> getMergedMergeRequestsFromServer(String token, int projectId) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged" + "&access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged&per_page=100&page=1" + "&access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
         int pages = Integer.parseInt(connection.getHeaderField("X-Total-Pages"));
-        System.out.println(pages);
-        connection.disconnect();
 
         Gson gson = new Gson();
         List<WrapperMergedMergeRequest> mergerRequests = new ArrayList<>();
-        for (int p = 0; p < pages; p++) {
-            URL url2 = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged" + "&page=" + p + "&access_token=" + token);
-            HttpURLConnection connection2 = makeConnection(url2);
-            connection2.setRequestMethod("GET");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
-            String reply = "";
-            for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+        BufferedReader bufferedReader;
+        String reply = "";
+
+        for (int p = 1; p <= pages; p++) {
+            if(p == 1) {
+                bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                reply = "";
+                for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+
+            }else{
+                url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged&per_page=100&page=" + p + "&access_token=" + token);
+                connection = makeConnection(url);
+                connection.setRequestMethod("GET");
+                bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                reply = "";
+                for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+            }
+
+            System.out.println(p);
             System.out.println(reply);
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            connection.disconnect();
             JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
 
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -159,6 +162,8 @@ public class WrapperProject {
                 mergerRequests.add(mergeRequest);
             }
         }
+        System.out.println("size: " + mergerRequests.size());
+        connection.disconnect();
         return mergerRequests;
     }
 
@@ -170,7 +175,6 @@ public class WrapperProject {
         URL url = new URL(MAIN_URL + "/" + ID + "/issues" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
@@ -226,7 +230,7 @@ public class WrapperProject {
         URL url = new URL(MAIN_URL + "/" + ID + "/members" +"?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
+        //connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
         String reply = "";

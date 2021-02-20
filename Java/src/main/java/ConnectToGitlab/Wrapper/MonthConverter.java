@@ -2,7 +2,7 @@ package main.java.ConnectToGitlab.Wrapper;
 
 public class MonthConverter {
 
-    public static int convertLetterToInt(String month) {
+/*    public static int convertLetterToInt(String month) {
         return switch (month) {
             case "Jan" -> 1;
             case "Feb" -> 2;
@@ -18,5 +18,5 @@ public class MonthConverter {
             default -> 12;
         };
 
-    }
+    }*/
 }
