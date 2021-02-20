@@ -9,7 +9,7 @@ class ProjectList extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/api/v1/projects')
+        axios.get('http://localhost:8090/api/v1/projects')
             .then(response => {
                 const projects = response.data
                 this.setState({projects})

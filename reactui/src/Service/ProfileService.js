@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const REST_API = "http://localhost:8080/api/v1/user";
+const REST_API = "http://localhost:8090/api/v1/user";
 
 export default class ProfileService {
 

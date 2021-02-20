@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const PROJECT_URL = "http://localhost:8080/api/v1/";
+const PROJECT_URL = "http://localhost:8090/api/v1/";
 
 /*
   This class contains methods for sending HTTP requests to Apis by spring.
