@@ -37,12 +37,8 @@ public class Main {
         User user = User.getInstance();
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
-        List<Issue> mrs = IssueConnection.getProjectIssues(11);
-        System.out.println(mrs.size());
-//        List<Commit> cs = CommitConnection.getProjectCommits(11);
-//        System.out.println(cs);
-//        System.out.println(cs.size());
-//        SpringApplication.run(Main.class,args);
+
+        SpringApplication.run(Main.class,args);
     }
 
     /**

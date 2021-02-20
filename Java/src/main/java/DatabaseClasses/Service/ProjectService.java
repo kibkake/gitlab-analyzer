@@ -76,14 +76,15 @@ public class ProjectService {
         return numTotalMRs;
     }
 
+    @Transactional(timeout = 1200) // 20 min
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
-//        project.setDevelopers(DeveloperConnection.getProjectDevelopers(projectId));
-//        project.setCommits(CommitConnection.getProjectCommits(projectId));
+        project.setDevelopers(DeveloperConnection.getProjectDevelopers(projectId));
+        project.setCommits(CommitConnection.getProjectCommits(projectId));
         project.setMergedRequests(MergeRequestConnection.getProjectMergeRequests(projectId));
-//        project.setIssues(IssueConnection.getProjectIssues(projectId));
-//        project.setInfoSet(true);
+        project.setIssues(IssueConnection.getProjectIssues(projectId));
+        project.setInfoSet(true);
         projectRepository.save(project);
     }
 
