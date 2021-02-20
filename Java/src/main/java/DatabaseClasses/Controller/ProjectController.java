@@ -206,13 +206,20 @@ public class ProjectController {
     }
 
     @PostMapping("/setstartdate")
-    public void setDate(@RequestBody Map<String, String> requestBody) {
+    public void setStartDate(@RequestBody Map<String, String> requestBody) {
         if(requestBody.get("starttime") != null) {
             startDate = requestBody.get("starttime");
-            System.out.println(startDate);
+            System.out.println("starttime: " + startDate);
         }
     }
 
+    @PostMapping("/setenddate")
+    public void setEndDate(@RequestBody Map<String, String> requestBody) {
+        if(requestBody.get("endtime") != null) {
+            endDate = requestBody.get("endtime");
+            System.out.println("endtime: " + endDate);
+        }
+    }
 
 }
 
