@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const REST_API = "http://localhost:8090/api/v1/user";
+const REST_API = "http://127.0.1.1:8090/api/v1/user";
 
 export default class LoginService {
 
