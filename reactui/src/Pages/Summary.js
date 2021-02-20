@@ -20,8 +20,8 @@ function Summary(){
             <br>
             </br>
 
-            <h4 style={{textAlign:'center'}}>Summary of Mr/Commits</h4>
-            <BarChart/>
+            <h4 style={{textAlign:'center'}}>Score of Commits/Merge Requests</h4>
+            <StackedBarChart/>
             <br>
             </br>
 

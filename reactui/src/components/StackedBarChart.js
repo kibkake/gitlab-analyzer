@@ -18,8 +18,8 @@ export default class StackedBarChart extends PureComponent {
         var id = pathArray[2];
         var developer = pathArray[4];
 
-        //request ref: http://localhost:8080/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-10
-        axios.get("http://localhost:8080/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
+        //request ref: http://localhost:8080/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-22
+        axios.get("http://localhost:8080/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-22")
             .then(response => {
                 const score = response.data
                 this.setState({codeScore: score})
@@ -34,17 +34,44 @@ export default class StackedBarChart extends PureComponent {
 //        });
 
     render() {
-        return (
+        return <div>
         <BarChart
                 width={1500}
                 height={300}
-
-                data={this.state.codeScore}
+                // data={this.state.codeScore}
+                data = {{
+                    labels: 'dateTime',
+                    //data displayed in graph
+                    datasets: [
+                {
+                    label: 'commitScore',
+                    data: [5, 3, 7, 8, 3],
+                    backgroundColor: 'orange',
+                    borderColor: 'black'
+                },
+                {
+                    label: 'mergeRequestScore',
+                    data: [7, 5, 9, 10, 6],
+                    backgroundColor: 'cyan',
+                    borderColor: 'black',
+                }
+                ]
+                }}
                 margin={{
                     top: 20,
                     right: 30,
                     left: 20,
                     bottom: 5,
+                }}
+                options={{
+                    scales: {
+                        xAxes: [{
+                            type: 'date',
+                                time: {
+                                    unit: 'day'
+                                }
+                            }]
+                    }
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -52,9 +79,9 @@ export default class StackedBarChart extends PureComponent {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="commitScore" stackId="a" fill="#8884d8" />
-                <Bar dataKey="mergeRequestScore" stackId="a" fill="#82ca9d" />
+                <Bar dataKey="commitScore" stackId="a" fill="orange" />
+                <Bar dataKey="mergeRequestScore" stackId="a" fill="cyan" />
             </BarChart>
-        );
+        </div>
     }
 }
