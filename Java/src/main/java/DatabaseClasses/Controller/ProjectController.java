@@ -7,11 +7,8 @@ import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,7 +36,7 @@ public class ProjectController {
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = ProjectConnection.getAllProjects();
+            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
             projectService.saveNewProjects(projects);
             return projects;
         } else {
@@ -79,23 +76,6 @@ public class ProjectController {
 
     }
 
-//    @GetMapping("setProjectCommits/{projectId}")
-//    public void setProjectCommits(@PathVariable int projectId) {
-//        projectService.setProjectCommits(projectId);
-//
-//    }
-//
-//    @GetMapping("setProjectMergeRequests/{projectId}")
-//    public void setProjectMergeRequests(@PathVariable int projectId) {
-//        projectService.setProjectMergeRequests(projectId);
-//
-//    }
-//
-//    @GetMapping("setProjectIssues/{projectId}")
-//    public void setProjectIssues(@PathVariable int projectId) {
-//        projectService.setProjectIssues(projectId);
-//    }
-
     @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
     public List<Issue> getUserIssues(@PathVariable("projectId") int projectId, @PathVariable String end,
                                      @PathVariable String start, @PathVariable String userName) {
@@ -116,7 +96,7 @@ public class ProjectController {
 
     @GetMapping("projects/{projectId}/mergeRequests/{userName}/{start}/{end}")
     public List<MergeRequest> getUsersMergeRequests(@PathVariable("projectId") int projectId,
-                                                    @PathVariable("projectId") String userName,
+                                                    @PathVariable("userName") String userName,
                                                     @PathVariable("start") String start,
                                                     @PathVariable("end") String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
@@ -142,7 +122,7 @@ public class ProjectController {
                                           @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getAllUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
+        return projectService.getUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/Commitsarray/{committerName}/{start}/{end}")

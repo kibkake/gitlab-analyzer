@@ -59,7 +59,7 @@ public class ProjectService {
     }
 
     public int getNumUserCommits(int projectId, String committerName, LocalDate start, LocalDate end ) {
-        List<Commit> allCommits = this.getAllUserCommits(projectId, committerName, start, end);
+        List<Commit> allCommits = this.getUserCommits(projectId, committerName, start, end);
         return allCommits.size();
     }
 
@@ -76,28 +76,23 @@ public class ProjectService {
         return numTotalMRs;
     }
 
-    @Transactional(timeout = 1200) // 20 min
+    @Transactional(timeout = 120000) // 20 min
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
-        project.setDevelopers(DeveloperConnection.getProjectDevelopers(projectId));
-        project.setCommits(CommitConnection.getProjectCommits(projectId));
-        project.setMergedRequests(MergeRequestConnection.getProjectMergeRequests(projectId));
-        project.setIssues(IssueConnection.getProjectIssues(projectId));
+
+        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
+        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
+        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
     }
 
-    public void setProjectCommits(int projectId) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
-                "Project with id " + projectId + " does not exist"));
-    }
-
-
 
     public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
                                                      LocalDate start, LocalDate end) {
-        List<Commit> allUserCommits = this.getAllUserCommits(projectId, committerName, start, end);
+        List<Commit> allUserCommits = this.getUserCommits(projectId, committerName, start, end);
         HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
 
         for (Commit currentCommit: allUserCommits) {
@@ -150,7 +145,7 @@ public class ProjectService {
             }
         }
         System.out.println(dateMap);
-        List<Commit> allUserCommits = this.getAllUserCommits(projectId, committerName, start, end);
+        List<Commit> allUserCommits = this.getUserCommits(projectId, committerName, start, end);
         for (Commit currentCommit: allUserCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
@@ -171,7 +166,7 @@ public class ProjectService {
     }
 
 
-    public List<Commit> getAllUserCommits(int projectId, String committerName, LocalDate start, LocalDate end) {
+    public List<Commit> getUserCommits(int projectId, String committerName, LocalDate start, LocalDate end) {
         Project project = projectRepository.findProjectById(projectId);
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
         // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
@@ -182,7 +177,7 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
                 if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                        currentCommit.getCommitter_name().equals(committerName)) {
+                        (currentCommit.getCommitter_name().equals(committerName)) || currentCommit.getAuthor_name().equals(committerName)) {
                     userCommits.add(currentCommit);
                     commitIds.add(currentCommit.getId());
                 }
@@ -234,7 +229,6 @@ public class ProjectService {
     }
 
     public List<MergeRequest> getUserMergeRequests(int projectId, String committerName, LocalDate start, LocalDate end) {
-        System.out.println("MergeRequests");
         Project project = projectRepository.findProjectById(projectId);
         List<MergeRequest> mergeRequests = project.getMergedRequests();
         List<MergeRequest> userMergeRequests = new ArrayList<>();
@@ -242,13 +236,14 @@ public class ProjectService {
             LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
             if (mergedDate.compareTo(start) >= 0 && mergedDate.compareTo(end) <= 0) {
                 for (Developer dev : mergeRequest.getContributors()) {
-                    if (dev.getName().equals(committerName)) {
+                    if (dev.getName().equals(committerName) || dev.getUsername().equals(committerName)) {
                         userMergeRequests.add(mergeRequest);
                     }
                 }
             }
         }
-            return userMergeRequests;
+        System.out.println(userMergeRequests);
+        return userMergeRequests;
     }
 
     public List<Issue> getUserIssues(int projectId, String userName, LocalDate start, LocalDate end) {
@@ -262,7 +257,7 @@ public class ProjectService {
                     createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
                 List<Note> notes = issue.getNotes();
                 for (Note note: notes)  {
-                    if (note.getUsername().equals(userName)) {
+                    if (note.getUsername().equals(userName) || note.getAuthor().equals(userName)) {
                         userIssues.add(issue);
                     }
                 }

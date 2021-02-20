@@ -5,6 +5,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -13,8 +14,22 @@ import java.util.Objects;
 
 public class MergeRequestConnection {
 
-    public static List<MergeRequest> getProjectMergeRequests(int projectId) {
-        RestTemplate restTemplate = new RestTemplate();
+    RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+
+    //Override timeouts in request factory
+    private SimpleClientHttpRequestFactory getClientHttpRequestFactory() {
+        SimpleClientHttpRequestFactory clientHttpRequestFactory
+                = new SimpleClientHttpRequestFactory();
+        //Connect timeout
+        clientHttpRequestFactory.setConnectTimeout(12_00000);
+
+        //Read timeout
+        clientHttpRequestFactory.setReadTimeout(12_00000);
+        return clientHttpRequestFactory;
+    }
+
+    public List<MergeRequest> getProjectMergeRequestsFromGitLab(int projectId) {
+//        RestTemplate restTemplate = new RestTemplate();
         User user = User.getInstance();
         String pageNumber = "1";
         List<MergeRequest> mergeRequests = new ArrayList<>();
@@ -114,7 +129,10 @@ public class MergeRequestConnection {
                     HttpMethod.GET, null, new ParameterizedTypeReference<MergeRequestDiff>() {
                     });
             mergeRequestDiff.add(mergeDiffResponse.getBody());
-        }while(!pageNumber.equals(""));
+            HttpHeaders headers = mergeDiffResponse.getHeaders();
+            pageNumber = headers.getFirst("X-Next-Page");
+
+        }while((!Objects.equals(pageNumber, "")) && pageNumber != null);
 
         List<Diff> mrDiffs = new ArrayList<>();
         for(MergeRequestDiff singleMergeDiff: mergeRequestDiff) {

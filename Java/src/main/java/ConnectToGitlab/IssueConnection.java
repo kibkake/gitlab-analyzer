@@ -8,6 +8,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -16,9 +17,23 @@ import java.util.Objects;
 
 public class IssueConnection {
 
-    public static List<Issue> getProjectIssues(int projectId) {
+    RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+
+    //Override timeouts in request factory
+    private SimpleClientHttpRequestFactory getClientHttpRequestFactory() {
+        SimpleClientHttpRequestFactory clientHttpRequestFactory
+                = new SimpleClientHttpRequestFactory();
+        //Connect timeout
+        clientHttpRequestFactory.setConnectTimeout(12_000);
+
+        //Read timeout
+        clientHttpRequestFactory.setReadTimeout(12_000);
+        return clientHttpRequestFactory;
+    }
+
+    public List<Issue> getProjectIssuesFromGitLab(int projectId) {
         User user = User.getInstance();
-        RestTemplate restTemplate = new RestTemplate();
+//        RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Issue> issues = new ArrayList<>();
         do {
