@@ -1,7 +1,9 @@
 package main.java;
 
 import main.java.ConnectToGitlab.CommitConnection;
+import main.java.ConnectToGitlab.MergeRequestConnection;
 import main.java.Model.Commit;
+import main.java.Model.MergeRequest;
 import main.java.Model.User;
 
 import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
@@ -33,7 +35,12 @@ public class Main {
         User user = User.getInstance();
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
-        SpringApplication.run(Main.class,args);
+        List<MergeRequest> mrs = MergeRequestConnection.getProjectMergeRequests(11);
+        System.out.println(mrs.size());
+//        List<Commit> cs = CommitConnection.getProjectCommits(11);
+//        System.out.println(cs);
+//        System.out.println(cs.size());
+//        SpringApplication.run(Main.class,args);
     }
 
     /**

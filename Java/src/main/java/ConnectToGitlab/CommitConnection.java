@@ -38,8 +38,6 @@ public class CommitConnection {
             commits.addAll(Objects.requireNonNull(commitsResponse.getBody()));
             HttpHeaders headers = commitsResponse.getHeaders();
             pageNumber = headers.getFirst("X-Next-Page");
-            System.out.println(headers);
-            System.out.println(pageNumber);
         }while (!pageNumber.equals(""));
 
         for (Commit singleCommit : commits) {
@@ -53,11 +51,18 @@ public class CommitConnection {
     public static List<Diff> getSingleCommitDiffs(Integer projectId, String commitHash) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
-        String url = user.getServerUrl() + "/projects/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" +
-                "?access_token=" + user.getToken();
-        ResponseEntity<List<Diff>> commitsResponse = restTemplate.exchange(url,
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<Diff>>() {});
-        List<Diff> diffs = commitsResponse.getBody();
+        String pageNumber = "1";
+        List<Diff> diffs = new ArrayList<>();
+        do {
+            String url = user.getServerUrl() + "/projects/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" +
+                    "?per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
+            ResponseEntity<List<Diff>> diffsResponse = restTemplate.exchange(url,
+                    HttpMethod.GET, null, new ParameterizedTypeReference<List<Diff>>() {
+                    });
+            diffs.addAll(Objects.requireNonNull(diffsResponse.getBody()));
+            HttpHeaders headers = diffsResponse.getHeaders();
+            pageNumber = headers.getFirst("X-Next-Page");
+        }while (!pageNumber.equals(""));
         for (Diff singleDiff : diffs) {
             singleDiff.calculateAndSetDiffScore();
         }

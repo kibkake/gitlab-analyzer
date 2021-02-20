@@ -72,11 +72,29 @@ public class ProjectController {
         return projectService.getProjectIssues(projectId);
     }
 
+    // can only be used on very small projects
     @GetMapping("setProjectInfo/{projectId}")
     public void setProjectInfo(@PathVariable int projectId) {
         projectService.setProjectInfo(projectId);
 
     }
+
+//    @GetMapping("setProjectCommits/{projectId}")
+//    public void setProjectCommits(@PathVariable int projectId) {
+//        projectService.setProjectCommits(projectId);
+//
+//    }
+//
+//    @GetMapping("setProjectMergeRequests/{projectId}")
+//    public void setProjectMergeRequests(@PathVariable int projectId) {
+//        projectService.setProjectMergeRequests(projectId);
+//
+//    }
+//
+//    @GetMapping("setProjectIssues/{projectId}")
+//    public void setProjectIssues(@PathVariable int projectId) {
+//        projectService.setProjectIssues(projectId);
+//    }
 
     @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
     public List<Issue> getUserIssues(@PathVariable("projectId") int projectId, @PathVariable String end,

@@ -27,7 +27,7 @@ public class ProjectService {
     }
 
     public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+        return projectRepository.getAllBy();
     }
 
     public Project getProject(int projectId) {
@@ -76,17 +76,23 @@ public class ProjectService {
         return numTotalMRs;
     }
 
-    @Transactional
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
-        project.setDevelopers(DeveloperConnection.getProjectDevelopers(projectId));
-        project.setCommits(CommitConnection.getProjectCommits(projectId));
+//        project.setDevelopers(DeveloperConnection.getProjectDevelopers(projectId));
+//        project.setCommits(CommitConnection.getProjectCommits(projectId));
         project.setMergedRequests(MergeRequestConnection.getProjectMergeRequests(projectId));
-        project.setIssues(IssueConnection.getProjectIssues(projectId));
-        project.setInfoSet(true);
+//        project.setIssues(IssueConnection.getProjectIssues(projectId));
+//        project.setInfoSet(true);
         projectRepository.save(project);
     }
+
+    public void setProjectCommits(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+    }
+
+
 
     public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
                                                      LocalDate start, LocalDate end) {
@@ -321,5 +327,4 @@ public class ProjectService {
                 .orElse(null);
         return mergeRequest;
     }
-
 }
