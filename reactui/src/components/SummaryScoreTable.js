@@ -3,7 +3,10 @@ import {Table} from "react-bootstrap";
 import React, {Component} from "react";
 import axios from "axios";
 
-
+const scoreSummary = [
+    {commitScore:3, scoreMR: 204, wordCountComment: 100},
+    {commitScore:2, scoreMR: 12, wordCountComment: 200},
+];
 class SummaryScoreTable extends Component{
      constructor(props) {
          super(props);
@@ -21,7 +24,7 @@ class SummaryScoreTable extends Component{
          //the current http request returns error for total commit score
          //TODO: This mapping request can't be used for here, the all score should be sent altogether
          //for commit, MR, word...
-         axios.get("http://localhost:8080/api/v1/projects/" + id + "/totalCommitScore/"+ developer +"/01-01-2021/02-15-2021")
+         axios.get("http://localhost:8080/api/v1/projects/" + id + "/totalCommitScore/"+ developer +"/2021-01-01/2021-02-22")
              .then(response => {
                 const scoreSummary = response.data
                 this.setState({scoreSummary})
@@ -29,10 +32,7 @@ class SummaryScoreTable extends Component{
      }
 
 //Fake data until getting the data from backend
-// const scoreSummary = [
-//    {commitScore:3, scoreMR: 204, wordCountComment: 100},
-//    {commitScore:2, scoreMR: 12, wordCountComment: 200},
-// ];
+
 
 
    render () {
@@ -43,14 +43,15 @@ class SummaryScoreTable extends Component{
                 <tr>
                     <td>Commit</td>
                     <td>Merge Request</td>
-                    {/*<td>Word Count for Comments</td>*/}
+                    <td>Word Count for Comments</td>
                 </tr>
                 {
-                    this.state.scoreSummary.map((item, index)=>
+                    scoreSummary.map((item, index)=>
                         <tr key ={index}>
                             <td>{item.commitScore}</td>
                             <td>{item.scoreMR}</td>
-                            </tr>
+                            <td>{item.wordCountComment}</td>
+                        </tr>
                     )}
                 </tbody>
             </Table>
