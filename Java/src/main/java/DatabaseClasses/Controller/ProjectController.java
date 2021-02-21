@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.Controller;
 
 import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Model.AllScores;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
@@ -167,18 +168,19 @@ public class ProjectController {
                                          @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getTopTenUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
+        return projectService.getTopUserNotes(projectId, committerName, StartLocalTime, endLocalTime, 10, true);
     }
 
     //TODO: This doesn't work?
     @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
     public double totalCommitScore(@PathVariable("projectId") int projectId,
-                                @PathVariable("committerName") String committerName,
-                                @PathVariable("start") String start,
-                                   @PathVariable("end")String end) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getTotalUserCommitScore(projectId, committerName, StartLocalTime, endLocalTime);
+                                   @PathVariable("committerName") String committerName,
+                                   @PathVariable("start") String start,
+                                   @PathVariable("end") String end) {
+        LocalDate startLocalDate = LocalDate.parse(start);
+        LocalDate endLocalDate = LocalDate.parse(end);
+        return projectService.getTotalUserCommitScore(projectId, committerName,
+                                                      startLocalDate, endLocalDate);
     }
 
     @GetMapping("projects/{projectId}/commit/{commitId}")
@@ -191,18 +193,18 @@ public class ProjectController {
         return projectService.getMergeRequest(projectId, mrId);
     }
 
+    @GetMapping("projects/{projectId}/allTotalScores/{username}/{start}/{end}")
+    public AllScores allTotalScores(@PathVariable ("projectId") int projectId,
+                                       @PathVariable ("username") String username,
+                                       @PathVariable ("start") String start,
+                                       @PathVariable ("end") String end) {
 
-    //TODO: to get dates from frontend setting
-    @PostMapping("/dates/start")
-    public LocalDate createStartDate(@RequestBody LocalDate date) {
-        // probably should be parsed here, input is not likely to be the localdate object
-        return date;
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+
+        return projectService.getAllScores(projectId, username, startDate, endDate);
     }
 
-    @PostMapping("/dates/end")
-    public LocalDate createEndDate(@RequestBody LocalDate date) {
-        return date;
-    }
 
     @PostMapping("/setstartdate")
     public void setStartDate(@RequestBody Map<String, String> requestBody) {
