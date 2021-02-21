@@ -10,7 +10,8 @@ class CommitChart extends Component {
         super(props);
         this.state = {
             data: [],
-            st5: "2021-01-22"
+            st5: "2021-01-11",
+            st6: "2021-02-22"
         };
     }
 
@@ -36,7 +37,25 @@ class CommitChart extends Component {
 
         this.setState({st5: arr2[0]})
 
-        console.log(this.state.st5)
+        var arr3=[];
+
+        const result3 = await fetch('http://localhost:8080/api/v1/getenddate', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        const json3 = await result3.json();
+        var data3 = JSON.stringify(json3);
+        var DataArray3 = JSON.parse(data3);
+
+        await DataArray3.map(item => {
+            arr3.push(item)
+        })
+
+        this.setState({st6: arr3[0]})
+
 
 
 
@@ -69,7 +88,7 @@ class CommitChart extends Component {
 
             var completeFromDate = year1 + "-" + month1 + "-" + day1;
 
-            var dateStr2 = new Date("2-22-2021").toLocaleDateString();
+            var dateStr2 = new Date(this.state.st6).toLocaleDateString();
             //month/day/2021
             //2/12/2021
             var day2temp = dateStr2.split("/")[1];
@@ -150,7 +169,7 @@ class CommitChart extends Component {
 
         var comarr = this.state.data;
         console.log("date is :" + this.state.st5)
-        const daylist = getDaysArray(new Date(this.state.st5),new Date("2021-02-22"));
+        const daylist = getDaysArray(new Date(this.state.st5),new Date(this.state.st6));
 
         //console.log(daylist);
 

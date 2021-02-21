@@ -243,10 +243,10 @@ public class ProjectController {
     }
 
     @GetMapping("/getenddate")
-    public String getEndDate() throws ParseException {
+    public List<String> getEndDate() throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
-        Date result = df1.parse(startDate);
+        Date result = df1.parse(endDate);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(result);
@@ -261,7 +261,9 @@ public class ProjectController {
             day = "0" + Integer.toString(cal.get(Calendar.DATE));
         }
 
-        return cal.get(Calendar.YEAR) + "-" + month+ "-" + day;
+        List<String> date = new ArrayList<>();
+        date.add(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
+        return date;
     }
 
 }
