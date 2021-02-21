@@ -341,11 +341,14 @@ public class ProjectService {
         return totalMRScore;
     }
 
-    public double getTotalUserCommentScore(int projectId, String username,
-                                       LocalDate start, LocalDate end) {
-        // TODO - write function.
-
-        return 0;
+    public int getTotalUserCommentWordCount(int projectId, String username,
+                                            LocalDate start, LocalDate end) {
+        List<Note> userNotes = this.getTopUserNotes(projectId, username, start, end, 100000, false);
+        int totalCommentWordCount = 0;
+        for (Note currentNote: userNotes) {
+            totalCommentWordCount += currentNote.getWordCount();
+        }
+        return totalCommentWordCount;
     }
 
     public AllScores getAllScores(int projectId, String username,
@@ -357,9 +360,9 @@ public class ProjectService {
         double totalMergeRequestScore = this.getTotalUserMRScore(projectId, username,
                                                                  startDate, endDate);
         allScores.setTotalMergeRequestScore(totalMergeRequestScore);
-        double totalCommentScore = this.getTotalUserCommentScore(projectId, username, startDate,
-                                                             endDate);
-        allScores.setTotalCommentScore(totalCommentScore);
+        int totalCommentWordCount = this.getTotalUserCommentWordCount(projectId, username, startDate,
+                                                                      endDate);
+        allScores.setTotalCommentWordCount(totalCommentWordCount);
 
         return allScores;
     }

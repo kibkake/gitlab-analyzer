@@ -9,7 +9,7 @@ public class AllScores {
     private LocalDate startDate;
     private LocalDate endDate;
     private double totalCommitScore;
-    private double totalCommentScore;
+    private int totalCommentWordCount;
     private double totalMergeRequestScore;
 
     public AllScores() {
@@ -17,11 +17,11 @@ public class AllScores {
     }
 
     public AllScores(LocalDate startDate, LocalDate endDate, double totalCommitScore,
-                     double totalCommentScore, double totalMergeRequestScore) {
+                     int totalCommentWordCount, double totalMergeRequestScore) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalCommitScore = totalCommitScore;
-        this.totalCommentScore = totalCommentScore;
+        this.totalCommentWordCount = totalCommentWordCount;
         this.totalMergeRequestScore = totalMergeRequestScore;
     }
 
@@ -41,8 +41,8 @@ public class AllScores {
         this.endDate = endDate;
     }
 
-    public double getTotalCommentScore() {
-        return totalCommentScore;
+    public int getTotalCommentWordCount() {
+        return totalCommentWordCount;
     }
 
     public double getTotalMergeRequestScore() {
@@ -57,8 +57,8 @@ public class AllScores {
         this.totalMergeRequestScore = totalMergeRequestScore;
     }
 
-    public void setTotalCommentScore(double totalCommentScore) {
-        this.totalCommentScore = totalCommentScore;
+    public void setTotalCommentWordCount(int totalCommentWordCount) {
+        this.totalCommentWordCount = totalCommentWordCount;
     }
 
     public double getTotalCommitScore() {
@@ -71,7 +71,7 @@ public class AllScores {
                 "startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", totalCommitScore=" + totalCommitScore +
-                ", totalCommentScore='" + totalCommentScore +
+                ", totalCommentWordCount='" + totalCommentWordCount +
                 ", totalMergeRequestScore=" + totalMergeRequestScore +
                 '}';
     }
