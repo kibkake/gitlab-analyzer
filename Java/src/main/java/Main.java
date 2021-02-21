@@ -1,5 +1,11 @@
 package main.java;
 
+import main.java.ConnectToGitlab.CommitConnection;
+import main.java.ConnectToGitlab.IssueConnection;
+import main.java.ConnectToGitlab.MergeRequestConnection;
+import main.java.Model.Commit;
+import main.java.Model.Issue;
+import main.java.Model.MergeRequest;
 import main.java.Model.User;
 
 import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
@@ -12,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * The main application that invokes SpringBoot's bootRun

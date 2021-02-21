@@ -66,10 +66,4 @@ public class UserController {
         DatabaseFunctions.setUserLoggedInStatus(username, isLoggedIn);
     }
 
-
-//    @GetMapping(value = "users/{userName}")
-//    public Optional<User> getUsers(@PathVariable("userName") String userName) {
-//        return userRepository.findById(userName);
-//    }
-
 }
