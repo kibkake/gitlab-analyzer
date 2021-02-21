@@ -193,19 +193,6 @@ public class ProjectController {
         return projectService.getMergeRequest(projectId, mrId);
     }
 
-
-    //TODO: to get dates from frontend setting
-    @PostMapping("/dates/start")
-    public LocalDate createStartDate(@RequestBody LocalDate date) {
-        // probably should be parsed here, input is not likely to be the localdate object
-        return date;
-    }
-
-    @PostMapping("/dates/end")
-    public LocalDate createEndDate(@RequestBody LocalDate date) {
-        return date;
-    }
-
     @GetMapping("projects/{projectId}/allTotalScores/{username}/{start}/{end}")
     public AllScores allTotalScores(@PathVariable ("projectId") int projectId,
                                        @PathVariable ("username") String username,
