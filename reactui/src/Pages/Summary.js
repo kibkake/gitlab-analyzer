@@ -11,10 +11,8 @@ function Summary(){
             <Navbar_Developers/>
             <h1 style={{textAlign:'center'}}>Summary</h1>
 
-            the current http request returns error for total commit score
-            because the function returns single integer?
-            TODO: Additional mapping request required for here, the all score should be sent altogether for commit, MR, word...
-
+            <br>
+            </br>
              <h4 style={{textAlign:'center'}}>Total scores</h4>
              <SummaryScoreTable/>
             <br>
