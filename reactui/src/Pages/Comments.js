@@ -14,7 +14,8 @@ function Comments() {
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
             <CustomizedRadios/>
             </div>
-            <h4 style={{textAlign:'center'}}>display only top 10 comments by word Count or something </h4>
+            <br></br>
+            <h4 style={{textAlign:'center'}}>Top 10 comments </h4>
             <CommentTable/>
         </div>
     )

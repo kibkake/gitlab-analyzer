@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import ProjectService from "../Service/ProjectService";
 import axios from "axios";
 
@@ -37,10 +37,8 @@ export default class StackedBarChart extends PureComponent {
     render() {
         return (
             <div>
-                {/*<ResponsiveContainer width = '95%' height = {500} >*/}
+                <ResponsiveContainer width = '85%' height = {500} >
             <BarChart
-                width={1500}
-                height={300}
 
                 data={this.state.codeScore}
                 margin={{
@@ -51,14 +49,14 @@ export default class StackedBarChart extends PureComponent {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" type="date"/>
+                <XAxis dataKey="date"/>
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="commitScore" stackId="a" fill="#8884d8" />
+                <Bar dataKey="commitScore" stackId="a" fill="orange" />
                 <Bar dataKey="mergeRequestScore" stackId="a" fill="#82ca9d" />
             </BarChart>
-                {/*</ResponsiveContainer>*/}
+                </ResponsiveContainer>
             </div>
         );
     }

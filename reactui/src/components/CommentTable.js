@@ -1,4 +1,3 @@
-import "../App.css"
 import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
@@ -15,16 +14,19 @@ class CommentTable extends Component{
     }
 
     componentDidMount() {
-        var pathArray = window.location.pathname.split('/');
-        var id = pathArray[2];
-        var developer = pathArray[4];
+        const pathArray = window.location.pathname.split('/');
+        const id = pathArray[2];
+        const developer = pathArray[4];
 
-        //request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-02-15
-        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/"+ developer +"/2021-01-01/2021-02-15")
+        //empty request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-02-15
+        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + developer + "/2021-01-01/2021-02-23")
             .then(response => {
                 const comments = response.data
-                this.setState({comments})
-            });
+                this.setState({comments: comments})
+                console.log(this.state.comments);
+            }).catch((error) => {
+            console.error(error);
+        });
         // ProjectService.getCommentInfo(id, developer, '2021-01-01','2021-02-15').then((response) => {
         //     this.setState({comments: response.data})
         // });
@@ -33,15 +35,15 @@ class CommentTable extends Component{
 
     render() {
         return (
-            <div className="Comments">
+            <div className="container">
                 <Table striped bordered hover>
-                    <tbody>
                     <tr>
                         <td>Date/Time</td>
                         <td>Word Count</td>
                         <td>Comments</td>
                         <td>Author</td>
                     </tr>
+                    <tbody>
                     {
                         this.state.comments.map(comments =>//(item, index) =>
                             <tr>

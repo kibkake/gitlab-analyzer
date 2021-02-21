@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import BarChart from 'react-bar-chart';
-import { Bar} from 'react-chartjs-2'
 import axios from "axios";
-import {orange} from "@material-ui/core/colors";
 
 const margin = {top: 20, right: 20, bottom: 30, left: 40};
 
+//[https://github.com/MateusZitelli/react-bar-chart]
 class CommentChart extends Component {
 
     getInitialState() {
@@ -19,12 +18,13 @@ class CommentChart extends Component {
         }
     }
 
-    //response ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/arahilin/2021-01-01/2021-02-15
     componentDidMount () {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
         var developer = pathArray[4];
-        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/"+ developer +"/2021-01-01/2021-02-15")
+
+        //response ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/arahilin/2021-01-01/2021-02-22
+        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/"+ developer +"/2021-01-01/2021-02-22")
             .then(response => {
                 const commentInfo = response.data;
                 this.setState({commentScore: commentInfo})
@@ -40,7 +40,7 @@ class CommentChart extends Component {
     }
 
     render() {
-        var output = this.state.commentScore.map(function(item) {
+        const output = this.state.commentScore.map(function(item) {
             return {
                 text: item.created_at,
                 value: item.wordCount
@@ -50,7 +50,7 @@ class CommentChart extends Component {
 
         return (
             <div ref='root'>
-                <div style={{width: '50%'}}>
+                <div style={{width: '95%'}}>
                     <BarChart ylabel='Score'
                               width={1500}
                               height={200}

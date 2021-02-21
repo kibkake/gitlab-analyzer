@@ -13,7 +13,7 @@ function Summary(){
 
             <br>
             </br>
-             <h4 style={{textAlign:'center'}}>Total scores</h4>
+             <h4 style={{textAlign:'center'}}>Total Scores</h4>
              <SummaryScoreTable/>
             <br>
             </br>
@@ -22,8 +22,9 @@ function Summary(){
             <StackedBarChart/>
             <br>
             </br>
-
-            <h4 style={{textAlign:'center'}}>Comment score per day</h4>
+            <br>
+            </br>
+            <h4 style={{textAlign:'center'}}>Comment Score</h4>
             <CommentChart/>
         </div>
 
