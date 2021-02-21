@@ -12,8 +12,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class manages API mapping for functions to be called from frontend.
@@ -23,12 +24,6 @@ import java.util.*;
 @RestController
 @RequestMapping("api/v1/")
 public class ProjectController {
-
-    // Wants
-    // User name and 2 dates -> list of number comitts per date just list filled with zero
-    // Commits per day get those commits
-    // Notes -> enum
-    //
 
     private final ProjectService projectService;
     private String startDate = "2021-01-11T20:59:00.000Z";
@@ -43,7 +38,7 @@ public class ProjectController {
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = ProjectConnection.getAllProjects();
+            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
             projectService.saveNewProjects(projects);
             return projects;
         } else {
@@ -76,10 +71,10 @@ public class ProjectController {
         return projectService.getProjectIssues(projectId);
     }
 
+    // can only be used on very small projects
     @GetMapping("setProjectInfo/{projectId}")
     public void setProjectInfo(@PathVariable int projectId) {
         projectService.setProjectInfo(projectId);
-
     }
 
     @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
@@ -102,7 +97,7 @@ public class ProjectController {
 
     @GetMapping("projects/{projectId}/mergeRequests/{userName}/{start}/{end}")
     public List<MergeRequest> getUsersMergeRequests(@PathVariable("projectId") int projectId,
-                                                    @PathVariable("projectId") String userName,
+                                                    @PathVariable("userName") String userName,
                                                     @PathVariable("start") String start,
                                                     @PathVariable("end") String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
@@ -115,7 +110,6 @@ public class ProjectController {
                                                                         @PathVariable("committerName") String committerName,
                                                                         @PathVariable("start") String start,
                                                                         @PathVariable("end")String end) {
-
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime);
@@ -128,7 +122,7 @@ public class ProjectController {
                                           @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getAllUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
+        return projectService.getUserCommits(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/Commitsarray/{committerName}/{start}/{end}")
