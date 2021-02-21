@@ -289,8 +289,9 @@ public class ProjectService {
             if (issueNotes != null) {
                 for (Note note : issueNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
-                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
-                        && note.getUsername().equals(userName)) {
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0 &&
+                        note != null && note.getUsername() != null &&
+                        note.getUsername().equals(userName)) {
                         userNotes.add(note);
                     }
                 }
@@ -302,7 +303,9 @@ public class ProjectService {
             if (mrNotes != null) {
                 for (Note note : mrNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
-                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0) {
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0 &&
+                        note != null && note.getUsername() != null &&
+                        note.getUsername().equals(userName)) {
                         userNotes.add(note);
                     }
                 }
