@@ -208,7 +208,6 @@ public class ProjectController {
     public void setStartDate(@RequestBody Map<String, String> requestBody) {
         if(requestBody.get("starttime") != null) {
             startDate = requestBody.get("starttime");
-            System.out.println("starttime: " + startDate);
         }
     }
 
@@ -216,12 +215,11 @@ public class ProjectController {
     public void setEndDate(@RequestBody Map<String, String> requestBody) {
         if(requestBody.get("endtime") != null) {
             endDate = requestBody.get("endtime");
-            System.out.println("endtime: " + endDate);
         }
     }
 
     @GetMapping("/getstartdate")
-    public String getStartDate() throws ParseException {
+    public List<String> getStartDate() throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
         Date result= df1.parse(startDate);
@@ -239,7 +237,9 @@ public class ProjectController {
             day = "0" + Integer.toString(cal.get(Calendar.DATE));
         }
 
-        return cal.get(Calendar.YEAR) + "-" + month+ "-" + day;
+        List<String> date = new ArrayList<>();
+        date.add(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
+        return date;
     }
 
     @GetMapping("/getenddate")

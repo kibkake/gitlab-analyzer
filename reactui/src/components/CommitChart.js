@@ -1,23 +1,54 @@
 import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
 import Button from "react-bootstrap/Button";
+import axios from "axios";
+
 
 class CommitChart extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            st5: "2021-01-22"
         };
     }
 
     async componentDidMount() {
 
-            var str = window.location.pathname;
+
+        var arr2=[];
+
+        const result2 = await fetch('http://localhost:8080/api/v1/getstartdate', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        const json2 = await result2.json();
+        var data2 = JSON.stringify(json2);
+        var DataArray2 = JSON.parse(data2);
+
+        await DataArray2.map(item => {
+            arr2.push(item)
+        })
+
+        this.setState({st5: arr2[0]})
+
+        console.log(this.state.st5)
+
+
+
+
+
+
+
+        var str = window.location.pathname;
             var projNum = str.split("/")[2];
             var developerName = str.split("/")[4];
 
-            var dateStr1 = new Date("1-11-2021").toLocaleDateString();
+            var dateStr1 = new Date(this.state.st5).toLocaleDateString();
             //month/day/2021
             //2/12/2021
             var day1temp = dateStr1.split("/")[1];
@@ -82,6 +113,9 @@ class CommitChart extends Component {
     }
 //1/17/2021
     render() {
+
+        console.log(this.state.st5)
+
         var greenArr = [];
         var blackArr = [];
         var getDaysArray = function(start, end) {
@@ -115,7 +149,8 @@ class CommitChart extends Component {
         d = d.split(' ')[0];
 
         var comarr = this.state.data;
-        const daylist = getDaysArray(new Date("01-11-2021"),new Date("02-22-2021"));
+        console.log("date is :" + this.state.st5)
+        const daylist = getDaysArray(new Date(this.state.st5),new Date("2021-02-22"));
 
         //console.log(daylist);
 
