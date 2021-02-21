@@ -18,16 +18,16 @@ export default class StackedBarChart extends PureComponent {
         var id = pathArray[2];
         var developer = pathArray[4];
 
-        //request ref: http://localhost:8080/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-10
-        axios.get("http://localhost:8080/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-22")
+        //request ref: http://localhost:8090/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-10
+        axios.get("/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
             .then(response => {
                 const score = response.data
                 console.log(score);
                 this.setState({codeScore: score})
                 console.log(this.state.codeScore);
             }).catch((error) => {
-            console.error(error);
-        });
+                    console.error(error);
+            });
 
     }
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
@@ -55,7 +55,7 @@ export default class StackedBarChart extends PureComponent {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="commitScore" stackId="a" fill="orange" />
+                <Bar dataKey="commitScore" stackId="a" fill="#8884d8" />
                 <Bar dataKey="mergeRequestScore" stackId="a" fill="#82ca9d" />
             </BarChart>
                 </ResponsiveContainer>
