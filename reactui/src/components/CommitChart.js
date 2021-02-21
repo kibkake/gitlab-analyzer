@@ -36,7 +36,7 @@ class CommitChart extends Component {
 
         var arr3=[];
 
-        const result3 = await fetch('api/v1/getenddate', {
+        const result3 = await fetch('/api/v1/getenddate', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
