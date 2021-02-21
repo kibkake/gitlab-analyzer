@@ -7,19 +7,58 @@ class CommitChart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            strDate: "2021-01-11",
+            endDate: "2021-02-22"
         };
     }
 
     async componentDidMount() {
 
-            var str = window.location.pathname;
+        var arr2=[];
+
+        const result2 = await fetch('/api/v1/getstartdate', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        const json2 = await result2.json();
+        var data2 = JSON.stringify(json2);
+        var DataArray2 = JSON.parse(data2);
+
+        await DataArray2.map(item => {
+            arr2.push(item)
+        })
+
+        this.setState({strDate: arr2[0]})
+
+        var arr3=[];
+
+        const result3 = await fetch('/api/v1/getenddate', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        const json3 = await result3.json();
+        var data3 = JSON.stringify(json3);
+        var DataArray3 = JSON.parse(data3);
+
+        await DataArray3.map(item => {
+            arr3.push(item)
+        })
+
+        this.setState({endDate: arr3[0]})
+
+        var str = window.location.pathname;
             var projNum = str.split("/")[2];
             var developerName = str.split("/")[4];
 
-            var dateStr1 = new Date("1-11-2021").toLocaleDateString();
-            //month/day/2021
-            //2/12/2021
+            var dateStr1 = new Date(this.state.strDate).toLocaleDateString();
+
             var day1temp = dateStr1.split("/")[1];
             var month1temp = dateStr1.split("/")[0];
             var year1 = dateStr1.split("/")[2];
@@ -38,9 +77,7 @@ class CommitChart extends Component {
 
             var completeFromDate = year1 + "-" + month1 + "-" + day1;
 
-            var dateStr2 = new Date("2-22-2021").toLocaleDateString();
-            //month/day/2021
-            //2/12/2021
+            var dateStr2 = new Date(this.state.endDate).toLocaleDateString();
             var day2temp = dateStr2.split("/")[1];
             var month2temp = dateStr2.split("/")[0];
             var year2 = dateStr2.split("/")[2];
@@ -60,7 +97,6 @@ class CommitChart extends Component {
             var completeToDate = year2 + "-" + month2 + "-" + day2;
             var arr=[];
 
-//http://localhost:8090/getuserstats/6/arahilin/1-11-2021/2-22-2021
             let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + developerName + '/' +
                 completeFromDate + "/" + completeToDate
             const result = await fetch(url3, {
@@ -76,12 +112,10 @@ class CommitChart extends Component {
             await DataArray.map(item => {
                 arr.push(item)
             })
-        console.log(arr)
-
        this.setState({data: arr})
     }
-//1/17/2021
     render() {
+
         var greenArr = [];
         var blackArr = [];
         var getDaysArray = function(start, end) {
@@ -111,14 +145,8 @@ class CommitChart extends Component {
             return arr;
         };
 
-        var d = '12/12/1955 12:00:00 AM';
-        d = d.split(' ')[0];
-
         var comarr = this.state.data;
-        const daylist = getDaysArray(new Date("01-11-2021"),new Date("02-22-2021"));
-
-        //console.log(daylist);
-
+        const daylist = getDaysArray(new Date(this.state.strDate),new Date(this.state.endDate));
         return (
             <div>
                 <HorizontalBar
@@ -133,7 +161,6 @@ class CommitChart extends Component {
                     }}
                     width={500}
                     height={daylist.length*10}
-
 
                     options={
                         {onClick: (e, Event) => {
