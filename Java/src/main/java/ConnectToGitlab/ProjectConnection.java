@@ -21,30 +21,12 @@ import java.util.Objects;
 @RestController
 public class ProjectConnection {
 
-/*  TODO change to autowired this is the proper way using beans, and not creating a rest template over and over
-    @Autowired
-    private RestTemplate restTemplate;
- */
-
-    RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
-
-    //Override timeouts in request factory
-    private SimpleClientHttpRequestFactory getClientHttpRequestFactory() {
-        SimpleClientHttpRequestFactory clientHttpRequestFactory
-                = new SimpleClientHttpRequestFactory();
-        //Connect timeout
-        clientHttpRequestFactory.setConnectTimeout(12_000);
-
-        //Read timeout
-        clientHttpRequestFactory.setReadTimeout(12_000);
-        return clientHttpRequestFactory;
-    }
 
     public List<Project> getAllProjectsFromGitLab() {
         User user = User.getInstance();
-//        RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Project> projects = new ArrayList<>();
+        RestTemplate restTemplate = new RestTemplate();
         do {
             String url = user.getServerUrl() + "projects?simple=true"
                     + "? + per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();

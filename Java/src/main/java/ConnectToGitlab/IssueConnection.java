@@ -17,23 +17,9 @@ import java.util.Objects;
 
 public class IssueConnection {
 
-    RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
-
-    //Override timeouts in request factory
-    private SimpleClientHttpRequestFactory getClientHttpRequestFactory() {
-        SimpleClientHttpRequestFactory clientHttpRequestFactory
-                = new SimpleClientHttpRequestFactory();
-        //Connect timeout
-        clientHttpRequestFactory.setConnectTimeout(12_000);
-
-        //Read timeout
-        clientHttpRequestFactory.setReadTimeout(12_000);
-        return clientHttpRequestFactory;
-    }
-
     public List<Issue> getProjectIssuesFromGitLab(int projectId) {
         User user = User.getInstance();
-//        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Issue> issues = new ArrayList<>();
         do {
@@ -48,7 +34,6 @@ public class IssueConnection {
             pageNumber = headers.getFirst("X-Next-Page");
         }while (!pageNumber.equals(""));
 
-        assert issues != null;
         for(Issue issue: issues) {
             issue.setNotes(getIssueNotes(issue.getProject_id(), issue.getIid()));
         }

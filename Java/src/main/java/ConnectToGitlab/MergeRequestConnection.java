@@ -14,27 +14,12 @@ import java.util.Objects;
 
 public class MergeRequestConnection {
 
-    RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
-
-    //Override timeouts in request factory
-    private SimpleClientHttpRequestFactory getClientHttpRequestFactory() {
-        SimpleClientHttpRequestFactory clientHttpRequestFactory
-                = new SimpleClientHttpRequestFactory();
-        //Connect timeout
-        clientHttpRequestFactory.setConnectTimeout(12_00000);
-
-        //Read timeout
-        clientHttpRequestFactory.setReadTimeout(12_00000);
-        return clientHttpRequestFactory;
-    }
-
     public List<MergeRequest> getProjectMergeRequestsFromGitLab(int projectId) {
-//        RestTemplate restTemplate = new RestTemplate();
         User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<MergeRequest> mergeRequests = new ArrayList<>();
         do {
-        // https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
             String myUrl = user.getServerUrl() +"/projects/" + projectId
                     + "/merge_requests?state=merged&all=true&per_page=100&page=" + pageNumber + "&access_token="
                     + user.getToken();
@@ -105,6 +90,7 @@ public class MergeRequestConnection {
             ResponseEntity<List<Note>> mergeNoteResponse = restTemplate.exchange(url,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Note>>() {
                     });
+
             mergeNotes.addAll(Objects.requireNonNull(mergeNoteResponse.getBody()));
             HttpHeaders headers = mergeNoteResponse.getHeaders();
             pageNumber = headers.getFirst("X-Next-Page");
@@ -131,7 +117,6 @@ public class MergeRequestConnection {
             mergeRequestDiff.add(mergeDiffResponse.getBody());
             HttpHeaders headers = mergeDiffResponse.getHeaders();
             pageNumber = headers.getFirst("X-Next-Page");
-
         }while((!Objects.equals(pageNumber, "")) && pageNumber != null);
 
         List<Diff> mrDiffs = new ArrayList<>();

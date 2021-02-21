@@ -20,12 +20,6 @@ import java.util.List;
 @RequestMapping("api/v1/")
 public class ProjectController {
 
-    // Wants
-    // User name and 2 dates -> list of number comitts per date just list filled with zero
-    // Commits per day get those commits
-    // Notes -> enum
-    //
-
     private final ProjectService projectService;
 
     @Autowired
@@ -73,7 +67,6 @@ public class ProjectController {
     @GetMapping("setProjectInfo/{projectId}")
     public void setProjectInfo(@PathVariable int projectId) {
         projectService.setProjectInfo(projectId);
-
     }
 
     @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
@@ -109,7 +102,6 @@ public class ProjectController {
                                                                         @PathVariable("committerName") String committerName,
                                                                         @PathVariable("start") String start,
                                                                         @PathVariable("end")String end) {
-
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime);

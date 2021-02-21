@@ -17,27 +17,9 @@ import java.util.List;
 @RestController
 public class DeveloperConnection {
 
-    /*  TODO change to autowired this is the proper way using beans, and not creating a rest template over and over
-    @Autowired
-    private RestTemplate restTemplate;
- */
-
-    RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
-
-    //Override timeouts in request factory
-    private SimpleClientHttpRequestFactory getClientHttpRequestFactory() {
-        SimpleClientHttpRequestFactory clientHttpRequestFactory
-                = new SimpleClientHttpRequestFactory();
-        //Connect timeout
-        clientHttpRequestFactory.setConnectTimeout(12_000);
-
-        //Read timeout
-        clientHttpRequestFactory.setReadTimeout(12_000);
-        return clientHttpRequestFactory;
-    }
-
     public List<Developer> getProjectDevelopersFromGitLab(int projectId) {
         User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
         String myUrl = user.getServerUrl() +"/projects/" + projectId + "/users?access_token=" + user.getToken();
         ResponseEntity<List<Developer>> developerResponse = restTemplate.exchange(myUrl,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});

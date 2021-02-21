@@ -19,34 +19,14 @@ import java.util.Objects;
  */
 public class CommitConnection {
 
-    /*  TODO change to autowired this is the proper way using beans, and not creating a rest template over and over
-        @Autowired
-        private RestTemplate restTemplate;
-     */
-    RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
-
-    //Override timeouts in request factory
-    private SimpleClientHttpRequestFactory getClientHttpRequestFactory() {
-        SimpleClientHttpRequestFactory clientHttpRequestFactory
-                = new SimpleClientHttpRequestFactory();
-        //Connect timeout
-        clientHttpRequestFactory.setConnectTimeout(12_000);
-
-        //Read timeout
-        clientHttpRequestFactory.setReadTimeout(12_000);
-        return clientHttpRequestFactory;
-    }
-
     public List<Commit> getProjectCommitsFromGitLab(int projectId) {
         User user = User.getInstance();
-//        RestTemplate restTemplate = new RestTemplate();
-
         String pageNumber = "1";
         List<Commit> commits = new ArrayList<>();
         do {
             String myUrl = user.getServerUrl() + "/projects/" + projectId +
                     "/repository/commits?all=true&per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
-            // https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
+            RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {
                     });
@@ -69,16 +49,19 @@ public class CommitConnection {
         RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Diff> diffs = new ArrayList<>();
+
         do {
             String url = user.getServerUrl() + "/projects/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" +
                     "?per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
             ResponseEntity<List<Diff>> diffsResponse = restTemplate.exchange(url,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Diff>>() {
                     });
+
             diffs.addAll(Objects.requireNonNull(diffsResponse.getBody()));
             HttpHeaders headers = diffsResponse.getHeaders();
             pageNumber = headers.getFirst("X-Next-Page");
         }while (!pageNumber.equals(""));
+
         for (Diff singleDiff : diffs) {
             singleDiff.calculateAndSetDiffScore();
         }
