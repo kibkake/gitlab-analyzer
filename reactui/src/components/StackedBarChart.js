@@ -37,7 +37,7 @@ export default class StackedBarChart extends PureComponent {
     render() {
         return (
             <div>
-                <ResponsiveContainer width = '95%' height = {500} >
+                {/*<ResponsiveContainer width = '95%' height = {500} >*/}
             <BarChart
                 width={1500}
                 height={300}
@@ -58,7 +58,7 @@ export default class StackedBarChart extends PureComponent {
                 <Bar dataKey="commitScore" stackId="a" fill="#8884d8" />
                 <Bar dataKey="mergeRequestScore" stackId="a" fill="#82ca9d" />
             </BarChart>
-                </ResponsiveContainer>
+                {/*</ResponsiveContainer>*/}
             </div>
         );
     }

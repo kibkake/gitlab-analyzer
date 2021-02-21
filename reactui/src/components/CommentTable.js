@@ -40,20 +40,19 @@ class CommentTable extends Component{
                         <td>Date/Time</td>
                         <td>Word Count</td>
                         <td>Comments</td>
-                        <td>For myself?</td>
+                        <td>Author</td>
                     </tr>
                     {
                         this.state.comments.map(comments =>//(item, index) =>
-                                <tr>
-                                    <td>{comments.createdDate}</td>
-                                    <td>{comments.wordCount}</td>
-                                    <td>{comments.body}</td>
-                                    <td>{comments.author.name}</td>
-                                </tr>
+                            <tr>
+                                <td>{comments.createdDate}</td>
+                                <td>{comments.wordCount}</td>
+                                <td>{comments.body}</td>
+                                <td>{comments.author.name}</td>
+                            </tr>
                         )}
                     </tbody>
                 </Table>
-
             </div>
         );
     }
