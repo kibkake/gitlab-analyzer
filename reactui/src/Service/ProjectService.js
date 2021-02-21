@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const PROJECT_REST_API_URL = "http://localhost:8090/";
+const PROJECT_URL = "/api/v1/";
 
 /*
   This class contains methods for sending HTTP requests to Apis by spring.
@@ -28,7 +28,7 @@ class ProjectService {
     }
 
     getCodeDiff() {
-        return axios.get("http://localhost:8090/getuserstats/6/arahilin");
+
     }
 
     getCommentInfo(projectId, committerName, start, end) {

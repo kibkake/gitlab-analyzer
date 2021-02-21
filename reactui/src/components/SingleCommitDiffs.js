@@ -28,7 +28,7 @@ class SingleCommitDiff extends Component{
 
 
 
-        let url2 = 'http://localhost:8090/api/v1/projects/' + repNum + '/Commit/' + hash;
+        let url2 = '/api/v1/projects/' + repNum + '/Commit/' + hash;
         fetch(url2, {
             method: 'GET',
             headers: {

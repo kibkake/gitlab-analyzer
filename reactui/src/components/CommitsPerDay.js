@@ -16,7 +16,7 @@ class CommitsPerDay extends Component{
     }
 //http://localhost:3000/Repo/6/Developers/user2/commits/2021-01-24
 
-    //http://localhost:8080/api/v1/projects/6/Commits/arahilin/2021-01-24/2021-01-24
+    //http://localhost:8090/api/v1/projects/6/Commits/arahilin/2021-01-24/2021-01-24
     componentDidMount() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
@@ -24,7 +24,7 @@ class CommitsPerDay extends Component{
         var date = str.split("/")[6];
 
 
-        let url2 = 'http://localhost:8090/api/v1/projects/' + repNum + '/Commits/' + userName + '/' + date + "/" + date
+        let url2 = '/api/v1/projects/' + repNum + '/Commits/' + userName + '/' + date + "/" + date
         fetch(url2, {
             method: 'GET',
             headers: {

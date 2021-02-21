@@ -8,12 +8,12 @@ import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class manages API mapping for functions to be called from frontend.
@@ -31,6 +31,9 @@ public class ProjectController {
     //
 
     private final ProjectService projectService;
+    private String startDate = "2021-01-11T20:59:00.000Z";
+    private String endDate = "2021-02-22T20:59:00.000Z";
+
 
     @Autowired
     public ProjectController(ProjectService projectService) {
@@ -213,6 +216,69 @@ public class ProjectController {
         LocalDate endDate = LocalDate.parse(end);
 
         return projectService.getAllScores(projectId, username, startDate, endDate);
+    }
+
+
+    @PostMapping("/setstartdate")
+    public void setStartDate(@RequestBody Map<String, String> requestBody) {
+        if(requestBody.get("starttime") != null) {
+            startDate = requestBody.get("starttime");
+        }
+    }
+
+    @PostMapping("/setenddate")
+    public void setEndDate(@RequestBody Map<String, String> requestBody) {
+        if(requestBody.get("endtime") != null) {
+            endDate = requestBody.get("endtime");
+        }
+    }
+
+    @GetMapping("/getstartdate")
+    public List<String> getStartDate() throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+        Date result= df1.parse(startDate);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result);
+
+        String month = Integer.toString((cal.get(Calendar.MONTH)+1));
+        String day = Integer.toString(cal.get(Calendar.DATE));
+
+        if(month.length() < 2){
+            month = "0" + Integer.toString((cal.get(Calendar.MONTH)+1));
+        }
+        if(day.length() < 2){
+            day = "0" + Integer.toString(cal.get(Calendar.DATE));
+        }
+
+        List<String> date = new ArrayList<>();
+        date.add(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
+        return date;
+    }
+
+    @GetMapping("/getenddate")
+    public List<String> getEndDate() throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+        Date result = df1.parse(endDate);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result);
+
+        String month = Integer.toString((cal.get(Calendar.MONTH)+1));
+        String day = Integer.toString(cal.get(Calendar.DATE));
+
+        if(month.length() < 2){
+            month = "0" + Integer.toString((cal.get(Calendar.MONTH)+1));
+        }
+        if(day.length() < 2){
+            day = "0" + Integer.toString(cal.get(Calendar.DATE));
+        }
+
+        List<String> date = new ArrayList<>();
+        date.add(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
+        return date;
     }
 
 }
