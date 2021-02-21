@@ -3,6 +3,35 @@ import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Respo
 import ProjectService from "../Service/ProjectService";
 import axios from "axios";
 
+
+const getDaysArray = function(start, end) {
+    for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
+
+        var day3temp = new Date(dt).toLocaleDateString().split("-")[1];
+        var month3temp = new Date(dt).toLocaleDateString().split("-")[0];
+        var year3 = new Date(dt).toLocaleDateString().split("-")[2];
+        var day3;
+        var month3;
+        if(day3temp < 10){
+            day3 = '0' + day3temp;
+        }else{
+            day3 = day3temp;
+        }
+        if(month3temp < 10){
+            month3 = '0' + month3temp;
+        }else{
+            month3 = month3temp;
+        }
+
+        var completeDate = year3 + "-" + month3 + "-" + day3;
+        arr.push(completeDate);
+        greenArr.push('rgba(123, 239, 178, 1)')
+        blackArr.push('rgba(0, 0, 0, 0.5)')
+    }
+    return arr;
+};
+
+
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class StackedBarChart extends PureComponent {
 
@@ -39,7 +68,6 @@ export default class StackedBarChart extends PureComponent {
             <div>
                 <ResponsiveContainer width = '85%' height = {500} >
             <BarChart
-
                 data={this.state.codeScore}
                 margin={{
                     top: 20,
