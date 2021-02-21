@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.Service;
 
 import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Model.AllScores;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
@@ -76,7 +77,7 @@ public class ProjectService {
         return numTotalMRs;
     }
 
-    @Transactional(timeout = 120000) // 20 min
+    @Transactional
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
@@ -88,7 +89,6 @@ public class ProjectService {
         project.setInfoSet(true);
         projectRepository.save(project);
     }
-
 
     public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
                                                      LocalDate start, LocalDate end) {
@@ -115,10 +115,10 @@ public class ProjectService {
 
     public double getTotalUserCommitScore(int projectId, String committerName,
                                        LocalDate start, LocalDate end) {
-        List<DateScore> individualCommitScores = this.getUserCommitScoresPerDay(projectId, committerName,
+        List<DateScore> individualDateScores = this.getUserCommitScoresPerDay(projectId, committerName,
                                                                                 start, end);
         double totalCommitScore = 0;
-        for (DateScore currentDateScore : individualCommitScores) {
+        for (DateScore currentDateScore : individualDateScores) {
             totalCommitScore += currentDateScore.getCommitScore();
         }
         return totalCommitScore;
@@ -242,7 +242,6 @@ public class ProjectService {
                 }
             }
         }
-        System.out.println(userMergeRequests);
         return userMergeRequests;
     }
 
@@ -266,12 +265,19 @@ public class ProjectService {
         return userIssues;
     }
 
-    public List<Note> getTopTenUserNotes(int projectID, String userName, LocalDate start, LocalDate end) {
+    public List<Note> getTopUserNotes(int projectID, String userName, LocalDate start, LocalDate end,
+                                      int limit, boolean applyLimit) {
         List<Note> userNotes = getUserNotes(projectID, userName, start, end);
         userNotes.sort(Comparator.comparingInt(Note::getWordCount));
         Collections.reverse(userNotes);
-        List<Note> topTenNotes = userNotes.stream().limit(10).collect(Collectors.toList());
-        return topTenNotes;
+        List<Note> topNotes;
+        if (applyLimit) {
+            topNotes = userNotes.stream().limit(limit).collect(Collectors.toList());
+        }
+        else {
+            topNotes = userNotes.stream().collect(Collectors.toList());
+        }
+        return topNotes;
     }
 
     public List<Note> getUserNotes(int projectId, String userName, LocalDate start, LocalDate end) {
@@ -283,7 +289,9 @@ public class ProjectService {
             if (issueNotes != null) {
                 for (Note note : issueNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
-                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0) {
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0 &&
+                        note != null && note.getUsername() != null &&
+                        note.getUsername().equals(userName)) {
                         userNotes.add(note);
                     }
                 }
@@ -295,7 +303,9 @@ public class ProjectService {
             if (mrNotes != null) {
                 for (Note note : mrNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
-                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0) {
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0 &&
+                        note != null && note.getUsername() != null &&
+                        note.getUsername().equals(userName)) {
                         userNotes.add(note);
                     }
                 }
@@ -323,4 +333,41 @@ public class ProjectService {
                 .orElse(null);
         return mergeRequest;
     }
+
+    public double getTotalUserMRScore(int projectId, String username,
+                                       LocalDate start, LocalDate end) {
+        double totalMRScore = 0.0;
+        List<MergeRequest> userMRs = this.getUserMergeRequests(projectId, username, start, end);
+        for (MergeRequest currentMR: userMRs) {
+            totalMRScore += currentMR.getMrScore();
+        }
+        return totalMRScore;
+    }
+
+    public int getTotalUserCommentWordCount(int projectId, String username,
+                                            LocalDate start, LocalDate end) {
+        List<Note> userNotes = this.getTopUserNotes(projectId, username, start, end, 100000, false);
+        int totalCommentWordCount = 0;
+        for (Note currentNote: userNotes) {
+            totalCommentWordCount += currentNote.getWordCount();
+        }
+        return totalCommentWordCount;
+    }
+
+    public AllScores getAllScores(int projectId, String username,
+                                  LocalDate startDate, LocalDate endDate) {
+        AllScores allScores = new AllScores(startDate, endDate, 0, 0, 0);
+        double totalCommitScore = this.getTotalUserCommitScore(projectId, username,
+                                                               startDate, endDate);
+        allScores.setTotalCommitScore(totalCommitScore);
+        double totalMergeRequestScore = this.getTotalUserMRScore(projectId, username,
+                                                                 startDate, endDate);
+        allScores.setTotalMergeRequestScore(totalMergeRequestScore);
+        int totalCommentWordCount = this.getTotalUserCommentWordCount(projectId, username, startDate,
+                                                                      endDate);
+        allScores.setTotalCommentWordCount(totalCommentWordCount);
+
+        return allScores;
+    }
+
 }

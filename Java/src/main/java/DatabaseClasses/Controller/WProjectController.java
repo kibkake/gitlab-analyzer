@@ -1,6 +1,5 @@
 package main.java.DatabaseClasses.Controller;
 
-
 import main.java.ConnectToGitlab.Wrapper.WrapperCommit;
 import main.java.ConnectToGitlab.Wrapper.WrapperMergedMergeRequest;
 import main.java.ConnectToGitlab.Wrapper.WrapperProject;
@@ -76,7 +75,7 @@ public class WProjectController {
         List<WrapperMergedMergeRequest> mergedMergeRequests = new ArrayList<>();
 
         if(project.isEmpty()) {
-            System.out.println("empty");
+            System.out.println("Not in database, storing now....");
             WrapperProject gitlabProject = new WrapperProject (token, projectId);
             List<WrapperMergedMergeRequest> gitlabMergedMergeRequests = gitlabProject.getMergedMergeRequestsFromServer
                     (token, projectId);

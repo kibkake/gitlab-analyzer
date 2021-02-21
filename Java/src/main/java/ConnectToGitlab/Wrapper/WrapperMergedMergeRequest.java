@@ -65,44 +65,62 @@ public class WrapperMergedMergeRequest {
      * @param token the token provided by user of the class.
      */
     public List<WrapperCommit> getSingleMergedMergeRequestCommits(String token) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + Pid + "/merge_requests/" + mergeRequestIid + "/commits" + "?access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + Pid + "/merge_requests/" + mergeRequestIid + "/commits?" +
+              "per_page=100&page=1" + "&access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String reply = "";
-        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-        //System.out.println(reply);
-        connection.disconnect();
+        int pages = Integer.parseInt(connection.getHeaderField("X-Total-Pages"));
 
         Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
         List<WrapperCommit> commits = new ArrayList<>();
-        for(int i = 0; i < jsonArray.size(); i++) {
-            JsonElement jsonElement = jsonArray.get(i);
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-            JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
-            String commitId = jsonPrimitiveId.getAsString();
-            JsonPrimitive jsonPrimitiveAuthorName = jsonObject.getAsJsonPrimitive("author_name");
-            String authorName = jsonPrimitiveAuthorName.getAsString();
-            JsonPrimitive jsonPrimitiveAuthorEmail = jsonObject.getAsJsonPrimitive("author_email");
-            String authorEmail = jsonPrimitiveAuthorEmail.getAsString();
-            JsonPrimitive jsonPrimitiveTitle = jsonObject.getAsJsonPrimitive("title");
-            String title = jsonPrimitiveTitle.getAsString();
-            JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
-            String mergeRequestCommitDate = jsonPrimitiveCommitDate.getAsString();
-            int [] mergeDate = parsIsoDate(mergeRequestCommitDate);
-            DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Date date = df1.parse(mergeRequestCommitDate);
-            df1.setTimeZone(TimeZone.getTimeZone("PT"));
-            String date2 = df1.format(date);
+        BufferedReader bufferedReader;
+        String reply = "";
 
-            WrapperCommit wrapperCommit = new WrapperCommit(token, Pid, commitId, authorName, authorEmail, title, date2,
-                    mergeDate[0], mergeDate[1], mergeDate[2]);
-            //MERGE_REQUEST_COMMITS.add(wrapperCommit);
-            mergeRequestCommitIds.add(wrapperCommit.getId());
-            commits.add(wrapperCommit);
+        for (int p = 1; p <= pages; p++) {
+
+            if(p == 1) {
+                bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                reply = "";
+                for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+
+            }else{
+                url = new URL(MAIN_URL + "/" + Pid + "/merge_requests/" + mergeRequestIid + "/commits?page=1" + "&" +
+                        "per_page=100&page=" + p + "&access_token=" + token);
+                connection = makeConnection(url);
+                connection.setRequestMethod("GET");
+                bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                reply = "";
+                for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+            }
+
+            JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement jsonElement = jsonArray.get(i);
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
+                String commitId = jsonPrimitiveId.getAsString();
+                JsonPrimitive jsonPrimitiveAuthorName = jsonObject.getAsJsonPrimitive("author_name");
+                String authorName = jsonPrimitiveAuthorName.getAsString();
+                JsonPrimitive jsonPrimitiveAuthorEmail = jsonObject.getAsJsonPrimitive("author_email");
+                String authorEmail = jsonPrimitiveAuthorEmail.getAsString();
+                JsonPrimitive jsonPrimitiveTitle = jsonObject.getAsJsonPrimitive("title");
+                String title = jsonPrimitiveTitle.getAsString();
+                JsonPrimitive jsonPrimitiveCommitDate = jsonObject.getAsJsonPrimitive("committed_date");
+                String mergeRequestCommitDate = jsonPrimitiveCommitDate.getAsString();
+                int[] mergeDate = parsIsoDate(mergeRequestCommitDate);
+                DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                Date date = df1.parse(mergeRequestCommitDate);
+                df1.setTimeZone(TimeZone.getTimeZone("PT"));
+                String date2 = df1.format(date);
+
+                WrapperCommit wrapperCommit = new WrapperCommit(token, Pid, commitId, authorName, authorEmail, title, date2,
+                        mergeDate[0], mergeDate[1], mergeDate[2]);
+                //MERGE_REQUEST_COMMITS.add(wrapperCommit);
+                mergeRequestCommitIds.add(wrapperCommit.getId());
+                commits.add(wrapperCommit);
+            }
         }
+        connection.disconnect();
         return commits;
     }
 
@@ -114,7 +132,7 @@ public class WrapperMergedMergeRequest {
         URL url = new URL(MAIN_URL + "/" + Pid + "/merge_requests/" + mergeRequestIid + "/notes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
+        //connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
@@ -170,7 +188,7 @@ public class WrapperMergedMergeRequest {
         URL url = new URL(MAIN_URL + "/" + Pid + "/merge_requests/" + mergeRequestIid + "/changes" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
+        //connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine) ;

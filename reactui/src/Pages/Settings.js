@@ -15,9 +15,28 @@ function Settings(){
     )
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)
+        const data = { starttime: selectedStartDate };
+        const result = fetch("http://localhost:8080/api/v1/setstartdate", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        })
     }
     const handleEndDateChange= (date) =>{
         setSelectedEndDate(date)
+        console.log("hahah")
+        const data2 = { endtime: selectedEndDate };
+        const result = fetch("http://localhost:8080/api/v1/setenddate", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data2),
+        })
     }
     return(   
         <>

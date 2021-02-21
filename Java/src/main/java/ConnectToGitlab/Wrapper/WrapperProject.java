@@ -51,7 +51,6 @@ public class WrapperProject {
         URL url = new URL(MAIN_URL + "/" + ID + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
         String reply = "";
@@ -74,7 +73,6 @@ public class WrapperProject {
         URL url = new URL(MAIN_URL + "/" + ID + "/repository/commits" +  "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
         String reply = "";
@@ -114,40 +112,58 @@ public class WrapperProject {
      * @param projectId the id of the project.
      */
     public List<WrapperMergedMergeRequest> getMergedMergeRequestsFromServer(String token, int projectId) throws IOException, ParseException {
-        URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged&" + "access_token=" + token);
+        URL url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged&per_page=100&page=1" + "&access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-        String reply = "";
-        for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
-        //System.out.println(reply);
-        connection.disconnect();
+        int pages = Integer.parseInt(connection.getHeaderField("X-Total-Pages"));
 
         Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
         List<WrapperMergedMergeRequest> mergerRequests = new ArrayList<>();
-        for(int i = 0; i < jsonArray.size(); i++) {
-            JsonElement jsonElement = jsonArray.get(i);
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-            JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
-            int mergeRequestId = jsonPrimitiveId.getAsInt();
-            JsonPrimitive jsonPrimitiveIid = jsonObject.getAsJsonPrimitive("iid");
-            int mergeRequestIid = jsonPrimitiveIid.getAsInt();
-            JsonPrimitive jsonPrimitiveProjectId = jsonObject.getAsJsonPrimitive("project_id");
-            int mergeRequestProjectId = jsonPrimitiveProjectId.getAsInt();
-            JsonPrimitive jsonPrimitiveMergedAt = jsonObject.getAsJsonPrimitive("merged_at");
-            String mergeRequestUntilDate = jsonPrimitiveMergedAt.getAsString();
-            JsonPrimitive jsonPrimitiveTitle = jsonObject.getAsJsonPrimitive("title");
-            String mergeRequestTitle = jsonPrimitiveTitle.getAsString();
-            int [] mergeDate = parsIsoDate(mergeRequestUntilDate);
+        BufferedReader bufferedReader;
+        String reply = "";
 
-            WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, mergeRequestId,mergeRequestIid,
-                    mergeRequestProjectId, mergeRequestTitle, mergeDate[0], mergeDate[1], mergeDate[2]);
-            mergeRequestIds.add(mergeRequest.getMergeRequestId());
-            mergerRequests.add(mergeRequest);
+        for (int p = 1; p <= pages; p++) {
+            if(p == 1) {
+                bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                reply = "";
+                for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+
+            }else{
+                url = new URL(MAIN_URL + "/" + projectId + "/merge_requests?" + "state=merged&per_page=100&page=" + p + "&access_token=" + token);
+                connection = makeConnection(url);
+                connection.setRequestMethod("GET");
+                bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                reply = "";
+                for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
+            }
+
+            System.out.println(p);
+            System.out.println(reply);
+            JsonArray jsonArray = gson.fromJson(reply, JsonArray.class);
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement jsonElement = jsonArray.get(i);
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                JsonPrimitive jsonPrimitiveId = jsonObject.getAsJsonPrimitive("id");
+                int mergeRequestId = jsonPrimitiveId.getAsInt();
+                JsonPrimitive jsonPrimitiveIid = jsonObject.getAsJsonPrimitive("iid");
+                int mergeRequestIid = jsonPrimitiveIid.getAsInt();
+                JsonPrimitive jsonPrimitiveProjectId = jsonObject.getAsJsonPrimitive("project_id");
+                int mergeRequestProjectId = jsonPrimitiveProjectId.getAsInt();
+                JsonPrimitive jsonPrimitiveMergedAt = jsonObject.getAsJsonPrimitive("merged_at");
+                String mergeRequestUntilDate = jsonPrimitiveMergedAt.getAsString();
+                JsonPrimitive jsonPrimitiveTitle = jsonObject.getAsJsonPrimitive("title");
+                String mergeRequestTitle = jsonPrimitiveTitle.getAsString();
+                int[] mergeDate = parsIsoDate(mergeRequestUntilDate);
+
+                WrapperMergedMergeRequest mergeRequest = new WrapperMergedMergeRequest(token, mergeRequestId, mergeRequestIid,
+                        mergeRequestProjectId, mergeRequestTitle, mergeDate[0], mergeDate[1], mergeDate[2]);
+                mergeRequestIds.add(mergeRequest.getMergeRequestId());
+                mergerRequests.add(mergeRequest);
+            }
         }
+        System.out.println("size: " + mergerRequests.size());
+        connection.disconnect();
         return mergerRequests;
     }
 
@@ -159,7 +175,6 @@ public class WrapperProject {
         URL url = new URL(MAIN_URL + "/" + ID + "/issues" + "?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String reply = "";
         for (String oneLine; (oneLine = bufferedReader.readLine()) != null; reply += oneLine);
@@ -215,7 +230,7 @@ public class WrapperProject {
         URL url = new URL(MAIN_URL + "/" + ID + "/members" +"?access_token=" + token);
         HttpURLConnection connection = makeConnection(url);
         connection.setRequestMethod("GET");
-        connection.getInputStream();
+        //connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
         String reply = "";

@@ -1,13 +1,18 @@
 package main.java.DatabaseClasses.Controller;
 
 import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Model.AllScores;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +26,9 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private String startDate = "2021-01-11T20:59:00.000Z";
+    private String endDate = "2021-02-22T20:59:00.000Z";
+
 
     @Autowired
     public ProjectController(ProjectService projectService) {
@@ -154,18 +162,19 @@ public class ProjectController {
                                          @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getTopTenUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
+        return projectService.getTopUserNotes(projectId, committerName, StartLocalTime, endLocalTime, 10, true);
     }
 
     //TODO: This doesn't work?
     @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
     public double totalCommitScore(@PathVariable("projectId") int projectId,
-                                @PathVariable("committerName") String committerName,
-                                @PathVariable("start") String start,
-                                   @PathVariable("end")String end) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getTotalUserCommitScore(projectId, committerName, StartLocalTime, endLocalTime);
+                                   @PathVariable("committerName") String committerName,
+                                   @PathVariable("start") String start,
+                                   @PathVariable("end") String end) {
+        LocalDate startLocalDate = LocalDate.parse(start);
+        LocalDate endLocalDate = LocalDate.parse(end);
+        return projectService.getTotalUserCommitScore(projectId, committerName,
+                                                      startLocalDate, endLocalDate);
     }
 
     @GetMapping("projects/{projectId}/commit/{commitId}")
@@ -178,17 +187,80 @@ public class ProjectController {
         return projectService.getMergeRequest(projectId, mrId);
     }
 
+    @GetMapping("projects/{projectId}/allTotalScores/{username}/{start}/{end}")
+    public AllScores allTotalScores(@PathVariable ("projectId") int projectId,
+                                       @PathVariable ("username") String username,
+                                       @PathVariable ("start") String start,
+                                       @PathVariable ("end") String end) {
 
-    //TODO: to get dates from frontend setting
-    @PostMapping("/dates/start")
-    public LocalDate createStartDate(@RequestBody LocalDate date) {
-        // probably should be parsed here, input is not likely to be the localdate object
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+
+        return projectService.getAllScores(projectId, username, startDate, endDate);
+    }
+
+
+    @PostMapping("/setstartdate")
+    public void setStartDate(@RequestBody Map<String, String> requestBody) {
+        if(requestBody.get("starttime") != null) {
+            startDate = requestBody.get("starttime");
+        }
+    }
+
+    @PostMapping("/setenddate")
+    public void setEndDate(@RequestBody Map<String, String> requestBody) {
+        if(requestBody.get("endtime") != null) {
+            endDate = requestBody.get("endtime");
+        }
+    }
+
+    @GetMapping("/getstartdate")
+    public List<String> getStartDate() throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+        Date result= df1.parse(startDate);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result);
+
+        String month = Integer.toString((cal.get(Calendar.MONTH)+1));
+        String day = Integer.toString(cal.get(Calendar.DATE));
+
+        if(month.length() < 2){
+            month = "0" + Integer.toString((cal.get(Calendar.MONTH)+1));
+        }
+        if(day.length() < 2){
+            day = "0" + Integer.toString(cal.get(Calendar.DATE));
+        }
+
+        List<String> date = new ArrayList<>();
+        date.add(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
         return date;
     }
 
-    @PostMapping("/dates/end")
-    public LocalDate createEndDate(@RequestBody LocalDate date) {
+    @GetMapping("/getenddate")
+    public List<String> getEndDate() throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+        Date result = df1.parse(endDate);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result);
+
+        String month = Integer.toString((cal.get(Calendar.MONTH)+1));
+        String day = Integer.toString(cal.get(Calendar.DATE));
+
+        if(month.length() < 2){
+            month = "0" + Integer.toString((cal.get(Calendar.MONTH)+1));
+        }
+        if(day.length() < 2){
+            day = "0" + Integer.toString(cal.get(Calendar.DATE));
+        }
+
+        List<String> date = new ArrayList<>();
+        date.add(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
         return date;
     }
+
 }
 
