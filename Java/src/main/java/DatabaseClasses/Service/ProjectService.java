@@ -265,12 +265,19 @@ public class ProjectService {
         return userIssues;
     }
 
-    public List<Note> getTopTenUserNotes(int projectID, String userName, LocalDate start, LocalDate end) {
+    public List<Note> getTopUserNotes(int projectID, String userName, LocalDate start, LocalDate end,
+                                      int limit, boolean applyLimit) {
         List<Note> userNotes = getUserNotes(projectID, userName, start, end);
         userNotes.sort(Comparator.comparingInt(Note::getWordCount));
         Collections.reverse(userNotes);
-        List<Note> topTenNotes = userNotes.stream().limit(10).collect(Collectors.toList());
-        return topTenNotes;
+        List<Note> topNotes;
+        if (applyLimit) {
+            topNotes = userNotes.stream().limit(limit).collect(Collectors.toList());
+        }
+        else {
+            topNotes = userNotes.stream().collect(Collectors.toList());
+        }
+        return topNotes;
     }
 
     public List<Note> getUserNotes(int projectId, String userName, LocalDate start, LocalDate end) {
@@ -282,7 +289,8 @@ public class ProjectService {
             if (issueNotes != null) {
                 for (Note note : issueNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
-                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0) {
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
+                        && note.getUsername().equals(userName)) {
                         userNotes.add(note);
                     }
                 }

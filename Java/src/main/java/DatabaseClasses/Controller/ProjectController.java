@@ -165,7 +165,7 @@ public class ProjectController {
                                          @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getTopTenUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
+        return projectService.getTopUserNotes(projectId, committerName, StartLocalTime, endLocalTime, 10, true);
     }
 
     //TODO: This doesn't work?
