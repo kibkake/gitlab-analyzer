@@ -27,7 +27,7 @@ class CommentChart extends Component {
         axios.get("/api/v1/projects/" + id + "/topTenUserNotes/"+ developer +"/2021-01-01/2021-02-22")
             .then(response => {
                 const commentInfo = response.data;
-                this.setState({commentScore: commentInfo})
+                this.setState({commentScore: commentInfo});
                 console.log(this.state.commentScore);
 
             }).catch((error) => {

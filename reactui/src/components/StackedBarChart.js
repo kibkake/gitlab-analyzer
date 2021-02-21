@@ -2,35 +2,11 @@ import React, { PureComponent } from 'react';
 import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import ProjectService from "../Service/ProjectService";
 import axios from "axios";
-
-
-const getDaysArray = function(start, end) {
-    for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
-
-        var day3temp = new Date(dt).toLocaleDateString().split("-")[1];
-        var month3temp = new Date(dt).toLocaleDateString().split("-")[0];
-        var year3 = new Date(dt).toLocaleDateString().split("-")[2];
-        var day3;
-        var month3;
-        if(day3temp < 10){
-            day3 = '0' + day3temp;
-        }else{
-            day3 = day3temp;
-        }
-        if(month3temp < 10){
-            month3 = '0' + month3temp;
-        }else{
-            month3 = month3temp;
-        }
-
-        var completeDate = year3 + "-" + month3 + "-" + day3;
-        arr.push(completeDate);
-        greenArr.push('rgba(123, 239, 178, 1)')
-        blackArr.push('rgba(0, 0, 0, 0.5)')
-    }
-    return arr;
-};
-
+import * as d3 from "d3-time";
+import moment from 'moment'
+import { extent as d3Extent, max as d3Max } from 'd3-array';
+import { scaleLinear as d3ScaleLinear, scaleTime as d3ScaleTime} from 'd3-scale';
+import { format as d3Format } from 'd3-format';
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class StackedBarChart extends PureComponent {
@@ -38,7 +14,7 @@ export default class StackedBarChart extends PureComponent {
     constructor() {
         super();
         this.state = {
-            codeScore:[]
+            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0}]
         }
     }
 
@@ -47,13 +23,13 @@ export default class StackedBarChart extends PureComponent {
         var id = pathArray[2];
         var developer = pathArray[4];
 
-        //request ref: http://localhost:8090/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-10
-        axios.get("/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
+        //request ref: http://localhost:8090/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-23
+        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + developer + "/2021-01-01/2021-02-23")
             .then(response => {
                 const score = response.data
-                console.log(score);
-                this.setState({codeScore: score})
-                console.log(this.state.codeScore);
+                console.log(score)
+                this.setState({codeScore : score})
+                console.log(this.state.codeScore)
             }).catch((error) => {
                     console.error(error);
             });
@@ -64,26 +40,52 @@ export default class StackedBarChart extends PureComponent {
 //        });
 
     render() {
+        var output = this.state.codeScore.map(function(item) {
+            return {
+                date: Number(new Date(item.date)),
+                commitScore: item.commitScore,
+                mergeScore: item.mergeRequestScore
+            };
+        });
+        console.log(output);
+        const from = Number(new Date('2021-01-01'));
+        const to = Number(new Date('2021-02-23'));
+
+        //
+        // const domain = d3Extent (output.date, d=>new Date(d.start));
+        // const tScale = d3ScaleTime().domain(domain).range([0, 1]);
+        // const tickFormat = tScale.tickFormat();
+
         return (
             <div>
                 <ResponsiveContainer width = '85%' height = {500} >
-            <BarChart
-                data={this.state.codeScore}
-                margin={{
-                    top: 20,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date"/>
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="commitScore" stackId="a" fill="orange" />
-                <Bar dataKey="mergeRequestScore" stackId="a" fill="#82ca9d" />
-            </BarChart>
+                    <BarChart
+                        data={output}
+                        margin={{
+                            top: 20,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey= "date"
+                               type ="number"
+                               // scale="day"
+                            // domain = {['auto', 'auto']}
+                               name = 'date'
+                               tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
+                               domain={[
+                                   d3.timeDay.floor(from).getTime(),
+                                   d3.timeDay.ceil(to).getTime()
+                               ]}
+                            />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="commitScore" stackId="a" fill="orange" />
+                        <Bar dataKey="mergeRequestScore" stackId="a" fill="#82ca9d" />
+                    </BarChart>
                 </ResponsiveContainer>
             </div>
         );
