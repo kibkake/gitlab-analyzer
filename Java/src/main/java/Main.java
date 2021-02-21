@@ -57,7 +57,7 @@ public class Main {
             System.out.println("done");
 
             // indicate running status
-            System.out.println("Server broadcasting on localhost:8080");
+            System.out.println("Server broadcasting on localhost:8090");
         };
     }
 

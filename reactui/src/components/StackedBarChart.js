@@ -18,8 +18,8 @@ export default class StackedBarChart extends PureComponent {
         var id = pathArray[2];
         var developer = pathArray[4];
 
-        //request ref: http://localhost:8080/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-10
-        axios.get("http://localhost:8080/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
+        //request ref: http://localhost:8090/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-10
+        axios.get("/api/v1/projects/" +id+ "/MRsAndCommitScoresPerDay/"+developer+"/2021-01-01/2021-02-10")
             .then(response => {
                 const score = response.data
                 this.setState({codeScore: score})

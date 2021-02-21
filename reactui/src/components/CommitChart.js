@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
 import Button from "react-bootstrap/Button";
-import axios from "axios";
-
 
 class CommitChart extends Component {
 
@@ -99,7 +97,8 @@ class CommitChart extends Component {
             var completeToDate = year2 + "-" + month2 + "-" + day2;
             var arr=[];
 
-            let url3 = ' http://localhost:8080/api/v1/projects/' + projNum + '/Commitsarray/' + developerName + '/' +
+//http://localhost:8090/getuserstats/6/arahilin/1-11-2021/2-22-2021
+            let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + developerName + '/' +
                 completeFromDate + "/" + completeToDate
             const result = await fetch(url3, {
                 method: 'GET',
