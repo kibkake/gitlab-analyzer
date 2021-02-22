@@ -1,14 +1,7 @@
 import {user} from './Navbar_Developers'
 import {rep} from './Navbar_Developers'
-
-
-import Navbar_Developers from "./Navbar_Developers";
 export const MenuItems = [
-    {
-        title: 'Developers',
-        url: '/Repo/' + rep + '/Developers',
-        cName: 'nav-links'
-    },
+
     {
         title: 'Summary',
         url: '/Repo/' + rep + '/Developers/' + user + '/summary',
@@ -32,6 +25,11 @@ export const MenuItems = [
     {
         title: 'Comment Contribution',
         url: '/Repo/' + rep + '/Developers/' + user + '/comments',
+        cName: 'nav-links'
+    },
+    {
+        title: 'Developers',
+        url: '/Repo/' + rep + '/Developers',
         cName: 'nav-links'
     },
 
