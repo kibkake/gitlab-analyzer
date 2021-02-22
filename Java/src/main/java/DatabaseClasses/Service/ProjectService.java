@@ -165,42 +165,47 @@ public class ProjectService {
         return dateScores;
     }
 
-    private Developer findDeveloperWithUsernameField(String username, int projectId) {
+    private Developer findDeveloperWithUsernameOrNameField(String usernameOrName, int projectId) {
         List<Developer> developers = getProjectDevelopers(projectId);
         for (Developer developer: developers) {
-            if (developer.getUsername().equals(username)) {
+            if (developer.getUsername().equals(usernameOrName) ||
+                developer.getName().equals(usernameOrName)) {
                 return developer;
             }
         }
         return null;
     }
     
-    private boolean didDeveloperAuthorCommit(Commit commit, Developer developer, String devUsername) {
+    private boolean didDeveloperAuthorCommit(Commit commit, Developer developer,
+                                             String devUsernameOrName) {
         String committerName = commit.getCommitter_name();
         String authorName = commit.getAuthor_name();
-        if (developer != null && developer.getName() != null) {
+        if (developer != null && developer.getName() != null && developer.getUsername() != null) {
+            // The developer object is fine. So use it and discard the devUserNameOrName param.
             String name = developer.getName();
+            String username = developer.getUsername();
             return committerName.equals(name) || authorName.equals(name) ||
-                   committerName.equals(devUsername) || authorName.equals(devUsername);
+                   committerName.equals(username) || authorName.equals(username);
         }
         else {
-            return committerName.equals(devUsername) || authorName.equals(devUsername);
+            return committerName.equals(devUsernameOrName) || authorName.equals(devUsernameOrName);
         }
     }
 
-    public List<Commit> getUserCommits(int projectId, String devUsername, LocalDate start, LocalDate end) {
-        Developer developer = findDeveloperWithUsernameField(devUsername, projectId);
+    public List<Commit> getUserCommits(int projectId, String devUsernameOrName, LocalDate start, LocalDate end) {
+        // For anyone calling this function, the devUsernameOrName parameter can be equal
+        // to either the Developer's username or name field. The same behaviour should happen.
+        Developer developer = findDeveloperWithUsernameOrNameField(devUsernameOrName, projectId);
         Project project = projectRepository.findProjectById(projectId);
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
         // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
         List<Commit> userCommits = new ArrayList<Commit>();
-
         List<Commit> projectCommits = project.getCommits();
         for (Commit currentCommit : projectCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
                 if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                    didDeveloperAuthorCommit(currentCommit, developer, devUsername)) {
+                    didDeveloperAuthorCommit(currentCommit, developer, devUsernameOrName)) {
                     userCommits.add(currentCommit);
                     commitIds.add(currentCommit.getId());
                 }
