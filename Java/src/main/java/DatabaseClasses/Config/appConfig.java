@@ -22,6 +22,6 @@ public class appConfig {
     public @Bean
     MongoTemplate mongoTemplate() {
         return new MongoTemplate(mongoClient(), "gitlab");
-    }
+    } //test
 }
 

@@ -1,9 +1,7 @@
 import {user} from './Navbar_Developers'
 import {rep} from './Navbar_Developers'
-
-
-import Navbar_Developers from "./Navbar_Developers";
 export const MenuItems = [
+
     {
         title: 'Summary',
         url: '/Repo/' + rep + '/Developers/' + user + '/summary',
@@ -14,7 +12,11 @@ export const MenuItems = [
         //url: '/Repo/' + rep + '/Developers/' + user + '/codeContribution',
         //cName: 'nav-links'
     //}
-    ,
+    {
+        title: 'Commits',
+        url: '/Repo/' + rep + '/Developers/' + user + '/commits',
+        cName: 'nav-links'
+    },
     {
         title: 'Single Commit Diff',
         url: '/Repo/' + rep + '/Developers/' + user + '/codediff',
@@ -26,13 +28,9 @@ export const MenuItems = [
         cName: 'nav-links'
     },
     {
-        title: 'Commits',
-        url: '/Repo/' + rep + '/Developers/' + user + '/commits',
-        cName: 'nav-links'
-    },
-    {
         title: 'Developers',
         url: '/Repo/' + rep + '/Developers',
         cName: 'nav-links'
-    }
+    },
+
 ];

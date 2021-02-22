@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
+import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import axios from "axios";
-import { Bar} from 'react-chartjs-2'
+import * as d3 from "d3-time";
+import moment from "moment";
 
-/*
-const margin = {top: 20, right: 20, bottom: 30, left: 40};
 
-class CommentChart extends Component {
-
-    getInitialState() {
-        return { width: 500 };
-    }
+export default class CommentChart extends Component {
 
     constructor() {
         super();
@@ -18,77 +14,57 @@ class CommentChart extends Component {
         }
     }
 
-    //response ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/arahilin/2021-01-01/2021-02-15
     componentDidMount () {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
         var developer = pathArray[4];
-        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/"+ developer +"/2021-01-01/2021-02-15")
-            .then(response => {
-                const commentInfo = response.data;
-                this.setState({commentScore: commentInfo})
-                console.log(this.state.commentScore);
 
+        //response ref: http://localhost:8090/api/v1/projects/6/allUserNotes/arahilin/2021-01-01/2021-02-22
+        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ developer +"/2021-01-01/2021-02-22")
+            .then(response => {
+                const commentInfo = response.data
+                this.setState({commentScore: commentInfo})//{date: commentInfo.created_at, wordCount: commentInfo.wordCount }})
+                console.log(this.state.commentScore)
             }).catch((error) => {
-            console.error(error);
+                console.error(error);
         });
     }
-/*
+
     render() {
-        var output = this.state.commentScore.map(function(item) {
+        const output = this.state.commentScore.map(function(item) {
             return {
-                text: item.created_at,
-                value: item.wordCount
+                date: (new Date(item.created_at)).getTime(),
+                wordCount: item.wordCount
             };
         });
         console.log(output);
+        const from = Number(new Date('2021-01-15'));
+        const to = Number(new Date('2021-02-23'));
 
         return (
-            <div ref='root'>
-                <div style={{width: '50%'}}>
-                    <BarChart ylabel='Score'
-                              width={200}
-                              height={200}
-                              margin={margin}
-                              data={output}
-
-                    />
-                </div>
+            <div>
+                <ResponsiveContainer width = '100%' height = {500} >
+                    <BarChart
+                        data={output}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey= "date"
+                               type = "number"
+                               name = 'date'
+                               domain={[
+                                   d3.timeDay.floor(from).getTime(),
+                                   d3.timeDay.ceil(to).getTime()
+                               ]}
+                               tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
+                        />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="wordCount" stackId="a" fill="#8884d8" />
+                    </BarChart>
+                </ResponsiveContainer>
             </div>
         );
     }
-}*/
-// creating a stacked barchart for mr/commits
-const CommentChart = () => {
-    return <div>
-        <Bar data={{
-            //labels x for the axis
-            labels: ['time', 'time', 'time', 'time', 'time'],
-            //data displayed in graph
-            datasets: [
-                {
-                    label: 'comments',
-                    data: [56, 34, 5, 50, 12],
-                    backgroundColor:'lightGreen',
-                    borderColor:'black'
-                },
-            ]
-        }}
-             height={200}
-             width={200}
-             options ={{
-                 maintainAspectRatio: false,
-                 scales:{
-                     yAxes:[
-                         {
-                             ticks:{
-                                 beginAtZero: true,
-                             }
-                         }
-                     ]
-                 }
-             }}
-        />
-    </div>
 }
-export default CommentChart

@@ -256,6 +256,8 @@ public class ProjectService {
                     createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
                 List<Note> notes = issue.getNotes();
                 for (Note note: notes)  {
+                    // TODO - get rid of note.getAuthor() equality test since it compares a Developer to a String.
+                    // Could instead test if note.getName().equals(username)?
                     if (note.getUsername().equals(userName) || note.getAuthor().equals(userName)) {
                         userIssues.add(issue);
                     }
@@ -265,22 +267,22 @@ public class ProjectService {
         return userIssues;
     }
 
-    public List<Note> getTopUserNotes(int projectID, String userName, LocalDate start, LocalDate end,
+    public List<Note> getTopUserNotes(int projectID, String devName, LocalDate start, LocalDate end,
                                       int limit, boolean applyLimit) {
-        List<Note> userNotes = getUserNotes(projectID, userName, start, end);
-        userNotes.sort(Comparator.comparingInt(Note::getWordCount));
-        Collections.reverse(userNotes);
+        List<Note> devNotes = getUserNotes(projectID, devName, start, end);
+        devNotes.sort(Comparator.comparingInt(Note::getWordCount));
+        Collections.reverse(devNotes);
         List<Note> topNotes;
         if (applyLimit) {
-            topNotes = userNotes.stream().limit(limit).collect(Collectors.toList());
+            topNotes = devNotes.stream().limit(limit).collect(Collectors.toList());
         }
         else {
-            topNotes = userNotes.stream().collect(Collectors.toList());
+            topNotes = devNotes.stream().collect(Collectors.toList());
         }
         return topNotes;
     }
 
-    public List<Note> getUserNotes(int projectId, String userName, LocalDate start, LocalDate end) {
+    public List<Note> getUserNotes(int projectId, String name, LocalDate start, LocalDate end) {
         Project project = projectRepository.findProjectById(projectId);
         List<Issue> issues = project.getIssues();
         List<Note> userNotes = new ArrayList<>();
@@ -290,8 +292,7 @@ public class ProjectService {
                 for (Note note : issueNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
                     if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0 &&
-                        note != null && note.getUsername() != null &&
-                        note.getUsername().equals(userName)) {
+                        didDeveloperWriteNote(note, name)) {
                         userNotes.add(note);
                     }
                 }
@@ -304,14 +305,19 @@ public class ProjectService {
                 for (Note note : mrNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
                     if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0 &&
-                        note != null && note.getUsername() != null &&
-                        note.getUsername().equals(userName)) {
+                        didDeveloperWriteNote(note, name)) {
                         userNotes.add(note);
                     }
                 }
             }
         }
         return userNotes;
+    }
+
+    private boolean didDeveloperWriteNote(Note note, String name) {
+        Developer dev = note.getAuthor();
+        return dev != null && ((dev.getName() != null && dev.getName().equals(name)) ||
+               (dev.getUsername() != null && dev.getUsername().equals(name)));
     }
 
     public Commit getCommit(int projectId, String commitId) {
