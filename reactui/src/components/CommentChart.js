@@ -45,8 +45,8 @@ class CommentChart extends Component {
     render() {
         const output = this.state.commentScore.map(function(item) {
             return {
-                text: item.created_at,
-                value: item.wordCount
+                date: (new Date(item.created_at)).getTime(),
+                wordCount: item.wordCount
             };
         });
         console.log(output);
