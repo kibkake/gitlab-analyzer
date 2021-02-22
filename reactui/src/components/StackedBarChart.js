@@ -3,6 +3,8 @@ import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Respo
 import ProjectService from "../Service/ProjectService";
 import axios from "axios";
 import * as d3 from "d3-time";
+// import * as d3 from "d3";
+
 import moment from 'moment'
 import { extent as d3Extent, max as d3Max } from 'd3-array';
 import { scaleLinear as d3ScaleLinear, scaleTime as d3ScaleTime} from 'd3-scale';
@@ -42,7 +44,7 @@ export default class StackedBarChart extends PureComponent {
     render() {
         var output = this.state.codeScore.map(function(item) {
             return {
-                date: Number(new Date(item.date)),
+                date: (new Date(item.date)).getTime(), //item.date,
                 commitScore: item.commitScore,
                 mergeScore: item.mergeRequestScore
             };
@@ -51,6 +53,10 @@ export default class StackedBarChart extends PureComponent {
         const from = Number(new Date('2021-01-01'));
         const to = Number(new Date('2021-02-23'));
 
+        // const domainToday = d3ScaleTime().domain([d3.timeDay.floor(from), d3.timeDay.ceil(to)]);
+        // // // const dayFormatter = (tick) => {return d3.format('%H:%M:%S')(new Date(tick));};
+        // const ticks = domainToday.ticks(d3.timeDays(from, to, 1));
+
         //
         // const domain = d3Extent (output.date, d=>new Date(d.start));
         // const tScale = d3ScaleTime().domain(domain).range([0, 1]);
@@ -58,7 +64,7 @@ export default class StackedBarChart extends PureComponent {
 
         return (
             <div>
-                <ResponsiveContainer width = '85%' height = {500} >
+                <ResponsiveContainer width = '100%' height = {500} >
                     <BarChart
                         data={output}
                         margin={{
@@ -71,20 +77,23 @@ export default class StackedBarChart extends PureComponent {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey= "date"
                                type ="number"
-                               // scale="day"
-                            // domain = {['auto', 'auto']}
+                            //    ticks={ticks}
+                            //    domain={domainToday}
+                            //    scale='time'
+                            // // domain = {['auto', 'auto']}
                                name = 'date'
-                               tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
                                domain={[
                                    d3.timeDay.floor(from).getTime(),
                                    d3.timeDay.ceil(to).getTime()
                                ]}
-                            />
+                               // ticks = domain.ticks(d3.timeDays(from, to, 1));
+                               tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
+                        />
                         <YAxis />
                         <Tooltip />
                         <Legend />
                         <Bar dataKey="commitScore" stackId="a" fill="orange" />
-                        <Bar dataKey="mergeRequestScore" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="mergeScore" stackId="a" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
