@@ -155,6 +155,7 @@ public class ProjectController {
         return projectService.getUserCommitScoresPerDay(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
+    // TODO: should be checked, doesn't return data
     @GetMapping("projects/{projectId}/topTenUserNotes/{committerName}/{start}/{end}")
     public List<Note> getTopTenUserNotes(@PathVariable("projectId") int projectId,
                                          @PathVariable("committerName") String committerName,
@@ -165,7 +166,16 @@ public class ProjectController {
         return projectService.getTopUserNotes(projectId, committerName, StartLocalTime, endLocalTime, 10, true);
     }
 
-    //TODO: This doesn't work?
+    @GetMapping("projects/{projectId}/allUserNotes/{committerName}/{start}/{end}")
+    public List<Note> getAllUserNotes(@PathVariable("projectId") int projectId,
+                                         @PathVariable("committerName") String committerName,
+                                         @PathVariable("start") String start,
+                                         @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
+    }
+
     @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
     public double totalCommitScore(@PathVariable("projectId") int projectId,
                                    @PathVariable("committerName") String committerName,

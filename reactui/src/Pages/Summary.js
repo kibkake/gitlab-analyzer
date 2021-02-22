@@ -3,7 +3,6 @@ import Navbar_Developers from "../components/Navbar_Developers";
 import StackedBarChart from "../components/StackedBarChart";
 import React from "react";
 import CommentChart from "../components/CommentChart";
-import TimeSeriesChart from "../components/TimeSeriesChart";
 
 function Summary(){
     return(
@@ -26,8 +25,6 @@ function Summary(){
             </br>
             <h4 style={{textAlign:'center'}}>Comment Score</h4>
             <CommentChart/>
-
-            {/*<TimeSeriesChart/>*/}
         </div>
 
     )

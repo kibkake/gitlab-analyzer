@@ -1,14 +1,9 @@
 import React, { PureComponent } from 'react';
 import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
-import ProjectService from "../Service/ProjectService";
 import axios from "axios";
 import * as d3 from "d3-time";
-// import * as d3 from "d3";
-
 import moment from 'moment'
-import { extent as d3Extent, max as d3Max } from 'd3-array';
-import { scaleLinear as d3ScaleLinear, scaleTime as d3ScaleTime} from 'd3-scale';
-import { format as d3Format } from 'd3-format';
+import ProjectService from "../Service/ProjectService";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class StackedBarChart extends PureComponent {
@@ -53,15 +48,6 @@ export default class StackedBarChart extends PureComponent {
         const from = Number(new Date('2021-01-01'));
         const to = Number(new Date('2021-02-23'));
 
-        // const domainToday = d3ScaleTime().domain([d3.timeDay.floor(from), d3.timeDay.ceil(to)]);
-        // // // const dayFormatter = (tick) => {return d3.format('%H:%M:%S')(new Date(tick));};
-        // const ticks = domainToday.ticks(d3.timeDays(from, to, 1));
-
-        //
-        // const domain = d3Extent (output.date, d=>new Date(d.start));
-        // const tScale = d3ScaleTime().domain(domain).range([0, 1]);
-        // const tickFormat = tScale.tickFormat();
-
         return (
             <div>
                 <ResponsiveContainer width = '100%' height = {500} >
@@ -77,16 +63,11 @@ export default class StackedBarChart extends PureComponent {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey= "date"
                                type ="number"
-                            //    ticks={ticks}
-                            //    domain={domainToday}
-                            //    scale='time'
-                            // // domain = {['auto', 'auto']}
                                name = 'date'
                                domain={[
                                    d3.timeDay.floor(from).getTime(),
                                    d3.timeDay.ceil(to).getTime()
                                ]}
-                               // ticks = domain.ticks(d3.timeDays(from, to, 1));
                                tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
                         />
                         <YAxis />

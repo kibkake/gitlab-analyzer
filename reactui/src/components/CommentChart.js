@@ -23,12 +23,13 @@ class CommentChart extends Component {
         var id = pathArray[2];
         var developer = pathArray[4];
 
-        //response ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/arahilin/2021-01-01/2021-02-22
-        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/"+ developer +"/2021-01-01/2021-02-22")
+        //response ref: http://localhost:8090/api/v1/projects/6/allUserNotes/arahilin/2021-01-01/2021-02-22
+        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ developer +"/2021-01-01/2021-02-22")
             .then(response => {
-                const commentInfo = response.data;
-                this.setState({commentScore: commentInfo});
-                console.log(this.state.commentScore);
+                const commentInfo = response.data
+                console.log(commentInfo)
+                this.setState({commentScore: commentInfo})
+                console.log(this.state.commentScore)
 
             }).catch((error) => {
             console.error(error);
@@ -58,7 +59,6 @@ class CommentChart extends Component {
                               data={output}
                               color="#ffe0b2"
                               onBarClick={this.handleBarClick}/>
-                    {/*<Bar dataKey="commitScore" stackId="a" fill="orange" />*/}
 
                 </div>
             </div>
