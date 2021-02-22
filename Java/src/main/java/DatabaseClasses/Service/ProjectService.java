@@ -165,8 +165,31 @@ public class ProjectService {
         return dateScores;
     }
 
+    private Developer findDeveloperWithUsernameField(String username, int projectId) {
+        List<Developer> developers = getProjectDevelopers(projectId);
+        for (Developer developer: developers) {
+            if (developer.getUsername().equals(username)) {
+                return developer;
+            }
+        }
+        return null;
+    }
+    
+    private boolean didDeveloperAuthorCommit(Commit commit, Developer developer, String devUsername) {
+        String committerName = commit.getCommitter_name();
+        String authorName = commit.getAuthor_name();
+        if (developer != null && developer.getName() != null) {
+            String name = developer.getName();
+            return committerName.equals(name) || authorName.equals(name) ||
+                   committerName.equals(devUsername) || authorName.equals(devUsername);
+        }
+        else {
+            return committerName.equals(devUsername) || authorName.equals(devUsername);
+        }
+    }
 
-    public List<Commit> getUserCommits(int projectId, String committerName, LocalDate start, LocalDate end) {
+    public List<Commit> getUserCommits(int projectId, String devUsername, LocalDate start, LocalDate end) {
+        Developer developer = findDeveloperWithUsernameField(devUsername, projectId);
         Project project = projectRepository.findProjectById(projectId);
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
         // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
@@ -177,7 +200,7 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
                 if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                        (currentCommit.getCommitter_name().equals(committerName)) || currentCommit.getAuthor_name().equals(committerName)) {
+                    didDeveloperAuthorCommit(currentCommit, developer, devUsername)) {
                     userCommits.add(currentCommit);
                     commitIds.add(currentCommit.getId());
                 }
