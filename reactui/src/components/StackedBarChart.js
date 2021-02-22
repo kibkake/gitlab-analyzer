@@ -45,7 +45,7 @@ export default class StackedBarChart extends PureComponent {
             };
         });
         console.log(output);
-        const from = Number(new Date('2021-01-01'));
+        const from = Number(new Date('2021-01-15'));
         const to = Number(new Date('2021-02-23'));
 
         return (
