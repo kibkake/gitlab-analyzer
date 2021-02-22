@@ -24,7 +24,6 @@ export default class StackedBarChart extends PureComponent {
         axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + developer + "/2021-01-01/2021-02-23")
             .then(response => {
                 const score = response.data
-                console.log(score)
                 this.setState({codeScore : score})
                 console.log(this.state.codeScore)
             }).catch((error) => {
@@ -53,12 +52,7 @@ export default class StackedBarChart extends PureComponent {
                 <ResponsiveContainer width = '100%' height = {500} >
                     <BarChart
                         data={output}
-                        margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                        }}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey= "date"

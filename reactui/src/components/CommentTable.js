@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
-import * as comments from "react-bootstrap/ElementChildren";
 import ProjectService from "../Service/ProjectService";
 
 class CommentTable extends Component{
@@ -41,7 +40,6 @@ class CommentTable extends Component{
                         <td>Date/Time</td>
                         <td>Word Count</td>
                         <td>Comments</td>
-                        <td>Author</td>
                     </tr>
                     <tbody>
                     {
@@ -50,7 +48,6 @@ class CommentTable extends Component{
                                 <td>{comments.createdDate}</td>
                                 <td>{comments.wordCount}</td>
                                 <td>{comments.body}</td>
-                                <td>{comments.author.name}</td>
                             </tr>
                         )}
                     </tbody>
