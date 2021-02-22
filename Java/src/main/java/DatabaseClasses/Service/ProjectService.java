@@ -256,6 +256,8 @@ public class ProjectService {
                     createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
                 List<Note> notes = issue.getNotes();
                 for (Note note: notes)  {
+                    // TODO - get rid of note.getAuthor() equality test since it compares a Developer to a String.
+                    // Could instead test if note.getName().equals(username)?
                     if (note.getUsername().equals(userName) || note.getAuthor().equals(userName)) {
                         userIssues.add(issue);
                     }
@@ -313,8 +315,9 @@ public class ProjectService {
     }
 
     private boolean didDeveloperWriteNote(Note note, String name) {
-        return note != null && note.getAuthor() != null && note.getAuthor().getName() != null &&
-               note.getAuthor().getName().equals(name);
+        Developer dev = note.getAuthor();
+        return dev != null && ((dev.getName() != null && dev.getName().equals(name)) ||
+               (dev.getUsername() != null && dev.getUsername().equals(name)));
     }
 
     public Commit getCommit(int projectId, String commitId) {
