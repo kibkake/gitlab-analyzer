@@ -214,26 +214,19 @@ public class ProjectService {
         return userCommits;
     }
 
-    public List<String> getAllUserCommitsArray(int projectId, String committerName, LocalDate start, LocalDate end) {
-        Project project = projectRepository.findProjectById(projectId);
-        List<String> commitIds = new ArrayList<String>();
-        List<Commit> projectCommits = project.getCommits();
-        List<String> commitsArray = new ArrayList<>();
-
-        for (LocalDate time = start; time.isBefore(end.plusDays(1)); time = time.plusDays(1)){
-            List<Commit> commits = new ArrayList<>();
-
-            for (Commit currentCommit : projectCommits) {
+    public List<String> getAllUserCommitsArray(int projectId, String devUsernameOrName, LocalDate start, LocalDate end) {
+        List<Commit> allUserCommits = getUserCommits(projectId, devUsernameOrName, start, end);
+        List<String> commitsArray = new ArrayList<String>();
+        // Each element of commitsArray will store the number of commits (as a string) on a date.
+        for (LocalDate time = start; time.isBefore(end.plusDays(1)); time = time.plusDays(1)) {
+            List<Commit> commitsThisDay = new ArrayList<Commit>();
+            for (Commit currentCommit : allUserCommits) {
                 LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
                 if (commitDate.compareTo(time) == 0) {
-                    if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                            currentCommit.getCommitter_name().equals(committerName)) {
-                        commits.add(currentCommit);
-                        commitIds.add(currentCommit.getId());
-                    }
+                    commitsThisDay.add(currentCommit);
                 }
             }
-            commitsArray.add(Integer.toString(commits.size()));
+            commitsArray.add(Integer.toString(commitsThisDay.size()));
         }
         return commitsArray;
     }
