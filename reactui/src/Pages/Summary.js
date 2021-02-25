@@ -48,21 +48,7 @@ class Summary extends Component{
                 </br>
 
 
-                <br>
-                </br>
-                <h4 style={{textAlign: 'center'}}>Total Scores</h4>
-                <SummaryScoreTable/>
-                <br>
-                </br>
 
-                <h4 style={{textAlign: 'center'}}>Score of Commits/Merge Requests</h4>
-                <StackedBarChart/>
-                <br>
-                </br>
-                <br>
-                </br>
-                <h4 style={{textAlign: 'center'}}>Comment Score</h4>
-                <CommentChart/>
             </div>
 
         )
