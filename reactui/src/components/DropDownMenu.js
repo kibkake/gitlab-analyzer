@@ -36,12 +36,12 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
                 <br>
             </br>
                 <h4 style={{textAlign: 'center'}}>Total Scores</h4>
-                <SummaryScoreTable/>
+                <SummaryScoreTable devName = {selectedValue}/>
                 <br>
                 </br>
 
                 <h4 style={{textAlign: 'center'}}>Score of Commits/Merge Requests</h4>
-                <StackedBarChart/>
+                <StackedBarChart devName = {selectedValue}/>
                 <br>
                 </br>
                 <br>
