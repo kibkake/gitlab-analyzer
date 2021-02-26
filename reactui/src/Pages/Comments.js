@@ -1,24 +1,33 @@
-import CommentTable from "../components/CommentTable";
-import RadioButtons from "../components/RadioButton";
-import CustomizedRadios from "../components/RadioButton";
 import '../App.css';
-import Navbar_Developers from "../components/Navbar_Developers";
-import React from "react";
+import React, {Component} from "react";
+import DropDownMenuComments from "../components/DropDownMenuComments";
 
-function Comments() {
-    return (
-        <div>
-            <Navbar_Developers/>
-            <h1 style={{textAlign:'center'}}>Comment Contribution</h1>
-            <br></br>
-            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-            <CustomizedRadios/>
-            </div>
-            <br></br>
-            <h4 style={{textAlign:'center'}}>Top 10 comments </h4>
-            <CommentTable/>
-        </div>
-    )
+class Comments extends Component{
+
+    constructor(props){
+        super(props);
+        this.state={
+            developers: []
+        };
+    }
+
+    async componentDidMount() {
+        this.setState({developers:JSON.parse(sessionStorage.getItem("Developers"))})
+    }
+
+
+    render() {
+
+        var strDevelopers = JSON.stringify(this.state.developers);
+        var developersArray = JSON.parse(strDevelopers)
+        return (
+
+            <header classname='Rest'>
+                <DropDownMenuComments listOfDevelopers = {developersArray}/>
+            </header>
+
+        )
+    }
 }
 
-export default Comments
+export default Comments;
