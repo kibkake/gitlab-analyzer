@@ -7,7 +7,7 @@ import CommentChart from "./CommentChart";
 import Navbar_Developers from "./Navbar_Developers";
 
 
-function DropDownMenu ({listOfDevelopers, sentDev}) {
+function DropDownMenu ({listOfDevelopers, style}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
@@ -33,11 +33,13 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
 
                 <br>
                 </br>
+                <div style={style}>
                 <Select
                     options={devArray}
                     defaultValue={{label: currentDeveloper, value: currentDeveloper}}
                     onChange={handleChange}
                 />
+                </div>
             </div>
             <div>
                 <br>
