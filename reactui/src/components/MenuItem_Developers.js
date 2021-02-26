@@ -13,17 +13,12 @@ export const MenuItems = [
         //cName: 'nav-links'
     //}
     {
-        title: 'Commits',
-        url: '/Repo/' + rep + '/Developers/' + user + '/commits',
-        cName: 'nav-links'
-    },
-    {
-        title: 'Single Commit Diff',
+        title: 'Merge Requests',
         url: '/Repo/' + rep + '/Developers/' + user + '/codediff',
         cName: 'nav-links'
     },
     {
-        title: 'Comment Contribution',
+        title: 'Comments',
         url: '/Repo/' + rep + '/Developers/' + user + '/comments',
         cName: 'nav-links'
     },
