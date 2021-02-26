@@ -15,11 +15,11 @@ class Developers2Button extends Component{
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         let url2 = '/getprojectmembers/' + repNum
-        fetch(url2, {
+        await fetch(url2, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -28,14 +28,19 @@ class Developers2Button extends Component{
         }).then((result)=> {
             result.json().then((resp) => {
                 this.setState({data:resp})
+                console.log("session")
+                sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
+                var DataArray = JSON.parse(sessionStorage.getItem("Developers"));
+                console.log(DataArray)
             })
         })
+
+
 
     }
 
     render(){
-        var str = window.location.pathname;
-        var strArr = str.split("/");
+
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
 
