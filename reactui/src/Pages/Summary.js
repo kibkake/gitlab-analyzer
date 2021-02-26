@@ -5,6 +5,16 @@ import React, {Component} from "react";
 import CommentChart from "../components/CommentChart";
 import DropDownMenu from "../components/DropDownMenu";
 
+
+
+const styles={
+    app: {
+        marginLeft: '400px',
+        marginRight: '400px',
+    }
+}
+
+
 class Summary extends Component {
     constructor(props) {
         super(props);
@@ -24,8 +34,8 @@ class Summary extends Component {
         var developersArray = JSON.parse(strDevelopers);
 
         return (
-            <div>
-                <DropDownMenu listOfDevelopers={developersArray}/>
+            <div >
+                <DropDownMenu style={styles.app} listOfDevelopers={developersArray}/>
                 <br>
                 </br>
             </div>
