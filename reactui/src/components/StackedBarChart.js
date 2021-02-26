@@ -17,31 +17,15 @@ export default class StackedBarChart extends PureComponent {
     }
 
     componentDidMount(){
-        var pathArray = window.location.pathname.split('/');
-        var id = pathArray[2];
-        var developer = pathArray[4];
         const {parentdata} = this.state;
-
-        //request ref: http://localhost:8090/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-23
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + parentdata + "/2021-01-01/2021-02-23")
-            .then(response => {
-                const score = response.data
-                this.setState({codeScore : score})
-                console.log(this.state.codeScore)
-            }).catch((error) => {
-                    console.error(error);
-            });
-
+        this.getDataFromBackend(parentdata)
     }
 
-    getMoreData(dev){
-
+    getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
-        var developer = pathArray[4];
-        const {parentdata} = this.state;
 
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + dev + "/2021-01-01/2021-02-23")
+        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + "/2021-01-01/2021-02-23")
             .then(response => {
                 const score = response.data
                 this.setState({codeScore : score})
@@ -49,13 +33,12 @@ export default class StackedBarChart extends PureComponent {
             }).catch((error) => {
             console.error(error);
         });
-
     }
 
     componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
             this.setState({parentdata: this.props.devName});
-            this.getMoreData(this.props.devName)
+            this.getDataFromBackend(this.props.devName)
         }
     }
 
