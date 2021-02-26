@@ -47,6 +47,38 @@ export class Navbar_Developers extends Component{
 
     componentDidMount() {}
 
+    componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName){
+            this.setState({parentdata: [
+                    {
+                        title: 'Summary',
+                        url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/summary',
+                        cName: 'nav-links'
+                    },
+                    {
+                        title: 'Commits',
+                        url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/commits',
+                        cName: 'nav-links'
+                    },
+                    {
+                        title: 'Single Commit Diff',
+                        url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/codediff',
+                        cName: 'nav-links'
+                    },
+                    {
+                        title: 'Comment Contribution',
+                        url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/comments',
+                        cName: 'nav-links'
+                    },
+                    {
+                        title: 'Developers',
+                        url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers',
+                        cName: 'nav-links'
+                    },
+                ]});
+        }
+    }
+
     render(){
         //console.log(something)
         const {parentdata} = this.state;
