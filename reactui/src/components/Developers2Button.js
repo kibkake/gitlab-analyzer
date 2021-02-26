@@ -57,7 +57,7 @@ class Developers2Button extends Component{
                                     onClick={(e) => {
                                         e.preventDefault();
                                         sessionStorage.setItem("CurrentDeveloper", item)
-                                        window.location.href=  window.location.pathname  + item + "/summary";
+                                        window.location.href=  window.location.pathname + '/' + item + "/summary";
 
                                     }}
                             >

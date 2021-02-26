@@ -26,12 +26,12 @@ export class Navbar_Developers extends Component{
                     cName: 'nav-links'
                 },
                 {
-                    title: 'Single Commit Diff',
+                    title: 'Merge Requests',
                     url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' + window.location.pathname.split("/")[4] + '/codediff',
                     cName: 'nav-links'
                 },
                 {
-                    title: 'Comment Contribution',
+                    title: 'Comments',
                     url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' + window.location.pathname.split("/")[4] + '/comments',
                     cName: 'nav-links'
                 },
@@ -61,12 +61,12 @@ export class Navbar_Developers extends Component{
                         cName: 'nav-links'
                     },
                     {
-                        title: 'Single Commit Diff',
+                        title: 'Merge Requests',
                         url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/codediff',
                         cName: 'nav-links'
                     },
                     {
-                        title: 'Comment Contribution',
+                        title: 'Comments',
                         url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/comments',
                         cName: 'nav-links'
                     },

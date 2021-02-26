@@ -42,12 +42,13 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
             <div>
                 <br>
             </br>
-                <h4 style={{textAlign: 'center'}}>Total Scores</h4>
+                <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
                 <SummaryScoreTable devName = {sessionStorage.getItem("CurrentDeveloper")}/>
                 <br>
                 </br>
 
-                <h4 style={{textAlign: 'center'}}>Score of Commits/Merge Requests</h4>
+                <h4 style={{textAlign:'center'}}>Score of Commits/Merge Requests</h4>
+                <h4 style={{textAlign:'center'}}>Add switch to num commits/MR graph</h4>
                 <StackedBarChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
                 <br>
                 </br>
@@ -62,3 +63,4 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
 }
 
 export default DropDownMenu;
+
