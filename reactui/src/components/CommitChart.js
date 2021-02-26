@@ -225,7 +225,7 @@ class CommitChart extends Component {
     componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
             this.setState({parentdata: this.props.devName});
-            //this.getMoreData(this.props.devName)
+            this.getMoreData(this.props.devName)
         }
     }
 

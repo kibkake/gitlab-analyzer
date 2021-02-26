@@ -15,30 +15,29 @@ function DropDownMenuCommit ({listOfDevelopers, sentDev}) {
         devArray.push({label: item, value: item})
     })
 
-    const pathArray = window.location.pathname.split('/');
-    const developer = pathArray[4];
-
+    const currentDeveloper = sessionStorage.getItem("CurrentDeveloper")
     const [selectedValue, setSelectedValue] = useState(
-        developer
+        null
     );
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
+        sessionStorage.setItem("CurrentDeveloper", obj.label);
     }
 
     return (
 
         <div>
-            <Navbar_Developers devName = {selectedValue}/>
+            <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
             </br>
             <Select
                 options={devArray}
-                defaultValue={{ label: developer, value: developer }}
+                defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
                 onChange={handleChange}/>
             <br>
             </br>
-            <CommitChart  devName = {selectedValue}/>
+            <CommitChart  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
 
         </div>
     )

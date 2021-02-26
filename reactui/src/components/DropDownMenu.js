@@ -28,7 +28,7 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
     return (
         <div>
             <div>
-                <Navbar_Developers devName = {selectedValue}/>
+                <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
                 <h1 style={{textAlign: 'center'}}>Summary</h1>
 
                 <br>
@@ -48,13 +48,13 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
                 </br>
 
                 <h4 style={{textAlign: 'center'}}>Score of Commits/Merge Requests</h4>
-                <StackedBarChart devName = {selectedValue}/>
+                <StackedBarChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
                 <br>
                 </br>
                 <br>
                 </br>
                 <h4 style={{textAlign: 'center'}}>Comment Score</h4>
-                <CommentChart devName = {selectedValue}/>
+                <CommentChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             </div>
 
         </div>
