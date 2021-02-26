@@ -54,7 +54,7 @@ class Developers2Button extends Component{
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        window.location.href=  window.location.pathname + "/" + item + "/summary";
+                                        window.location.href=  window.location.pathname  + item + "/summary";
 
                                     }}
                             >

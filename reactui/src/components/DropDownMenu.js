@@ -4,6 +4,7 @@ import Select from 'react-select'
 import SummaryScoreTable from "./SummaryScoreTable";
 import StackedBarChart from "./StackedBarChart";
 import CommentChart from "./CommentChart";
+import Navbar_Developers from "./Navbar_Developers";
 
 
 function DropDownMenu ({listOfDevelopers, sentDev}) {
@@ -25,13 +26,17 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
     return (
         <div>
             <div>
+                <Navbar_Developers devName = {selectedValue}/>
+                <h1 style={{textAlign: 'center'}}>Summary</h1>
+
+                <br>
+                </br>
                 <Select
                     options={devArray}
                     defaultValue={{ label: developer, value: developer }}
                     onChange={handleChange}
                 />
             </div>
-            <div>{selectedValue}</div>
             <div>
                 <br>
             </br>
@@ -47,7 +52,7 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
                 <br>
                 </br>
                 <h4 style={{textAlign: 'center'}}>Comment Score</h4>
-                <CommentChart/>
+                <CommentChart devName = {selectedValue}/>
             </div>
 
         </div>

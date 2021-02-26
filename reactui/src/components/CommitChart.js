@@ -9,7 +9,8 @@ class CommitChart extends Component {
         this.state = {
             data: [],
             strDate: "2021-01-11",
-            endDate: "2021-02-22"
+            endDate: "2021-02-22",
+            parentdata: this.props.devName
         };
     }
 

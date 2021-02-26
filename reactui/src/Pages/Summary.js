@@ -37,11 +37,7 @@ class Summary extends Component{
 
         return (
             <div>
-                <Navbar_Developers/>
-                <h1 style={{textAlign: 'center'}}>Summary</h1>
 
-                <br>
-                </br>
 
                 <DropDownMenu DropDownMenu  listOfDevelopers = {developersArray} />
                 <br>
