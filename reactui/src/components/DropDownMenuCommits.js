@@ -29,7 +29,7 @@ function DropDownMenuCommit ({listOfDevelopers, sentDev}) {
     return (
 
         <div>
-            <Navbar_Developers/>
+            <Navbar_Developers devName = {selectedValue}/>
             <br>
             </br>
             <Select

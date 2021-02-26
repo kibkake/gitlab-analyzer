@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 
 class CommitChart extends Component {
 
@@ -17,6 +18,8 @@ class CommitChart extends Component {
     async componentDidMount() {
 
         var arr2=[];
+        const {parentdata} = this.state;
+
 
         const result2 = await fetch('/api/v1/getstartdate', {
             method: 'GET',
@@ -98,7 +101,7 @@ class CommitChart extends Component {
             var completeToDate = year2 + "-" + month2 + "-" + day2;
             var arr=[];
 
-            let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + developerName + '/' +
+            let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + parentdata + '/' +
                 completeFromDate + "/" + completeToDate
             const result = await fetch(url3, {
                 method: 'GET',
@@ -115,6 +118,17 @@ class CommitChart extends Component {
             })
        this.setState({data: arr})
     }
+
+
+
+
+    componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName){
+            this.setState({parentdata: this.props.devName});
+            //this.getMoreData(this.props.devName)
+        }
+    }
+
     render() {
 
         var greenArr = [];
