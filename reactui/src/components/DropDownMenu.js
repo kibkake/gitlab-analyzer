@@ -14,13 +14,15 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
 
     const pathArray = window.location.pathname.split('/');
     const developer = pathArray[4];
+    console.log(developer)
+    const currentDeveloper = sessionStorage.getItem("CurrentDeveloper")
 
-    const[selectedValue, setSelectedValue] = useState(
-        developer
-    );
+
+    const[selectedValue, setSelectedValue] = useState(null);
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
+        sessionStorage.setItem("CurrentDeveloper", obj.label)
     }
 
     return (
@@ -33,7 +35,7 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
                 </br>
                 <Select
                     options={devArray}
-                    defaultValue={{ label: developer, value: developer }}
+                    defaultValue={{label: currentDeveloper, value: currentDeveloper}}
                     onChange={handleChange}
                 />
             </div>
@@ -41,7 +43,7 @@ function DropDownMenu ({listOfDevelopers, sentDev}) {
                 <br>
             </br>
                 <h4 style={{textAlign: 'center'}}>Total Scores</h4>
-                <SummaryScoreTable devName = {selectedValue}/>
+                <SummaryScoreTable devName = {sessionStorage.getItem("CurrentDeveloper")}/>
                 <br>
                 </br>
 

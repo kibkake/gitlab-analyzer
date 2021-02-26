@@ -28,10 +28,7 @@ class Developers2Button extends Component{
         }).then((result)=> {
             result.json().then((resp) => {
                 this.setState({data:resp})
-                console.log("session")
                 sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
-                var DataArray = JSON.parse(sessionStorage.getItem("Developers"));
-                console.log(DataArray)
             })
         })
 
@@ -59,6 +56,7 @@ class Developers2Button extends Component{
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
+                                        sessionStorage.setItem("CurrentDeveloper", item)
                                         window.location.href=  window.location.pathname  + item + "/summary";
 
                                     }}
