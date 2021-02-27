@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
 import Button from "react-bootstrap/Button";
 import CommitChart from "./CommitChart";
-import Settings from "../Pages/Settings";
+import DateRangeSettings from "./DateRangeSettings";
 
 function SettingsDate (){
 
@@ -15,7 +15,7 @@ function SettingsDate (){
 
         return (
             <div>
-                <Settings setSelectedTime={setSelectedTime}/>
+                <DateRangeSettings setSelectedTime={setSelectedTime}/>
                 <CommitChart selectedTime={selectedTime}/>
             </div>
         )
