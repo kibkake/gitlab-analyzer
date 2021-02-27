@@ -1,22 +1,33 @@
 import "../App.css"
 import React,{ Component } from "react";
-import CodeDiffTable from "../components/CodeDiffTable";
-import Navbar_Developers from "../components/Navbar_Developers";
+import DropDownMenuMerge from "../components/DropDownMenuMerge";
 
 
-function MergeRequest(){
+class MergeRequest extends Component{
 
-    return(
-        <div classname='CodeDiff'>
-            <Navbar_Developers/>
+    constructor(props){
+        super(props);
+        this.state={
+            developers: []
+        };
+    }
 
-            <h1 style={{textAlign:'center'}}>List of MR + full diff</h1>
-            <h2 style={{textAlign:'center'}}>-list of commits for each MR + code diff</h2>
-            <h2 style={{textAlign:'center'}}>-code diff should be shown in the same page</h2>
-            <h4 style={{textAlign:'center'}}>-Highlight + part?</h4>
-            <CodeDiffTable/>
-        </div>
-    )
+    async componentDidMount() {
+        this.setState({developers:JSON.parse(sessionStorage.getItem("Developers"))})
+    }
+
+    render() {
+
+        var strDevelopers = JSON.stringify(this.state.developers);
+        var developersArray = JSON.parse(strDevelopers)
+
+        return(
+            <div classname='CodeDiff'>
+                <DropDownMenuMerge listOfDevelopers = {developersArray}/>
+
+            </div>
+        )
+    }
 }
 
 export default MergeRequest;

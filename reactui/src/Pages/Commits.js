@@ -1,5 +1,4 @@
 import "../App.css"
-import React,{ Component } from "react";
 import ChartCommit from "../components/ChartCommit";
 import FullDiffTable from "../components/FullDiffTable";
 import Navbar_Developers from "../components/Navbar_Developers";

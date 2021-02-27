@@ -2,11 +2,6 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
-import {RepoItems} from '../Pages/sampleRepo';
-import RepoButton from "./RepoButton";
-//import "./RepoButton.css"
-
-
 class Developers2Button extends Component{
     constructor(props){
         super(props);
@@ -15,11 +10,15 @@ class Developers2Button extends Component{
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        this.getDataFromBackend();
+    }
+
+    async getDataFromBackend(){
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         let url2 = '/getprojectmembers/' + repNum
-        fetch(url2, {
+        await fetch(url2, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -28,23 +27,15 @@ class Developers2Button extends Component{
         }).then((result)=> {
             result.json().then((resp) => {
                 this.setState({data:resp})
+                sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
             })
         })
-
     }
 
     render(){
-        var str = window.location.pathname;
-        var strArr = str.split("/");
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
-
-
-        console.log(DataArray);
-
         return(
-            //<div> Name: {DataArray} </div>
-
             <ul>
                 <header></header>
                 {DataArray.map(item => {
@@ -54,19 +45,16 @@ class Developers2Button extends Component{
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        window.location.href=  window.location.pathname + "/" + item + "/summary";
+                                        sessionStorage.setItem("CurrentDeveloper", item)
+                                        window.location.href=  window.location.pathname + '/' + item + "/summary";
 
-                                    }}
-                            >
+                                    }}>
                                 <span >{item}</span>
                             </Button>
                         </a>
                     </li>;
                 })}
             </ul>
-
-
-
         );
 
     }

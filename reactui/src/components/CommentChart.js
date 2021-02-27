@@ -7,27 +7,39 @@ import moment from "moment";
 
 export default class CommentChart extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            commentScore: []
+            commentScore: [],
+            parentdata: this.props.devName
         }
     }
 
-    componentDidMount () {
+    componentDidMount(){
+        const {parentdata} = this.state;
+        this.getDataFromBackend(parentdata)
+    }
+
+    getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
-        var developer = pathArray[4];
 
         //response ref: http://localhost:8090/api/v1/projects/6/allUserNotes/arahilin/2021-01-01/2021-02-22
-        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ developer +"/2021-01-01/2021-02-22")
+        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ username +"/2021-01-01/2021-02-22")
             .then(response => {
                 const commentInfo = response.data
                 this.setState({commentScore: commentInfo})//{date: commentInfo.created_at, wordCount: commentInfo.wordCount }})
                 console.log(this.state.commentScore)
             }).catch((error) => {
-                console.error(error);
+            console.error(error);
         });
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName){
+            this.setState({parentdata: this.props.devName});
+            this.getDataFromBackend(this.props.devName)
+        }
     }
 
     render() {
