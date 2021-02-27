@@ -15,6 +15,7 @@ class Developers2Button extends Component{
 
     async componentDidMount() {
         this.getDataFromBackend();
+
     }
 
     async getDataFromBackend(){
@@ -33,6 +34,16 @@ class Developers2Button extends Component{
                 sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
             })
         })
+
+        var names = [];
+        for( var i = 0; i < JSON.parse(sessionStorage.getItem("Developers")).length; i++){
+            names[i] = "no name";
+            console.log(names[i])
+        }
+
+    }
+
+    getNumberOfDevelopers() {
     }
 
     handleChange = (item) => (event) => {
@@ -47,6 +58,7 @@ class Developers2Button extends Component{
         return(
             <ul>
                 <header></header>
+
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">
