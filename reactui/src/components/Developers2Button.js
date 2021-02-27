@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import './Navbar.css';
 
 class Developers2Button extends Component{
     constructor(props){
@@ -62,7 +63,7 @@ class Developers2Button extends Component{
         return(
 
             <ul>
-                <header></header>
+                <header className="header">Any data associated with the developer names will also be pulled(after the back end is updated)</header>
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">
