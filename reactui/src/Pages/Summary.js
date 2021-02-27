@@ -1,11 +1,5 @@
-import SummaryScoreTable from "../components/SummaryScoreTable";
-import Navbar_Developers from "../components/Navbar_Developers";
-import StackedBarChart from "../components/StackedBarChart";
 import React, {Component} from "react";
-import CommentChart from "../components/CommentChart";
 import DropDownMenu from "../components/DropDownMenu";
-
-
 
 const styles={
     app: {

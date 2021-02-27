@@ -6,7 +6,7 @@ import CommitChart from "./CommitChart";
 import CodeDiffTable from "./CodeDiffTable";
 
 
-function DropDownMenuMerge ({listOfDevelopers, sentDev}) {
+function DropDownMenuMerge ({listOfDevelopers, style}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -29,10 +29,13 @@ function DropDownMenuMerge ({listOfDevelopers, sentDev}) {
             <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
             </br>
+            <div style={style}>
+
             <Select
                 options={devArray}
                 defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
                 onChange={handleChange}/>
+            </div>
             <br>
             </br>
             <h1 style={{textAlign: 'center'}}>List of MR + full diff</h1>
