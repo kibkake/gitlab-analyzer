@@ -47,10 +47,15 @@ class Developers2Button extends Component{
                                         e.preventDefault();
                                         sessionStorage.setItem("CurrentDeveloper", item)
                                         window.location.href=  window.location.pathname + '/' + item + "/summary";
-
                                     }}>
                                 <span >{item}</span>
                             </Button>
+                            <input className="TextBox"
+                                type="text"
+                                placeholder= "name of developer"
+                                value={this.state.value}
+                                onChange={this.handleChange}
+                            />
                         </a>
                     </li>;
                 })}

@@ -39,6 +39,17 @@ div {
 .footer {
     padding: inherit;
 }
+
+.TextBox {
+    color: white;
+    margin-top: 30px;
+    margin-left: 400px;
+    font-size: 30px;
+    width: 50%;
+    height: 40px;
+    flex: 1;
+
+}
 .navMenu{
     display: grid;
     grid-template-columns: repeat(5,auto);
