@@ -28,44 +28,33 @@ class Developers2Button extends Component{
             }
         }).then((result)=> {
             result.json().then((resp) => {
-                this.setState({data:resp , developerNames:resp})
+                this.setState({data:resp , developerNames:JSON.parse(JSON.stringify(resp))})
                 sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
             })
         })
-
-
-
-       // var names = [];
-        //for( var i = 0; i < JSON.parse(sessionStorage.getItem("Developers")).length; i++){
-          //  names[i] = "no name";
-           // console.log(names[i])
-        //}
-
     }
 
-    getNumberOfDevelopers() {
+    sentBackNamesOfDevelopers() {
+
     }
 
     handleChange = (item) => (event) => {
         event.preventDefault();
-        //console.log(item)
-        //console.log(event.target.value)
-        //console.log(this.state.data)
-        //console.log(this.state.data)
-        //var newnames = JSON.parse(this.state.developerNames);
-        //var newnames2 = JSON.parse(newnames)
-        //console.log(newnames2)
-        var tempDevNames = JSON.parse(JSON.stringify(this.state.developerNames));
+        var tempDevNames = this.state.developerNames;
         var tempDevUsernames = JSON.parse(JSON.stringify(this.state.data));
 
-
-        for(var i = 0; i < this.state.data.length; i++){
-            //if(tempDevUsernames[i] === item){
-                console.log("yes!")
-                //newnames[i] = event.target.value
-                //console.log(event.target.value)
-            //}
+        for(var i = 0; i < tempDevUsernames.length; i++){
+            if(tempDevUsernames[i] === item){
+                if(event.target.value != "") {
+                    tempDevNames[i] = event.target.value;
+                }else{
+                    tempDevNames[i] = item;
+                }
+            }
         }
+        sessionStorage.setItem("DeveloperNames", tempDevNames)
+        console.log(sessionStorage.getItem("DeveloperNames"))
+
     }
 
     render(){
@@ -73,9 +62,9 @@ class Developers2Button extends Component{
         var DataArray = JSON.parse(data)
 
         return(
+
             <ul>
                 <header></header>
-
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">
@@ -84,6 +73,7 @@ class Developers2Button extends Component{
                                     onClick={(e) => {
                                         e.preventDefault();
                                         sessionStorage.setItem("CurrentDeveloper", item)
+
                                         //window.location.href=  window.location.pathname + '/' + item + "/summary";
                                     }}>
                                 <span >{item}</span>
