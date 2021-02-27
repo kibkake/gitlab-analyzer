@@ -8,7 +8,7 @@ import Navbar_Developers from "./Navbar_Developers";
 import CommitChart from "./CommitChart";
 
 
-function DropDownMenuCommit ({listOfDevelopers, sentDev}) {
+function DropDownMenuCommit ({listOfDevelopers, style}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -31,10 +31,13 @@ function DropDownMenuCommit ({listOfDevelopers, sentDev}) {
             <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
             </br>
+            <div style={style}>
+
             <Select
                 options={devArray}
                 defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
                 onChange={handleChange}/>
+            </div>
             <br>
             </br>
             <CommitChart  devName = {sessionStorage.getItem("CurrentDeveloper")}/>

@@ -1,10 +1,10 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
 import CustomizedRadios from "./RadioButton";
 import CommentTable from "./CommentTable";
 
-function DropDownMenuComments ({listOfDevelopers, sentDev}) {
+function DropDownMenuComments ({listOfDevelopers, style}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -27,10 +27,13 @@ function DropDownMenuComments ({listOfDevelopers, sentDev}) {
             <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
             </br>
+            <div style={style}>
+
             <Select
                 options={devArray}
                 defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
                 onChange={handleChange}/>
+            </div>
             <br>
             </br>
             <h1 style={{textAlign:'center'}}>Comment Contribution</h1>

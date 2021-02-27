@@ -2,6 +2,14 @@ import CommitChart from "../components/CommitChart";
 import Navbar_Developers from "../components/Navbar_Developers";
 import React, {Component} from "react";
 import DropDownMenuCommit from "../components/DropDownMenuCommits";
+import DropDownMenuComments from "../components/DropDownMenuComments";
+
+const styles={
+    app: {
+        marginLeft: '400px',
+        marginRight: '400px',
+    }
+}
 
 class Chart extends Component{
 
@@ -24,7 +32,7 @@ class Chart extends Component{
         return (
 
             <header classname='Rest'>
-                <DropDownMenuCommit listOfDevelopers = {developersArray}/>
+                <DropDownMenuCommit style={styles.app} listOfDevelopers = {developersArray}/>
             </header>
 
         )
