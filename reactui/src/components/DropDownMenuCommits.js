@@ -1,9 +1,6 @@
 import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
-import SummaryScoreTable from "./SummaryScoreTable";
-import StackedBarChart from "./StackedBarChart";
-import CommentChart from "./CommentChart";
 import Navbar_Developers from "./Navbar_Developers";
 import CommitChart from "./CommitChart";
 
