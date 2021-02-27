@@ -8,17 +8,23 @@ class CommentTable extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            comments:[]
+            comments:[],
+            parentdata: this.props.devName
         }
     }
 
     componentDidMount() {
+        const {parentdata} = this.state;
+        this.getDataFromBackend(parentdata)
+    }
+
+    getDataFromBackend (username) {
         const pathArray = window.location.pathname.split('/');
         const id = pathArray[2];
         const developer = pathArray[4];
 
         //empty request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-02-23
-        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + developer + "/2021-01-01/2021-02-23")
+        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/2021-01-01/2021-02-23")
             .then(response => {
                 const comments = response.data
                 this.setState({comments: comments})
@@ -29,6 +35,13 @@ class CommentTable extends Component{
         // ProjectService.getCommentInfo(id, developer, '2021-01-01','2021-02-15').then((response) => {
         //     this.setState({comments: response.data})
         // });
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName){
+            this.setState({parentdata: this.props.devName});
+            this.getDataFromBackend(this.props.devName)
+        }
     }
 
 
