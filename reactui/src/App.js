@@ -6,7 +6,6 @@ import Repo from './Pages/Repo';
 import Home from './Pages/Home';
 import Developers from './Pages/Developers';
 import Developers2 from './Pages/Developers2';
-import Settings from './Pages/Settings';
 import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
 import Commits2 from "./Pages/Commits2";
@@ -15,6 +14,7 @@ import Comments from "./Pages/Comments";
 import MergeRequest from "./Pages/MergeRequest";
 import Profile from "./Pages/Profile";
 import Signup from "./Pages/Signup";
+import Setting from "./Pages/Settings"
 import LoginState from "./components/LoginState";
 import Chart from "./Pages/Chart";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -85,13 +85,10 @@ function App() {
           <Route path='/Repo/*/Developers/*/commits/*/*' exact component={SingleCommit}/>
           <Route path='/Repo/*/Developers/*/commits/*' exact component={Commits2}/>
 
-              <Route path='/Settings' exact component={Settings}/>
+                <Route path='/Settings' exact component={Setting}/>
               <Route path='/Profile' exact component={Profile}/>
             </Switch>
           </Router>
-            {!sessionStorage.getItem('new')  && window.location.pathname==="/Signup" &&
-                <p>If not redirected, then please click on the home button and refresh the page</p>
-            }
         </>
       );
   }
