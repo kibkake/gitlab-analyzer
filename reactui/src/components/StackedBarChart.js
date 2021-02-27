@@ -24,6 +24,15 @@ export default class StackedBarChart extends PureComponent {
     getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
+        var name = username;
+        for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers')).length; i++){
+            if(JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers'))[i])){
+                name = JSON.parse(sessionStorage.getItem('DeveloperNames'))[i]//use name to retrieve data
+            }
+        }
+
+        //console.log(JSON.parse(sessionStorage.getItem('DeveloperNames')))
+
 
         axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + "/2021-01-01/2021-02-23")
             .then(response => {
