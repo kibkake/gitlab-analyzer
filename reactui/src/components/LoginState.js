@@ -17,7 +17,7 @@ function LoginState({ setUser }) {
         LoginService.checkUserCredentials(username,password).then((response) => {
             if(response.data === true){
                 setUser(username);
-                window.location.href("/Settings");
+                window.location.href="/Repo";
             }else{
                 alert('Login Failed: Credentials Invalid!');
             }

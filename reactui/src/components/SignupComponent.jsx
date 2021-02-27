@@ -72,7 +72,7 @@ export default class SignupComponent extends Component {
             sessionStorage.setItem('user',this.state.username);
             sessionStorage.setItem('token',this.state.token);
             this.setState({ registered: true });
-            window.location.reload();
+            window.location.href='/Repo';
         }else{
             if(this.state.username!=="" && this.state.password!=="" && this.state.token!=="") {
                 alert("Account Creation Failed: User Already Exists!");
