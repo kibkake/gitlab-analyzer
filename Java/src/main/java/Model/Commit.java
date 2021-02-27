@@ -1,4 +1,6 @@
 package main.java.Model;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,7 +21,10 @@ public class Commit {
     private ArrayList<String> parent_ids;
     private String title; // 1st line of commit message
     private String message; // other lines of commit message
-    private String author_name;
+
+//    @JsonAlias({ "author_name", "authorName" })
+    private String authorName;
+
     private String author_email;
     private String authored_date;
     // TODO find difference between committer and author
@@ -88,12 +93,14 @@ public class Commit {
         this.message = message;
     }
 
-    public String getAuthor_name() {
-        return author_name;
+    //https://www.baeldung.com/jackson-name-of-property
+    @JsonProperty("author_name")
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setAuthor_name(String author_name) {
-        this.author_name = author_name;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public String getAuthor_email() {
@@ -133,9 +140,9 @@ public class Commit {
     }
 
     public void setCommitted_date(String committed_date) {
+        this.committed_date = committed_date;
         OffsetDateTime dateWithOffSet = OffsetDateTime.parse(committed_date);
         setDate(Date.from(dateWithOffSet.toInstant()));
-        this.committed_date = committed_date;
     }
 
     public String getWeb_url() {
@@ -195,7 +202,7 @@ public class Commit {
                 ", parent_ids=" + parent_ids +
                 ", title='" + title + '\'' +
                 ", message='" + message + '\'' +
-                ", author_name='" + author_name + '\'' +
+                ", author_name='" + authorName + '\'' +
                 ", author_email='" + author_email + '\'' +
                 ", authored_date=" + authored_date +
                 ", committer_name='" + committer_name + '\'' +

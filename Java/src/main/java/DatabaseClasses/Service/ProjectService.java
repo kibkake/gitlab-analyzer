@@ -177,7 +177,7 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
                 if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                        (currentCommit.getCommitter_name().equals(committerName)) || currentCommit.getAuthor_name().equals(committerName)) {
+                        (currentCommit.getCommitter_name().equals(committerName)) || currentCommit.getAuthorName().equals(committerName)) {
                     userCommits.add(currentCommit);
                     commitIds.add(currentCommit.getId());
                 }

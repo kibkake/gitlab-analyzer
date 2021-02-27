@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 public class CommitConnection {
 
-    public List<Commit> getProjectCommitsFromGitLab(int projectId) {
+    public static List<Commit> getProjectCommitsFromGitLab(int projectId) {
         User user = User.getInstance();
         String pageNumber = "1";
         List<Commit> commits = new ArrayList<>();

@@ -29,7 +29,8 @@ public class ProjectConnection {
         RestTemplate restTemplate = new RestTemplate();
         do {
             String url = user.getServerUrl() + "projects?simple=true"
-                    + "? + per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
+                     + "&per_page=100&page=" + pageNumber +"&membership=true"
+                    + "&access_token=" + user.getToken();
             ResponseEntity<List<Project>> projectResponse = restTemplate.exchange(url,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Project>>() {
                     });
@@ -37,6 +38,7 @@ public class ProjectConnection {
             projects.addAll(Objects.requireNonNull(projectResponse.getBody()));
             HttpHeaders headers = projectResponse.getHeaders();
             pageNumber = headers.getFirst("X-Next-Page");
+            System.out.println(pageNumber);
         } while (!pageNumber.equals(""));
 
         return projects;
