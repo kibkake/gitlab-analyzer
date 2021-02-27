@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import DropDownMenu from "../components/DropDownMenu";
+import DropDownMenuSummary from "../components/DropDownMenuSummary";
 
 const styles={
     app: {
@@ -29,7 +29,7 @@ class Summary extends Component {
 
         return (
             <div >
-                <DropDownMenu style={styles.app} listOfDevelopers={developersArray}/>
+                <DropDownMenuSummary style={styles.app} listOfDevelopers={developersArray}/>
                 <br>
                 </br>
             </div>

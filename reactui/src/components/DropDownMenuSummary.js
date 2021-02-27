@@ -7,7 +7,7 @@ import CommentChart from "./CommentChart";
 import Navbar_Developers from "./Navbar_Developers";
 
 
-function DropDownMenu ({listOfDevelopers, style}) {
+function DropDownMenuSummary ({listOfDevelopers, style}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
@@ -64,5 +64,5 @@ function DropDownMenu ({listOfDevelopers, style}) {
     )
 }
 
-export default DropDownMenu;
+export default DropDownMenuSummary;
 
