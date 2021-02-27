@@ -272,5 +272,9 @@ public class ProjectController {
         return date;
     }
 
+    @PostMapping("/testnames")
+    public void setEndDate(@RequestBody List<String> requestBody) {
+        System.out.println(requestBody);
+    }
 }
 

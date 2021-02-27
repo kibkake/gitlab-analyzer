@@ -35,7 +35,18 @@ class Developers2Button extends Component{
     }
 
     sentBackNamesOfDevelopers() {
+        var arr = [];
+       // arr.push(sessionStorage.getItem("DeveloperNames"))
+        console.log(this.state.developerNames)
 
+        const result = fetch("http://localhost:8090/api/v1/testnames", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state.developerNames),
+        })
     }
 
     handleChange = (item) => (event) => {
@@ -52,8 +63,8 @@ class Developers2Button extends Component{
                 }
             }
         }
-        sessionStorage.setItem("DeveloperNames", tempDevNames)
-        console.log(sessionStorage.getItem("DeveloperNames"))
+        this.setState({davelopernames: tempDevNames})
+        //sessionStorage.setItem("DeveloperNames", tempDevNames)
 
     }
 
@@ -73,6 +84,7 @@ class Developers2Button extends Component{
                                     onClick={(e) => {
                                         e.preventDefault();
                                         sessionStorage.setItem("CurrentDeveloper", item)
+                                        this.sentBackNamesOfDevelopers()
 
                                         //window.location.href=  window.location.pathname + '/' + item + "/summary";
                                     }}>
