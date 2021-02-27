@@ -1,5 +1,5 @@
 import "../App.css"
-import React, { Component } from "react";
+import React, {Component, useRef} from "react";
 import {Button, Table} from 'react-bootstrap'
 import Highlight from 'react-highlight'
 import axios from "axios";
@@ -7,21 +7,31 @@ import Popup from "./Popup";
 import {useState,useEffect} from "react";
 import { MenuItems } from "./MenuItem_Developers";
 
-function CodeDiffTable() {
-
-
+function CodeDiffTable({devName}) {
 
     const [commits,getCommits]=useState([]);
     const [buttonPopup, setButtonPopup] = useState(false);
+
+    const mounted = useRef();
     useEffect(()=>{
-        var str = window.location.pathname;
-        var repNum = str.split("/")[2];
-        var name = str.split("/")[4];
-        axios.get("/api/v1/projects/"+repNum+"/Commits/"+name+"/2021-01-01/2021-05-09")
-        .then(response=>{
-            getCommits(response.data)
-        });
-    });
+        if (!mounted.current) {
+            var str = window.location.pathname;
+            var repNum = str.split("/")[2];
+            var name = str.split("/")[4];
+            axios.get("/api/v1/projects/" + repNum + "/Commits/" + devName + "/2021-01-01/2021-05-09")
+                .then(response => {
+                    getCommits(response.data)
+                });
+            mounted.current = true;
+        } else {
+            var str = window.location.pathname;
+            var repNum = str.split("/")[2];
+            var name = str.split("/")[4];
+            axios.get("/api/v1/projects/" + repNum + "/Commits/" + devName + "/2021-01-01/2021-05-09")
+                .then(response => {
+                    getCommits(response.data)
+                });        }
+    }, [commits]);
         return (
             <div className="CodeDiffTable">
                 <Table striped bordered hover>
