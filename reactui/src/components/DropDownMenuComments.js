@@ -3,8 +3,9 @@ import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
 import CustomizedRadios from "./RadioButton";
 import CommentTable from "./CommentTable";
+import './DropDownMenu.css';
 
-function DropDownMenuComments ({listOfDevelopers, style}) {
+function DropDownMenuComments ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -27,7 +28,7 @@ function DropDownMenuComments ({listOfDevelopers, style}) {
             <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
             </br>
-            <div style={style}>
+            <div className="DropDownMenu">
 
             <Select
                 options={devArray}

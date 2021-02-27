@@ -1,13 +1,6 @@
 import React, {Component} from "react";
 import DropDownMenuCommit from "../components/DropDownMenuCommits";
 
-const styles={
-    app: {
-        marginLeft: '400px',
-        marginRight: '400px',
-    }
-}
-
 class Chart extends Component{
 
     constructor(props){
@@ -29,7 +22,7 @@ class Chart extends Component{
         return (
 
             <header classname='Rest'>
-                <DropDownMenuCommit style={styles.app} listOfDevelopers = {developersArray}/>
+                <DropDownMenuCommit listOfDevelopers = {developersArray}/>
             </header>
 
         )

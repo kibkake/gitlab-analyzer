@@ -5,9 +5,11 @@ import SummaryScoreTable from "./SummaryScoreTable";
 import StackedBarChart from "./StackedBarChart";
 import CommentChart from "./CommentChart";
 import Navbar_Developers from "./Navbar_Developers";
+import './DropDownMenu.css';
 
 
-function DropDownMenuSummary ({listOfDevelopers, style}) {
+
+function DropDownMenuSummary ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
@@ -31,7 +33,7 @@ function DropDownMenuSummary ({listOfDevelopers, style}) {
 
                 <br>
                 </br>
-                <div style={style}>
+                <div className="DropDownMenu">
                 <Select
                     options={devArray}
                     defaultValue={{label: currentDeveloper, value: currentDeveloper}}

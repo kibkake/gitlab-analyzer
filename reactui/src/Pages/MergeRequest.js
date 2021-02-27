@@ -2,13 +2,6 @@ import "../App.css"
 import React,{ Component } from "react";
 import DropDownMenuMerge from "../components/DropDownMenuMerge";
 
-const styles={
-    app: {
-        marginLeft: '400px',
-        marginRight: '400px',
-    }
-}
-
 
 class MergeRequest extends Component{
 
@@ -30,7 +23,7 @@ class MergeRequest extends Component{
 
         return(
             <div classname='CodeDiff'>
-                <DropDownMenuMerge style={styles.app} listOfDevelopers = {developersArray}/>
+                <DropDownMenuMerge listOfDevelopers = {developersArray}/>
 
             </div>
         )

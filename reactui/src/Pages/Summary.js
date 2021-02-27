@@ -1,21 +1,6 @@
 import React, {Component} from "react";
 import DropDownMenuSummary from "../components/DropDownMenuSummary";
 
-const styles={
-    app: {
-        marginLeft: '400px',
-        marginRight: '400px',
-        color: 'black',
-        borderColor:'green',
-        padding: '2px 2px',
-        border: '5px solid transparent',
-        borderTopColor:'blue',
-        borderRightColor: 'blue',
-        borderLeftColor: 'blue',
-        borderBottomColor: 'blue',
-    }
-}
-
 
 class Summary extends Component {
     constructor(props) {
@@ -37,7 +22,7 @@ class Summary extends Component {
 
         return (
             <div >
-                <DropDownMenuSummary style={styles.app} listOfDevelopers={developersArray}/>
+                <DropDownMenuSummary listOfDevelopers={developersArray}/>
                 <br>
                 </br>
             </div>

@@ -3,9 +3,10 @@ import {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
 import CommitChart from "./CommitChart";
+import './DropDownMenu.css';
 
 
-function DropDownMenuCommit ({listOfDevelopers, style}) {
+function DropDownMenuCommit ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -28,7 +29,7 @@ function DropDownMenuCommit ({listOfDevelopers, style}) {
             <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
             </br>
-            <div style={style}>
+            <div className="DropDownMenu">
 
             <Select
                 options={devArray}

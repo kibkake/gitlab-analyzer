@@ -4,9 +4,10 @@ import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
 import CommitChart from "./CommitChart";
 import CodeDiffTable from "./CodeDiffTable";
+import './DropDownMenu.css';
 
 
-function DropDownMenuMerge ({listOfDevelopers, style}) {
+function DropDownMenuMerge ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -29,7 +30,7 @@ function DropDownMenuMerge ({listOfDevelopers, style}) {
             <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
             </br>
-            <div style={style}>
+            <div className="DropDownMenu">
 
             <Select
                 options={devArray}

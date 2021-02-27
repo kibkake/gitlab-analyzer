@@ -3,14 +3,6 @@ import React, {Component} from "react";
 import DropDownMenuComments from "../components/DropDownMenuComments";
 
 
-
-const styles={
-    app: {
-        marginLeft: '400px',
-        marginRight: '400px',
-    }
-}
-
 class Comments extends Component{
 
     constructor(props){
@@ -32,7 +24,7 @@ class Comments extends Component{
         return (
 
             <header classname='Rest'>
-                <DropDownMenuComments style={styles.app} listOfDevelopers = {developersArray}/>
+                <DropDownMenuComments listOfDevelopers = {developersArray}/>
             </header>
 
         )
