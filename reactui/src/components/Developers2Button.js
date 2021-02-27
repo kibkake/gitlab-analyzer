@@ -35,9 +35,10 @@ class Developers2Button extends Component{
         })
     }
 
-    handleChange = (event) => {
+    handleChange = (item) => (event) => {
         event.preventDefault();
-        console.log(event)
+        console.log(item)
+        console.log(event.target.value)
     }
 
     render(){
@@ -61,8 +62,8 @@ class Developers2Button extends Component{
                         </a>
                         <input className="TextBox"
                                type="text"
-                               placeholder= "name of developer"
-                               onChange={this.handleChange}  />
+                               placeholder= {item + '\'s name'}
+                               onChange={this.handleChange(item)}  />
                     </li>;
                 })}
             </ul>
