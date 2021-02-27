@@ -2,11 +2,6 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
-import {RepoItems} from '../Pages/sampleRepo';
-import RepoButton from "./RepoButton";
-//import "./RepoButton.css"
-
-
 class Developers2Button extends Component{
     constructor(props){
         super(props);
@@ -16,6 +11,10 @@ class Developers2Button extends Component{
     }
 
     async componentDidMount() {
+        this.getDataFromBackend();
+    }
+
+    async getDataFromBackend(){
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         let url2 = '/getprojectmembers/' + repNum
@@ -31,22 +30,12 @@ class Developers2Button extends Component{
                 sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
             })
         })
-
-
-
     }
 
     render(){
-
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
-
-
-        console.log(DataArray);
-
         return(
-            //<div> Name: {DataArray} </div>
-
             <ul>
                 <header></header>
                 {DataArray.map(item => {
@@ -59,17 +48,13 @@ class Developers2Button extends Component{
                                         sessionStorage.setItem("CurrentDeveloper", item)
                                         window.location.href=  window.location.pathname + '/' + item + "/summary";
 
-                                    }}
-                            >
+                                    }}>
                                 <span >{item}</span>
                             </Button>
                         </a>
                     </li>;
                 })}
             </ul>
-
-
-
         );
 
     }

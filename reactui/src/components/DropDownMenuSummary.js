@@ -14,9 +14,7 @@ function DropDownMenuSummary ({listOfDevelopers, style}) {
 
     const pathArray = window.location.pathname.split('/');
     const developer = pathArray[4];
-    console.log(developer)
     const currentDeveloper = sessionStorage.getItem("CurrentDeveloper")
-
 
     const[selectedValue, setSelectedValue] = useState(null);
 
@@ -29,7 +27,7 @@ function DropDownMenuSummary ({listOfDevelopers, style}) {
         <div>
             <div>
                 <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-                <h1 style={{textAlign: 'center'}}>Summary</h1>
+                <h1 style={{textAlign: 'center'}}>{sessionStorage.getItem("CurrentDeveloper")} Summary</h1>
 
                 <br>
                 </br>
