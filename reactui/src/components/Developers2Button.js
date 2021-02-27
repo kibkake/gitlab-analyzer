@@ -9,13 +9,11 @@ class Developers2Button extends Component{
             data: [],
             developerNames: [],
             submitted: false
-
         };
     }
 
     async componentDidMount() {
-        this.getDataFromBackend();
-
+       await this.getDataFromBackend();
     }
 
     async getDataFromBackend(){
@@ -30,16 +28,18 @@ class Developers2Button extends Component{
             }
         }).then((result)=> {
             result.json().then((resp) => {
-                this.setState({data:resp})
+                this.setState({data:resp , developerNames:resp})
                 sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
             })
         })
 
-        var names = [];
-        for( var i = 0; i < JSON.parse(sessionStorage.getItem("Developers")).length; i++){
-            names[i] = "no name";
-            console.log(names[i])
-        }
+
+
+       // var names = [];
+        //for( var i = 0; i < JSON.parse(sessionStorage.getItem("Developers")).length; i++){
+          //  names[i] = "no name";
+           // console.log(names[i])
+        //}
 
     }
 
@@ -48,13 +48,30 @@ class Developers2Button extends Component{
 
     handleChange = (item) => (event) => {
         event.preventDefault();
-        console.log(item)
-        console.log(event.target.value)
+        //console.log(item)
+        //console.log(event.target.value)
+        //console.log(this.state.data)
+        //console.log(this.state.data)
+        //var newnames = JSON.parse(this.state.developerNames);
+        //var newnames2 = JSON.parse(newnames)
+        //console.log(newnames2)
+        var tempDevNames = JSON.parse(JSON.stringify(this.state.developerNames));
+        var tempDevUsernames = JSON.parse(JSON.stringify(this.state.data));
+
+
+        for(var i = 0; i < this.state.data.length; i++){
+            //if(tempDevUsernames[i] === item){
+                console.log("yes!")
+                //newnames[i] = event.target.value
+                //console.log(event.target.value)
+            //}
+        }
     }
 
     render(){
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
+
         return(
             <ul>
                 <header></header>
@@ -67,7 +84,7 @@ class Developers2Button extends Component{
                                     onClick={(e) => {
                                         e.preventDefault();
                                         sessionStorage.setItem("CurrentDeveloper", item)
-                                        window.location.href=  window.location.pathname + '/' + item + "/summary";
+                                        //window.location.href=  window.location.pathname + '/' + item + "/summary";
                                     }}>
                                 <span >{item}</span>
                             </Button>
