@@ -5,6 +5,14 @@ const styles={
     app: {
         marginLeft: '400px',
         marginRight: '400px',
+        color: 'black',
+        borderColor:'green',
+        padding: '2px 2px',
+        border: '5px solid transparent',
+        borderTopColor:'blue',
+        borderRightColor: 'blue',
+        borderLeftColor: 'blue',
+        borderBottomColor: 'blue',
     }
 }
 
