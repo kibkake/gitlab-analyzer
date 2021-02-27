@@ -6,7 +6,10 @@ class Developers2Button extends Component{
     constructor(props){
         super(props);
         this.state={
-            data: []
+            data: [],
+            developerNames: [],
+            submitted: false
+
         };
     }
 
@@ -32,6 +35,11 @@ class Developers2Button extends Component{
         })
     }
 
+    handleChange = (event) => {
+        event.preventDefault();
+        console.log(event)
+    }
+
     render(){
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
@@ -50,13 +58,11 @@ class Developers2Button extends Component{
                                     }}>
                                 <span >{item}</span>
                             </Button>
-                            <input className="TextBox"
-                                type="text"
-                                placeholder= "name of developer"
-                                value={this.state.value}
-                                onChange={this.handleChange}
-                            />
                         </a>
+                        <input className="TextBox"
+                               type="text"
+                               placeholder= "name of developer"
+                               onChange={this.handleChange}  />
                     </li>;
                 })}
             </ul>
