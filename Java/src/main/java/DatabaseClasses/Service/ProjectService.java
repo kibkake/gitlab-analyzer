@@ -281,9 +281,14 @@ public class ProjectService {
         List<Issue> issues = project.getIssues();
         List<Issue> devIssues = new ArrayList<>();
         for (Issue issue : issues) {
-            LocalDate modifiedDate = LocalDate.parse(issue.getModified_at());
+            LocalDate modifiedDate = null;
+            String whenIssueModified = issue.getModified_at();
+            if (whenIssueModified != null && whenIssueModified != "") {
+                modifiedDate = LocalDate.parse(whenIssueModified);
+            }
             LocalDate createdAt = LocalDate.parse(issue.getCreated_at());
-            if (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0
+            if ((modifiedDate == null
+                 || (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0))
                 && createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
                 List<Note> notes = issue.getNotes();
                 for (Note note: notes)  {
