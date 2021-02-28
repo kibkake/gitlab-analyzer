@@ -286,7 +286,22 @@ public class ProjectService {
             if (whenIssueModified != null && whenIssueModified != "") {
                 modifiedDate = LocalDate.parse(whenIssueModified);
             }
-            LocalDate createdAt = LocalDate.parse(issue.getCreated_at());
+            // At this point, it's fine if modifiedDate is still null, since the
+            // issue may have never been modified.
+
+            // TODO - LocalDate.parse cannot deal with the createdAt String,
+            // and throws an exception for user2. For now I'm just going to continue to the
+            // next iteration of the for loop if the String isn't in proper form.
+            // From my tests, it seems like sometimes createdAt is neither null nor
+            // an empty string, but instead some other bad string that parse dislikes.
+
+            LocalDate createdAt;
+            try {
+                createdAt = LocalDate.parse(issue.getCreated_at());
+            }
+            catch (Exception e) {
+                continue;
+            }
             if ((modifiedDate == null
                  || (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0))
                 && createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
