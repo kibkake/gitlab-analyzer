@@ -64,6 +64,30 @@ public class ProjectService {
         return allCommits.size();
     }
 
+    public List<DataNum> getCommitPerDay(int projectId, String committerName,
+                                                     LocalDate start, LocalDate end) {
+        List<Commit> allUserCommits = this.getUserCommits(projectId, committerName, start, end);
+        HashMap<String, DateScore> dateMap = new HashMap <String, DateScore>();
+
+        for (Commit currentCommit: allUserCommits) {
+            LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+            if(!dateMap.containsKey(commitDate.toString())) {
+                DateNum dateNum = new DateScore(commitDate, currentCommit.getCommitScore(),
+                        committerName, currentCommit.getId());
+                dateMap.put(commitDate.toString(), dateNum);
+            } else {
+                DateScore dateScore = dateMap.get(commitDate.toString());
+
+                dateScore.addToCommitScore(currentCommit.getCommitScore());
+                dateScore.incrementNumberOfCommitsBy1();
+                dateScore.addCommitIds(currentCommit.getId());
+            }
+        }
+        List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
+        return dateScores;
+    }
+
+
     public int getNumUserMergeRequests(int projectId, String committerName) {
         int numTotalMRs = 0;
         Project project = projectRepository.findProjectById(projectId);
@@ -337,8 +361,13 @@ public class ProjectService {
                 .filter(mr -> commitId == mr.getId())
                 .findAny()
                 .orElse(null);
+//        mergeRequest.count();
         return mergeRequest;
     }
+
+//    public int getMRNum (int projectId, int commitId) {
+//        return getMergeRequest(projectId, commitId).count();
+//    }
 
     public double getTotalUserMRScore(int projectId, String username,
                                        LocalDate start, LocalDate end) {

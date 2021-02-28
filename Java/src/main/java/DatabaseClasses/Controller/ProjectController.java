@@ -144,6 +144,19 @@ public class ProjectController {
         return projectService.getCommitByHash(projectId, hash);
     }
 
+    @GetMapping("projects/{projectId}/numCommitsMerge/{committerName}/{start}/{end}")
+    public int[] getCommitAndMergeNumOfUser (@PathVariable("projectId") int projectId,
+                             @PathVariable("committerName") String username,
+                             @PathVariable("start") String start,
+                             @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        int[] nums = {projectService.getNumUserCommits(projectId, username, StartLocalTime, endLocalTime),
+            projectService.getNumUserMergeRequests(projectId, username)};
+
+        return nums;
+    }
+
     @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
     public List<DateScore> getUserCommitScoresWithDates(@PathVariable("projectId") int projectId,
                                                         @PathVariable("committerName") String committerName,
