@@ -30,18 +30,6 @@ public class WProjectController {
     @Autowired
     private WrapperCommitRepository wrapperCommitRepository;
 
-    //curl -i -X POST -d "{\"token\":\"cFzzy7QFRvHzfHGpgrr1\"}" -H "Content-Type:application/json" http://localhost:8080/settoken
-    @PostMapping("settoken")
-    private void setToken(@RequestBody Map<String, String> requestBody) {
-        if(requestBody.get("token") != null) {
-            token = requestBody.get("token");
-            System.out.println(token);
-        }
-        else{
-            System.out.println("token is null!");
-        }
-    }
-
     @GetMapping("addproject")
     private void saveProject() throws IOException, ParseException {
         WrapperProject project = new WrapperProject ("cFzzy7QFRvHzfHGpgrr1", 6);
