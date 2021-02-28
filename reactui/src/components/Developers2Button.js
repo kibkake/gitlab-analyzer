@@ -20,7 +20,7 @@ class Developers2Button extends Component{
     async getDataFromBackend(){
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        let url2 = '/api/v1/getmembers/' + repNum
+        let url2 = '/api/v1/getusernames/' + repNum
         await fetch(url2, {
             method: 'GET',
             headers: {
