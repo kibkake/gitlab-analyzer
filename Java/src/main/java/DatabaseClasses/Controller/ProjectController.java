@@ -284,6 +284,7 @@ public class ProjectController {
         for (int i = 0; i < members.size(); i++){
             memberUsernames.add(members.get(i).getUsername());
         }
+        java.util.Collections.sort(memberUsernames);
         return memberUsernames;
     }
 }
