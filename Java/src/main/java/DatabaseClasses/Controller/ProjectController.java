@@ -277,9 +277,14 @@ public class ProjectController {
         System.out.println(requestBody);
     }
 
-    @GetMapping("/getmembers")
-    public void getMembers(){
-        System.out.println(projectService.getMembers());
+    @GetMapping("/getmembers/{projectId}")
+    public List<String> getMemberUsernames(@PathVariable("projectId") int projectId){
+        List<Developer> members = projectService.getMembers(projectId);
+        List<String> memberUsernames = new ArrayList<>();
+        for (int i = 0; i < members.size(); i++){
+            memberUsernames.add(members.get(i).getUsername());
+        }
+        return memberUsernames;
     }
 }
 

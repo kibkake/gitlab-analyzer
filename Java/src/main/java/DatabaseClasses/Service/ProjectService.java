@@ -376,8 +376,8 @@ public class ProjectService {
         return allScores;
     }
 
-    public List<Developer> getMembers(){
-        Project project = projectRepository.findProjectById(6);
+    public List<Developer> getMembers(int ProjectId){
+        Project project = projectRepository.findProjectById(ProjectId);
         return project.getDevelopers();
 
 
