@@ -1,18 +1,32 @@
-import CommitChart from "../components/CommitChart";
-import Navbar_Developers from "../components/Navbar_Developers";
-import React from "react";
+import React, {Component} from "react";
+import DropDownMenuCommit from "../components/DropDownMenuCommits";
 
-function Chart(){
+class Chart extends Component{
 
-    return(
+    constructor(props){
+        super(props);
+        this.state={
+            developers: []
+        };
+    }
+
+    async componentDidMount() {
+        this.setState({developers:JSON.parse(sessionStorage.getItem("Developers"))})
+    }
 
 
-        <header classname='Rest'>
-            <Navbar_Developers/>
-            <CommitChart/>
-        </header>
+    render() {
 
-    )
+        var strDevelopers = JSON.stringify(this.state.developers);
+        var developersArray = JSON.parse(strDevelopers)
+        return (
+
+            <header classname='Rest'>
+                <DropDownMenuCommit listOfDevelopers = {developersArray}/>
+            </header>
+
+        )
+    }
 }
 
 export default Chart;

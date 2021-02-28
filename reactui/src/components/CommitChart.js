@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 
 class CommitChart extends Component {
 
@@ -9,13 +10,20 @@ class CommitChart extends Component {
         this.state = {
             data: [],
             strDate: "2021-01-11",
-            endDate: "2021-02-22"
+            endDate: "2021-02-22",
+            parentdata: this.props.devName
         };
     }
 
     async componentDidMount() {
+        const {parentdata} = this.state;
+        this.getDataFromBackend(parentdata)
+    }
+
+    async getDataFromBackend (username) {
 
         var arr2=[];
+        const {parentdata} = this.state;
 
         const result2 = await fetch('/api/v1/getstartdate', {
             method: 'GET',
@@ -54,66 +62,74 @@ class CommitChart extends Component {
         this.setState({endDate: arr3[0]})
 
         var str = window.location.pathname;
-            var projNum = str.split("/")[2];
-            var developerName = str.split("/")[4];
+        var projNum = str.split("/")[2];
+        var developerName = str.split("/")[4];
 
-            var dateStr1 = new Date(this.state.strDate).toLocaleDateString();
+        var dateStr1 = new Date(this.state.strDate).toLocaleDateString();
 
-            var day1temp = dateStr1.split("/")[1];
-            var month1temp = dateStr1.split("/")[0];
-            var year1 = dateStr1.split("/")[2];
-            var day1;
-            var month1;
-            if(day1temp < 10){
-                day1 = '0' + day1temp;
-            }else{
-                day1 = day1temp;
+        var day1temp = dateStr1.split("/")[1];
+        var month1temp = dateStr1.split("/")[0];
+        var year1 = dateStr1.split("/")[2];
+        var day1;
+        var month1;
+        if(day1temp < 10){
+            day1 = '0' + day1temp;
+        }else{
+            day1 = day1temp;
+        }
+        if(month1temp < 10){
+            month1 = '0' + month1temp;
+        }else{
+            month1 = month1temp;
+        }
+
+        var completeFromDate = year1 + "-" + month1 + "-" + day1;
+
+        var dateStr2 = new Date(this.state.endDate).toLocaleDateString();
+        var day2temp = dateStr2.split("/")[1];
+        var month2temp = dateStr2.split("/")[0];
+        var year2 = dateStr2.split("/")[2];
+        var day2;
+        var month2;
+        if(day2temp < 10){
+            day2 = '0' + day2temp;
+        }else{
+            day2 = day2temp;
+        }
+        if(month2temp < 10){
+            month2 = '0' + month2temp;
+        }else{
+            month2 = month2temp;
+        }
+
+        var completeToDate = year2 + "-" + month2 + "-" + day2;
+        var arr=[];
+
+        let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + username + '/' +
+            completeFromDate + "/" + completeToDate
+        const result = await fetch(url3, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
-            if(month1temp < 10){
-                month1 = '0' + month1temp;
-            }else{
-                month1 = month1temp;
-            }
-
-            var completeFromDate = year1 + "-" + month1 + "-" + day1;
-
-            var dateStr2 = new Date(this.state.endDate).toLocaleDateString();
-            var day2temp = dateStr2.split("/")[1];
-            var month2temp = dateStr2.split("/")[0];
-            var year2 = dateStr2.split("/")[2];
-            var day2;
-            var month2;
-            if(day2temp < 10){
-                day2 = '0' + day2temp;
-            }else{
-                day2 = day2temp;
-            }
-            if(month2temp < 10){
-                month2 = '0' + month2temp;
-            }else{
-                month2 = month2temp;
-            }
-
-            var completeToDate = year2 + "-" + month2 + "-" + day2;
-            var arr=[];
-
-            let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + developerName + '/' +
-                completeFromDate + "/" + completeToDate
-            const result = await fetch(url3, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            const json = await result.json();
-            var data = JSON.stringify(json);
-            var DataArray = JSON.parse(data);
-            await DataArray.map(item => {
-                arr.push(item)
-            })
-       this.setState({data: arr})
+        })
+        const json = await result.json();
+        var data = JSON.stringify(json);
+        var DataArray = JSON.parse(data);
+        await DataArray.map(item => {
+            arr.push(item)
+        })
+        this.setState({data: arr})
     }
+
+    componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName){
+            this.setState({parentdata: this.props.devName});
+            this.getDataFromBackend(this.props.devName)
+        }
+    }
+
     render() {
 
         var greenArr = [];

@@ -12,28 +12,42 @@ class SummaryScoreTable extends Component{
      constructor(props) {
          super(props);
          this.state = {
-             scoreSummary:[]
+             scoreSummary:[],
+             parentdata: this.props.devName
          }
      }
 
-     componentDidMount() {
-         const pathArray = window.location.pathname.split('/');
-         const id = pathArray[2];
-         const developer = pathArray[4];
+    componentDidMount() {
+        const {parentdata} = this.state;
+        this.getDataFromBackend(parentdata)
+    }
 
-         //request ref: http://localhost:8090/api/v1/projects/6/allTotalScores/user2/2021-01-01/2021-02-23
-         axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ developer +"/2021-01-01/2021-02-23")
-             .then(response => {
+    getDataFromBackend (username) {
+
+        const pathArray = window.location.pathname.split('/');
+        const id = pathArray[2];
+
+        //request ref: http://localhost:8090/api/v1/projects/6/allTotalScores/user2/2021-01-01/2021-02-23
+        axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/2021-01-01/2021-02-23")
+            .then(response => {
                 const scores = response.data
-                 this.setState({scoreSummary: scores})
-                 console.log(this.state.scoreSummary);
-             }).catch((error) => {
-             console.error(error);
-         });
-     }
+                this.setState({scoreSummary: scores})
+                console.log(this.state.scoreSummary);
+            }).catch((error) => {
+            console.error(error);
+        });
+    }
 
 
-   render () {
+    componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName){
+            this.setState({parentdata: this.props.devName});
+            this.getDataFromBackend(this.props.devName)
+        }
+    }
+
+    render () {
+        const {parentdata} = this.state;
         return (
             <div className="container">
                 <Table striped bordered hover>

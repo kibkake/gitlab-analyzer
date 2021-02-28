@@ -1,9 +1,9 @@
-import '../App.css';
-import React, {Component} from "react";
-import DropDownMenuComments from "../components/DropDownMenuComments";
+import "../App.css"
+import React,{ Component } from "react";
+import DropDownMenuMerge from "../components/DropDownMenuMerge";
 
 
-class Comments extends Component{
+class MergeRequest extends Component{
 
     constructor(props){
         super(props);
@@ -16,19 +16,18 @@ class Comments extends Component{
         this.setState({developers:JSON.parse(sessionStorage.getItem("Developers"))})
     }
 
-
     render() {
 
         var strDevelopers = JSON.stringify(this.state.developers);
         var developersArray = JSON.parse(strDevelopers)
-        return (
 
-            <header classname='Rest'>
-                <DropDownMenuComments listOfDevelopers = {developersArray}/>
-            </header>
+        return(
+            <div classname='CodeDiff'>
+                <DropDownMenuMerge listOfDevelopers = {developersArray}/>
 
+            </div>
         )
     }
 }
 
-export default Comments;
+export default MergeRequest;
