@@ -6,12 +6,12 @@ import moment from 'moment'
 import ProjectService from "../Service/ProjectService";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
-export default class CommitChart_summary extends PureComponent {
+export default class CommitMRScoreChart extends PureComponent {
 
     constructor() {
         super();
         this.state = {
-            frequency:[]
+            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0}]
         }
     }
 
@@ -20,15 +20,15 @@ export default class CommitChart_summary extends PureComponent {
         var id = pathArray[2];
         var developer = pathArray[4];
 
-        //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
-        axios.get("/api/v1/projects/" + id + "/numCommitsMerge/" + developer + "/2021-01-01/2021-02-23")
+        //request ref: http://localhost:8090/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-23
+        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + developer + "/2021-01-01/2021-02-23")
             .then(response => {
-                const nums = response.data
-                this.setState({frequency : nums})
-                console.log(this.state.frequency)
+                const score = response.data
+                this.setState({codeScore : score})
+                console.log(this.state.codeScore)
             }).catch((error) => {
-            console.error(error);
-        });
+                    console.error(error);
+            });
 
     }
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
@@ -36,16 +36,16 @@ export default class CommitChart_summary extends PureComponent {
 //        });
 
     render() {
-        var output = this.state.frequency.map(function(item) {
+        var output = this.state.codeScore.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
-                commitNum: item.commitNum,
-                mergeNum: item.mergeRequestNum
+                commitScore: item.commitScore,
+                mergeScore: item.mergeRequestScore
             };
         });
         console.log(output);
         const from = Number(new Date('2021-01-15'));
-        const to = Number(new Date('2021-02-23'));
+        const to = Number(new Date('2021-02-28'));
 
         return (
             <div>
@@ -67,8 +67,8 @@ export default class CommitChart_summary extends PureComponent {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="commitNum" stackId="a" fill="orange" />
-                        <Bar dataKey="mergeNum" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="Commits" stackId="a" fill="orange" />
+                        <Bar dataKey="Merges" stackId="a" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
