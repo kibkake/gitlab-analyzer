@@ -4,9 +4,9 @@ import ProjectComponent from "../components/ProjectComponent";
 function Repo(){
     return(
         <>
-        <div classname='projects'>
-            <ProjectComponent/>
-        </div>
+            <div className='projects'>
+                <ProjectComponent/>
+            </div>
         </>
     )
 
