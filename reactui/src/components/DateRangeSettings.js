@@ -26,8 +26,11 @@ function DateRangeSettings(){
         })
         sessionStorage.setItem("startdate", selectedStartDate);
         var startDate = sessionStorage.getItem("startdate");
-        var startDateArr = startDate.split(" ");
-        console.log(startDateArr[2])
+        var startDateArr = JSON.stringify(startDate).split(" ");
+        var day = startDateArr[2];
+        var month = startDateArr[1];
+        var year = startDateArr[3];
+        console.log(year)
     }
     const handleEndDateChange= (date) =>{
         setSelectedEndDate(date)
