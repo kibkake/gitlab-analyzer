@@ -42,6 +42,16 @@ public class DateScore {
         this.mergeRequestIds.add(mergeRequestId);
     }
 
+    public DateScore(LocalDate date, String userName, String id) {
+        this.date = date;
+        this.commitScore = commitScore;
+        this.userName = userName;
+        this.numCommits = 1;
+        this.commitIds = new ArrayList<>();
+        this.mergeRequestIds = new ArrayList<Integer>();
+        commitIds.add(id);
+    }
+
     public LocalDate getDate() {
         return date;
     }

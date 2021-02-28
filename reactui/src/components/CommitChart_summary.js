@@ -36,11 +36,11 @@ export default class CommitChart_summary extends PureComponent {
 //        });
 
     render() {
-        var output = this.state.codeScore.map(function(item) {
+        var output = this.state.frequency.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
-                commitScore: item.commitScore,
-                mergeScore: item.mergeRequestScore
+                commitNum: item.commitNum,
+                mergeNum: item.mergeRequestNum
             };
         });
         console.log(output);
@@ -67,8 +67,8 @@ export default class CommitChart_summary extends PureComponent {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="commitScore" stackId="a" fill="orange" />
-                        <Bar dataKey="mergeScore" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="commitNum" stackId="a" fill="orange" />
+                        <Bar dataKey="mergeNum" stackId="a" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

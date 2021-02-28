@@ -64,7 +64,7 @@ public class ProjectService {
         return allCommits.size();
     }
 
-    public List<DataNum> getCommitPerDay(int projectId, String committerName,
+    public List<DateScore> getCommitPerDay(int projectId, String committerName,
                                                      LocalDate start, LocalDate end) {
         List<Commit> allUserCommits = this.getUserCommits(projectId, committerName, start, end);
         HashMap<String, DateScore> dateMap = new HashMap <String, DateScore>();
@@ -72,11 +72,11 @@ public class ProjectService {
         for (Commit currentCommit: allUserCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
-                DateNum dateNum = new DateScore(commitDate, currentCommit.getCommitScore(),
+                DateScore dateNum = new DateScore(commitDate, currentCommit.getCommitScore(),
                         committerName, currentCommit.getId());
                 dateMap.put(commitDate.toString(), dateNum);
             } else {
-                DateScore dateScore = dateMap.get(commitDate.toString());
+                DateScore dateNum = dateMap.get(commitDate.toString());
 
                 dateScore.addToCommitScore(currentCommit.getCommitScore());
                 dateScore.incrementNumberOfCommitsBy1();
