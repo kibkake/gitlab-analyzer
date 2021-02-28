@@ -1,43 +1,33 @@
-import SummaryScoreTable from "../components/SummaryScoreTable";
-import Navbar_Developers from "../components/Navbar_Developers";
-import CommitMRScoreChart from "../components/CommitMRScoreChart";
-import React from "react";
-import CommentChart from "../components/CommentChart";
-import CommitMRNumChart from "../components/CommitMRNumChart";
-import CustomizedRadios from "../components/RadioButtonComment";
-import SummaryChartRadios from "../components/RadioButtonSummaryChart";
+import React, {Component} from "react";
+import DropDownMenuSummary from "../components/DropDownMenuSummary";
 
-function Summary(){
-    return(
-        <div>
-            <Navbar_Developers/>
-            <h1 style={{textAlign:'center'}}>Summary</h1>
 
-            <br>
-            </br>
-            <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
-             <SummaryScoreTable/>
-            <br>
-            </br>
-            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-            <SummaryChartRadios/>
+class Summary extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            developers: []
+        };
+    }
+
+    async componentDidMount() {
+
+        this.setState({developers: JSON.parse(sessionStorage.getItem("Developers"))})
+    }
+
+    render() {
+
+        var strDevelopers = JSON.stringify(this.state.developers);
+        var developersArray = JSON.parse(strDevelopers);
+
+        return (
+            <div >
+                <DropDownMenuSummary listOfDevelopers={developersArray}/>
+                <br>
+                </br>
             </div>
-            <h4 style={{textAlign:'center'}}>Score of Commits/Merge Requests</h4>
-            <h4 style={{textAlign:'center'}}>Add switch to num commits/MR graph</h4>
-
-
-            <br></br>
-            <CommitMRScoreChart/>
-            <br></br>
-
-            <CommitMRNumChart/>
-            <br>
-            </br>
-            <h4 style={{textAlign:'center'}}>Comment Score</h4>
-            <CommentChart/>
-        </div>
-
-    )
+        )
+    }
 }
 
-export default Summary;
+export default Summary
