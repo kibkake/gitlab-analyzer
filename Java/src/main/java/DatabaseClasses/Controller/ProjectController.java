@@ -271,6 +271,5 @@ public class ProjectController {
         date.add(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
         return date;
     }
-
 }
 

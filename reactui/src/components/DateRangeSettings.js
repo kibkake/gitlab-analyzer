@@ -3,6 +3,7 @@ import { MuiPickersUtilsProvider,DateTimePicker } from '@material-ui/pickers';
 import React,{ Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
+import ProjectService from '../Service/ProjectService'
 
 function DateRangeSettings(){
     
@@ -27,10 +28,10 @@ function DateRangeSettings(){
         sessionStorage.setItem("startdate", selectedStartDate);
         var startDate = sessionStorage.getItem("startdate");
         var startDateArr = JSON.stringify(startDate).split(" ");
+        var monthLetter = startDateArr[1];
         var day = startDateArr[2];
-        var month = startDateArr[1];
         var year = startDateArr[3];
-        console.log(year)
+        var month = ProjectService.convertMonthToNumber(monthLetter);
     }
     const handleEndDateChange= (date) =>{
         setSelectedEndDate(date)
