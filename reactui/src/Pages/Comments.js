@@ -1,6 +1,6 @@
 import CommentTable from "../components/CommentTable";
-import RadioButtons from "../components/RadioButton";
-import CustomizedRadios from "../components/RadioButton";
+import RadioButtons from "../components/RadioButtonComment";
+import CustomizedRadios from "../components/RadioButtonComment";
 import '../App.css';
 import Navbar_Developers from "../components/Navbar_Developers";
 import React from "react";

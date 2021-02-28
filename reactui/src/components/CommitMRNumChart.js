@@ -6,7 +6,7 @@ import moment from 'moment'
 import ProjectService from "../Service/ProjectService";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
-export default class CommitMRChart extends PureComponent {
+export default class CommitMRNumChart extends PureComponent {
 
     constructor() {
         super();

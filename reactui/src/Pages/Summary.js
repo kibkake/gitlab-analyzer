@@ -3,7 +3,9 @@ import Navbar_Developers from "../components/Navbar_Developers";
 import CommitMRScoreChart from "../components/CommitMRScoreChart";
 import React from "react";
 import CommentChart from "../components/CommentChart";
-import CommitMRChart from "../components/CommitMRChart";
+import CommitMRNumChart from "../components/CommitMRNumChart";
+import CustomizedRadios from "../components/RadioButtonComment";
+import SummaryChartRadios from "../components/RadioButtonSummaryChart";
 
 function Summary(){
     return(
@@ -13,18 +15,22 @@ function Summary(){
 
             <br>
             </br>
-             <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
+            <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
              <SummaryScoreTable/>
             <br>
             </br>
-
+            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+            <SummaryChartRadios/>
+            </div>
             <h4 style={{textAlign:'center'}}>Score of Commits/Merge Requests</h4>
             <h4 style={{textAlign:'center'}}>Add switch to num commits/MR graph</h4>
 
+
+            <br></br>
             <CommitMRScoreChart/>
             <br></br>
 
-            <CommitMRChart/>
+            <CommitMRNumChart/>
             <br>
             </br>
             <h4 style={{textAlign:'center'}}>Comment Score</h4>
