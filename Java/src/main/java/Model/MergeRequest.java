@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Document(value = "MergeRequest")
+@Document(value = "mergeRequest")
 public class MergeRequest {
 
     private int id;

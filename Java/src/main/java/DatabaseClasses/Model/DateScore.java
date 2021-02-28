@@ -1,7 +1,5 @@
 package main.java.DatabaseClasses.Model;
 
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,28 +12,30 @@ public class DateScore {
     private LocalDate date;
     private double commitScore;
     private double mergeRequestScore;
-    private String userName;
+    private String authorName;
     private int numCommits;
     private int numMergeRequests;
     private List<Integer> mergeRequestId;
     private List<String> commitIds;
     private List<Integer> mergeRequestIds;
 
+    public DateScore() {
+    }
 
-    public DateScore(LocalDate date, double commitScore, String userName, String id) {
+    public DateScore(LocalDate date, double commitScore, String authorName, String id) {
         this.date = date;
         this.commitScore = commitScore;
-        this.userName = userName;
+        this.authorName = authorName;
         this.numCommits = 1;
         this.commitIds = new ArrayList<>();
         this.mergeRequestIds = new ArrayList<Integer>();
         commitIds.add(id);
     }
 
-    public DateScore(LocalDate date, double score, String userName, Integer numMergeRequests, Integer mergeRequestId) {
+    public DateScore(LocalDate date, double score, String authorName, Integer numMergeRequests, Integer mergeRequestId) {
         this.date = date;
         this.mergeRequestScore = score;
-        this.userName = userName;
+        this.authorName = authorName;
         this.numMergeRequests = numMergeRequests;
         this.mergeRequestIds = new ArrayList<Integer>();
         this.commitIds = new ArrayList<>();
@@ -50,8 +50,8 @@ public class DateScore {
         return commitScore;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAuthorName() {
+        return authorName;
     }
 
     public void setDate(LocalDate date) {
@@ -62,8 +62,8 @@ public class DateScore {
         this.commitScore = commitScore;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public void addToCommitScore(double score) {
@@ -148,7 +148,7 @@ public class DateScore {
         return "DateScore{" +
                 "date=" + date +
                 ", commitScore=" + commitScore +
-                ", userName='" + userName + '\'' +
+                ", userName='" + authorName + '\'' +
                 ", numCommits=" + numCommits +
                 '}';
     }

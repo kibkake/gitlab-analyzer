@@ -21,8 +21,13 @@ import java.util.List;
 public class CommitController {
 
     private final CommitService commitService;
+    //For testing
     private String s = "2021-01-11T20:59:00.000Z";
     private String e = "2021-02-22T20:59:00.000Z";
+    OffsetDateTime sO = OffsetDateTime.parse(s);
+    OffsetDateTime eO = OffsetDateTime.parse(e);
+    Date startDate = Date.from(sO.toInstant());
+    Date endDate = Date.from(eO.toInstant());
 
     @Autowired
     public CommitController(CommitService commitService) {
@@ -40,12 +45,11 @@ public class CommitController {
                                           @PathVariable("start") String start,
                                           @PathVariable("end")String end) {
 
-        OffsetDateTime startDateWithOffSet = OffsetDateTime.parse(s);
-        OffsetDateTime endDateWithOffSet = OffsetDateTime.parse(e);
+
 //        OffsetDateTime startDateWithOffSet = OffsetDateTime.parse(start);
 //        OffsetDateTime endDateWithOffSet = OffsetDateTime.parse(end);
-        Date startDate = Date.from(startDateWithOffSet.toInstant());
-        Date endDate = Date.from(endDateWithOffSet.toInstant());
+//        Date startDate = Date.from(startDateWithOffSet.toInstant());
+//        Date endDate = Date.from(endDateWithOffSet.toInstant());
 
         return commitService.getUserCommits(projectId, startDate, endDate, committerName);
     }
@@ -58,17 +62,27 @@ public class CommitController {
 //        LocalDate StartLocalTime = LocalDate.parse(start);
 //        LocalDate endLocalTime = LocalDate.parse(end);
 //        List<String> commitsArray = new ArrayList<>();
-//        commitsArray = projectService.getAllUserCommitsArray(projectId, committerName, StartLocalTime, endLocalTime);
+//        commitsArray = CommitService.getAllUserCommitsArray(projectId, committerName, StartLocalTime, endLocalTime);
 //        return commitsArray;
 //    }
 //
-//    @GetMapping("projects/{projectId}/Commit/{hash}")
-//    public List<Commit> getACommit(@PathVariable("projectId") int projectId,
-//                                   @PathVariable("hash") String hash) {
-//
-//        return projectService.getCommitByHash(projectId, hash);
+    @GetMapping("projects/{projectId}/Commit/{hash}")
+    public Commit getCommit(@PathVariable("projectId") int projectId,
+                                   @PathVariable("hash") String hash) {
+
+        return commitService.getCommit(projectId, hash);
+    }
+
+    @GetMapping("projects/{projectId}/Commit/scores/{userName}")
+    public List<DateScore> getScores(@PathVariable int projectId, @PathVariable String userName) {
+        return commitService.getScorePerDay(projectId, userName);
+    }
+
+//    @GetMapping("projects/Commit/DateScores/avg")
+//    public List<Object[]> getCommit() {
+//        return commitService.getScorePerDay();
 //    }
-//
+
 //    @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
 //    public List<DateScore> getUserCommitScoresWithDates(@PathVariable("projectId") int projectId,
 //                                                        @PathVariable("committerName") String committerName,
