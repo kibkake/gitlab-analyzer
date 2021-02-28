@@ -17,14 +17,7 @@ function DateRangeSettings(){
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)
         const data = { starttime: selectedStartDate };
-        /*const result = fetch("http://localhost:8080/api/v1/setstartdate", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data),
-        })*/
+
         var startDateArr = (selectedStartDate.toDateString()).split(" ");
 
         var monthLetter = startDateArr[1];
@@ -39,14 +32,6 @@ function DateRangeSettings(){
     const handleEndDateChange= (date) =>{
         setSelectedEndDate(date)
         const data2 = { endtime: selectedEndDate };
-        /*const result = fetch("http://localhost:8080/api/v1/setenddate", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data2),
-        })*/
 
         var endDateArr = (selectedEndDate.toDateString()).split(" ");
 
