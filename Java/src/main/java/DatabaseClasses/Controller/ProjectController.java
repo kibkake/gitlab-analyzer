@@ -276,5 +276,10 @@ public class ProjectController {
     public void setEndDate(@RequestBody List<String> requestBody) {
         System.out.println(requestBody);
     }
+
+    @GetMapping("/getmembers")
+    public void getMembers(){
+        System.out.println(projectService.getMembers());
+    }
 }
 

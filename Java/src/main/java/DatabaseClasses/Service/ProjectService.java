@@ -376,4 +376,13 @@ public class ProjectService {
         return allScores;
     }
 
+    public List<Developer> getMembers(){
+        Project project = projectRepository.findProjectById(6);
+        return project.getDevelopers();
+
+
+    }
+
+
+
 }
