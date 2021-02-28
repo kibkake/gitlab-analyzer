@@ -105,14 +105,17 @@ public class ProjectController {
         return projectService.getUserMergeRequests(projectId, userName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/MRsAndCommitScoresPerDay/{committerName}/{start}/{end}")
+    @GetMapping("projects/{projectId}/MRsAndCommitScoresPerDay/{name}/{committerName}/{start}/{end}")
     public List<DateScore> getUserMRsAndCommitScorePerDay(@PathVariable("projectId") int projectId,
-                                                                        @PathVariable("committerName") String committerName,
-                                                                        @PathVariable("start") String start,
-                                                                        @PathVariable("end")String end) {
+                                                          @PathVariable("name") String name,
+                                                          @PathVariable("committerName") String committerName,
+                                                          @PathVariable("start") String start,
+                                                          @PathVariable("end")String end) {
+        //System.out.println(name);
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime);
+        //name is passed in as well now:
+        return projectService.getScoresPerDayForMRsAndCommits(projectId, name, committerName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/Commits/{committerName}/{start}/{end}")

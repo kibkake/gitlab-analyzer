@@ -125,7 +125,7 @@ public class ProjectService {
     }
 
 
-    public List<DateScore> getScoresPerDayForMRsAndCommits(int projectId, String committerName,
+    public List<DateScore> getScoresPerDayForMRsAndCommits(int projectId, String name, String committerName,
                                                            LocalDate start, LocalDate end) {
         List<MergeRequest> userMergeRequest = this.getUserMergeRequests(projectId, committerName, start, end);
         HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
@@ -145,6 +145,7 @@ public class ProjectService {
             }
         }
         System.out.println(dateMap);
+        //pass "name" to user commits to get all commits
         List<Commit> allUserCommits = this.getUserCommits(projectId, committerName, start, end);
         for (Commit currentCommit: allUserCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
