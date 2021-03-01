@@ -9,7 +9,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import CommitMRScoreChart from "./CommitMRScoreChart";
 import CommitMRNumChart from "./CommitMRNumChart";
 import CommentChart from "./CommentChart";
-import "./RadioSummaryCharts.css"
+import "./RadioButtonSummaryCharts.css"
 //[https://material-ui.com/components/radio-buttons/]
 
 function Chart(props){
@@ -58,9 +58,11 @@ export default class SummaryChartRadios extends Component {
                     <FormControlLabel value="number" control={<StyledRadio checked={this.state.value === "number"}
                                                                            onChange={this.handleRadioChange}/>} label="Number of Commit/Merge"/>
                     <FormControlLabel value="words" control={<StyledRadio  checked={this.state.value === "words"}
-                                                                           onChange={this.handleRadioChange}/>} label="Words of Comments"/>
+                                                                           onChange={this.handleRadioChange}/>} label="Number of Words of Comments"/>
                 </RadioGroup>
             </FormControl>
+                <br>
+                </br>
                 <Chart value = {this.state.value}/>
             </div>
 

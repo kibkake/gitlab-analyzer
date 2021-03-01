@@ -2,14 +2,9 @@ import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
 import SummaryScoreTable from "./SummaryScoreTable";
-import CommentChart from "./CommentChart";
 import Navbar_Developers from "./Navbar_Developers";
 import './DropDownMenu.css';
-import CommitMRScoreChart from "./CommitMRScoreChart";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
-import CommitMRNumChart from "./CommitMRNumChart";
-import SwitchButtonChart from "./SwitchButtonChart";
-import RadioSummaryCharts from "./RadioSummaryCharts";
 
 
 function DropDownMenuSummary ({listOfDevelopers}) {
@@ -54,10 +49,8 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                 <SummaryScoreTable devName = {sessionStorage.getItem("CurrentDeveloper")}/>
                 <br>
                 </br>
-                <h4 style={{textAlign:'center'}}>Commit & Merge Graph By</h4>
-
+                <h4 style={{textAlign:'center'}}>View Data By</h4>
                 <SummaryChartRadios devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-
                 <br>
                 </br>
 
