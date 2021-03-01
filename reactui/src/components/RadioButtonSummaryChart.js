@@ -8,8 +8,82 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import CommitMRScoreChart from "./CommitMRScoreChart";
 import CommitMRNumChart from "./CommitMRNumChart";
-
+import CommentChart from "./CommentChart";
+import "./RadioSummaryCharts.css"
 //[https://material-ui.com/components/radio-buttons/]
+
+function Chart(props){
+    if (props.value == "score") {
+        return (<div>
+            <h4 style={{textAlign:'center'}}>Score of Commits/Merge Per Day</h4>
+            <CommitMRScoreChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+        </div>);
+    }
+    else if (props.value == "number") {
+        return (<div>
+            <h4 style={{textAlign: 'center'}}>Number of Commits/Merge Per Day</h4>
+            <CommitMRNumChart devName={sessionStorage.getItem("CurrentDeveloper")}/>
+        </div>);
+    }
+    if (props.value == "words") {
+        return (<div>
+            <h4 style={{textAlign: 'center'}}>Number of Words Per Day</h4>
+            <CommentChart devName={sessionStorage.getItem("CurrentDeveloper")}/>
+        </div>);
+    }
+}
+
+export default class SummaryChartRadios extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {value: "score"};
+        this.handleRadioChange = this.handleRadioChange.bind(this);
+    }
+
+    handleRadioChange(event) {
+        // set the new value of checked radion button to state using setState function which is async funtion
+        this.setState({
+            value: event.target.value
+        });
+    }
+
+
+    render() {
+        return (
+            <div onChange={this.setState.bind(this)} >
+            <FormControl component="fieldset" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                <RadioGroup defaultValue="score" aria-label="comment" name="customized-radios" >
+                    <FormControlLabel value="score" control={ <StyledRadio checked={this.state.value === "score"}
+                                                                           onChange={this.handleRadioChange}/>} label="Score of Commit/Merge"/>
+                    <FormControlLabel value="number" control={<StyledRadio checked={this.state.value === "number"}
+                                                                           onChange={this.handleRadioChange}/>} label="Number of Commit/Merge"/>
+                    <FormControlLabel value="words" control={<StyledRadio  checked={this.state.value === "words"}
+                                                                           onChange={this.handleRadioChange}/>} label="Words of Comments"/>
+                </RadioGroup>
+            </FormControl>
+                <Chart value = {this.state.value}/>
+            </div>
+
+    );
+    }
+}
+
+// Inspired by blueprintjs
+function StyledRadio(props) {
+    const classes = useStyles();
+
+    return (
+        <Radio
+            className={classes.root}
+            disableRipple
+            color="default"
+            checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+            icon={<span className={classes.icon} />}
+            {...props}
+        />
+    );
+}
+
 const useStyles = makeStyles({
     root: {
         '&:hover': {
@@ -50,68 +124,3 @@ const useStyles = makeStyles({
         },
     },
 });
-
-// Inspired by blueprintjs
-function StyledRadio(props) {
-    const classes = useStyles();
-
-    return (
-        <Radio
-            className={classes.root}
-            disableRipple
-            color="default"
-            checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
-            icon={<span className={classes.icon} />}
-            {...props}
-        />
-    );
-}
-
-export default class SummaryChartRadios extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
-    handleChange = e => {
-        const { name, value } = e.target;
-
-        this.setState({
-            [name]: value
-        });
-    };
-    //
-    // state =  {
-    //     value: "score"
-    // }
-    render() {
-        return (
-            <div className="radio-buttons">
-                <CommitMRScoreChart/>
-                <input
-                    id="scores"
-                    value="scores"
-                    name="commit_merge"
-                    type="radio"
-                    onChange={this.handleChange}
-                />
-                <CommitMRNumChart/>
-                <input
-                    id="number"
-                    value="number"
-                    name="commit_merge"
-                    type="radio"
-                    onChange={this.handleChange}
-                />
-
-            </div>
-            // <FormControl component="fieldset">
-            //     <FormLabel component="legend">Commit & Merge Graph By</FormLabel>
-            //     <RadioGroup defaultValue="score" aria-label="comment" name="customized-radios">
-            //         <FormControlLabel value="score" control={<StyledRadio/>} label="Score per date"/>
-            //         <FormControlLabel value="number" control={<StyledRadio/>} label="Number per date"/>
-            //     </RadioGroup>
-            // </FormControl>
-        );
-    }
-}

@@ -9,6 +9,7 @@ import CommitMRScoreChart from "./CommitMRScoreChart";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
 import CommitMRNumChart from "./CommitMRNumChart";
 import SwitchButtonChart from "./SwitchButtonChart";
+import RadioSummaryCharts from "./RadioSummaryCharts";
 
 
 function DropDownMenuSummary ({listOfDevelopers}) {
@@ -46,18 +47,20 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             <div>
                 <br>
             </br>
+                <br>
+                </br>
+
                 <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
                 <SummaryScoreTable devName = {sessionStorage.getItem("CurrentDeveloper")}/>
                 <br>
                 </br>
+                <h4 style={{textAlign:'center'}}>Commit & Merge Graph By</h4>
 
-                <SwitchButtonChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+                <SummaryChartRadios devName = {sessionStorage.getItem("CurrentDeveloper")}/>
 
                 <br>
                 </br>
 
-                <h4 style={{textAlign: 'center'}}>Comment Score</h4>
-                <CommentChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             </div>
 
         </div>
