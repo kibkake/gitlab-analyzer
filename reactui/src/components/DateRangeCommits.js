@@ -13,11 +13,11 @@ import CommitChart from "./CommitChart";
 function DateRangeCommits({devName}){
 
     const [selectedStartDate,setSelectedStartDate] = React.useState(
-        new Date('2021-01-01T12:00:00')
+        new Date(sessionStorage.getItem('startdate') + 'T12:00:00')
     )
 
     const [selectedEndDate,setSelectedEndDate] = React.useState(
-        new Date('2021-02-27T12:00:00')
+        new Date(sessionStorage.getItem('enddate') + 'T12:00:00')
     )
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)
