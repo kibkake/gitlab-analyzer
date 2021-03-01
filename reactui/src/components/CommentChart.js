@@ -51,7 +51,7 @@ export default class CommentChart extends Component {
             };
         });
         console.log(output);
-        const from = Number(sessionStorage.getItem("startdate") + "T12:00:00");
+        const from = Number(new Date (sessionStorage.getItem("startdate") + "T12:00:00"));
         const to = Number(new Date(sessionStorage.getItem("enddate") + "T12:00:00"));
 
         return (
@@ -67,7 +67,7 @@ export default class CommentChart extends Component {
                                name = 'date'
                                domain={[
                                    d3.timeDay.floor(from).getTime(),
-                                   d3.timeDay.ceil(to).getTime()
+                                   d3.timeDay.floor(to).getTime()
                                ]}
                                tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
                         />
