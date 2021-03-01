@@ -93,9 +93,6 @@ function DateRangeCommits({devName}){
                     </MuiPickersUtilsProvider>
                 </span>
             </Grid>
-            <CommitChart devName = {sessionStorage.getItem("CurrentDeveloper")}
-                         startTime = {sessionStorage.getItem("startdate")}
-                         endTime = {sessionStorage.getItem("enddate")}/>
         </>
     )
 }

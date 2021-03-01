@@ -37,10 +37,9 @@ function DropDownMenuCommit ({listOfDevelopers}) {
                 defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
                 onChange={handleChange}/>
             </div>
-
-            <div className='dateRangeSetting'>
-                <DateRangeCommits/>
-            </div>
+            <CommitChart devName = {sessionStorage.getItem("CurrentDeveloper")}
+                         startTime = {sessionStorage.getItem("startdate")}
+                         endTime = {sessionStorage.getItem("enddate")}/>
             <br>
             </br>
         </div>
@@ -50,3 +49,8 @@ function DropDownMenuCommit ({listOfDevelopers}) {
 }
 
 export default DropDownMenuCommit;
+
+/*    <div className='dateRangeSetting'>
+                <DateRangeCommits/>
+            </div>
+*/

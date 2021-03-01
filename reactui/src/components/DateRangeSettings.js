@@ -7,12 +7,26 @@ import ProjectService from '../Service/ProjectService'
 
 function DateRangeSettings(){
 
+    function getStartDate(){
+        if(sessionStorage.getItem("startdate") == null){
+            sessionStorage.setItem("startdate", "2021-01-11")
+        }
+        return new Date(sessionStorage.getItem("startdate") + "T12:00:00")
+    }
+
+    function getEndDate(){
+        if(sessionStorage.getItem("enddate") == null){
+            sessionStorage.setItem("enddate", "2021-02-22")
+        }
+        return new Date(sessionStorage.getItem("enddate") + "T12:00:00")
+    }
+
     const [selectedStartDate,setSelectedStartDate] = React.useState(
-        new Date("2021-01-11T12:00:00")
+        getStartDate()
     )
     
     const [selectedEndDate,setSelectedEndDate] = React.useState(
-        new Date("2021-02-22T12:00:00")
+        getEndDate()
     )
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)
@@ -42,7 +56,7 @@ function DateRangeSettings(){
 
         var completeDate = year + "-" + month + "-" + day;
         sessionStorage.setItem("enddate", completeDate);
-        console.log(sessionStorage.getItem("enddate") + "12:00:00")
+        console.log(sessionStorage.getItem("enddate") + "T12:00:00")
 
     }
     return(   
