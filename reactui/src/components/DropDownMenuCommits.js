@@ -1,9 +1,10 @@
-import React, {Component} from 'react'
+import React, {Component, useEffect, useRef} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
 import CommitChart from "./CommitChart";
 import './DropDownMenu.css';
+import DateRangeCommits from "./DateRangeCommits";
 
 
 function DropDownMenuCommit ({listOfDevelopers}) {
@@ -36,10 +37,12 @@ function DropDownMenuCommit ({listOfDevelopers}) {
                 defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
                 onChange={handleChange}/>
             </div>
+
+            <div className='dateRangeSetting'>
+                <DateRangeCommits/>
+            </div>
             <br>
             </br>
-            <CommitChart  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-
         </div>
     )
 
