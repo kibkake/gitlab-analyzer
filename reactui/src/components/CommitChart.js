@@ -9,104 +9,25 @@ class CommitChart extends Component {
         super(props);
         this.state = {
             data: [],
-            strDate: "2021-01-11",
-            endDate: "2021-02-22",
-            parentdata: this.props.devName
+            parentdata: this.props.devName,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
         };
     }
 
     async componentDidMount() {
         const {parentdata} = this.state;
-        this.getDataFromBackend(parentdata)
+        this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 
-    async getDataFromBackend (username) {
-
-        var arr2=[];
-        const {parentdata} = this.state;
-
-        const result2 = await fetch('/api/v1/getstartdate', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        const json2 = await result2.json();
-        var data2 = JSON.stringify(json2);
-        var DataArray2 = JSON.parse(data2);
-
-        await DataArray2.map(item => {
-            arr2.push(item)
-        })
-
-        this.setState({strDate: arr2[0]})
-
-        var arr3=[];
-
-        const result3 = await fetch('/api/v1/getenddate', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        const json3 = await result3.json();
-        var data3 = JSON.stringify(json3);
-        var DataArray3 = JSON.parse(data3);
-
-        await DataArray3.map(item => {
-            arr3.push(item)
-        })
-
-        this.setState({endDate: arr3[0]})
+    async getDataFromBackend (username, startTm, endTm) {
 
         var str = window.location.pathname;
         var projNum = str.split("/")[2];
-        var developerName = str.split("/")[4];
-
-        var dateStr1 = new Date(this.state.strDate).toLocaleDateString();
-
-        var day1temp = dateStr1.split("/")[1];
-        var month1temp = dateStr1.split("/")[0];
-        var year1 = dateStr1.split("/")[2];
-        var day1;
-        var month1;
-        if(day1temp < 10){
-            day1 = '0' + day1temp;
-        }else{
-            day1 = day1temp;
-        }
-        if(month1temp < 10){
-            month1 = '0' + month1temp;
-        }else{
-            month1 = month1temp;
-        }
-
-        var completeFromDate = year1 + "-" + month1 + "-" + day1;
-
-        var dateStr2 = new Date(this.state.endDate).toLocaleDateString();
-        var day2temp = dateStr2.split("/")[1];
-        var month2temp = dateStr2.split("/")[0];
-        var year2 = dateStr2.split("/")[2];
-        var day2;
-        var month2;
-        if(day2temp < 10){
-            day2 = '0' + day2temp;
-        }else{
-            day2 = day2temp;
-        }
-        if(month2temp < 10){
-            month2 = '0' + month2temp;
-        }else{
-            month2 = month2temp;
-        }
-
-        var completeToDate = year2 + "-" + month2 + "-" + day2;
         var arr=[];
 
         let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + username + '/' +
-            completeFromDate + "/" + completeToDate
+            startTm + "/" + endTm
         const result = await fetch(url3, {
             method: 'GET',
             headers: {
@@ -126,7 +47,16 @@ class CommitChart extends Component {
     componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
             this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName)
+            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
+        if(this.props.startTime !== prevProps.startTime){
+            this.setState({startTime: this.props.startTime});
+            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+
+        }
+        if(this.props.endTime !== prevProps.endTime){
+            this.setState({endTime: this.props.endTime});
+            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime)
         }
     }
 
@@ -162,7 +92,9 @@ class CommitChart extends Component {
         };
 
         var comarr = this.state.data;
-        const daylist = getDaysArray(new Date(this.state.strDate),new Date(this.state.endDate));
+        const daylist = getDaysArray(new Date(this.props.startTime + "T12:00:00"),new Date(this.props.endTime+ "T12:00:00"));
+        var location = window.location.pathname.split("/")
+
         return (
             <div>
                 <HorizontalBar
@@ -188,7 +120,9 @@ class CommitChart extends Component {
                                     var month = yAxis.toString().split(" ")[1]
                                     var day = yAxis.toString().split(" ")[2]
                                     var year = yAxis.toString().split(" ")[3]
-                                    window.location.href = window.location.pathname + "/" + yAxis;
+                                    window.location.href =  '/' + location[1] +'/' + location[2] +
+                                        '/' + location[3] + '/' + this.props.devName + '/commits/' +
+                                        yAxis
                                 }
 
                             } , maintainAspectRatio:true,
