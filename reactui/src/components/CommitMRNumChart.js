@@ -8,20 +8,25 @@ import ProjectService from "../Service/ProjectService";
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class CommitMRNumChart extends PureComponent {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            frequency:[{date: null, numCommits: 0, numMergeRequest: 0}]
+            frequency:[{date: null, numCommits: 0, numMergeRequest: 0}],
+            parentdata: this.props.devName
         }
     }
 
     componentDidMount(){
+        const {parentdata} = this.state;
+        this.getDataFromBackend(parentdata)
+    }
+
+    getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
-        var developer = pathArray[4];
 
         //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + developer + "/2021-01-01/2021-02-28")
+        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + "/2021-01-01/2021-02-28")
             .then(response => {
                 const nums = response.data
                 this.setState({frequency : nums})
@@ -30,6 +35,13 @@ export default class CommitMRNumChart extends PureComponent {
             console.error(error);
         });
 
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName){
+            this.setState({parentdata: this.props.devName});
+            this.getDataFromBackend(this.props.devName)
+        }
     }
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
 //            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0

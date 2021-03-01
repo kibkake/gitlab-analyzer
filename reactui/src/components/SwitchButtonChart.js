@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import CommitMRScoreChart from "./CommitMRScoreChart";
 import CommitMRNumChart from "./CommitMRNumChart";
+import CustomizedRadios from "./RadioButtonComment";
 
 
 function Chart(props){
@@ -32,7 +33,11 @@ export default class SwitchButtonChart extends Component {
     render() {
         return (
             <div>
-                <button onClick={this.handleClick}>View Other Chart</button>
+                <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                    <button onClick={this.handleClick}>View Other Chart</button>
+                </div>
+                <br>
+                </br>
                 <Chart value = {this.state.value}/>
             </div>
         );

@@ -51,7 +51,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                 <br>
                 </br>
 
-                <SwitchButtonChart/>
+                <SwitchButtonChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
 
                 <br>
                 </br>
