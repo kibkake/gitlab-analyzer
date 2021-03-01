@@ -51,12 +51,13 @@ export default class CommitMRScoreChart extends PureComponent {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
                 commitScore: item.commitScore,
-                mergeScore: item.mergeRequestScore
+                mergeScore: item.mergeRequestScore,
             };
         });
         console.log(output);
         const from = Number(new Date('2021-01-15'));
         const to = Number(new Date('2021-02-28'));
+
 
         return (
             <div>
@@ -78,8 +79,8 @@ export default class CommitMRScoreChart extends PureComponent {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="Commits" stackId="a" fill="orange" />
-                        <Bar dataKey="Merges" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="commitScore" stackId="a" fill="orange" />
+                        <Bar dataKey="mergeScore" stackId="a" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

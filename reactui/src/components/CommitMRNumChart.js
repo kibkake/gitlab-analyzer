@@ -67,8 +67,8 @@ export default class CommitMRNumChart extends PureComponent {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="Commits" stackId="a" fill="orange" />
-                        <Bar dataKey="Merges" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="commitNum" stackId="a" fill="orange" />
+                        <Bar dataKey="mergeNum" stackId="a" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

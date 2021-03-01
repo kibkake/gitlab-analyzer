@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
@@ -6,6 +6,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import CommitMRScoreChart from "./CommitMRScoreChart";
+import CommitMRNumChart from "./CommitMRNumChart";
 
 //[https://material-ui.com/components/radio-buttons/]
 const useStyles = makeStyles({
@@ -65,14 +67,51 @@ function StyledRadio(props) {
     );
 }
 
-export default function SummaryChartRadios() {
-    return (
-        <FormControl component="fieldset">
-            <FormLabel component="legend">Commit & Merge Graph By</FormLabel>
-            <RadioGroup defaultValue="score" aria-label="comment" name="customized-radios">
-                <FormControlLabel value="score" control={<StyledRadio />} label="Score per date" />
-                <FormControlLabel value="number" control={<StyledRadio />} label="Number per date" />
-            </RadioGroup>
-        </FormControl>
-    );
+export default class SummaryChartRadios extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    handleChange = e => {
+        const { name, value } = e.target;
+
+        this.setState({
+            [name]: value
+        });
+    };
+    //
+    // state =  {
+    //     value: "score"
+    // }
+    render() {
+        return (
+            <div className="radio-buttons">
+                <CommitMRScoreChart/>
+                <input
+                    id="scores"
+                    value="scores"
+                    name="commit_merge"
+                    type="radio"
+                    onChange={this.handleChange}
+                />
+                <CommitMRNumChart/>
+                <input
+                    id="number"
+                    value="number"
+                    name="commit_merge"
+                    type="radio"
+                    onChange={this.handleChange}
+                />
+
+            </div>
+            // <FormControl component="fieldset">
+            //     <FormLabel component="legend">Commit & Merge Graph By</FormLabel>
+            //     <RadioGroup defaultValue="score" aria-label="comment" name="customized-radios">
+            //         <FormControlLabel value="score" control={<StyledRadio/>} label="Score per date"/>
+            //         <FormControlLabel value="number" control={<StyledRadio/>} label="Number per date"/>
+            //     </RadioGroup>
+            // </FormControl>
+        );
+    }
 }
