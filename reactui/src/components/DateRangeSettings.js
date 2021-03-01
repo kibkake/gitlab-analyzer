@@ -6,13 +6,13 @@ import DateFnsUtils from '@date-io/date-fns';
 import ProjectService from '../Service/ProjectService'
 
 function DateRangeSettings(){
-    
+
     const [selectedStartDate,setSelectedStartDate] = React.useState(
-        new Date(sessionStorage.getItem("startdate") + "T12:00:00")
+        new Date("2021-01-11T12:00:00")
     )
     
     const [selectedEndDate,setSelectedEndDate] = React.useState(
-        new Date(sessionStorage.getItem("enddate") + "T12:00:00")
+        new Date("2021-02-22T12:00:00")
     )
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)

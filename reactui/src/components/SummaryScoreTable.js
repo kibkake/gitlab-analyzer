@@ -28,7 +28,8 @@ class SummaryScoreTable extends Component{
         const id = pathArray[2];
 
         //request ref: http://localhost:8090/api/v1/projects/6/allTotalScores/user2/2021-01-01/2021-02-23
-        axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/2021-01-01/2021-02-23")
+        axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/" + sessionStorage.getItem("startdate")
+            + "/" + sessionStorage.getItem("enddate"))
             .then(response => {
                 const scores = response.data
                 this.setState({scoreSummary: scores})

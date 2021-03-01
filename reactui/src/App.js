@@ -32,11 +32,6 @@ function signupHandler(){
 
 function App() {
   const { user, setUser } = useToken();
-    sessionStorage.setItem("startdate", "2021-01-11");
-    sessionStorage.setItem("enddate", "2021-02-22");
-    console.log(sessionStorage.getItem("startdate"));
-    console.log(sessionStorage.getItem("enddate"));
-
     // requires a authentication token to proceed
   if(!sessionStorage.getItem('user')) {
     return (

@@ -25,7 +25,8 @@ export default class CommentChart extends Component {
         var id = pathArray[2];
 
         //response ref: http://localhost:8090/api/v1/projects/6/allUserNotes/arahilin/2021-01-01/2021-02-22
-        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ username +"/2021-01-01/2021-02-22")
+        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ username +"/" + sessionStorage.getItem("startdate") + "/"
+        + sessionStorage.getItem("enddate") )
             .then(response => {
                 const commentInfo = response.data
                 this.setState({commentScore: commentInfo})//{date: commentInfo.created_at, wordCount: commentInfo.wordCount }})
@@ -50,8 +51,8 @@ export default class CommentChart extends Component {
             };
         });
         console.log(output);
-        const from = Number(new Date('2021-01-15'));
-        const to = Number(new Date('2021-02-23'));
+        const from = Number(sessionStorage.getItem("startdate") + "T12:00:00");
+        const to = Number(new Date(sessionStorage.getItem("enddate") + "T12:00:00"));
 
         return (
             <div>
