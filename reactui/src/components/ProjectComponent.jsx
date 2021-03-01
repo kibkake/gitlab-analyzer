@@ -5,7 +5,7 @@ class ProjectComponent extends Component {
     render() {
         return (
             <>
-                <h1>Projects</h1>
+                <h1 style={{marginLeft: 30 + 'px'}}>Projects</h1>
                 <ProjectList/>
             </>
         )
