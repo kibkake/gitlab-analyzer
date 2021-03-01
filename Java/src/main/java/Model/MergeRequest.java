@@ -1,5 +1,6 @@
 package main.java.Model;//package main.java.ConnectToGitlab.MergeRequests;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.OffsetDateTime;
@@ -10,7 +11,9 @@ import java.util.List;
 @Document(value = "mergeRequest")
 public class MergeRequest {
 
-    private int id;
+
+    @Id
+    private Integer id;
     private int iid;
     private int project_id;
     private String title;

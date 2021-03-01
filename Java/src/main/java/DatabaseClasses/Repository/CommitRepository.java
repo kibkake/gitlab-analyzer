@@ -20,28 +20,12 @@ import java.util.List;
 @Repository
 public interface CommitRepository extends MongoRepository<Commit, String>, CommitRepositoryCustom {
 
-
-
     //TODO update to Author_Email when that issue be solved
     List<Commit> findByProjectIdAndDateBetweenAndAuthorName(int projectId, Date start, Date end, String author_name);
 
     Commit findByProjectIdAndId(int projectId, String commitHash);
-//
-//    @Query("SELECT SUM(c.commitScore), c.date from commits c " +
-//            "group by(c.date) ")
 
     @Query("SELECT AVG(u.age) from commits u")
     int getAverageAge();
 
-
-//    //https://www.baeldung.com/spring-data-mongodb-projections-aggregations
-//    List<DateScore>
-//    MatchOperation matchStage = Aggregation.match(new Criteria("foo").is("bar"));
-//    ProjectionOperation projectStage = Aggregation.project("foo", "bar.baz");
-//
-//    Aggregation aggregation
-//            = Aggregation.newAggregation(matchStage, projectStage);
-//
-//    AggregationResults<DateScore> output
-//            = mongoTemplate.aggregate(aggregation, "foobar", OutType.class);
 }

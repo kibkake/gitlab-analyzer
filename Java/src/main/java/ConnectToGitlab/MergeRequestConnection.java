@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class MergeRequestConnection {
 
-    public List<MergeRequest> getProjectMergeRequestsFromGitLab(int projectId) {
+    public static List<MergeRequest> getProjectMergeRequestsFromGitLab(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";

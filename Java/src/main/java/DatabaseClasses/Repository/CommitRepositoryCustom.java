@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CommitRepositoryCustom {
 
-    List<DateScore> getDevDateScore(int ProjectId, String devUserName);
+    List<DateScore> getDevDateScore(int projectId, String devUserName);
 }
