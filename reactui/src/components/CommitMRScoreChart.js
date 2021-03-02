@@ -25,8 +25,7 @@ export default class CommitMRScoreChart extends PureComponent {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
 
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + "/" + sessionStorage.getItem("startdate")
-            + "/" + sessionStorage.getItem("enddate"))
+        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + "/2021-01-01/2021-02-23")
             .then(response => {
                 const score = response.data
                 this.setState({codeScore : score})
@@ -56,8 +55,8 @@ export default class CommitMRScoreChart extends PureComponent {
             };
         });
         console.log(output);
-        const from = Number(new Date(sessionStorage.getItem("startdate") + "T12:00:00"));
-        const to = Number(new Date(sessionStorage.getItem("enddate") + "T12:00:00"));
+        const from = Number(new Date('2021-01-15'));
+        const to = Number(new Date('2021-02-28'));
 //ceil
         return (
             <div>
@@ -72,7 +71,7 @@ export default class CommitMRScoreChart extends PureComponent {
                                name = 'date'
                                domain={[
                                    d3.timeDay.floor(from).getTime(),
-                                   d3.timeDay.floor(to).getTime()
+                                   d3.timeDay.ceil(to).getTime()
                                ]}
                                tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
                         />
