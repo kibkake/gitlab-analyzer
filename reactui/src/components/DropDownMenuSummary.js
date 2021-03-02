@@ -5,18 +5,19 @@ import SummaryScoreTable from "./SummaryScoreTable";
 import Navbar_Developers from "./Navbar_Developers";
 import './DropDownMenu.css';
 import SummaryChartRadios from "./RadioButtonSummaryChart";
+import DateRangeSummary from './DateRangeSummary'
 
 
 function DropDownMenuSummary ({listOfDevelopers}) {
 
     const devArray = [];
+
     listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
 
     const pathArray = window.location.pathname.split('/');
-    const developer = pathArray[4];
-    const currentDeveloper = sessionStorage.getItem("CurrentDeveloper")
 
-    const[selectedValue, setSelectedValue] = useState(null);
+    const[selectedValue, setSelectedValue] = useState(pathArray[4]);
+    console.log("selectedval", selectedValue)
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
@@ -26,15 +27,15 @@ function DropDownMenuSummary ({listOfDevelopers}) {
     return (
         <div>
             <div>
-                <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-                <h1 style={{textAlign: 'center'}}>{sessionStorage.getItem("CurrentDeveloper")} Summary</h1>
+                <Navbar_Developers devName = {selectedValue}/>
+                <h1 style={{textAlign: 'center'}}>{selectedValue} Summary</h1>
 
                 <br>
                 </br>
                 <div className="DropDownMenu">
                 <Select
                     options={devArray}
-                    defaultValue={{label: currentDeveloper, value: currentDeveloper}}
+                    defaultValue={{label: selectedValue, value: selectedValue}}
                     onChange={handleChange}
                 />
                 </div>
@@ -42,17 +43,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             <div>
                 <br>
             </br>
-                <br>
-                </br>
-
-                <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
-                <SummaryScoreTable devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-                <br>
-                </br>
-                <h4 style={{textAlign:'center'}}>View Data By</h4>
-                <SummaryChartRadios devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-                <br>
-                </br>
+                <DateRangeSummary devName = {selectedValue}/>
 
             </div>
 
