@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,11 @@ public class MergeRequestController {
         mergeRequestService.saveProjectMergeRequests(projectId);
     }
 
-    @GetMapping("projects/{projectId}/MergeRequest/scores/{userName}")
-    public List<CommitDateScore> getScores(@PathVariable int projectId, @PathVariable String userName) {
-        return mergeRequestService.getScorePerDay(projectId, userName);
+    @GetMapping("projects/{projectId}/MergeRequest/scores/{userName}/{startDate}/{endDate}")
+    public List<CommitDateScore> getScores(@PathVariable int projectId, @PathVariable String userName,
+                                           @PathVariable String startDate, @PathVariable String endDate) {
+        LocalDate StartLocalTime = LocalDate.parse(startDate);
+        LocalDate endLocalTime = LocalDate.parse(endDate);
+        return mergeRequestService.getScorePerDay(projectId, userName, StartLocalTime, endLocalTime);
     }
 }

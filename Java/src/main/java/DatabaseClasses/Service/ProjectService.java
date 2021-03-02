@@ -104,7 +104,6 @@ public class ProjectService {
                 dateMap.put(commitDate.toString(), commitDateScore);
             } else {
                 CommitDateScore commitDateScore = dateMap.get(commitDate.toString());
-
                 commitDateScore.addToCommitScore(currentCommit.getCommitScore());
                 commitDateScore.incrementNumberOfCommitsBy1();
                 commitDateScore.addCommitIds(currentCommit.getId());
@@ -208,24 +207,6 @@ public class ProjectService {
             commitsArray.add(Integer.toString(commits.size()));
         }
         return commitsArray;
-    }
-
-    public List<Commit> getCommitByHash(int projectId, String hash) {
-        Project project = projectRepository.findProjectById(projectId);
-        List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
-        // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
-        List<Commit> userCommits = new ArrayList<Commit>();
-
-        List<Commit> projectCommits = project.getCommits();
-        for (Commit currentCommit : projectCommits) {
-            LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
-            if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                    currentCommit.getId().equals(hash)) {
-                userCommits.add(currentCommit);
-                commitIds.add(currentCommit.getId());
-            }
-        }
-        return userCommits;
     }
 
     public List<MergeRequest> getUserMergeRequests(int projectId, String committerName, LocalDate start, LocalDate end) {

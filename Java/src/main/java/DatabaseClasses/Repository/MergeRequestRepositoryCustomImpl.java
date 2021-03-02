@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryCustom {
@@ -21,11 +22,11 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
 
     @Override
-    public List<CommitDateScore> devsMrsADay(int projectId, String devUserName, ) {
+    public List<CommitDateScore> devsMrsADay(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
         //https://stackoverflow.com/questions/62340986/aggregation-with-multiple-criteria
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
-        final Criteria dateMatchCriteria = Criteria.where("startDate").gte(startDate).lte(endDate);
+        final Criteria dateMatchCriteria = Criteria.where("date").gte(startDate).lte(endDate);
 
 
         Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);
@@ -35,7 +36,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
                 Aggregation.project( "mergedDate", "mrScore"),
                 Aggregation.group("mergedDate").count().as("numMergeRequests")
                         .sum("mrScore").as("mergeRequestScore")
-//                        .addToSet("contributors.userName").as("authorName")
+                        .addToSet("contributors.userName").as("authorName")
                         .addToSet("mergedDate").as("date")
         );
 

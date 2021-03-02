@@ -8,16 +8,12 @@ import java.util.List;
  *  This is a simple class that stores two attributes: a date, the commit score on that date, and
  *  the name of the user this is for.
  */
-public class CommitDateScore {
+public class CommitDateScore implements Comparable<CommitDateScore>{
     private LocalDate date;
     private double commitScore;
-    private double mergeRequestScore;
     private String authorName;
     private int numCommits;
-    private int numMergeRequests;
-    private List<Integer> mergeRequestId;
     private List<String> commitIds;
-    private List<Integer> mergeRequestIds;
 
     public CommitDateScore() {
     }
@@ -26,20 +22,16 @@ public class CommitDateScore {
         this.date = date;
         this.commitScore = commitScore;
         this.authorName = authorName;
-        this.numCommits = 1;
+        this.numCommits = 0;
         this.commitIds = new ArrayList<>();
-        this.mergeRequestIds = new ArrayList<Integer>();
         commitIds.add(id);
     }
 
-    public CommitDateScore(LocalDate date, double score, String authorName, Integer numMergeRequests, Integer mergeRequestId) {
+    public CommitDateScore(LocalDate date, double score, int numCommits, String authorName) {
         this.date = date;
-        this.mergeRequestScore = score;
+        this.commitScore = score;
+        this.numCommits = numCommits;
         this.authorName = authorName;
-        this.numMergeRequests = numMergeRequests;
-        this.mergeRequestIds = new ArrayList<Integer>();
-        this.commitIds = new ArrayList<>();
-        this.mergeRequestIds.add(mergeRequestId);
     }
 
     public LocalDate getDate() {
@@ -94,54 +86,11 @@ public class CommitDateScore {
         this.commitIds.add(id);
     }
 
-    public double getMergeRequestScore() {
-        return mergeRequestScore;
-    }
-
-    public void setMergeRequestScore(double mergeRequestScore) {
-        this.mergeRequestScore = mergeRequestScore;
-    }
-
-    public int getNumMergeRequests() {
-        return numMergeRequests;
-    }
-
-    public void setNumMergeRequests(int numMergeRequests) {
-        this.numMergeRequests = numMergeRequests;
-    }
-
-    public List<Integer> getMergeRequestId() {
-        return mergeRequestId;
-    }
-
-    public void setMergeRequestId(List<Integer> mergeRequestId) {
-        this.mergeRequestId = mergeRequestId;
-    }
-
-    public List<Integer> getMergeRequestIds() {
-        return mergeRequestIds;
-    }
-
-    public void setMergeRequestIds(List<Integer> mergeRequestIds) {
-        this.mergeRequestIds = mergeRequestIds;
-    }
 
     public void addToCommitScore(Double score) {
         this.commitScore = this.commitScore + score;
     }
 
-
-    public void addToMergeRequestScore(Double score) {
-        this.mergeRequestScore = this.mergeRequestScore + score;
-    }
-
-    public void incrementNumMergeRequests() {
-        this.numMergeRequests = this.numMergeRequests + 1;
-    }
-
-    public void addMergeRequestIds(int id) {
-        this.mergeRequestIds.add(id);
-    }
 
     @Override
     public String toString() {
@@ -151,5 +100,12 @@ public class CommitDateScore {
                 ", userName='" + authorName + '\'' +
                 ", numCommits=" + numCommits +
                 '}';
+    }
+
+    //https://stackoverflow.com/questions/5927109/sort-objects-in-arraylist-by-date
+    @Override
+    public int compareTo(CommitDateScore o) {
+        return getDate().compareTo(o.getDate());
+
     }
 }

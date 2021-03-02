@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,7 +25,7 @@ public class MergeRequestService {
         mergeRequestRepository.saveAll(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
     }
 
-    public List<CommitDateScore> getScorePerDay(int projectId, String userName) {
-        return mergeRequestRepository.devsMrsADay(projectId, userName);
+    public List<CommitDateScore> getScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate) {
+        return mergeRequestRepository.devsMrsADay(projectId, userName, startDate, endDate);
     }
 }
