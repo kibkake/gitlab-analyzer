@@ -105,7 +105,6 @@ public class MergeRequest {
     public void setMerged_at(String merged_at) {
         this.merged_at = merged_at;
         if(merged_at !=null) {
-            System.out.println(merged_at);
             OffsetDateTime dateWithOffSet = OffsetDateTime.parse(merged_at);
             setMergedDate(Date.from(dateWithOffSet.toInstant()));
         }

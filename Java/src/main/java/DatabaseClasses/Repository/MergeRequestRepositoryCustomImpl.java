@@ -28,7 +28,6 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
         final Criteria projectMatchCriteria = Criteria.where("project_id").is(projectId);
 
         Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria);
-        System.out.println(projectId);
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(criterias),

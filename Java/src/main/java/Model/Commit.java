@@ -14,7 +14,7 @@ import java.util.*;
 @Document(collection = "commits")
 public class Commit {
 
-    @Id
+    @Id //check unique per project
     private String id;
     private String shortId;
     private String created_at;
