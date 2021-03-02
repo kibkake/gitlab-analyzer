@@ -12,12 +12,15 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     const devArray = [];
 
-    listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
-
     const pathArray = window.location.pathname.split('/');
 
+    if(sessionStorage.getItem("CurrentDeveloper") == null){
+        sessionStorage.setItem("CurrentDeveloper", pathArray[4])
+    }
+
+    listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
+
     const[selectedValue, setSelectedValue] = useState(pathArray[4]);
-    console.log("selectedval", selectedValue)
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
