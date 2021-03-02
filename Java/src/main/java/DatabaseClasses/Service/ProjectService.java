@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 public class ProjectService {
     private final ProjectRepository projectRepository;
 
+    public enum UseWhichDevField {EITHER, NAME, USERNAME};
+
     @Autowired
     public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
@@ -59,23 +61,15 @@ public class ProjectService {
         return project.getMergedRequests();
     }
 
-    public int getNumUserCommits(int projectId, String committerName, LocalDate start, LocalDate end ) {
-        List<Commit> allCommits = this.getUserCommits(projectId, committerName, start, end);
+    public int getNumDevCommits(int projectId, String username, LocalDate start, LocalDate end,
+                                UseWhichDevField devField) {
+        List<Commit> allCommits = this.getDevCommits(projectId, username, start, end, devField);
         return allCommits.size();
     }
 
-
-    public int getNumUserMergeRequests(int projectId, String committerName) {
-        int numTotalMRs = 0;
-        Project project = projectRepository.findProjectById(projectId);
-
-        List<MergeRequest> projectMRs = project.getMergedRequests();
-        for (MergeRequest currentMR: projectMRs) {
-            if (currentMR.isAContributor(committerName)) {
-                numTotalMRs++;
-            }
-        }
-        return numTotalMRs;
+    public int getNumDevMergeRequests(int projectId, String username, LocalDate start, LocalDate end) {
+        List<MergeRequest> devMRs = getDevMergeRequests(projectId, username, start, end);
+        return devMRs.size();
     }
 
     @Transactional
@@ -91,16 +85,16 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
-                                                     LocalDate start, LocalDate end) {
-        List<Commit> allUserCommits = this.getUserCommits(projectId, committerName, start, end);
+    public List<DateScore> getDevCommitScoresPerDay(int projectId, String username, LocalDate start,
+                                                    LocalDate end, UseWhichDevField devField) {
+        List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devField);
         HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
 
-        for (Commit currentCommit: allUserCommits) {
+        for (Commit currentCommit: allDevCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        committerName, currentCommit.getId());
+                        username, currentCommit.getId());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
@@ -114,10 +108,10 @@ public class ProjectService {
         return dateScores;
     }
 
-    public double getTotalUserCommitScore(int projectId, String committerName,
-                                       LocalDate start, LocalDate end) {
-        List<DateScore> individualDateScores = this.getUserCommitScoresPerDay(projectId, committerName,
-                                                                                start, end);
+    public double getTotalDevCommitScore(int projectId, String username, LocalDate start,
+                                         LocalDate end, UseWhichDevField devField) {
+        List<DateScore> individualDateScores = this.getDevCommitScoresPerDay(projectId, username,
+                                                                                start, end, devField);
         double totalCommitScore = 0;
         for (DateScore currentDateScore : individualDateScores) {
             totalCommitScore += currentDateScore.getCommitScore();
@@ -125,18 +119,17 @@ public class ProjectService {
         return totalCommitScore;
     }
 
-
-    public List<DateScore> getScoresPerDayForMRsAndCommits(int projectId, String committerName,
-                                                           LocalDate start, LocalDate end) {
-        List<MergeRequest> userMergeRequest = this.getUserMergeRequests(projectId, committerName, start, end);
+    public List<DateScore> getScoresPerDayForMRsAndCommits(int projectId, String username, LocalDate start,
+                                                           LocalDate end, UseWhichDevField devFieldForGettingCommits) {
+        List<MergeRequest> devMergeRequest = this.getDevMergeRequests(projectId, username, start, end);
         HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
 
-        for (MergeRequest mergeRequest : userMergeRequest) {
+        for (MergeRequest mergeRequest : devMergeRequest) {
             LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
 
             if (!dateMap.containsKey(mergedDate.toString())) {
                 DateScore dateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
-                        committerName, 1, mergeRequest.getId());
+                        username, 1, mergeRequest.getId());
                 dateMap.put(mergedDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(mergedDate.toString());
@@ -146,12 +139,12 @@ public class ProjectService {
             }
         }
         System.out.println(dateMap);
-        List<Commit> allUserCommits = this.getUserCommits(projectId, committerName, start, end);
-        for (Commit currentCommit: allUserCommits) {
+        List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devFieldForGettingCommits);
+        for (Commit currentCommit: allDevCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        committerName, currentCommit.getId());
+                        username, currentCommit.getId());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
@@ -166,47 +159,85 @@ public class ProjectService {
         return dateScores;
     }
 
+    private Developer findDeveloperWithUsernameField(String username, int projectId) {
+        List<Developer> developers = getProjectDevelopers(projectId);
+        for (Developer developer: developers) {
+            if (developer.getUsername().equals(username)) {
+                return developer;
+            }
+        }
+        return null;
+    }
 
-    public List<Commit> getUserCommits(int projectId, String committerName, LocalDate start, LocalDate end) {
+    private boolean matchesCommitNameOrAuthor(Commit commit, String nameOrUsername) {
+        return commit.getCommitter_name().equals(nameOrUsername)
+               || commit.getAuthor_name().equals(nameOrUsername);
+    }
+    
+    private boolean didDeveloperAuthorCommit(Commit commit, Developer developer,
+                                             UseWhichDevField devField) {
+        // For this function, it turns out that .getCommitter_name() and
+        // .getAuthor_name() of Commit actually tends to return name, not username.
+        // So we will be unable just use username exclusively.
+        // In this function, either both username and name will be used,
+        // or just one of them. It depends on the enum value of devField.
+
+        if (developer == null) {
+            return false;
+        }
+        else if (devField == UseWhichDevField.EITHER) {
+            return (developer.getName() != null
+                    && matchesCommitNameOrAuthor(commit, developer.getName()))
+                   || (developer.getUsername() != null
+                       && matchesCommitNameOrAuthor(commit, developer.getUsername()));
+        }
+        else if (devField == UseWhichDevField.NAME) {
+            return developer.getName() != null
+                   && matchesCommitNameOrAuthor(commit, developer.getName());
+        }
+        else {
+            return developer.getUsername() != null
+                   && matchesCommitNameOrAuthor(commit, developer.getUsername());
+        }
+    }
+
+    public List<Commit> getDevCommits(int projectId, String username, LocalDate start, LocalDate end,
+                                      UseWhichDevField devField) {
+        // For anyone calling this function, the username parameter should be equal
+        // to the username field of the dev you're talking about.
+        Developer developer = findDeveloperWithUsernameField(username, projectId);
         Project project = projectRepository.findProjectById(projectId);
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
         // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
-        List<Commit> userCommits = new ArrayList<Commit>();
-
+        List<Commit> devCommits = new ArrayList<Commit>();
         List<Commit> projectCommits = project.getCommits();
         for (Commit currentCommit : projectCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
-                if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                        (currentCommit.getCommitter_name().equals(committerName)) || currentCommit.getAuthor_name().equals(committerName)) {
-                    userCommits.add(currentCommit);
+                if (!StringFunctions.inList(commitIds, currentCommit.getId())
+                    && didDeveloperAuthorCommit(currentCommit, developer, devField)) {
+                    devCommits.add(currentCommit);
                     commitIds.add(currentCommit.getId());
                 }
             }
         }
-        return userCommits;
+        return devCommits;
     }
 
-    public List<String> getAllUserCommitsArray(int projectId, String committerName, LocalDate start, LocalDate end) {
-        Project project = projectRepository.findProjectById(projectId);
-        List<String> commitIds = new ArrayList<String>();
-        List<Commit> projectCommits = project.getCommits();
-        List<String> commitsArray = new ArrayList<>();
-
-        for (LocalDate time = start; time.isBefore(end.plusDays(1)); time = time.plusDays(1)){
-            List<Commit> commits = new ArrayList<>();
-
-            for (Commit currentCommit : projectCommits) {
+    public List<String> getAllDevCommitsArray(int projectId, String username, LocalDate start,
+                                              LocalDate end, UseWhichDevField devField) {
+        List<Commit> allDevCommits = getDevCommits(projectId, username, start, end, devField);
+        List<String> commitsArray = new ArrayList<String>();
+        // Each element of commitsArray will store the number of commits (as a string) on a date.
+        for (LocalDate time = start; time.isBefore(end.plusDays(1)); time = time.plusDays(1)) {
+            List<Commit> commitsThisDay = new ArrayList<Commit>();
+            for (Commit currentCommit : allDevCommits) {
                 LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
                 if (commitDate.compareTo(time) == 0) {
-                    if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                            currentCommit.getCommitter_name().equals(committerName)) {
-                        commits.add(currentCommit);
-                        commitIds.add(currentCommit.getId());
-                    }
+                    commitsThisDay.add(currentCommit);
                 }
             }
-            commitsArray.add(Integer.toString(commits.size()));
+            commitsArray.add(Integer.toString(commitsThisDay.size()));
         }
         return commitsArray;
     }
@@ -215,62 +246,79 @@ public class ProjectService {
         Project project = projectRepository.findProjectById(projectId);
         List<String> commitIds = new ArrayList<String>(); // Will store the IDs of commits counted
         // towards numTotal Commits. Goal is to prevent counting the same commit multiple times.
-        List<Commit> userCommits = new ArrayList<Commit>();
+        List<Commit> commits = new ArrayList<Commit>();
 
         List<Commit> projectCommits = project.getCommits();
         for (Commit currentCommit : projectCommits) {
-            LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
-            if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                    currentCommit.getId().equals(hash)) {
-                userCommits.add(currentCommit);
+            if (!StringFunctions.inList(commitIds, currentCommit.getId())
+                && currentCommit.getId().equals(hash)) {
+                commits.add(currentCommit);
                 commitIds.add(currentCommit.getId());
             }
         }
-        return userCommits;
+        return commits;
     }
 
-    public List<MergeRequest> getUserMergeRequests(int projectId, String committerName, LocalDate start, LocalDate end) {
+    public List<MergeRequest> getDevMergeRequests(int projectId, String username, LocalDate start, LocalDate end) {
         Project project = projectRepository.findProjectById(projectId);
         List<MergeRequest> mergeRequests = project.getMergedRequests();
-        List<MergeRequest> userMergeRequests = new ArrayList<>();
+        List<MergeRequest> devMergeRequests = new ArrayList<>();
         for (MergeRequest mergeRequest : mergeRequests) {
             LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
             if (mergedDate.compareTo(start) >= 0 && mergedDate.compareTo(end) <= 0) {
                 for (Developer dev : mergeRequest.getContributors()) {
-                    if (dev.getName().equals(committerName) || dev.getUsername().equals(committerName)) {
-                        userMergeRequests.add(mergeRequest);
+                    if (dev.getUsername().equals(username)) {
+                        devMergeRequests.add(mergeRequest);
                     }
                 }
             }
         }
-        return userMergeRequests;
+        return devMergeRequests;
     }
 
-    public List<Issue> getUserIssues(int projectId, String userName, LocalDate start, LocalDate end) {
+    public List<Issue> getDevIssues(int projectId, String username, LocalDate start, LocalDate end) {
         Project project = projectRepository.findProjectById(projectId);
         List<Issue> issues = project.getIssues();
-        List<Issue> userIssues = new ArrayList<>();
+        List<Issue> devIssues = new ArrayList<>();
         for (Issue issue : issues) {
-            LocalDate modifiedDate = LocalDate.parse(issue.getModified_at());
-            LocalDate createdAt = LocalDate.parse(issue.getCreated_at());
-            if (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0 &&
-                    createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
+            LocalDate modifiedDate = null;
+            String whenIssueModified = issue.getModified_at();
+            if (whenIssueModified != null && whenIssueModified != "") {
+                modifiedDate = LocalDate.parse(whenIssueModified);
+            }
+            // At this point, it's fine if modifiedDate is still null, since the
+            // issue may have never been modified.
+
+            // TODO - LocalDate.parse cannot deal with the createdAt String,
+            // and throws an exception for user2. For now I'm just going to continue to the
+            // next iteration of the for loop if the String isn't in proper form.
+            // From my tests, it seems like sometimes createdAt is neither null nor
+            // an empty string, but instead some other bad string that parse dislikes.
+
+            LocalDate createdAt;
+            try {
+                createdAt = LocalDate.parse(issue.getCreated_at());
+            }
+            catch (Exception e) {
+                continue;
+            }
+            if ((modifiedDate == null
+                 || (modifiedDate.compareTo(start) >= 0 && modifiedDate.compareTo(end) <= 0))
+                && createdAt.compareTo(start) >= 0 && createdAt.compareTo(end) <= 0) {
                 List<Note> notes = issue.getNotes();
                 for (Note note: notes)  {
-                    // TODO - get rid of note.getAuthor() equality test since it compares a Developer to a String.
-                    // Could instead test if note.getName().equals(username)?
-                    if (note.getUsername().equals(userName) || note.getAuthor().equals(userName)) {
-                        userIssues.add(issue);
+                    if (note.getAuthor().getUsername().equals(username)) {
+                        devIssues.add(issue);
                     }
                 }
             }
         }
-        return userIssues;
+        return devIssues;
     }
 
-    public List<Note> getTopUserNotes(int projectID, String devName, LocalDate start, LocalDate end,
+    public List<Note> getTopDevNotes(int projectID, String username, LocalDate start, LocalDate end,
                                       int limit, boolean applyLimit) {
-        List<Note> devNotes = getUserNotes(projectID, devName, start, end);
+        List<Note> devNotes = getDevNotes(projectID, username, start, end);
         devNotes.sort(Comparator.comparingInt(Note::getWordCount));
         Collections.reverse(devNotes);
         List<Note> topNotes;
@@ -283,18 +331,18 @@ public class ProjectService {
         return topNotes;
     }
 
-    public List<Note> getUserNotes(int projectId, String name, LocalDate start, LocalDate end) {
+    public List<Note> getDevNotes(int projectId, String username, LocalDate start, LocalDate end) {
         Project project = projectRepository.findProjectById(projectId);
         List<Issue> issues = project.getIssues();
-        List<Note> userNotes = new ArrayList<>();
+        List<Note> devNotes = new ArrayList<>();
         for (Issue issue : issues) {
             List<Note> issueNotes = issue.getNotes();
             if (issueNotes != null) {
                 for (Note note : issueNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
-                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0 &&
-                        didDeveloperWriteNote(note, name)) {
-                        userNotes.add(note);
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
+                        && didDeveloperWriteNote(note, username)) {
+                        devNotes.add(note);
                     }
                 }
             }
@@ -305,20 +353,19 @@ public class ProjectService {
             if (mrNotes != null) {
                 for (Note note : mrNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
-                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0 &&
-                        didDeveloperWriteNote(note, name)) {
-                        userNotes.add(note);
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
+                        && didDeveloperWriteNote(note, username)) {
+                        devNotes.add(note);
                     }
                 }
             }
         }
-        return userNotes;
+        return devNotes;
     }
 
-    private boolean didDeveloperWriteNote(Note note, String name) {
+    private boolean didDeveloperWriteNote(Note note, String username) {
         Developer dev = note.getAuthor();
-        return dev != null && ((dev.getName() != null && dev.getName().equals(name)) ||
-               (dev.getUsername() != null && dev.getUsername().equals(name)));
+        return dev != null && dev.getUsername() != null && dev.getUsername().equals(username);
     }
 
     public Commit getCommit(int projectId, String commitId) {
@@ -341,36 +388,36 @@ public class ProjectService {
         return mergeRequest;
     }
 
-    public double getTotalUserMRScore(int projectId, String username,
+    public double getTotalDevMRScore(int projectId, String username,
                                        LocalDate start, LocalDate end) {
         double totalMRScore = 0.0;
-        List<MergeRequest> userMRs = this.getUserMergeRequests(projectId, username, start, end);
-        for (MergeRequest currentMR: userMRs) {
+        List<MergeRequest> devMRs = this.getDevMergeRequests(projectId, username, start, end);
+        for (MergeRequest currentMR: devMRs) {
             totalMRScore += currentMR.getMrScore();
         }
         return totalMRScore;
     }
 
-    public int getTotalUserCommentWordCount(int projectId, String username,
+    public int getTotalDevCommentWordCount(int projectId, String username,
                                             LocalDate start, LocalDate end) {
-        List<Note> userNotes = this.getTopUserNotes(projectId, username, start, end, 100000, false);
+        List<Note> devNotes = this.getTopDevNotes(projectId, username, start, end, 100000, false);
         int totalCommentWordCount = 0;
-        for (Note currentNote: userNotes) {
+        for (Note currentNote: devNotes) {
             totalCommentWordCount += currentNote.getWordCount();
         }
         return totalCommentWordCount;
     }
 
-    public AllScores getAllScores(int projectId, String username,
-                                  LocalDate startDate, LocalDate endDate) {
+    public AllScores getAllScores(int projectId, String username, LocalDate startDate,
+                                  LocalDate endDate, UseWhichDevField devFieldToUseForGettingCommits) {
         AllScores allScores = new AllScores(startDate, endDate, 0, 0, 0);
-        double totalCommitScore = this.getTotalUserCommitScore(projectId, username,
-                                                               startDate, endDate);
+        double totalCommitScore = this.getTotalDevCommitScore(projectId, username, startDate,
+                                                              endDate, devFieldToUseForGettingCommits);
         allScores.setTotalCommitScore(totalCommitScore);
-        double totalMergeRequestScore = this.getTotalUserMRScore(projectId, username,
+        double totalMergeRequestScore = this.getTotalDevMRScore(projectId, username,
                                                                  startDate, endDate);
         allScores.setTotalMergeRequestScore(totalMergeRequestScore);
-        int totalCommentWordCount = this.getTotalUserCommentWordCount(projectId, username, startDate,
+        int totalCommentWordCount = this.getTotalDevCommentWordCount(projectId, username, startDate,
                                                                       endDate);
         allScores.setTotalCommentWordCount(totalCommentWordCount);
 
