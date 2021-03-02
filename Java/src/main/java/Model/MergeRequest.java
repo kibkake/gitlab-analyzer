@@ -1,5 +1,6 @@
 package main.java.Model;//package main.java.ConnectToGitlab.MergeRequests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,23 +12,16 @@ import java.util.List;
 @Document(value = "mergeRequest")
 public class MergeRequest {
 
-
     @Id
     private Integer id;
     private int iid;
-    private int project_id;
+    private int projectId;
     private String title;
     private String description;
     private String state;
-    private String merged_at;
-    private String target_branch;
-    private String updated_after;
-    private String updated_before;
+    private String mergedAt;
     private int  author_id;
     private int author_username;
-    private int approver_ids;
-    private String created_at;
-    private String created_before;
     private List<Developer> contributors;
     List<Commit> commits;
     private String sha;
@@ -65,12 +59,13 @@ public class MergeRequest {
         this.iid = iid;
     }
 
-    public int getProject_id() {
-        return project_id;
+    @JsonProperty("project_id")
+    public int getProjectId() {
+        return projectId;
     }
 
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
     public String getTitle() {
@@ -97,41 +92,18 @@ public class MergeRequest {
         this.state = state;
     }
 
-    public String getMerged_at() {
-        return merged_at;
+    @JsonProperty("merged_at")
+    public String getMergedAt() {
+        return mergedAt;
     }
 
     // Spring calls this to create a mergeRequest object use it to create a Date
-    public void setMerged_at(String merged_at) {
-        this.merged_at = merged_at;
-        if(merged_at !=null) {
-            OffsetDateTime dateWithOffSet = OffsetDateTime.parse(merged_at);
+    public void setMergedAt(String mergedAt) {
+        this.mergedAt = mergedAt;
+        if(mergedAt !=null) {
+            OffsetDateTime dateWithOffSet = OffsetDateTime.parse(mergedAt);
             setMergedDate(Date.from(dateWithOffSet.toInstant()));
         }
-    }
-
-    public String getTarget_branch() {
-        return target_branch;
-    }
-
-    public void setTarget_branch(String target_branch) {
-        this.target_branch = target_branch;
-    }
-
-    public String getUpdated_after() {
-        return updated_after;
-    }
-
-    public void setUpdated_after(String updated_after) {
-        this.updated_after = updated_after;
-    }
-
-    public String getUpdated_before() {
-        return updated_before;
-    }
-
-    public void setUpdated_before(String updated_before) {
-        this.updated_before = updated_before;
     }
 
     public int getAuthor_id() {
@@ -148,30 +120,6 @@ public class MergeRequest {
 
     public void setAuthor_username(int author_username) {
         this.author_username = author_username;
-    }
-
-    public int getApprover_ids() {
-        return approver_ids;
-    }
-
-    public void setApprover_ids(int approver_ids) {
-        this.approver_ids = approver_ids;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public String getCreated_before() {
-        return created_before;
-    }
-
-    public void setCreated_before(String created_before) {
-        this.created_before = created_before;
     }
 
     public List<Developer> getContributors() {
@@ -203,19 +151,13 @@ public class MergeRequest {
         return "MergeRequest{" +
                 "id=" + id +
                 ", iid=" + iid +
-                ", project_id=" + project_id +
+                ", project_id=" + projectId +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", state='" + state + '\'' +
-                ", merged_at='" + merged_at + '\'' +
-                ", target_branch='" + target_branch + '\'' +
-                ", updated_after='" + updated_after + '\'' +
-                ", updated_before='" + updated_before + '\'' +
+                ", merged_at='" + mergedAt + '\'' +
                 ", author_id=" + author_id +
                 ", author_username=" + author_username +
-                ", approver_ids=" + approver_ids +
-                ", created_at='" + created_at + '\'' +
-                ", created_before='" + created_before + '\'' +
                 ", contributors=" + contributors +
                 ", sha='" + sha + '\'' +
                 '}';

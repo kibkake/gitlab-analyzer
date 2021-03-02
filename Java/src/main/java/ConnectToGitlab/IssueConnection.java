@@ -1,6 +1,5 @@
 package main.java.ConnectToGitlab;
 
-import main.java.Model.Commit;
 import main.java.Model.Issue;
 import main.java.Model.Note;
 import main.java.Model.User;
@@ -8,7 +7,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ public class IssueConnection {
         }while (!pageNumber.equals(""));
 
         for(Issue issue: issues) {
-            issue.setNotes(getIssueNotes(issue.getProject_id(), issue.getIid()));
+            issue.setNotes(getIssueNotes(issue.getProjectId(), issue.getIid()));
         }
         return issues;
     }

@@ -1,7 +1,6 @@
 package main.java.DatabaseClasses.Repository;
 
-import main.java.DatabaseClasses.Model.DateScore;
-import main.java.Model.Commit;
+import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.Model.MergeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -22,10 +21,10 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
 
     @Override
-    public List<DateScore> devsMrsADay(int projectId, String devUserName) {
+    public List<CommitDateScore> devsMrsADay(int projectId, String devUserName) {
         //https://stackoverflow.com/questions/62340986/aggregation-with-multiple-criteria
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
-        final Criteria projectMatchCriteria = Criteria.where("project_id").is(projectId);
+        final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
 
         Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria);
 
@@ -38,8 +37,8 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
                         .addToSet("mergedDate").as("date")
         );
 
-        AggregationResults<DateScore> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, DateScore.class);
-        List<DateScore> result = groupResults.getMappedResults();
+        AggregationResults<CommitDateScore> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, CommitDateScore.class);
+        List<CommitDateScore> result = groupResults.getMappedResults();
         return result;
     }
 

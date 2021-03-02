@@ -8,7 +8,7 @@ import java.util.List;
  *  This is a simple class that stores two attributes: a date, the commit score on that date, and
  *  the name of the user this is for.
  */
-public class DateScore {
+public class CommitDateScore {
     private LocalDate date;
     private double commitScore;
     private double mergeRequestScore;
@@ -19,10 +19,10 @@ public class DateScore {
     private List<String> commitIds;
     private List<Integer> mergeRequestIds;
 
-    public DateScore() {
+    public CommitDateScore() {
     }
 
-    public DateScore(LocalDate date, double commitScore, String authorName, String id) {
+    public CommitDateScore(LocalDate date, double commitScore, String authorName, String id) {
         this.date = date;
         this.commitScore = commitScore;
         this.authorName = authorName;
@@ -32,7 +32,7 @@ public class DateScore {
         commitIds.add(id);
     }
 
-    public DateScore(LocalDate date, double score, String authorName, Integer numMergeRequests, Integer mergeRequestId) {
+    public CommitDateScore(LocalDate date, double score, String authorName, Integer numMergeRequests, Integer mergeRequestId) {
         this.date = date;
         this.mergeRequestScore = score;
         this.authorName = authorName;

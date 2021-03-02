@@ -1,9 +1,8 @@
 package main.java.DatabaseClasses.Service;
 
 import main.java.ConnectToGitlab.CommitConnection;
-import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Repository.CommitRepository;
-import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.Model.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class CommitService {
         return commitRepository.findByProjectIdAndId(projectId, commitHash);
     }
 
-    public List<DateScore> getScorePerDay(int projectId, String userName){
+    public List<CommitDateScore> getScorePerDay(int projectId, String userName){
         return commitRepository.getDevDateScore(projectId, userName);
     }
 }

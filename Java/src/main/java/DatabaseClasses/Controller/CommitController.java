@@ -1,8 +1,7 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Service.CommitService;
-import main.java.DatabaseClasses.Service.ProjectService;
 import main.java.Model.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,9 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -74,7 +71,7 @@ public class CommitController {
     }
 
     @GetMapping("projects/{projectId}/Commit/scores/{userName}")
-    public List<DateScore> getScores(@PathVariable int projectId, @PathVariable String userName) {
+    public List<CommitDateScore> getScores(@PathVariable int projectId, @PathVariable String userName) {
         return commitService.getScorePerDay(projectId, userName);
     }
 

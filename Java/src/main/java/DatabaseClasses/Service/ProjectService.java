@@ -1,6 +1,6 @@
 package main.java.DatabaseClasses.Service;
 
-import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.AllScores;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.CommitConnection;
@@ -90,58 +90,58 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public List<DateScore> getUserCommitScoresPerDay(int projectId, String committerName,
-                                                     LocalDate start, LocalDate end) {
+    public List<CommitDateScore> getUserCommitScoresPerDay(int projectId, String committerName,
+                                                           LocalDate start, LocalDate end) {
         List<Commit> allUserCommits = this.getUserCommits(projectId, committerName, start, end);
-        HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
+        HashMap<String, CommitDateScore> dateMap = new HashMap<String, CommitDateScore>();
 
         for (Commit currentCommit: allUserCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
-                DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
+                CommitDateScore commitDateScore = new CommitDateScore(commitDate, currentCommit.getCommitScore(),
                         committerName, currentCommit.getId());
-                dateMap.put(commitDate.toString(), dateScore);
+                dateMap.put(commitDate.toString(), commitDateScore);
             } else {
-                DateScore dateScore = dateMap.get(commitDate.toString());
+                CommitDateScore commitDateScore = dateMap.get(commitDate.toString());
 
-                dateScore.addToCommitScore(currentCommit.getCommitScore());
-                dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit.getId());
+                commitDateScore.addToCommitScore(currentCommit.getCommitScore());
+                commitDateScore.incrementNumberOfCommitsBy1();
+                commitDateScore.addCommitIds(currentCommit.getId());
             }
         }
-        List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
-        return dateScores;
+        List<CommitDateScore> commitDateScores = new ArrayList<CommitDateScore>(dateMap.values());
+        return commitDateScores;
     }
 
     public double getTotalUserCommitScore(int projectId, String committerName,
                                        LocalDate start, LocalDate end) {
-        List<DateScore> individualDateScores = this.getUserCommitScoresPerDay(projectId, committerName,
+        List<CommitDateScore> individualCommitDateScores = this.getUserCommitScoresPerDay(projectId, committerName,
                                                                                 start, end);
         double totalCommitScore = 0;
-        for (DateScore currentDateScore : individualDateScores) {
-            totalCommitScore += currentDateScore.getCommitScore();
+        for (CommitDateScore currentCommitDateScore : individualCommitDateScores) {
+            totalCommitScore += currentCommitDateScore.getCommitScore();
         }
         return totalCommitScore;
     }
 
 
-    public List<DateScore> getScoresPerDayForMRsAndCommits(int projectId, String committerName,
-                                                           LocalDate start, LocalDate end) {
+    public List<CommitDateScore> getScoresPerDayForMRsAndCommits(int projectId, String committerName,
+                                                                 LocalDate start, LocalDate end) {
         List<MergeRequest> userMergeRequest = this.getUserMergeRequests(projectId, committerName, start, end);
-        HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
+        HashMap<String, CommitDateScore> dateMap = new HashMap<String, CommitDateScore>();
 
         for (MergeRequest mergeRequest : userMergeRequest) {
             LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
 
             if (!dateMap.containsKey(mergedDate.toString())) {
-                DateScore dateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
+                CommitDateScore commitDateScore = new CommitDateScore(mergedDate, mergeRequest.getMrScore(),
                         committerName, 1, mergeRequest.getId());
-                dateMap.put(mergedDate.toString(), dateScore);
+                dateMap.put(mergedDate.toString(), commitDateScore);
             } else {
-                DateScore dateScore = dateMap.get(mergedDate.toString());
-                dateScore.addToMergeRequestScore(mergeRequest.getMrScore());
-                dateScore.incrementNumMergeRequests();
-                dateScore.addMergeRequestIds(mergeRequest.getId());
+                CommitDateScore commitDateScore = dateMap.get(mergedDate.toString());
+                commitDateScore.addToMergeRequestScore(mergeRequest.getMrScore());
+                commitDateScore.incrementNumMergeRequests();
+                commitDateScore.addMergeRequestIds(mergeRequest.getId());
             }
         }
         System.out.println(dateMap);
@@ -149,20 +149,20 @@ public class ProjectService {
         for (Commit currentCommit: allUserCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
-                DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
+                CommitDateScore commitDateScore = new CommitDateScore(commitDate, currentCommit.getCommitScore(),
                         committerName, currentCommit.getId());
-                dateMap.put(commitDate.toString(), dateScore);
+                dateMap.put(commitDate.toString(), commitDateScore);
             } else {
-                DateScore dateScore = dateMap.get(commitDate.toString());
+                CommitDateScore commitDateScore = dateMap.get(commitDate.toString());
 
-                dateScore.addToCommitScore(currentCommit.getCommitScore());
-                dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit.getId());
+                commitDateScore.addToCommitScore(currentCommit.getCommitScore());
+                commitDateScore.incrementNumberOfCommitsBy1();
+                commitDateScore.addCommitIds(currentCommit.getId());
             }
         }
-        List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
-        System.out.println(dateScores);
-        return dateScores;
+        List<CommitDateScore> commitDateScores = new ArrayList<CommitDateScore>(dateMap.values());
+        System.out.println(commitDateScores);
+        return commitDateScores;
     }
 
 
