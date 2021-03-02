@@ -3,8 +3,12 @@ import ProjectService from "../Service/ProjectService";
 import Grid from "@material-ui/core/Grid";
 import {DateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import SummaryScoreTable from "./SummaryScoreTable";
+import SummaryChartRadios from "./RadioButtonSummaryChart";
+import CommitMRScoreChart from "./CommitMRScoreChart";
 
-function DateRangeSummary(){
+
+function DateRangeSummary({devName}){
 
     function getInitialStartDate() {
 
@@ -12,6 +16,7 @@ function DateRangeSummary(){
             return new Date (sessionStorage.getItem("startdate") + "T12:00:00")
         }
         else if(localStorage.getItem("startdate") != null){
+            sessionStorage.setItem("startdate", localStorage.getItem("startdate"))
             return new Date (localStorage.getItem("startdate") + "T12:00:00")
         }
         else {
@@ -26,6 +31,7 @@ function DateRangeSummary(){
             return new Date (sessionStorage.getItem("enddate") + "T12:00:00")
         }
         else if(localStorage.getItem("enddate") != null){
+            sessionStorage.setItem("enddate", localStorage.getItem("enddate"))
             return new Date (localStorage.getItem("enddate") + "T12:00:00")
         }
         else {
@@ -100,6 +106,20 @@ function DateRangeSummary(){
                     </MuiPickersUtilsProvider>
                 </span>
             </Grid>
+            <br>
+            </br>
+            <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
+            <SummaryScoreTable devName = {devName}
+                               startTime = {sessionStorage.getItem("startdate")}
+                               endTime = {sessionStorage.getItem("enddate")}
+                               />
+            <br>
+            </br>
+            <h4 style={{textAlign:'center'}}>View Data By</h4>
+            <SummaryChartRadios devName = {devName}/>
+            <br>
+            </br>
+
         </>
 
     )
