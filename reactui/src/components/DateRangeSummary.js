@@ -1,15 +1,18 @@
 import React,{ Component } from "react";
 import ProjectService from "../Service/ProjectService";
+import Grid from "@material-ui/core/Grid";
+import {DateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 function DateRangeSummary(){
 
     function getInitialStartDate() {
 
         if(sessionStorage.getItem("startdate") != null){
-            return new Date (sessionStorage.getItem("startdate"))
+            return new Date (sessionStorage.getItem("startdate") + "T12:00:00")
         }
         else if(localStorage.getItem("startdate") != null){
-            return new Date (localStorage.getItem("startdate"))
+            return new Date (localStorage.getItem("startdate") + "T12:00:00")
         }
         else {
             sessionStorage.setItem("startdate", "2021-01-11")
@@ -20,10 +23,10 @@ function DateRangeSummary(){
     function getInitialEndDate() {
 
         if(sessionStorage.getItem("enddate") != null){
-            return new Date (sessionStorage.getItem("startdate"))
+            return new Date (sessionStorage.getItem("enddate") + "T12:00:00")
         }
         else if(localStorage.getItem("enddate") != null){
-            return new Date (localStorage.getItem("startdate"))
+            return new Date (localStorage.getItem("enddate") + "T12:00:00")
         }
         else {
             sessionStorage.setItem("enddate", "2021-02-22")
@@ -67,6 +70,36 @@ function DateRangeSummary(){
 
     return(
         <>
+            <h2 style={{marginTop:'40px',marginLeft:'39%',paddingBottom:'10px'}}>Snapshot Date Range</h2>
+            <Grid container justify="center">
+                <span className="startDate">
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DateTimePicker
+                            variant='inline'
+                            format='MM/dd/yyyy h:mm a'
+                            margin='normal'
+                            id='startDate'
+                            label='Start Date'
+                            value={selectedStartDate}
+                            onChange={handleStartDateChange}
+                        />
+                    </MuiPickersUtilsProvider>
+                </span>
+
+                <span className="endDate">
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DateTimePicker
+                            variant='inline'
+                            format='MM/dd/yyyy h:mm a'
+                            margin='normal'
+                            id='endDate'
+                            label='End Date'
+                            value={selectedEndDate}
+                            onChange={handleEndDateChange}
+                        />
+                    </MuiPickersUtilsProvider>
+                </span>
+            </Grid>
         </>
 
     )
