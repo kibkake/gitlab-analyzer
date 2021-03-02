@@ -63,7 +63,7 @@ class Developers2Button extends Component{
         return(
 
             <ul>
-                <header className="header">Any data associated with the names typed in will also be pulled(after the back end is updated)</header>
+                <header></header>
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">
@@ -81,7 +81,7 @@ class Developers2Button extends Component{
                         </a>
                         <input className="TextBox"
                                type="text"
-                               placeholder= {item + '\'s name'}
+                               placeholder= {item + '\'s author name'}
                                onChange={this.handleChange(item)}  />
                     </li>;
                 })}
