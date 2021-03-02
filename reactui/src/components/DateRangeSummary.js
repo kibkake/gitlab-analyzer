@@ -48,6 +48,18 @@ function DateRangeSummary({devName}){
         getInitialEndDate()
     )
 
+    function changeDateFormat(time) {
+
+        var startDateArr = (time.toDateString()).split(" ");
+
+        var monthLetter = startDateArr[1];
+        var month = ProjectService.convertMonthToNumber(monthLetter);
+        var day = startDateArr[2];
+        var year = startDateArr[3];
+        var completeDate = year + "-" + month + "-" + day;
+        return completeDate;
+    }
+
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)
         const data = { starttime: selectedStartDate };
@@ -110,13 +122,15 @@ function DateRangeSummary({devName}){
             </br>
             <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
             <SummaryScoreTable devName = {devName}
-                               startTime = {sessionStorage.getItem("startdate")}
-                               endTime = {sessionStorage.getItem("enddate")}
+                               startTime = {changeDateFormat(selectedStartDate)}
+                               endTime = {changeDateFormat(selectedEndDate)}
                                />
             <br>
             </br>
             <h4 style={{textAlign:'center'}}>View Data By</h4>
-            <SummaryChartRadios devName = {devName}/>
+            <SummaryChartRadios devName = {devName}
+                                startTime = {changeDateFormat(selectedStartDate)}
+                                endTime = {changeDateFormat(selectedEndDate)}/>
             <br>
             </br>
 
