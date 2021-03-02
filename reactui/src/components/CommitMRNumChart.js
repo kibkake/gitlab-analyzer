@@ -26,7 +26,9 @@ export default class CommitMRNumChart extends PureComponent {
         var id = pathArray[2];
 
         //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + "/2021-01-01/2021-02-28")
+        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
+            sessionStorage.getItem("startdate") + '/' +
+            sessionStorage.getItem("enddate"))
             .then(response => {
                 const nums = response.data
                 this.setState({frequency : nums})
@@ -56,8 +58,8 @@ export default class CommitMRNumChart extends PureComponent {
             };
         });
         console.log(output);
-        const from = Number(new Date('2021-01-15'));
-        const to = Number(new Date('2021-02-28'));
+        const from = Number(new Date(sessionStorage.getItem("startdate")));
+        const to = Number(new Date(sessionStorage.getItem("enddate")));
 
         return (
             <div>
@@ -71,7 +73,7 @@ export default class CommitMRNumChart extends PureComponent {
                                type ="number"
                                name = 'date'
                                domain={[
-                                   d3.timeDay.floor(from).getTime(),
+                                   d3.timeDay.ceil(from).getTime(),
                                    d3.timeDay.ceil(to).getTime()
                                ]}
                                tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}

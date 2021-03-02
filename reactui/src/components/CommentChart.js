@@ -25,8 +25,9 @@ export default class CommentChart extends Component {
         var id = pathArray[2];
 
         //response ref: http://localhost:8090/api/v1/projects/6/allUserNotes/arahilin/2021-01-01/2021-02-22
-        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ username +"/" + sessionStorage.getItem("startdate") + "/"
-        + sessionStorage.getItem("enddate") )
+        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ username + '/' +
+            sessionStorage.getItem("startdate") + '/' +
+            sessionStorage.getItem("enddate"))
             .then(response => {
                 const commentInfo = response.data
                 this.setState({commentScore: commentInfo})//{date: commentInfo.created_at, wordCount: commentInfo.wordCount }})
@@ -51,9 +52,9 @@ export default class CommentChart extends Component {
             };
         });
         console.log(output);
-        const from = Number(new Date (sessionStorage.getItem("startdate") + "T12:00:00"));
-        const to = Number(new Date(sessionStorage.getItem("enddate") + "T12:00:00"));
-
+        const from = Number(new Date (sessionStorage.getItem("startdate")));
+        const to = Number(new Date(sessionStorage.getItem("enddate")));
+//floor
         return (
             <div>
                 <ResponsiveContainer width = '100%' height = {500} >
@@ -66,8 +67,8 @@ export default class CommentChart extends Component {
                                type = "number"
                                name = 'date'
                                domain={[
-                                   d3.timeDay.floor(from).getTime(),
-                                   d3.timeDay.floor(to).getTime()
+                                   d3.timeDay.ceil(from).getTime(),
+                                   d3.timeDay.ceil(to).getTime()
                                ]}
                                tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
                         />
