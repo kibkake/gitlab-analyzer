@@ -63,7 +63,7 @@ class Developers2Button extends Component{
         return(
 
             <ul>
-                <header className="header">Any data associated with the developer names will also be pulled(after the back end is updated)</header>
+                <header className="header">Any data associated with the names typed in will also be pulled(after the back end is updated)</header>
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">

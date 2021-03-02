@@ -31,7 +31,7 @@ export default class CommitMRScoreChart extends PureComponent {
             }
         }
 
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + name + '/' + username + "/2021-01-01/2021-02-23")
+        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + '/' + username + "/2021-01-01/2021-02-23")
             .then(response => {
                 const score = response.data
                 this.setState({codeScore : score})
