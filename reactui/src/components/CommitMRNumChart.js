@@ -6,12 +6,12 @@ import moment from 'moment'
 import ProjectService from "../Service/ProjectService";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
-export default class StackedBarChart extends PureComponent {
+export default class CommitMRNumChart extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
-            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0}],
+            frequency:[{date: null, numCommits: 0, numMergeRequest: 0}],
             parentdata: this.props.devName
         }
     }
@@ -25,14 +25,16 @@ export default class StackedBarChart extends PureComponent {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
 
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + "/2021-01-01/2021-02-23")
+        //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
+        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + "/2021-01-01/2021-02-28")
             .then(response => {
-                const score = response.data
-                this.setState({codeScore : score})
-                console.log(this.state.codeScore)
+                const nums = response.data
+                this.setState({frequency : nums})
+                console.log(this.state.frequency)
             }).catch((error) => {
             console.error(error);
         });
+
     }
 
     componentDidUpdate(prevProps){
@@ -41,22 +43,21 @@ export default class StackedBarChart extends PureComponent {
             this.getDataFromBackend(this.props.devName)
         }
     }
-
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
 //            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
 //        });
 
     render() {
-        var output = this.state.codeScore.map(function(item) {
+        var output = this.state.frequency.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
-                commitScore: item.commitScore,
-                mergeScore: item.mergeRequestScore
+                commitNum: item.numCommits,
+                mergeNum: item.numMergeRequests
             };
         });
         console.log(output);
         const from = Number(new Date('2021-01-15'));
-        const to = Number(new Date('2021-02-23'));
+        const to = Number(new Date('2021-02-28'));
 
         return (
             <div>
@@ -78,8 +79,8 @@ export default class StackedBarChart extends PureComponent {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="commitScore" stackId="a" fill="orange" />
-                        <Bar dataKey="mergeScore" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="commitNum" stackId="a" fill="orange" />
+                        <Bar dataKey="mergeNum" stackId="a" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
