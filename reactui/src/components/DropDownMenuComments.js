@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
-import CustomizedRadios from "./RadioButton";
+import CustomizedRadios from "./RadioButtonComment";
 import CommentTable from "./CommentTable";
 import './DropDownMenu.css';
 

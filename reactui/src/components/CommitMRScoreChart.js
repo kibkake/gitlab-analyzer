@@ -6,7 +6,7 @@ import moment from 'moment'
 import ProjectService from "../Service/ProjectService";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
-export default class StackedBarChart extends PureComponent {
+export default class CommitMRScoreChart extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -57,12 +57,13 @@ export default class StackedBarChart extends PureComponent {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
                 commitScore: item.commitScore,
-                mergeScore: item.mergeRequestScore
+                mergeScore: item.mergeRequestScore,
             };
         });
         console.log(output);
         const from = Number(new Date('2021-01-15'));
-        const to = Number(new Date('2021-02-23'));
+        const to = Number(new Date('2021-02-28'));
+
 
         return (
             <div>
