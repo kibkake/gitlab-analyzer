@@ -2,11 +2,13 @@ package main.java.DatabaseClasses.Repository;
 
 import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.Model.Commit;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
@@ -21,13 +23,15 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 //        https://gist.github.com/normoes/53c46a3ef2bbe3a1bff817573362f6ee
 //     Follows desing patter needed for custom implementation in spring
     @Override
-    public List<CommitDateScore> getDevDateScore(int projectId, String devUserName) {
+    public List<CommitDateScore> getDevDateScore(int projectId, String devUserName,
+                                                 LocalDate startDate, LocalDate endDate) {
 
         //https://stackoverflow.com/questions/62340986/aggregation-with-multiple-criteria
         final Criteria nameMatchCriteria = Criteria.where("authorName").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
+        final Criteria dateMatchCriteria = Criteria.where("startDate").gte(startDate).lte(endDate);
 
-        Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria);
+        Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);
 
 
         Aggregation aggregation = Aggregation.newAggregation(
@@ -39,7 +43,8 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
                         .addToSet("date").as("date")
         );
 
-        AggregationResults<CommitDateScore> groupResults = mongoTemplate.aggregate(aggregation, Commit.class, CommitDateScore.class);
+        AggregationResults<CommitDateScore> groupResults = mongoTemplate.aggregate(aggregation, Commit.class,
+                CommitDateScore.class);
         List<CommitDateScore> result = groupResults.getMappedResults();
         return result;
     }

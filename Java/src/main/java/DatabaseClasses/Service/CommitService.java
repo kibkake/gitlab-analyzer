@@ -7,6 +7,7 @@ import main.java.Model.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class CommitService {
         return commitRepository.findByProjectIdAndId(projectId, commitHash);
     }
 
-    public List<CommitDateScore> getScorePerDay(int projectId, String userName){
-        return commitRepository.getDevDateScore(projectId, userName);
+    public List<CommitDateScore> getScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate){
+        return commitRepository.getDevDateScore(projectId, userName, LocalDate startDate, Local endDate);
     }
 }
