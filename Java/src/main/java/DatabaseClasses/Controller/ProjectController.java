@@ -1,119 +1,110 @@
-//package main.java.DatabaseClasses.Controller;
-//
-//import main.java.DatabaseClasses.Model.DateScore;
-//import main.java.DatabaseClasses.Model.AllScores;
-//import main.java.Model.*;
-//import main.java.ConnectToGitlab.ProjectConnection;
-//import main.java.DatabaseClasses.Service.ProjectService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.text.DateFormat;
-//import java.text.ParseException;
-//import java.text.SimpleDateFormat;
-//import java.time.LocalDate;
-//import java.util.*;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-///**
-// * This class manages API mapping for functions to be called from frontend.
-// * (All functions used for mapping should be placed here, except user authentication collection data.)
-// */
-//@CrossOrigin
-//@RestController
-//@RequestMapping("api/v1/")
-//public class ProjectController {
-//
-//    private final ProjectService projectService;
-//    private String startDate = "2021-01-11T20:59:00.000Z";
-//    private String endDate = "2021-02-22T20:59:00.000Z";
-//
-//
-//    @Autowired
-//    public ProjectController(ProjectService projectService) {
-//        this.projectService = projectService;
-//    }
-//
-//    @GetMapping("projects")
-//    public List<Project> getAllProjects() {
-//        if(projectService.getAllProjects().isEmpty()) {
-//            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
-//            projectService.saveNewProjects(projects);
-//            return projects;
-//        } else {
-//            return projectService.getAllProjects();
-//        }
-//    }
-//
-//
-//    @GetMapping("projects/{projectId}")
-//    public Project getProject(@PathVariable("projectId") int projectId) {
-//        Project project = projectService.getProject(projectId);
-//        if (!project.isInfoSet()) {
-//            projectService.setProjectInfo(projectId);
-//            project = projectService.getProject(projectId); // get project now that it has been modified
-//        }
-//        return project;
-//    }
-//
-//    @GetMapping("projects/{projectId}/developers")
-//    public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
-//        Project project = projectService.getProject(projectId);
-//        if (!project.isInfoSet()) {
-//            projectService.setProjectInfo(projectId);
-//        }
-//        return projectService.getProjectDevelopers(projectId);
-//    }
-//
-//    @GetMapping("projects/{projectId}/issues")
-//    public List<Issue> getProjectIssues(@PathVariable("projectId") int projectId) {
-//        return projectService.getProjectIssues(projectId);
-//    }
-//
-//    // can only be used on very small projects
-//    @GetMapping("setProjectInfo/{projectId}")
-//    public void setProjectInfo(@PathVariable int projectId) {
-//        projectService.setProjectInfo(projectId);
-//    }
-//
-//    @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
-//    public List<Issue> getUserIssues(@PathVariable("projectId") int projectId, @PathVariable String end,
-//                                     @PathVariable String start, @PathVariable String userName) {
-//        LocalDate StartLocalTime = LocalDate.parse(start);
-//        LocalDate endLocalTime = LocalDate.parse(end);
-//        return projectService.getUserIssues(projectId, userName, StartLocalTime, endLocalTime);
-//    }
-//
-//    @GetMapping("projects/{projectId}/description")
-//    public String getProjectDescription(@PathVariable("projectId") int projectId) {
-//        return projectService.getProjectDescription(projectId);
-//    }
-//
-//    @GetMapping("projects/{projectId}/mergeRequests")
-//    public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
-//        return projectService.getProjectMRs(projectId);
-//    }
-//
-//    @GetMapping("projects/{projectId}/mergeRequests/{userName}/{start}/{end}")
-//    public List<MergeRequest> getUsersMergeRequests(@PathVariable("projectId") int projectId,
-//                                                    @PathVariable("userName") String userName,
-//                                                    @PathVariable("start") String start,
-//                                                    @PathVariable("end") String end) {
-//        LocalDate StartLocalTime = LocalDate.parse(start);
-//        LocalDate endLocalTime = LocalDate.parse(end);
-//        return projectService.getUserMergeRequests(projectId, userName, StartLocalTime, endLocalTime);
-//    }
-//
-//    @GetMapping("projects/{projectId}/MRsAndCommitScoresPerDay/{committerName}/{start}/{end}")
-//    public List<DateScore> getUserMRsAndCommitScorePerDay(@PathVariable("projectId") int projectId,
-//                                                                        @PathVariable("committerName") String committerName,
-//                                                                        @PathVariable("start") String start,
-//                                                                        @PathVariable("end")String end) {
-//        LocalDate StartLocalTime = LocalDate.parse(start);
-//        LocalDate endLocalTime = LocalDate.parse(end);
-//        return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime);
-//    }
+package main.java.DatabaseClasses.Controller;
+
+import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Model.AllScores;
+import main.java.Model.*;
+import main.java.ConnectToGitlab.ProjectConnection;
+import main.java.DatabaseClasses.Service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This class manages API mapping for functions to be called from frontend.
+ * (All functions used for mapping should be placed here, except user authentication collection data.)
+ */
+@CrossOrigin
+@RestController
+@RequestMapping("api/v1/")
+public class ProjectController {
+
+    private final ProjectService projectService;
+    private String startDate = "2021-01-11T20:59:00.000Z";
+    private String endDate = "2021-02-22T20:59:00.000Z";
+
+
+    @Autowired
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
+    }
+
+    @GetMapping("projects")
+    public List<Project> getAllProjects() {
+        if(projectService.getAllProjects().isEmpty()) {
+            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
+            projectService.saveNewProjects(projects);
+            return projects;
+        } else {
+            return projectService.getAllProjects();
+        }
+    }
+
+
+    @GetMapping("projects/{projectId}")
+    public Project getProject(@PathVariable("projectId") int projectId) {
+        Project project = projectService.getProject(projectId);
+        if (!project.isInfoSet()) {
+            projectService.setProjectInfo(projectId);
+            project = projectService.getProject(projectId); // get project now that it has been modified
+        }
+        return project;
+    }
+
+    @GetMapping("projects/{projectId}/developers")
+    public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
+        Project project = projectService.getProject(projectId);
+        if (!project.isInfoSet()) {
+            projectService.setProjectInfo(projectId);
+        }
+        return projectService.getProjectDevelopers(projectId);
+    }
+
+    @GetMapping("projects/{projectId}/issues")
+    public List<Issue> getProjectIssues(@PathVariable("projectId") int projectId) {
+        return projectService.getProjectIssues(projectId);
+    }
+
+    // can only be used on very small projects
+    @GetMapping("setProjectInfo/{projectId}")
+    public void setProjectInfo(@PathVariable int projectId) {
+        projectService.setProjectInfo(projectId);
+    }
+
+    @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
+    public List<Issue> getUserIssues(@PathVariable("projectId") int projectId, @PathVariable String end,
+                                     @PathVariable String start, @PathVariable String userName) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getUserIssues(projectId, userName, StartLocalTime, endLocalTime);
+    }
+
+    @GetMapping("projects/{projectId}/description")
+    public String getProjectDescription(@PathVariable("projectId") int projectId) {
+        return projectService.getProjectDescription(projectId);
+    }
+
+    @GetMapping("projects/{projectId}/mergeRequests")
+    public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
+        return projectService.getProjectMRs(projectId);
+    }
+
+
+    @GetMapping("projects/{projectId}/MRsAndCommitScoresPerDay/{committerName}/{start}/{end}")
+    public List<DateScore> getUserMRsAndCommitScorePerDay(@PathVariable("projectId") int projectId,
+                                                                        @PathVariable("committerName") String committerName,
+                                                                        @PathVariable("start") String start,
+                                                                        @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime);
+    }
 //
 //    @GetMapping("projects/{projectId}/Commits/{committerName}/{start}/{end}")
 //    public List<Commit> getAllUserCommits(@PathVariable("projectId") int projectId,
@@ -271,6 +262,6 @@
 //        date.add(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
 //        return date;
 //    }
-//
-//}
-//
+
+}
+

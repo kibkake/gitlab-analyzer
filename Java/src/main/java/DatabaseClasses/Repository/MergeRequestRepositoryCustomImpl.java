@@ -21,12 +21,14 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
 
     @Override
-    public List<CommitDateScore> devsMrsADay(int projectId, String devUserName) {
+    public List<CommitDateScore> devsMrsADay(int projectId, String devUserName, ) {
         //https://stackoverflow.com/questions/62340986/aggregation-with-multiple-criteria
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
+        final Criteria dateMatchCriteria = Criteria.where("startDate").gte(startDate).lte(endDate);
 
-        Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria);
+
+        Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(criterias),

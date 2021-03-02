@@ -2,6 +2,7 @@ package main.java.DatabaseClasses.Service;
 
 import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.AllScores;
+import main.java.DatabaseClasses.Model.DateScore;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
@@ -125,23 +126,23 @@ public class ProjectService {
     }
 
 
-    public List<CommitDateScore> getScoresPerDayForMRsAndCommits(int projectId, String committerName,
-                                                                 LocalDate start, LocalDate end) {
+    public List<DateScore> getScoresPerDayForMRsAndCommits(int projectId, String committerName,
+                                                           LocalDate start, LocalDate end) {
         List<MergeRequest> userMergeRequest = this.getUserMergeRequests(projectId, committerName, start, end);
-        HashMap<String, CommitDateScore> dateMap = new HashMap<String, CommitDateScore>();
+        HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
 
         for (MergeRequest mergeRequest : userMergeRequest) {
             LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
 
             if (!dateMap.containsKey(mergedDate.toString())) {
-                CommitDateScore commitDateScore = new CommitDateScore(mergedDate, mergeRequest.getMrScore(),
+                DateScore DateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
                         committerName, 1, mergeRequest.getId());
-                dateMap.put(mergedDate.toString(), commitDateScore);
+                dateMap.put(mergedDate.toString(), DateScore);
             } else {
-                CommitDateScore commitDateScore = dateMap.get(mergedDate.toString());
-                commitDateScore.addToMergeRequestScore(mergeRequest.getMrScore());
-                commitDateScore.incrementNumMergeRequests();
-                commitDateScore.addMergeRequestIds(mergeRequest.getId());
+                DateScore DateScore = dateMap.get(mergedDate.toString());
+                DateScore.addToMergeRequestScore(mergeRequest.getMrScore());
+                DateScore.incrementNumMergeRequests();
+                DateScore.addMergeRequestIds(mergeRequest.getId());
             }
         }
         System.out.println(dateMap);
@@ -149,20 +150,19 @@ public class ProjectService {
         for (Commit currentCommit: allUserCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
-                CommitDateScore commitDateScore = new CommitDateScore(commitDate, currentCommit.getCommitScore(),
+                DateScore DateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
                         committerName, currentCommit.getId());
-                dateMap.put(commitDate.toString(), commitDateScore);
+                dateMap.put(commitDate.toString(), DateScore);
             } else {
-                CommitDateScore commitDateScore = dateMap.get(commitDate.toString());
+                DateScore DateScore = dateMap.get(commitDate.toString());
 
-                commitDateScore.addToCommitScore(currentCommit.getCommitScore());
-                commitDateScore.incrementNumberOfCommitsBy1();
-                commitDateScore.addCommitIds(currentCommit.getId());
+                DateScore.addToCommitScore(currentCommit.getCommitScore());
+                DateScore.incrementNumberOfCommitsBy1();
+                DateScore.addCommitIds(currentCommit.getId());
             }
         }
-        List<CommitDateScore> commitDateScores = new ArrayList<CommitDateScore>(dateMap.values());
-        System.out.println(commitDateScores);
-        return commitDateScores;
+        List<DateScore> DateScores = new ArrayList<DateScore>(dateMap.values());
+        return DateScores;
     }
 
 
@@ -177,7 +177,7 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
                 if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                        (currentCommit.getCommitter_name().equals(committerName)) || currentCommit.getAuthorName().equals(committerName)) {
+                        currentCommit.getAuthorName().equals(committerName)) {
                     userCommits.add(currentCommit);
                     commitIds.add(currentCommit.getId());
                 }
@@ -199,7 +199,7 @@ public class ProjectService {
                 LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
                 if (commitDate.compareTo(time) == 0) {
                     if (!StringFunctions.inList(commitIds, currentCommit.getId()) &&
-                            currentCommit.getCommitter_name().equals(committerName)) {
+                            currentCommit.getAuthorName().equals(committerName)) {
                         commits.add(currentCommit);
                         commitIds.add(currentCommit.getId());
                     }
