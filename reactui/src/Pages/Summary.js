@@ -10,8 +10,29 @@ class Summary extends Component {
         };
     }
 
+    async getListOfDevs(){
+        console.log('yeees')
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+        let url2 = '/getprojectmembers/' + repNum
+        const result = await fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        var resp;
+        resp = result.json();
+        var listOfDevelopers = await resp;
+        await  sessionStorage.setItem("Developers", JSON.stringify(listOfDevelopers));
+    }
+
     async componentDidMount() {
 
+        if(sessionStorage.getItem("Developers") == null) {
+            this.getListOfDevs()
+        }
         this.setState({developers: JSON.parse(sessionStorage.getItem("Developers"))})
     }
 
