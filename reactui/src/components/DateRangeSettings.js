@@ -11,12 +11,18 @@ function DateRangeSettings(){
         if(sessionStorage.getItem("startdate") == null){
             sessionStorage.setItem("startdate", "2021-01-11")
         }
+        if(localStorage.getItem("startdate") == null){
+            localStorage.setItem("startdate", "2021-01-11")
+        }
         return new Date(sessionStorage.getItem("startdate") + "T12:00:00")
     }
 
     function getEndDate(){
         if(sessionStorage.getItem("enddate") == null){
             sessionStorage.setItem("enddate", "2021-02-22")
+        }
+        if(localStorage.getItem("enddate") == null){
+            localStorage.setItem("enddate", "2021-02-22")
         }
         return new Date(sessionStorage.getItem("enddate") + "T12:00:00")
     }
