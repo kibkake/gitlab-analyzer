@@ -11,11 +11,16 @@ export default class HomeInfo extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const user = sessionStorage.getItem('user');
-        ProfileService.getUserInfo(user).then((response) => {
+        await ProfileService.getUserInfo(user).then((response) => {
             this.setState(response.data);
             sessionStorage.setItem('token',response.data.token);
+        }, (error) => {
+            console.log(error);
+        });
+        ProfileService.setUserToken(sessionStorage.getItem('token')).then((response) => {
+            // sent post request
         }, (error) => {
             console.log(error);
         });
