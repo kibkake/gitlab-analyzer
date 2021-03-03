@@ -13,23 +13,26 @@ class SummaryScoreTable extends Component{
          super(props);
          this.state = {
              scoreSummary:[],
-             parentdata: this.props.devName
+             parentdata: this.props.devName,
+             startTime: this.props.startTime,
+             endTime: this.props.endTime
          }
      }
 
     componentDidMount() {
         const {parentdata} = this.state;
-        this.getDataFromBackend(parentdata)
+        this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime)
     }
 
-    getDataFromBackend (username) {
+    getDataFromBackend (username, startTm, endTm) {
 
         const pathArray = window.location.pathname.split('/');
         const id = pathArray[2];
 
         //request ref: http://localhost:8090/api/v1/projects/6/allTotalScores/user2/2021-01-01/2021-02-23
-        axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/" + sessionStorage.getItem("startdate")
-            + "/" + sessionStorage.getItem("enddate"))
+        axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/" +
+            startTm
+            + "/" + endTm)
             .then(response => {
                 const scores = response.data
                 this.setState({scoreSummary: scores})
@@ -43,7 +46,15 @@ class SummaryScoreTable extends Component{
     componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
             this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName)
+            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
+        if(this.props.startTime !== prevProps.startTime){
+            this.setState({startTime: this.props.startTime});
+            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
+        if(this.props.endTime !== prevProps.endTime){
+            this.setState({endTime: this.props.endTime});
+            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime)
         }
     }
 
