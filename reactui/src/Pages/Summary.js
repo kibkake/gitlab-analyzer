@@ -38,7 +38,6 @@ class Summary extends Component {
     }
 
     render() {
-
         var strDevelopers = JSON.stringify(this.state.developers);
         var developersArray = JSON.parse(strDevelopers);
 

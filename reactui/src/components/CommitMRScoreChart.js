@@ -26,6 +26,12 @@ export default class CommitMRScoreChart extends PureComponent {
     async getDataFromBackend (username, startTm, endTm) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
+        var name = username;
+        for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers')).length; i++){
+            if(JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers'))[i])){
+                name = JSON.parse(sessionStorage.getItem('DeveloperNames'))[i]//use name to retrieve data
+            }
+        }
 
         await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
