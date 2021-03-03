@@ -44,8 +44,6 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                 </div>
             </div>
             <div>
-                <br>
-            </br>
                 <DateRangeSummary devName = {selectedValue}/>
 
             </div>
