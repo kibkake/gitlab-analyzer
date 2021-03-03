@@ -11,7 +11,6 @@ class Summary extends Component {
     }
 
     async getListOfDevs(){
-        console.log('yeees')
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         let url2 = '/getprojectmembers/' + repNum
@@ -31,9 +30,9 @@ class Summary extends Component {
     async componentDidMount() {
 
         if(sessionStorage.getItem("Developers") == null) {
-            this.getListOfDevs()
+           await this.getListOfDevs()
         }
-        this.setState({developers: JSON.parse(sessionStorage.getItem("Developers"))})
+        await this.setState({developers: JSON.parse(sessionStorage.getItem("Developers"))})
     }
 
     render() {
