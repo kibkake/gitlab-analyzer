@@ -2,11 +2,9 @@ import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
 import SummaryScoreTable from "./SummaryScoreTable";
-import StackedBarChart from "./StackedBarChart";
-import CommentChart from "./CommentChart";
 import Navbar_Developers from "./Navbar_Developers";
 import './DropDownMenu.css';
-
+import SummaryChartRadios from "./RadioButtonSummaryChart";
 
 
 function DropDownMenuSummary ({listOfDevelopers}) {
@@ -44,20 +42,18 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             <div>
                 <br>
             </br>
+                <br>
+                </br>
+
                 <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
                 <SummaryScoreTable devName = {sessionStorage.getItem("CurrentDeveloper")}/>
                 <br>
                 </br>
+                <h4 style={{textAlign:'center'}}>View Data By</h4>
+                <SummaryChartRadios devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+                <br>
+                </br>
 
-                <h4 style={{textAlign:'center'}}>Score of Commits/Merge Requests</h4>
-                <h4 style={{textAlign:'center'}}>Add switch to num commits/MR graph</h4>
-                <StackedBarChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-                <br>
-                </br>
-                <br>
-                </br>
-                <h4 style={{textAlign: 'center'}}>Comment Score</h4>
-                <CommentChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             </div>
 
         </div>

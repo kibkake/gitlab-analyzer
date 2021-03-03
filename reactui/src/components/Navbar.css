@@ -39,6 +39,15 @@ div {
 .footer {
     padding: inherit;
 }
+
+.TextBox {
+    margin-left: 400px;
+    font-size: 30px;
+    width: 50%;
+    height: 40px;
+    flex: 1;
+
+}
 .navMenu{
     display: grid;
     grid-template-columns: repeat(5,auto);
@@ -145,4 +154,10 @@ span{
 
 .navbar-inverse .navbar-nav > li > a:hover {
     background-color: gray;
+}
+
+.header {
+    margin-top: 10px;
+    margin-left: 400px;
+    font-size: 20px;
 }
