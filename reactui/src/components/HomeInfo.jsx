@@ -13,6 +13,7 @@ export default class HomeInfo extends Component {
 
     async componentDidMount() {
         const user = sessionStorage.getItem('user');
+        // must grab token before we can dynamically set the token
         await ProfileService.getUserInfo(user).then((response) => {
             this.setState(response.data);
             sessionStorage.setItem('token',response.data.token);
