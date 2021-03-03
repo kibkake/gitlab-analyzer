@@ -93,7 +93,7 @@ export class Navbar_Developers extends Component{
                     {this.state.parentdata.map((item,index)=>{
                         return(
                             <li key={index} className={item.cName}>
-                                <Link to={{pathname: item.url + '/'}}>
+                                <Link to={{pathname: item.url}}>
                                     <span>{item.title}</span>
                                 </Link>
                             </li>
