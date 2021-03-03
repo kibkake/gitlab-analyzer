@@ -39,6 +39,7 @@ public class Main {
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
         SpringApplication.run(Main.class,args);
+        System.out.println("token set: "+user.getToken());
     }
 
     /**
