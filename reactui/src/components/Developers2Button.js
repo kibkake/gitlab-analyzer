@@ -8,15 +8,13 @@ class Developers2Button extends Component{
         super(props);
         this.state={
             data: [],
-            developerNames: [],
-            submitted: false
+            developerNames: []
         };
     }
 
     async componentDidMount() {
        await this.getDataFromBackend();
     }
-
 
     async getDataFromBackend(){
         var str = window.location.pathname;
@@ -34,13 +32,13 @@ class Developers2Button extends Component{
         await sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.data))
     }
 
-    storeNames() {
+    async storeNames() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(this.state.developerNames))
+        await sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(this.state.developerNames))
     }
 
-    handleChange = (item) => (event) => {
+    handleChange = (item) => (event)=> {
         event.preventDefault();
         var tempDevNames = this.state.developerNames;
         var tempDevUsernames = JSON.parse(JSON.stringify(this.state.data));

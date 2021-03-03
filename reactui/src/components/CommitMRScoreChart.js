@@ -27,9 +27,11 @@ export default class CommitMRScoreChart extends PureComponent {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
         var name = username;
-        for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers')).length; i++){
-            if(JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers'))[i])){
-                name = JSON.parse(sessionStorage.getItem('DeveloperNames'))[i]//use name to retrieve data
+        if(sessionStorage.getItem('DeveloperNames' + id) != null && sessionStorage.getItem('Developers' + id) != null) {
+            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
+                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
+                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
+                }
             }
         }
 
