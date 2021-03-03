@@ -29,9 +29,11 @@ class SummaryScoreTable extends Component{
         const pathArray = window.location.pathname.split('/');
         const id = pathArray[2];
         var name = username;
-        for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers')).length; i++){
-            if(JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers'))[i])){
-                name = JSON.parse(sessionStorage.getItem('DeveloperNames'))[i]//use name to retrieve data
+        if(sessionStorage.getItem('DeveloperNames') != null) {
+            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers')).length; i++) {
+                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers'))[i])) {
+                    name = JSON.parse(sessionStorage.getItem('DeveloperNames'))[i]//use name to retrieve data
+                }
             }
         }
 
