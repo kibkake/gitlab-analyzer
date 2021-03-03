@@ -12,22 +12,24 @@ export default class CommitMRScoreChart extends PureComponent {
         super(props);
         this.state = {
             codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0}],
-            parentdata: this.props.devName
+            parentdata: this.props.devName,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         const {parentdata} = this.state;
-        this.getDataFromBackend(parentdata)
+        await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 
-    getDataFromBackend (username) {
+    async getDataFromBackend (username, startTm, endTm) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
 
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
-           sessionStorage.getItem("startdate") + '/' +
-            sessionStorage.getItem("enddate"))
+        await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
+            startTm + '/' +
+            endTm)
             .then(response => {
                 const score = response.data
                 this.setState({codeScore : score})
@@ -37,10 +39,18 @@ export default class CommitMRScoreChart extends PureComponent {
         });
     }
 
-    componentDidUpdate(prevProps){
+    async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
-            this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName)
+            await this.setState({parentdata: this.props.devName});
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
+        if(this.props.startTime !== prevProps.startTime){
+            await this.setState({startTime: this.props.startTime});
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
+        if(this.props.endTime !== prevProps.endTime){
+            await this.setState({endTime: this.props.endTime});
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime)
         }
     }
 
@@ -57,11 +67,10 @@ export default class CommitMRScoreChart extends PureComponent {
             };
         });
         console.log(output);
-        console.log("startdate" , sessionStorage.getItem("startdate"));
-        console.log("enddate" , sessionStorage.getItem("enddate"));
 
-        const from = Number(new Date( sessionStorage.getItem("startdate")));
-        const to = Number(new Date( sessionStorage.getItem("enddate")));
+
+        const from = Number(new Date(this.props.startTime));
+        const to = Number(new Date(this.props.endTime));
 //ceil
         return (
             <div>
