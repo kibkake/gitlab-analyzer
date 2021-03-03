@@ -24,15 +24,17 @@ class Summary extends Component {
         var resp;
         resp = result.json();
         var listOfDevelopers = await resp;
-        await  sessionStorage.setItem("Developers", JSON.stringify(listOfDevelopers));
+        await  sessionStorage.setItem("Developers" + repNum, JSON.stringify(listOfDevelopers));
     }
 
     async componentDidMount() {
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
 
-        if(sessionStorage.getItem("Developers") == null) {
+        if(sessionStorage.getItem("Developers" + repNum) == null) {
            await this.getListOfDevs()
         }
-        await this.setState({developers: JSON.parse(sessionStorage.getItem("Developers"))})
+        await this.setState({developers: JSON.parse(sessionStorage.getItem("Developers" + repNum))})
     }
 
     render() {
