@@ -27,7 +27,6 @@ const useRowStyles = makeStyles({
 
 function createData(id, date, score, title, fullDiff) {
     return {
-        id,
         date,
         score,
         title,
@@ -53,12 +52,11 @@ function Row(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.merged_at}
                 </TableCell>
-                <TableCell align="right">{row.date}</TableCell>
                 <TableCell align="right">{row.title}</TableCell>
-                <TableCell align="right">{row.score}</TableCell>
-                <TableCell align="right">{row.fullDiff}</TableCell>
+                <TableCell align="right">{row.mrScore}</TableCell>
+                {/*<TableCell align="right">{row.diff}</TableCell>*/}
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -79,14 +77,14 @@ function Row(props) {
                                 </TableHead>
                                 <TableBody>
                                     {row.commits.map((commitsRow) => (
-                                        <TableRow key={commitsRow.date}>
+                                        <TableRow key={commitsRow.created_at}>
                                             <TableCell component="th" scope="row">
-                                                {commitsRow.date}
+                                                {commitsRow.created_at}
                                             </TableCell>
-                                            <TableCell>{commitsRow.committer}</TableCell>
-                                            <TableCell align="right">{commitsRow.score}</TableCell>
-                                            <TableCell align="right">{commitsRow.msg}</TableCell>
-                                            <TableCell align="right">{commitsRow.codeDiff}</TableCell>
+                                            <TableCell>{commitsRow.author_email}</TableCell>
+                                            <TableCell>{commitsRow.commitScore}</TableCell>
+                                            <TableCell align="right">{commitsRow.message}</TableCell>
+                                            <TableCell align="right">{commitsRow.diffs}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -126,9 +124,8 @@ function Row(props) {
 // ];
 
 export default function MergeListTable({devName}) {
-    const [commits, getCommits] = useState([]);
+    // const [commits, getCommits] = useState([]);
     const [rows, getRows] = useState(false);
-    const [buttonPopup, setButtonPopup] = useState(false);
 
     const mounted = useRef();
     useEffect(()=>{
@@ -138,7 +135,7 @@ export default function MergeListTable({devName}) {
             mounted.current = true;
         } else {
             getDataFromBackend(devName)}
-    }, [commits]);
+    }, [rows]);
 
     function getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
@@ -146,25 +143,27 @@ export default function MergeListTable({devName}) {
 
         axios.get("/api/v1/projects/" + id + "/mergeRequests/" + devName + "/2021-01-01/2021-05-09")
             .then(response => {
+                // const MRs = response.data
+                //
                 getRows(response.data)
+
             }).catch((error) => {
             console.error(error);
         });
-
-        axios.get("/api/v1/projects/" + id + "/Commits/" + devName + "/2021-01-01/2021-05-09")
-            .then(response => {
-                getCommits(response.data)
-            }).catch((error) => {
-            console.error(error);
-        });}
-
+    }
+        // axios.get("/api/v1/projects/" + id + "/Commits/" + devName + "/2021-01-01/2021-05-09")
+        //     .then(response => {
+        //         getCommits(response.data)
+        //     }).catch((error) => {
+        //     console.error(error);
+        // });}
 
     return (
         <TableContainer component={Paper}>
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell />
+                        <TableCell/>
                         <TableCell>Date</TableCell>
                         <TableCell align="right">Merge Title</TableCell>
                         <TableCell align="right">Score</TableCell>
@@ -172,8 +171,13 @@ export default function MergeListTable({devName}) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <Row key={row.date} row={row} />
+                    {rows.map(row => (
+                        <Row key={row.merged_at}>
+                        <TableCell> {row.merged_at}</TableCell>,
+                        <TableCell> {row.title}</TableCell>,
+                        <TableCell align="right"> {row.mrScore}</TableCell>,
+                        {/*<TableCell align="right"> {row.diff}</TableCell>*/}
+                        </Row>
                     ))}
                 </TableBody>
             </Table>
