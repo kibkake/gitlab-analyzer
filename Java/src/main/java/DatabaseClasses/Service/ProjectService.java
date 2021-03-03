@@ -173,7 +173,7 @@ public class ProjectService {
         return commit.getCommitter_name().equals(nameOrUsername)
                || commit.getAuthor_name().equals(nameOrUsername);
     }
-    
+
     private boolean didDeveloperAuthorCommit(Commit commit, Developer developer,
                                              UseWhichDevField devField) {
         // For this function, it turns out that .getCommitter_name() and
@@ -422,6 +422,11 @@ public class ProjectService {
         allScores.setTotalCommentWordCount(totalCommentWordCount);
 
         return allScores;
+    }
+
+    public List<Developer> getMembers(int ProjectId){
+        Project project = projectRepository.findProjectById(ProjectId);
+        return project.getDevelopers();
     }
 
 }
