@@ -5,9 +5,10 @@ import Navbar_Developers from "./Navbar_Developers";
 import CommitChart from "./CommitChart";
 import CodeDiffTable from "./CodeDiffTable";
 import './DropDownMenu.css';
+import MergeListTable from "./MergeListTable";
 
 
-function DropDownMenuMerge ({listOfDevelopers}) {
+function DropDownMenuMerges ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -44,7 +45,7 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             <h2 style={{textAlign: 'center'}}>-code diff should be shown in the same page</h2>
             <h4 style={{textAlign: 'center'}}>-Highlight + part?</h4>
 
-            <CodeDiffTable  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+            <MergeListTable  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
 
         </div>
     )
@@ -52,4 +53,4 @@ function DropDownMenuMerge ({listOfDevelopers}) {
 
 }
 
-export default DropDownMenuMerge;
+export default DropDownMenuMerges;

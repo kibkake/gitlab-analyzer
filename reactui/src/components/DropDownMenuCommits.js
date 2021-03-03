@@ -6,7 +6,7 @@ import CommitChart from "./CommitChart";
 import './DropDownMenu.css';
 
 
-function DropDownMenuCommit ({listOfDevelopers}) {
+function DropDownMenuCommits ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -46,4 +46,4 @@ function DropDownMenuCommit ({listOfDevelopers}) {
 
 }
 
-export default DropDownMenuCommit;
+export default DropDownMenuCommits;

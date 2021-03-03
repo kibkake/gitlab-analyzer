@@ -117,16 +117,17 @@ function Row(props) {
 //     }).isRequired,
 // };
 
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-    createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-    createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-    createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
+// const rows = [
+//     createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
+//     createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
+//     createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
+//     createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
+//     createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
+// ];
 
-export default function CollapsibleTable() {
-    const [commits, getCommits]=useState([]);
+export default function MergeListTable({devName}) {
+    const [commits, getCommits] = useState([]);
+    const [rows, getRows] = useState(false);
     const [buttonPopup, setButtonPopup] = useState(false);
 
     const mounted = useRef();
@@ -143,12 +144,20 @@ export default function CollapsibleTable() {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
 
+        axios.get("/api/v1/projects/" + id + "/mergeRequests/" + devName + "/2021-01-01/2021-05-09")
+            .then(response => {
+                getRows(response.data)
+            }).catch((error) => {
+            console.error(error);
+        });
+
         axios.get("/api/v1/projects/" + id + "/Commits/" + devName + "/2021-01-01/2021-05-09")
             .then(response => {
                 getCommits(response.data)
             }).catch((error) => {
             console.error(error);
         });}
+
 
     return (
         <TableContainer component={Paper}>
@@ -164,7 +173,7 @@ export default function CollapsibleTable() {
                 </TableHead>
                 <TableBody>
                     {rows.map((row) => (
-                        <Row key={row.name} row={row} />
+                        <Row key={row.date} row={row} />
                     ))}
                 </TableBody>
             </Table>

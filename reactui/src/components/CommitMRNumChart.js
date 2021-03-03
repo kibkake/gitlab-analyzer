@@ -25,7 +25,7 @@ export default class CommitMRNumChart extends PureComponent {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
 
-        //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
+        //request ref: http://localhost:8090/api/v1/projects/6/MRsAndCommitScoresPerDay/user2/2021-01-01/2021-02-23
         axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + "/2021-01-01/2021-02-28")
             .then(response => {
                 const nums = response.data

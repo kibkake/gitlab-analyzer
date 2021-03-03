@@ -1,6 +1,6 @@
 import "../App.css"
 import React,{ Component } from "react";
-import DropDownMenuMerge from "../components/DropDownMenuMerge";
+import DropDownMenuMerges from "../components/DropDownMenuMerges";
 
 
 class MergeRequest extends Component{
@@ -22,8 +22,8 @@ class MergeRequest extends Component{
         var developersArray = JSON.parse(strDevelopers)
 
         return(
-            <div classname='CodeDiff'>
-                <DropDownMenuMerge listOfDevelopers = {developersArray}/>
+            <div>
+                <DropDownMenuMerges listOfDevelopers = {developersArray}/>
 
             </div>
         )

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import DropDownMenuCommit from "../components/DropDownMenuCommits";
+import DropDownMenuCommits from "../components/DropDownMenuCommits";
 
 class Chart extends Component{
 
@@ -22,7 +22,7 @@ class Chart extends Component{
         return (
 
             <header classname='Rest'>
-                <DropDownMenuCommit listOfDevelopers = {developersArray}/>
+                <DropDownMenuCommits listOfDevelopers = {developersArray}/>
             </header>
 
         )
