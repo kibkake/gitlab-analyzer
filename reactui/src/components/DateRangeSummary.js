@@ -1,7 +1,7 @@
 import React,{ Component } from "react";
 import ProjectService from "../Service/ProjectService";
 import Grid from "@material-ui/core/Grid";
-import {DateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import {DateTimePicker, MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
@@ -62,8 +62,8 @@ function DateRangeSummary({devName}){
 
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)
-        const data = { starttime: selectedStartDate };
-        var startDateArr = (selectedStartDate.toDateString()).split(" ");
+
+        var startDateArr = (date.toDateString()).split(" ");
 
         var monthLetter = startDateArr[1];
         var month = ProjectService.convertMonthToNumber(monthLetter);
@@ -74,8 +74,7 @@ function DateRangeSummary({devName}){
     }
     const handleEndDateChange= (date) =>{
         setSelectedEndDate(date)
-        const data2 = { endtime: selectedEndDate };
-        var endDateArr = (selectedEndDate.toDateString()).split(" ");
+        var endDateArr = (date.toDateString()).split(" ");
 
         var monthLetter = endDateArr[1];
         var month = ProjectService.convertMonthToNumber(monthLetter)
@@ -88,13 +87,12 @@ function DateRangeSummary({devName}){
 
     return(
         <>
-            <h2 style={{marginTop:'40px',marginLeft:'39%',paddingBottom:'10px'}}>Snapshot Date Range</h2>
             <Grid container justify="center">
                 <span className="startDate">
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <DateTimePicker
+                        <DatePicker
                             variant='inline'
-                            format='MM/dd/yyyy h:mm a'
+                            format='MM/dd/yyyy'
                             margin='normal'
                             id='startDate'
                             label='Start Date'
@@ -106,9 +104,9 @@ function DateRangeSummary({devName}){
 
                 <span className="endDate">
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <DateTimePicker
+                        <DatePicker
                             variant='inline'
-                            format='MM/dd/yyyy h:mm a'
+                            format='MM/dd/yyyy'
                             margin='normal'
                             id='endDate'
                             label='End Date'
@@ -125,9 +123,7 @@ function DateRangeSummary({devName}){
                                startTime = {changeDateFormat(selectedStartDate)}
                                endTime = {changeDateFormat(selectedEndDate)}
                                />
-            <br>
-            </br>
-            <h4 style={{textAlign:'center'}}>View Data By</h4>
+            <h2 style={{textAlign:'center'}}>View Data By</h2>
             <SummaryChartRadios devName = {devName}
                                 startTime = {changeDateFormat(selectedStartDate)}
                                 endTime = {changeDateFormat(selectedEndDate)}/>

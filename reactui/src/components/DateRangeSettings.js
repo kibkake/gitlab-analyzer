@@ -1,5 +1,5 @@
 import "../App.css"
-import { MuiPickersUtilsProvider,DateTimePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider,DateTimePicker, DatePicker } from '@material-ui/pickers';
 import React,{ Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -38,7 +38,7 @@ function DateRangeSettings(){
         setSelectedStartDate(date)
         const data = { starttime: selectedStartDate };
 
-        var startDateArr = (selectedStartDate.toDateString()).split(" ");
+        var startDateArr = (date.toDateString()).split(" ");
 
         var monthLetter = startDateArr[1];
         var month = ProjectService.convertMonthToNumber(monthLetter);
@@ -53,7 +53,7 @@ function DateRangeSettings(){
         setSelectedEndDate(date)
         const data2 = { endtime: selectedEndDate };
 
-        var endDateArr = (selectedEndDate.toDateString()).split(" ");
+        var endDateArr = (date.toDateString()).split(" ");
 
         var monthLetter = endDateArr[1];
         var month = ProjectService.convertMonthToNumber(monthLetter)
@@ -71,9 +71,9 @@ function DateRangeSettings(){
         <Grid container justify="center">
             <span className="startDate">   
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>   
-                        <DateTimePicker 
+                        <DatePicker
                             variant='inline' 
-                            format='MM/dd/yyyy h:mm a' 
+                            format='MM/dd/yyyy'
                             margin='normal' 
                             id='startDate'
                             label='Start Date' 
@@ -85,9 +85,9 @@ function DateRangeSettings(){
             
             <span className="endDate">   
             <MuiPickersUtilsProvider utils={DateFnsUtils}>  
-                    <DateTimePicker 
+                    <DatePicker
                         variant='inline' 
-                        format='MM/dd/yyyy h:mm a' 
+                        format='MM/dd/yyyy'
                         margin='normal' 
                         id='endDate'
                         label='End Date' 

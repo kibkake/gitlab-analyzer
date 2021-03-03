@@ -11,8 +11,9 @@ class Developers2Button extends Component{
     }
 
     async componentDidMount() {
-        this.getDataFromBackend();
+        await this.getDataFromBackend();
     }
+
 
     async getDataFromBackend(){
         var str = window.location.pathname;
@@ -27,7 +28,7 @@ class Developers2Button extends Component{
         }).then((result)=> {
             result.json().then((resp) => {
                 this.setState({data:resp})
-                sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
+                sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.data))
             })
         })
     }
