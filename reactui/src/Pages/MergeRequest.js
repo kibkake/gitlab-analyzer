@@ -12,8 +12,31 @@ class MergeRequest extends Component{
         };
     }
 
+    async getListOfDevs(){
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+        let url2 = '/getprojectmembers/' + repNum
+        const result = await fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        var resp;
+        resp = result.json();
+        var listOfDevelopers = await resp;
+        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(listOfDevelopers));
+    }
+
     async componentDidMount() {
-        this.setState({developers:JSON.parse(sessionStorage.getItem("Developers"))})
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+
+        if(sessionStorage.getItem("Developers" + repNum) == null) {
+            await this.getListOfDevs()
+        }
+        await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
     }
 
     render() {
