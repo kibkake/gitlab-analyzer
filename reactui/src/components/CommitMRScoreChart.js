@@ -35,30 +35,21 @@ export default class CommitMRScoreChart extends PureComponent {
             }
         }
 
-        await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
+        const response = await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
             endTm)
-            .then(response => {
-                const score = response.data
-                this.setState({codeScore : score})
-                console.log(this.state.codeScore)
-            }).catch((error) => {
-            console.error(error);
-        });
+
+        const score = await response.data
+        await this.setState({codeScore : score, parentdata: username,startTime: startTm,
+            endTime: endTm})
+        await console.log(this.state.codeScore)
     }
 
     async componentDidUpdate(prevProps){
-        if(this.props.devName !== prevProps.devName){
-            await this.setState({parentdata: this.props.devName});
+        if(this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime ||
+            this.props.endTime !== prevProps.endTime){
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
-        }
-        if(this.props.startTime !== prevProps.startTime){
-            await this.setState({startTime: this.props.startTime});
-            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
-        }
-        if(this.props.endTime !== prevProps.endTime){
-            await this.setState({endTime: this.props.endTime});
-            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime)
         }
     }
 
