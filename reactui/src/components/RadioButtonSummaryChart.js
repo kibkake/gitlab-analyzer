@@ -15,7 +15,7 @@ import CommitChart from "./CommitChart";
 
 function Chart(props){
 
-    if (props.value == "score") {
+    if (props.value === "score") {
         return (<div>
             <h4 style={{textAlign:'center'}}>Score of Commits/Merge Per Day</h4>
             <CommitMRScoreChart devName = {props.devName}
@@ -23,7 +23,7 @@ function Chart(props){
                                 endTime = {props.endTime}/>
         </div>);
     }
-    else if (props.value == "number") {
+    else if (props.value === "number") {
         return (<div>
             <h4 style={{textAlign: 'center'}}>Number of Commits/Merge Per Day</h4>
             <CommitMRNumChart devName={props.devName}
@@ -31,7 +31,7 @@ function Chart(props){
                               endTime = {props.endTime}/>
         </div>);
     }
-    if (props.value == "words") {
+    if (props.value === "words") {
         return (<div>
             <h4 style={{textAlign: 'center'}}>Number of Words Per Day</h4>
             <CommentChart devName={props.devName}
