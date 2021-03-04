@@ -63,25 +63,13 @@ function DateRangeSummary({devName}){
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)
 
-        var startDateArr = (date.toDateString()).split(" ");
-
-        var monthLetter = startDateArr[1];
-        var month = ProjectService.convertMonthToNumber(monthLetter);
-        var day = startDateArr[2];
-        var year = startDateArr[3];
-        var completeDate = year + "-" + month + "-" + day;
+        var completeDate = changeDateFormat(date)
         sessionStorage.setItem("startdate", completeDate);
     }
     const handleEndDateChange= (date) =>{
         setSelectedEndDate(date)
-        var endDateArr = (date.toDateString()).split(" ");
+        var completeDate = changeDateFormat(date)
 
-        var monthLetter = endDateArr[1];
-        var month = ProjectService.convertMonthToNumber(monthLetter)
-        var day = endDateArr[2];
-        var year = endDateArr[3];
-
-        var completeDate = year + "-" + month + "-" + day;
         sessionStorage.setItem("enddate", completeDate);
     }
 

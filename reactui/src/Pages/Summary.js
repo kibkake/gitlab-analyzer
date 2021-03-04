@@ -39,6 +39,7 @@ class Summary extends Component {
             await sessionStorage.setItem("DeveloperNames" + repNum, sessionStorage.getItem("Developers" + repNum))
         }
         await this.setState({developers: JSON.parse(sessionStorage.getItem("Developers" + repNum))})
+        console.log("state.developers",this.state.developers)
         console.log("Developer",sessionStorage.getItem('Developers' + repNum))
         console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
     }
