@@ -6,6 +6,7 @@ import CommitChart from "./CommitChart";
 import CodeDiffTable from "./CodeDiffTable";
 import './DropDownMenu.css';
 import MergeListTable from "./MergeListTable";
+import CollapsibleTable from "./CollapsibleRef";
 
 
 function DropDownMenuMerges ({listOfDevelopers}) {
@@ -45,8 +46,9 @@ function DropDownMenuMerges ({listOfDevelopers}) {
             <h2 style={{textAlign: 'center'}}>-code diff should be shown in the same page</h2>
             <h4 style={{textAlign: 'center'}}>-Highlight + part?</h4>
 
-            <MergeListTable  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
 
+            <MergeListTable  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+            <CollapsibleTable/>
         </div>
     )
 
