@@ -8,6 +8,7 @@ import SummaryScoreTable from "./SummaryScoreTable";
 import CommentChart from "./CommentChart";
 import DateRangeSettingComponent from "./DateRangeSettings";
 import CommitChart from "./CommitChart";
+import SummaryChartRadios from "./RadioButtonSummaryChart";
 
 function DateRangeCommits({devName}){
 
@@ -47,17 +48,27 @@ function DateRangeCommits({devName}){
         var completeDate = year + "-" + month + "-" + day;
         sessionStorage.setItem("enddate", completeDate);
         console.log(sessionStorage.getItem("enddate"))
+    }
 
+    function changeDateFormat(time) {
+
+        var startDateArr = (time.toDateString()).split(" ");
+
+        var monthLetter = startDateArr[1];
+        var month = ProjectService.convertMonthToNumber(monthLetter);
+        var day = startDateArr[2];
+        var year = startDateArr[3];
+        var completeDate = year + "-" + month + "-" + day;
+        return completeDate;
     }
 
     const mounted = useRef();
     useEffect(()=> {
         if (!mounted.current) {
-            //console.log("updated")
             mounted.current = true;
-        } else {
-            //console.log("updated")
         }
+        //else {
+        //}
     })
 
     return(
@@ -92,6 +103,9 @@ function DateRangeCommits({devName}){
                     </MuiPickersUtilsProvider>
                 </span>
             </Grid>
+            <CommitChart devName = {devName}
+                                startTime = {changeDateFormat(selectedStartDate)}
+                                endTime = {changeDateFormat(selectedEndDate)}/>
         </>
     )
 }
