@@ -44,8 +44,6 @@ export default class CommentChart extends PureComponent {
             this.setState({parentdata: this.props.devName});
             this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
-
-        console.log("eddie", this.props.startTime)
         if(this.props.startTime !== prevProps.startTime){
             this.setState({startTime: this.props.startTime});
             this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )

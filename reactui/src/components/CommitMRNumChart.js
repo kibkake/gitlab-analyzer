@@ -23,17 +23,18 @@ export default class CommitMRNumChart extends PureComponent {
         this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 
-    getDataFromBackend (username, startTm, endTm) {
+    async getDataFromBackend (username, startTm, endTm) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
 
         //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
+        await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
             endTm)
             .then(response => {
                 const nums = response.data
-                this.setState({frequency : nums})
+                this.setState({frequency : nums, parentdata: username,startTime: startTm,
+                    endTime: endTm})
                 console.log(this.state.frequency)
             }).catch((error) => {
             console.error(error);
@@ -41,18 +42,11 @@ export default class CommitMRNumChart extends PureComponent {
 
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.devName !== prevProps.devName){
-            this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
-        }
-        if(this.props.startTime !== prevProps.startTime){
-            this.setState({startTime: this.props.startTime});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
-        }
-        if(this.props.endTime !== prevProps.endTime){
-            this.setState({endTime: this.props.endTime});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime)
+    async componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime ||
+            this.props.endTime !== prevProps.endTime){
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {

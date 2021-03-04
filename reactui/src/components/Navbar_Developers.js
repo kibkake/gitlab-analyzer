@@ -45,11 +45,9 @@ export class Navbar_Developers extends Component{
         }
     }
 
-    componentDidMount() {}
-
-    componentDidUpdate(prevProps){
+    async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
-            this.setState({parentdata: [
+           await this.setState({parentdata: [
                     {
                         title: 'Summary',
                         url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/summary',
@@ -80,8 +78,6 @@ export class Navbar_Developers extends Component{
     }
 
     render(){
-        //console.log(something)
-        const {parentdata} = this.state;
         return(
             <nav className="navbarItems">
                 <div>
