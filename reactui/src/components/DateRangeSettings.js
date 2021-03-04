@@ -47,7 +47,10 @@ function DateRangeSettings(){
         //2015-12-13
         var completeDate = year + "-" + month + "-" + day;
         sessionStorage.setItem("startdate", completeDate);
+        localStorage.setItem("startdate", completeDate)
         console.log(sessionStorage.getItem("startdate"))
+        console.log(localStorage.getItem("startdate"))
+
     }
     const handleEndDateChange= (date) =>{
         setSelectedEndDate(date)
@@ -62,7 +65,9 @@ function DateRangeSettings(){
 
         var completeDate = year + "-" + month + "-" + day;
         sessionStorage.setItem("enddate", completeDate);
+        localStorage.setItem("enddate", completeDate)
         console.log(sessionStorage.getItem("enddate"))
+        console.log(localStorage.getItem("enddate"))
 
     }
     return(   
