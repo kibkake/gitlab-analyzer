@@ -79,6 +79,7 @@ class ProjectService {
         resp = result.json();
         var listOfDevelopers = await resp;
         await sessionStorage.setItem("Developers" + repNum, JSON.stringify(listOfDevelopers));
+        return await listOfDevelopers
     }
 }
 
