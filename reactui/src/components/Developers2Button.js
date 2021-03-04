@@ -36,6 +36,8 @@ class Developers2Button extends Component{
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         await sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(this.state.developerNames))
+        console.log("Developer",sessionStorage.getItem('Developers' + repNum))
+        console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
     }
 
     handleChange = (item) => (event)=> {
@@ -45,7 +47,7 @@ class Developers2Button extends Component{
 
         for(var i = 0; i < tempDevUsernames.length; i++){
             if(tempDevUsernames[i] === item){
-                if(event.target.value != "") {
+                if(event.target.value !== "") {
                     tempDevNames[i] = event.target.value;
                 }else{
                     tempDevNames[i] = item;
@@ -60,9 +62,7 @@ class Developers2Button extends Component{
         var DataArray = JSON.parse(data)
 
         return(
-
             <ul>
-                <header></header>
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">

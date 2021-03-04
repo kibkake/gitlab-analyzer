@@ -13,7 +13,7 @@ class Summary extends Component {
     async getListOfDevs(){
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        let url2 = '/getprojectmembers/' + repNum
+        let url2 = '/api/v1/getusernames/' + repNum
         const result = await fetch(url2, {
             method: 'GET',
             headers: {
@@ -24,7 +24,8 @@ class Summary extends Component {
         var resp;
         resp = result.json();
         var listOfDevelopers = await resp;
-        await  sessionStorage.setItem("Developers" + repNum, JSON.stringify(listOfDevelopers));
+
+        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(listOfDevelopers));
     }
 
     async componentDidMount() {
@@ -34,7 +35,12 @@ class Summary extends Component {
         if(sessionStorage.getItem("Developers" + repNum) == null) {
            await this.getListOfDevs()
         }
+        if(sessionStorage.getItem("DeveloperNames" + repNum) == null) {
+            await sessionStorage.setItem("DeveloperNames" + repNum, sessionStorage.getItem("Developers" + repNum))
+        }
         await this.setState({developers: JSON.parse(sessionStorage.getItem("Developers" + repNum))})
+        console.log("Developer",sessionStorage.getItem('Developers' + repNum))
+        console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
     }
 
     render() {
