@@ -11,12 +11,10 @@ class Summary extends Component {
     }
 
     async componentDidMount() {
-
         this.setState({developers: JSON.parse(sessionStorage.getItem("Developers"))})
     }
 
     render() {
-
         var strDevelopers = JSON.stringify(this.state.developers);
         var developersArray = JSON.parse(strDevelopers);
 
