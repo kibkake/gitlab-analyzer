@@ -51,23 +51,20 @@ class SummaryScoreTable extends Component{
     }
 
 
-    componentDidUpdate(prevProps){
+    async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
-            this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+            await this.setState({parentdata: this.props.devName});
         }
         if(this.props.startTime !== prevProps.startTime){
-            this.setState({startTime: this.props.startTime});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+            await this.setState({startTime: this.props.startTime});
         }
         if(this.props.endTime !== prevProps.endTime){
-            this.setState({endTime: this.props.endTime});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime)
+            await this.setState({endTime: this.props.endTime});
         }
+        this.getDataFromBackend(this.state.parentdata, this.state.startTime,this.state.endTime)
     }
 
     render () {
-        const {parentdata} = this.state;
         return (
             <div className="container">
                 <Table striped bordered hover>
