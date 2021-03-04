@@ -64,6 +64,22 @@ class ProjectService {
             return "12"
         }
     }
+
+    async getListOfDevs(repNum){
+
+        let url2 = '/api/v1/getusernames/' + repNum
+        const result = await fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        var resp;
+        resp = result.json();
+        var listOfDevelopers = await resp;
+        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(listOfDevelopers));
+    }
 }
 
 export default new ProjectService();
