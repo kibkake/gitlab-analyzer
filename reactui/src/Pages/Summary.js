@@ -28,28 +28,23 @@ class Summary extends Component {
         await sessionStorage.setItem("Developers" + repNum, JSON.stringify(listOfDevelopers));
     }
 
-    static getDerivedStateFromProps(nextProps, prevState){
+    async componentDidMount(){
 
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
 
         if(sessionStorage.getItem("Developers" + repNum) == null) {
-             this.getListOfDevs()
+             await this.getListOfDevs()
         }
         if(sessionStorage.getItem("DeveloperNames" + repNum) == null) {
              sessionStorage.setItem("DeveloperNames" + repNum, sessionStorage.getItem("Developers" + repNum))
         }
+
+        await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
+
+        console.log("state.developers", this.state.developers)
         console.log("Developer",sessionStorage.getItem('Developers' + repNum))
         console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
-        return{
-            developers: JSON.parse(sessionStorage.getItem("Developers" + repNum))
-        }
-    }
-
-
-
-    fi() {
-        console.log("state.developers", this.state.developers)
     }
 
     render() {
@@ -58,7 +53,6 @@ class Summary extends Component {
 
         return (
             <div >
-                {this.fi()}
                 <DropDownMenuSummary listOfDevelopers={developersArray}/>
                 <br>
                 </br>
