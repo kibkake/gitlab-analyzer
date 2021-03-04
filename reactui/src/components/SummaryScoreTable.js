@@ -54,14 +54,16 @@ class SummaryScoreTable extends Component{
     async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
             await this.setState({parentdata: this.props.devName});
+            this.getDataFromBackend(this.state.parentdata, this.state.startTime,this.state.endTime)
         }
         if(this.props.startTime !== prevProps.startTime){
             await this.setState({startTime: this.props.startTime});
+            this.getDataFromBackend(this.state.parentdata, this.state.startTime,this.state.endTime)
         }
         if(this.props.endTime !== prevProps.endTime){
             await this.setState({endTime: this.props.endTime});
+            this.getDataFromBackend(this.state.parentdata, this.state.startTime,this.state.endTime)
         }
-        this.getDataFromBackend(this.state.parentdata, this.state.startTime,this.state.endTime)
     }
 
     render () {
