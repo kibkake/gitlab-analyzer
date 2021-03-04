@@ -15,7 +15,6 @@ import CommitChart from "./CommitChart";
 
 function Chart(props){
 
-
     if (props.value == "score") {
         return (<div>
             <h4 style={{textAlign:'center'}}>Score of Commits/Merge Per Day</h4>
