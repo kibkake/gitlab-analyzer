@@ -34,36 +34,33 @@ function DateRangeSettings(){
     const [selectedEndDate,setSelectedEndDate] = React.useState(
         getEndDate()
     )
-    const handleStartDateChange= (date) =>{
-        setSelectedStartDate(date)
-        const data = { starttime: selectedStartDate };
 
+    function formatDate(date){
         var startDateArr = (date.toDateString()).split(" ");
 
         var monthLetter = startDateArr[1];
         var month = ProjectService.convertMonthToNumber(monthLetter);
         var day = startDateArr[2];
         var year = startDateArr[3];
-        //2015-12-13
-        var completeDate = year + "-" + month + "-" + day;
+
+        return year + "-" + month + "-" + day;
+
+    }
+    const handleStartDateChange= (date) =>{
+        setSelectedStartDate(date)
+        const data = { starttime: selectedStartDate };
+        var completeDate = formatDate(date)
+
         sessionStorage.setItem("startdate", completeDate);
         localStorage.setItem("startdate", completeDate)
         console.log(sessionStorage.getItem("startdate"))
         console.log(localStorage.getItem("startdate"))
-
     }
     const handleEndDateChange= (date) =>{
         setSelectedEndDate(date)
-        const data2 = { endtime: selectedEndDate };
+        const data = { endtime: selectedEndDate };
+        var completeDate = formatDate(date)
 
-        var endDateArr = (date.toDateString()).split(" ");
-
-        var monthLetter = endDateArr[1];
-        var month = ProjectService.convertMonthToNumber(monthLetter)
-        var day = endDateArr[2];
-        var year = endDateArr[3];
-
-        var completeDate = year + "-" + month + "-" + day;
         sessionStorage.setItem("enddate", completeDate);
         localStorage.setItem("enddate", completeDate)
         console.log(sessionStorage.getItem("enddate"))
