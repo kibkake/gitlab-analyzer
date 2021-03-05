@@ -9,4 +9,7 @@ import java.util.List;
 public interface CommitRepositoryCustom {
 
     List<CommitDateScore> getDevDateScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+
+    List<Object> userTotalCommitScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+
 }

@@ -84,8 +84,8 @@ public class ProjectService {
                 "Project with id " + projectId + " does not exist"));
 
         project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
-        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
-        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
+        project.setCommits(CommitConnection.getProjectCommitsFromGitLab(projectId));
+        project.setMergedRequests(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
         project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);

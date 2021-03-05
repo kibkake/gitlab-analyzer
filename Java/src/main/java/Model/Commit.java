@@ -72,7 +72,7 @@ public class Commit {
         this.authorEmail = authorEmail;
     }
 
-    @JsonProperty("authorDate")
+    @JsonProperty("authored_date")
     public String getAuthorDate() {
         return authorDate;
     }

@@ -25,7 +25,7 @@ public class CommitConnection {
         List<Commit> commits = new ArrayList<>();
         do {
             String myUrl = user.getServerUrl() + "projects/" + projectId +
-                    "/repository/commits?all=true&per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
+                    "/repository/commits?ref_name=master&per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {

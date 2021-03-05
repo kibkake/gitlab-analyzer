@@ -90,10 +90,10 @@ public class ProjectController {
         return projectService.getProjectDescription(projectId);
     }
 
-    @GetMapping("projects/{projectId}/mergeRequests")
-    public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
-        return projectService.getProjectMRs(projectId);
-    }
+//    @GetMapping("projects/{projectId}/mergeRequests")
+//    public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
+//        return projectService.getProjectMRs(projectId);
+//    }
 
 
     @GetMapping("projects/{projectId}/MRsAndCommitScoresPerDay/{committerName}/{start}/{end}")
@@ -106,7 +106,7 @@ public class ProjectController {
         return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-//
+
 //    @GetMapping("projects/{projectId}/Commitsarray/{committerName}/{start}/{end}")
 //    public List<String> getCommitsArray(@PathVariable("projectId") int projectId,
 //                                           @PathVariable("committerName") String committerName,
@@ -118,9 +118,6 @@ public class ProjectController {
 //        commitsArray = projectService.getAllUserCommitsArray(projectId, committerName, StartLocalTime, endLocalTime);
 //        return commitsArray;
 //    }
-
-
-
 
 
     // TODO: should be checked, doesn't return data
@@ -144,22 +141,22 @@ public class ProjectController {
         return projectService.getUserNotes(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
-    public double totalCommitScore(@PathVariable("projectId") int projectId,
-                                   @PathVariable("committerName") String committerName,
-                                   @PathVariable("start") String start,
-                                   @PathVariable("end") String end) {
-        LocalDate startLocalDate = LocalDate.parse(start);
-        LocalDate endLocalDate = LocalDate.parse(end);
-        return projectService.getTotalUserCommitScore(projectId, committerName,
-                                                      startLocalDate, endLocalDate);
-    }
+//    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
+//    public double totalCommitScore(@PathVariable("projectId") int projectId,
+//                                   @PathVariable("committerName") String committerName,
+//                                   @PathVariable("start") String start,
+//                                   @PathVariable("end") String end) {
+//        LocalDate startLocalDate = LocalDate.parse(start);
+//        LocalDate endLocalDate = LocalDate.parse(end);
+//        return projectService.getTotalUserCommitScore(projectId, committerName,
+//                                                      startLocalDate, endLocalDate);
+//    }
 
 
-    @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
-    public MergeRequest getMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
-        return projectService.getMergeRequest(projectId, mrId);
-    }
+//    @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
+//    public MergeRequest getMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
+//        return projectService.getMergeRequest(projectId, mrId);
+//    }
 
     @GetMapping("projects/{projectId}/allTotalScores/{username}/{start}/{end}")
     public AllScores allTotalScores(@PathVariable ("projectId") int projectId,

@@ -53,4 +53,9 @@ public class CommitService {
     public List<CommitDateScore> getScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate){
         return commitRepository.getDevDateScore(projectId, userName, startDate, endDate);
     }
+
+    public Object getTotalCommitScore(int projectId, String userName, LocalDate startDate, LocalDate endDate) {
+        return commitRepository.userTotalCommitScore(projectId, userName, startDate, endDate);
+    }
+
 }

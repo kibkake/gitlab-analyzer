@@ -20,8 +20,8 @@ public class MergeRequest {
     private String description;
     private String state;
     private String mergedAt;
-    private int  author_id;
-    private int author_username;
+    private int authorId;
+    private String authorUsername;
     private List<Developer> contributors;
     List<Commit> commits;
     private String sha;
@@ -106,20 +106,22 @@ public class MergeRequest {
         }
     }
 
-    public int getAuthor_id() {
-        return author_id;
+    @JsonProperty("author_id")
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor_id(int author_id) {
-        this.author_id = author_id;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
-    public int getAuthor_username() {
-        return author_username;
+    @JsonProperty("author_username")
+    public String getAuthorUsername() {
+        return authorUsername;
     }
 
-    public void setAuthor_username(int author_username) {
-        this.author_username = author_username;
+    public void setAuthorUsername(String authorUsername) {
+        this.authorUsername = authorUsername;
     }
 
     public List<Developer> getContributors() {
@@ -156,8 +158,8 @@ public class MergeRequest {
                 ", description='" + description + '\'' +
                 ", state='" + state + '\'' +
                 ", merged_at='" + mergedAt + '\'' +
-                ", author_id=" + author_id +
-                ", author_username=" + author_username +
+                ", author_id=" + authorId +
+                ", author_username=" + authorUsername +
                 ", contributors=" + contributors +
                 ", sha='" + sha + '\'' +
                 '}';
