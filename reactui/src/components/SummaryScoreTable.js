@@ -58,7 +58,6 @@ class SummaryScoreTable extends Component{
     render () {
         return (
             <div className="container">
-                {console.log("rendering")}
                 <Table striped bordered hover>
                         <tr>
                             <th>Commit</th>

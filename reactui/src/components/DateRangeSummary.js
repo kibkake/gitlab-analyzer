@@ -111,7 +111,6 @@ function DateRangeSummary({devName}){
                                startTime = {changeDateFormat(selectedStartDate)}
                                endTime = {changeDateFormat(selectedEndDate)}
                                />
-            <h2 style={{textAlign:'center'}}>View Data By</h2>
             <SummaryChartRadios devName = {devName}
                                 startTime = {changeDateFormat(selectedStartDate)}
                                 endTime = {changeDateFormat(selectedEndDate)}/>
