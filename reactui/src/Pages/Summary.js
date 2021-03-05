@@ -29,6 +29,15 @@ class Summary extends Component {
         console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
     }
 
+    static getDerivedStateFromProps() {
+        console.log("Running the component")
+        return null
+    }
+
+    shouldComponentUpdate() {
+        return true
+    }
+
     render() {
         var strDevelopers = JSON.stringify(this.state.developers);
         var developersArray = JSON.parse(strDevelopers);

@@ -59,7 +59,7 @@ class SummaryScoreTable extends Component{
         return (
             <div className="container">
                 <Table striped bordered hover>
-                        <tr>
+                    <tr>
                             <th>Commit</th>
                             <th>Merge Request</th>
                             <th>Word Count of Comments</th>
