@@ -2,8 +2,6 @@ package main.java.DatabaseClasses.Repository;
 
 import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.Model.Commit;
-import main.java.Model.MergeRequest;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
@@ -11,8 +9,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import static org.springframework.data.mongodb.core.aggregation.Fields.fields;
 
 public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 
@@ -54,7 +50,7 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
     }
 
     @Override
-    public List<Object> userTotalCommitScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public Object userTotalCommitScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
         final Criteria nameMatchCriteria = Criteria.where("authorName").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("date").gte(startDate).lte(endDate);
@@ -64,10 +60,11 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
                 Aggregation.match(criterias),
                 Aggregation.project( "commitScore", "authorName"),
                 Aggregation.group("authorName").sum("commitScore").as("commitTotalScore")
+
         );
 
         AggregationResults<Object> groupResults = mongoTemplate.aggregate(aggregation, Commit.class, Object.class);
-        List<Object> result = groupResults.getMappedResults();
+        Object result = groupResults.getMappedResults();
         return result;
 
     }

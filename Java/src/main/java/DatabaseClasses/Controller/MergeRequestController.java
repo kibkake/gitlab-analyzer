@@ -42,13 +42,13 @@ public class MergeRequestController {
 
 
 
-//    @GetMapping("projects/{projectId}/MergeRequest/scores/total/{userName}/{startDate}/{endDate}")
-//    public List<CommitDateScore> getTotalMergeRequestScores(@PathVariable int projectId, @PathVariable String userName,
-//                                           @PathVariable String startDate, @PathVariable String endDate) {
-//        LocalDate StartLocalTime = LocalDate.parse(startDate);
-//        LocalDate endLocalTime = LocalDate.parse(endDate);
-//        return mergeRequestService.getScorePerDay(projectId, userName, StartLocalTime, endLocalTime);
-//    }
+    @GetMapping("projects/{projectId}/MergeRequest/scores/total/{userName}/{startDate}/{endDate}")
+    public Object getTotalMergeRequestScores(@PathVariable int projectId, @PathVariable String userName,
+                                           @PathVariable String startDate, @PathVariable String endDate) {
+        LocalDate StartLocalTime = LocalDate.parse(startDate);
+        LocalDate endLocalTime = LocalDate.parse(endDate);
+        return mergeRequestService.getTotalMergeRequestScore(projectId, userName, StartLocalTime, endLocalTime);
+    }
 
     @GetMapping("projects/{projectId}/MergeRequest/{committerName}/{start}/{end}")
     public List<MergeRequest> getUserMergeRequests(@PathVariable("projectId") int projectId,
