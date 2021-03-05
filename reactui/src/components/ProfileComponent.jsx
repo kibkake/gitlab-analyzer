@@ -84,6 +84,11 @@ export default class ProfileComponent extends Component {
         }else{
             await ProfileService.changeUserToken(sessionStorage.getItem('user'),this.state.newtoken);
             alert("Successfully Changed Token!");
+            ProfileService.setUserToken(this.state.newtoken).then((response) => {
+                // sent post request
+            }, (error) => {
+                console.log(error);
+            });
             window.location.reload();
         }
         await this.setState({ctoken:false});

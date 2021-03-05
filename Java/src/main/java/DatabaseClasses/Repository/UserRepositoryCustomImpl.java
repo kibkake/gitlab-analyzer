@@ -32,6 +32,17 @@ public class UserRepositoryCustomImpl implements main.java.DatabaseClasses.Repos
     public void changeToken(User user){ DatabaseFunctions.changeToken(user);}
 
     @Override
+    public void setToken(User user){
+        User singleton_user = User.getInstance();
+        String token = user.getToken();
+        singleton_user.setToken(token);
+
+        // debug
+        User debug = User.getInstance();
+        System.out.println("token set: "+debug.getToken());
+    }
+
+    @Override
     public User retrieveUserInfo(String username) {
         return DatabaseFunctions.retrieveUserInfo(username);
     }
