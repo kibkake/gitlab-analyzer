@@ -34,9 +34,9 @@ public class MergeRequest {
         contributors = new ArrayList<>();
     }
 
-    public boolean isAContributor(String name) {
+    public boolean isAContributor(String username) {
         for (Developer currentDev: contributors) {
-            if (currentDev.getName().equals(name)) {
+            if (currentDev.getUsername().equals(username)) {
                 return true;
             }
         }

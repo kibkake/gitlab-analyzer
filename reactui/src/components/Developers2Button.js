@@ -1,25 +1,27 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-
-import {RepoItems} from '../Pages/sampleRepo';
-import RepoButton from "./RepoButton";
-//import "./RepoButton.css"
-
+import './Navbar.css';
 
 class Developers2Button extends Component{
     constructor(props){
         super(props);
         this.state={
-            data: []
+            data: [],
+            developerNames: [],
+            submitted: false
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+       await this.getDataFromBackend();
+    }
+
+    async getDataFromBackend(){
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        let url2 = '/getprojectmembers/' + repNum
-        fetch(url2, {
+        let url2 = '/api/v1/getusernames/' + repNum
+        await fetch(url2, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -27,23 +29,38 @@ class Developers2Button extends Component{
             }
         }).then((result)=> {
             result.json().then((resp) => {
-                this.setState({data:resp})
+                this.setState({data:resp , developerNames:JSON.parse(JSON.stringify(resp))})
+                sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
             })
         })
+    }
 
+    storeNames() {
+        sessionStorage.setItem('DeveloperNames', JSON.stringify(this.state.developerNames))
+    }
+
+    handleChange = (item) => (event) => {
+        event.preventDefault();
+        var tempDevNames = this.state.developerNames;
+        var tempDevUsernames = JSON.parse(JSON.stringify(this.state.data));
+
+        for(var i = 0; i < tempDevUsernames.length; i++){
+            if(tempDevUsernames[i] === item){
+                if(event.target.value != "") {
+                    tempDevNames[i] = event.target.value;
+                }else{
+                    tempDevNames[i] = item;
+                }
+            }
+        }
+        this.setState({davelopernames: tempDevNames})
     }
 
     render(){
-        var str = window.location.pathname;
-        var strArr = str.split("/");
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
 
-
-        console.log(DataArray);
-
         return(
-            //<div> Name: {DataArray} </div>
 
             <ul>
                 <header></header>
@@ -54,19 +71,21 @@ class Developers2Button extends Component{
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        window.location.href=  window.location.pathname + "/" + item + "/summary";
+                                        sessionStorage.setItem("CurrentDeveloper", item)
+                                        this.storeNames()
 
-                                    }}
-                            >
+                                        window.location.href=  window.location.pathname + '/' + item + "/summary";
+                                    }}>
                                 <span >{item}</span>
                             </Button>
                         </a>
+                        <input className="TextBox"
+                               type="text"
+                               placeholder= {item + '\'s author name'}
+                               onChange={this.handleChange(item)}  />
                     </li>;
                 })}
             </ul>
-
-
-
         );
 
     }

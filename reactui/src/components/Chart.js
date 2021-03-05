@@ -27,7 +27,6 @@ export default class BarChart extends PureComponent {
             }).catch((error) => {
             console.error(error);
         });
-
     }
 
     render() {
