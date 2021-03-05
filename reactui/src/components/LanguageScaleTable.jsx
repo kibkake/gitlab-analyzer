@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import { Button,Table} from 'react-bootstrap';
-import {LanguageScale} from './storage/LanguageScale';
-import Modal from 'react-modal';
+import { Button,Table,Modal, Form} from 'react-bootstrap';
+import { LanguageScale } from './storage/LanguageScale';
 
 
 class LanguageScaleTable extends Component{
@@ -10,13 +9,26 @@ class LanguageScaleTable extends Component{
     constructor() {
         super();
         this.state = {
-            contacts: LanguageScale
+            LanguageScale:[{
+                name:'Default',
+                extention:"",
+                multiplier:1
+            }],
+            newScaleIsShown:false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    state ={newScaleIsShown:false};
     handleSubmit(e) {
-
+        
+        const newScale={
+            name:e.target.name.value,
+            extention:e.target.extention.value,
+            multiplier:e.target.multiplier.value,
+        }
+       this.setState(prevState=>({
+           LanguageScale:[...prevState.LanguageScale,newScale]
+       }))
+       sessionStorage.setItem('languageScale',LanguageScale);
     }
     showModal = () => {
         this.setState({ 
@@ -42,12 +54,28 @@ class LanguageScaleTable extends Component{
                         Add new Language Multiplier
                     </Button>
 
-                    <Modal isOpen={this.state.newScaleIsShown} shouldCloseOnOverlayClick={false}>
-                        <h1>testing if this works</h1>
-
-                        <div>
-                            <Button Style="Secondary" onClick={this.closeModal}>close modal</Button>
-                        </div>
+                    <Modal show={this.state.newScaleIsShown}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add a new multiplier</Modal.Title>
+                        </Modal.Header>
+                        <Form className="addForm" onSubmit={this.handleSubmit}>
+                            <Form.Row>
+                                <Form.Group controlId="name">
+                                    <Form.Label>Language Name</Form.Label>
+                                    <Form.Control type="text" placeholder="Enter name"/>
+                                </Form.Group>
+                                <Form.Group controlId="extention">
+                                    <Form.Label>Extention Name</Form.Label>
+                                    <Form.Control type="text" placeholder='(eg. ".js")'/>
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Group controlId="multiplier">
+                                    <Form.Label>Language Multiplier</Form.Label>
+                                    <Form.Control type="text" placeholder="Enter multiplier"/>
+                            </Form.Group>
+                            <Button Style="primary" type="submit" onClick={this.handleSubmit}>Submit</Button>
+                            <Button Style="secondary" onClick={this.closeModal}>Cancel</Button>
+                        </Form>
                     </Modal>
                         
 
@@ -73,10 +101,10 @@ class LanguageScaleTable extends Component{
                             </thead>
                             <tbody>
 
-                                {LanguageScale.map(scales=>
+                                {this.state.LanguageScale.map(scales=>
                                     <tr>
                                         <td>{scales.name}</td>
-                                        <td>{scales.Extention}</td>
+                                        <td>{scales.extention}</td>
                                         <td>{scales.multiplier}</td>
                                         <td>
                                             <Button className="editButton" variant="outline-secondary" 
