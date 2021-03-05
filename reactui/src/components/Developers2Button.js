@@ -8,8 +8,7 @@ class Developers2Button extends Component{
         super(props);
         this.state={
             data: [],
-            developerNames: [],
-            submitted: false
+            developerNames: []
         };
     }
 
@@ -21,32 +20,34 @@ class Developers2Button extends Component{
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         let url2 = '/api/v1/getusernames/' + repNum
-        await fetch(url2, {
+        const result = await fetch(url2, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then((result)=> {
-            result.json().then((resp) => {
-                this.setState({data:resp , developerNames:JSON.parse(JSON.stringify(resp))})
-                sessionStorage.setItem("Developers", JSON.stringify(this.state.data))
-            })
         })
+        const resp = await result.json();
+        await this.setState({data:resp , developerNames:JSON.parse(JSON.stringify(resp))})
+        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.data))
     }
 
-    storeNames() {
-        sessionStorage.setItem('DeveloperNames', JSON.stringify(this.state.developerNames))
+    async storeNames() {
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+        await sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(this.state.developerNames))
+        console.log("Developer",sessionStorage.getItem('Developers' + repNum))
+        console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
     }
 
-    handleChange = (item) => (event) => {
+    handleChange = (item) => (event)=> {
         event.preventDefault();
         var tempDevNames = this.state.developerNames;
         var tempDevUsernames = JSON.parse(JSON.stringify(this.state.data));
 
         for(var i = 0; i < tempDevUsernames.length; i++){
             if(tempDevUsernames[i] === item){
-                if(event.target.value != "") {
+                if(event.target.value !== "") {
                     tempDevNames[i] = event.target.value;
                 }else{
                     tempDevNames[i] = item;
@@ -61,9 +62,7 @@ class Developers2Button extends Component{
         var DataArray = JSON.parse(data)
 
         return(
-
             <ul>
-                <header></header>
                 {DataArray.map(item => {
                     return <li>
                         <a href= {"Developers/" + item }target= "_blank">

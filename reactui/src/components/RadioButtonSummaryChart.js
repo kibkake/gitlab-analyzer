@@ -10,25 +10,33 @@ import CommitMRScoreChart from "./CommitMRScoreChart";
 import CommitMRNumChart from "./CommitMRNumChart";
 import CommentChart from "./CommentChart";
 import "./RadioButtonSummaryCharts.css"
+import CommitChart from "./CommitChart";
 //[https://material-ui.com/components/radio-buttons/]
 
 function Chart(props){
-    if (props.value == "score") {
+
+    if (props.value === "score") {
         return (<div>
             <h4 style={{textAlign:'center'}}>Score of Commits/Merge Per Day</h4>
-            <CommitMRScoreChart devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+            <CommitMRScoreChart devName = {props.devName}
+                                startTime = {props.startTime}
+                                endTime = {props.endTime}/>
         </div>);
     }
-    else if (props.value == "number") {
+    else if (props.value === "number") {
         return (<div>
             <h4 style={{textAlign: 'center'}}>Number of Commits/Merge Per Day</h4>
-            <CommitMRNumChart devName={sessionStorage.getItem("CurrentDeveloper")}/>
+            <CommitMRNumChart devName={props.devName}
+                              startTime = {props.startTime}
+                              endTime = {props.endTime}/>
         </div>);
     }
-    if (props.value == "words") {
+    if (props.value === "words") {
         return (<div>
             <h4 style={{textAlign: 'center'}}>Number of Words Per Day</h4>
-            <CommentChart devName={sessionStorage.getItem("CurrentDeveloper")}/>
+            <CommentChart devName={props.devName}
+                          startTime = {props.startTime}
+                          endTime = {props.endTime}/>
         </div>);
     }
 }
@@ -36,7 +44,11 @@ function Chart(props){
 export default class SummaryChartRadios extends Component {
     constructor(props) {
         super(props);
-        this.state = {value: "score"};
+        this.state = {value: "score",
+            parentData: this.props.devName,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
+        };
         this.handleRadioChange = this.handleRadioChange.bind(this);
     }
 
@@ -47,12 +59,12 @@ export default class SummaryChartRadios extends Component {
         });
     }
 
-
     render() {
+
         return (
             <div onChange={this.setState.bind(this)} >
             <FormControl component="fieldset" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-                <RadioGroup defaultValue="score" aria-label="comment" name="customized-radios" >
+                <RadioGroup row defaultValue="score" aria-label="comment" name="customized-radios" >
                     <FormControlLabel value="score" control={ <StyledRadio checked={this.state.value === "score"}
                                                                            onChange={this.handleRadioChange}/>} label="Score of Commit/Merge"/>
                     <FormControlLabel value="number" control={<StyledRadio checked={this.state.value === "number"}
@@ -63,7 +75,8 @@ export default class SummaryChartRadios extends Component {
             </FormControl>
                 <br>
                 </br>
-                <Chart value = {this.state.value}/>
+                <Chart value = {this.state.value}  devName = {this.props.devName}
+                       startTime = {this.props.startTime}  endTime = {this.props.endTime}/>
             </div>
 
     );

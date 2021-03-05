@@ -2,8 +2,6 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
 import {AiOutlineHome} from 'react-icons/ai';
 import './Navbar.css';
-import {MenuItems} from "./MenuItem_Developers";
-import axios from "axios";
 
 export var rep = window.location.pathname.split("/")[2]
 export var user = window.location.pathname.split("/")[4]
@@ -45,11 +43,9 @@ export class Navbar_Developers extends Component{
         }
     }
 
-    componentDidMount() {}
-
-    componentDidUpdate(prevProps){
+    async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
-            this.setState({parentdata: [
+           await this.setState({parentdata: [
                     {
                         title: 'Summary',
                         url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/summary',
@@ -80,8 +76,6 @@ export class Navbar_Developers extends Component{
     }
 
     render(){
-        //console.log(something)
-        const {parentdata} = this.state;
         return(
             <nav className="navbarItems">
                 <div>
@@ -93,7 +87,7 @@ export class Navbar_Developers extends Component{
                     {this.state.parentdata.map((item,index)=>{
                         return(
                             <li key={index} className={item.cName}>
-                                <Link to={{pathname: item.url + '/'}}>
+                                <Link to={{pathname: item.url}}>
                                     <span>{item.title}</span>
                                 </Link>
                             </li>
