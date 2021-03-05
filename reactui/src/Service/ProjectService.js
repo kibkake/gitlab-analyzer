@@ -16,7 +16,17 @@ class ProjectService {
     }
 
     getAllMembers() {
-
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+        let url2 = PROJECT_URL + 'getusernames/' + repNum
+        const result = fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        return result
     }
 
     getCodeScore(projectId, committerName) {
@@ -37,10 +47,14 @@ class ProjectService {
 
     }
 
-    getMrsAndCommitScoresPerDay(startTm,endTm ){
+    getMrsAndCommitScoresPerDay(startTm,endTm, id, username){
          return axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
             endTm)
+    }
+
+    getTopUserNotes(startTm,endTm, id, username){
+        return axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/" + startTm + '/' + endTm)
     }
 
     convertMonthToNumber(month) {
