@@ -12,9 +12,10 @@ function DropDownMenuComments ({listOfDevelopers}) {
         devArray.push({label: item, value: item})
     })
 
-    const currentDeveloper = sessionStorage.getItem("CurrentDeveloper")
+    const pathArray = window.location.pathname.split('/');
+
     const [selectedValue, setSelectedValue] = useState(
-        null
+        pathArray[4]
     );
 
     const handleChange = obj => {
@@ -25,14 +26,14 @@ function DropDownMenuComments ({listOfDevelopers}) {
     return (
 
         <div>
-            <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+            <Navbar_Developers devName = {selectedValue}/>
             <br>
             </br>
             <div className="DropDownMenu">
 
             <Select
                 options={devArray}
-                defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
+                defaultValue={{ label: selectedValue, value: selectedValue }}
                 onChange={handleChange}/>
             </div>
             <br>
@@ -44,7 +45,7 @@ function DropDownMenuComments ({listOfDevelopers}) {
             </div>
             <br></br>
             <h4 style={{textAlign:'center'}}>Top 10 comments </h4>
-            <CommentTable devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+            <CommentTable devName = {selectedValue}/>
 
         </div>
     )

@@ -4,7 +4,6 @@ import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
 import CommitChart from "./CommitChart";
 import './DropDownMenu.css';
-import DateRangeCommits from "./DateRangeCommits";
 
 
 function DropDownMenuCommit ({listOfDevelopers}) {
@@ -16,7 +15,6 @@ function DropDownMenuCommit ({listOfDevelopers}) {
 
     const pathArray = window.location.pathname.split('/');
 
-    const currentDeveloper = sessionStorage.getItem("CurrentDeveloper")
     const [selectedValue, setSelectedValue] = useState(
         pathArray[4]
     );

@@ -14,9 +14,10 @@ function DropDownMenuMerge ({listOfDevelopers}) {
         devArray.push({label: item, value: item})
     })
 
-    const currentDeveloper = sessionStorage.getItem("CurrentDeveloper")
+    const pathArray = window.location.pathname.split('/');
+
     const [selectedValue, setSelectedValue] = useState(
-        null
+        pathArray[4]
     );
 
     const handleChange = obj => {
@@ -27,14 +28,14 @@ function DropDownMenuMerge ({listOfDevelopers}) {
     return (
 
         <div classname='CodeDiff'>
-            <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+            <Navbar_Developers devName = {selectedValue}/>
             <br>
             </br>
             <div className="DropDownMenu">
 
             <Select
                 options={devArray}
-                defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
+                defaultValue={{ label: selectedValue, value: selectedValue }}
                 onChange={handleChange}/>
             </div>
             <br>
@@ -44,7 +45,7 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             <h2 style={{textAlign: 'center'}}>-code diff should be shown in the same page</h2>
             <h4 style={{textAlign: 'center'}}>-Highlight + part?</h4>
 
-            <CodeDiffTable  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+            <CodeDiffTable  devName = {selectedValue}/>
 
         </div>
     )

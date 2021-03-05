@@ -20,7 +20,9 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
 
-    const[selectedValue, setSelectedValue] = useState(pathArray[4]);
+    const[selectedValue, setSelectedValue] = useState(
+        pathArray[4]
+    );
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
