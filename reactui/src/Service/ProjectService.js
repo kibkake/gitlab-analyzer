@@ -37,6 +37,12 @@ class ProjectService {
 
     }
 
+    getMrsAndCommitScoresPerDay(startTm,endTm ){
+         return axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
+            startTm + '/' +
+            endTm)
+    }
+
     convertMonthToNumber(month) {
         if(month === "Jan"){
             return "01";

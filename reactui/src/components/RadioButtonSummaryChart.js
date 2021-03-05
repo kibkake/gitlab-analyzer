@@ -59,7 +59,6 @@ export default class SummaryChartRadios extends Component {
         });
     }
 
-
     render() {
 
         return (

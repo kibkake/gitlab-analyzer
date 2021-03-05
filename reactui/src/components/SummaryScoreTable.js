@@ -33,19 +33,19 @@ class SummaryScoreTable extends Component{
             for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
                 if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
                     name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
+                    console.log("summary score table for: ", name)
                 }
             }
         }
 
         //request ref: http://localhost:8090/api/v1/projects/6/allTotalScores/user2/2021-01-01/2021-02-23
         const response = await axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/" +
-            startTm
-            + "/" + endTm)
+            startTm + "/"
+            + endTm)
 
         const scores = await response.data
         await this.setState({scoreSummary: scores, parentdata: username,startTime: startTm,
                     endTime: endTm})
-        //console.log(this.state.scoreSummary);
     }
 
     async componentDidUpdate(prevProps){

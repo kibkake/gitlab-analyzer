@@ -2,8 +2,6 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
 import {AiOutlineHome} from 'react-icons/ai';
 import './Navbar.css';
-import {MenuItems} from "./MenuItem_Developers";
-import axios from "axios";
 
 export var rep = window.location.pathname.split("/")[2]
 export var user = window.location.pathname.split("/")[4]
