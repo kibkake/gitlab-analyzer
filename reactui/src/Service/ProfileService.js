@@ -26,6 +26,15 @@ export default class ProfileService {
         return axios.get(REST_API+"/"+username);
     }
 
+    static setUserToken(token){
+        const tokenInfo = JSON.stringify({ 'token':token });
+        return axios.post(REST_API+"/setToken", tokenInfo, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
     static logout(){
         sessionStorage.clear();
     }

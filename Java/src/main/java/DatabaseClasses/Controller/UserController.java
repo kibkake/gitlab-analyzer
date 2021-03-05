@@ -38,6 +38,9 @@ public class UserController {
     @PostMapping(path = "changeToken")
     public void changeToken(@RequestBody User user){userService.changeToken(user);}
 
+    @PostMapping(path = "setToken")
+    public void setToken(@RequestBody User user){userService.setToken(user);}
+
     @GetMapping(path = "{username}")
     public User getUser(@PathVariable("username") String username) {
         return userService.retrieveUserInfo(username);
