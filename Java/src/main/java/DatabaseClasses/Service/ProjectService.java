@@ -349,7 +349,7 @@ public class ProjectService {
         }
         List<MergeRequest> mergeRequests = project.getMergedRequests();
         for (MergeRequest mergeRequest : mergeRequests) {
-            List<Note> mrNotes = mergeRequest.getNotes();
+            List<Note> mrNotes = mergeRequest.getAllNotes();
             if (mrNotes != null) {
                 for (Note note : mrNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());

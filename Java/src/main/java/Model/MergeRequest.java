@@ -30,7 +30,8 @@ public class MergeRequest {
     private String sha;
     double mrScore;
     private Date mergedDate;
-    List<Note> notes;
+    List<Note> allNotes;
+    List<Note> codeReviewNotes;
     List<Diff> diffs;
 
     public MergeRequest() {
@@ -38,7 +39,7 @@ public class MergeRequest {
     }
 
     public boolean isAContributor(String username) {
-        for (Developer currentDev: contributors) {
+        for (Developer currentDev : contributors) {
             if (currentDev.getUsername().equals(username)) {
                 return true;
             }
@@ -235,12 +236,26 @@ public class MergeRequest {
         this.mrScore = mrScore;
     }
 
-    public List<Note> getNotes() {
-        return notes;
+    public void setNotes(List<Note> notes) {
+        this.allNotes = notes;
+        
+        List<Note> tempCodeReviewNotes = new ArrayList<>();
+        for (Note note : notes) {
+            int noteAuthorId = note.getAuthor().getId();
+            int MRContributorId = contributors.get(0).getId();
+            if (noteAuthorId != MRContributorId) {
+                tempCodeReviewNotes.add(note);
+            }
+        }
+        this.codeReviewNotes = tempCodeReviewNotes;
     }
 
-    public void setNotes(List<Note> notes9) {
-        this.notes = notes;
+    public List<Note> getAllNotes() {
+        return allNotes;
+    }
+
+    public List<Note> getCodeReviewNotes() {
+        return codeReviewNotes;
     }
 
     public List<Diff> getDiffs() {
