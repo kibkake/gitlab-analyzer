@@ -215,7 +215,7 @@ public class Commit {
     }
 
     public void calculateAndSetCommitScore(){
-        commitScore = 0;
+        commitScore = 0.0;
         for (int i = 0; i < diffs.size(); i++) {
             commitScore += diffs.get(i).getDiffScore();
         }

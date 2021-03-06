@@ -52,6 +52,7 @@ public class Diff {
                 }
             }
         }
+        score = Math.round(score * 100.0) / 100.0;
         this.diffScore = score;
     }
 

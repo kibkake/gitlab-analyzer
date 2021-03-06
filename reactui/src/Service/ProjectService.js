@@ -16,7 +16,17 @@ class ProjectService {
     }
 
     getAllMembers() {
-
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+        let url2 = PROJECT_URL + 'getusernames/' + repNum
+        const result = fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        return result
     }
 
     getCodeScore(projectId, committerName) {
@@ -37,6 +47,59 @@ class ProjectService {
 
     }
 
+    getMrsAndCommitScoresPerDay(startTm,endTm, id, username){
+         return axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
+            startTm + '/' +
+            endTm)
+    }
+
+    getTopUserNotes(startTm,endTm, id, username){
+        return axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/" + startTm + '/' + endTm)
+    }
+
+    convertMonthToNumber(month) {
+        if(month === "Jan"){
+            return "01";
+        }else if(month === "Feb"){
+            return "02";
+        }else if(month === "Mar"){
+            return "03";
+        }else if(month === "Apr"){
+            return "04";
+        }else if(month === "May"){
+            return "05";
+        }else if(month === "Jun"){
+            return "06";
+        }else if(month === "Jul"){
+            return "07";
+        }else if(month === "Aug"){
+            return "08";
+        }else if(month === "Sep"){
+            return "09";
+        }else if(month === "Oct"){
+            return "10";
+        }else if(month === "Nov"){
+            return "11";
+        }else{
+            return "12"
+        }
+    }
+
+    async getListOfDevs(repNum){
+
+        let url2 = '/api/v1/getusernames/' + repNum
+        const result = await fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        var resp;
+        resp = result.json();
+        var listOfDevelopers = await resp;
+        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(listOfDevelopers));
+    }
 }
 
 export default new ProjectService();

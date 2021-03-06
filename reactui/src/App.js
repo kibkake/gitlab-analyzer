@@ -32,8 +32,7 @@ function signupHandler(){
 
 function App() {
   const { user, setUser } = useToken();
-
-  // requires a authentication token to proceed
+    // requires a authentication token to proceed
   if(!sessionStorage.getItem('user')) {
     return (
         <>
