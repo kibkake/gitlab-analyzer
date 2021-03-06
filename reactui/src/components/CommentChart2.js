@@ -24,6 +24,15 @@ class CommentChart extends PureComponent {
         await this.setState({commentScore: commentInfo})
     }
 
+
+    async componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime ||
+            this.props.endTime !== prevProps.endTime){
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
+    }
+
 }
 
 export default CommentChart
