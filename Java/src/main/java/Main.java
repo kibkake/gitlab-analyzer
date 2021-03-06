@@ -36,7 +36,7 @@ public class Main {
     public static void main(String[] args){
         User user = User.getInstance();
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
-        user.setToken("");
+        user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
         SpringApplication.run(Main.class,args);
     }
