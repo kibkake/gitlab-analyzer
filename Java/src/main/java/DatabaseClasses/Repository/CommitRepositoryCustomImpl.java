@@ -27,11 +27,10 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 
         //https://stackoverflow.com/questions/62340986/aggregation-with-multiple-criteria
         final Criteria nameMatchCriteria = Criteria.where("authorName").is(devUserName);
+
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("date").gte(startDate).lte(endDate);
-
         Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);
-
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(criterias),

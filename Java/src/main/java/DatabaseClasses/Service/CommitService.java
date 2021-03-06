@@ -23,7 +23,9 @@ public class CommitService {
     }
 
     public List<CommitDateScore> getAllUserCommitsArray(int projectId, String authorName, LocalDate startLocalTime, LocalDate endLocalTime) {
-        List<CommitDateScore> userCommitScores = commitRepository.getDevDateScore(projectId, authorName, startLocalTime, endLocalTime);
+        List<CommitDateScore> userCommitScores = new ArrayList<>(
+                commitRepository.getDevDateScore(projectId, authorName, startLocalTime, endLocalTime));
+
         ArrayList<LocalDate> dates = LocalDateFunctions.generateRangeOfDates(startLocalTime, endLocalTime);
         for(LocalDate date: dates){
             if(!containsDate(userCommitScores, date)) {
@@ -31,6 +33,7 @@ public class CommitService {
                 userCommitScores.add(scoreForDate);
             }
         }
+        System.out.println(userCommitScores);
         userCommitScores.sort(Comparator.comparing(CommitDateScore::getDate));
         return userCommitScores;
     }

@@ -105,7 +105,10 @@ public class CommitDateScore implements Comparable<CommitDateScore>{
     //https://stackoverflow.com/questions/5927109/sort-objects-in-arraylist-by-date
     @Override
     public int compareTo(CommitDateScore o) {
-        return getDate().compareTo(o.getDate());
-
+        if (getDate() == null || o.getDate() == null) {
+            return 0;
+        } else {
+            return getDate().compareTo(o.getDate());
+        }
     }
 }

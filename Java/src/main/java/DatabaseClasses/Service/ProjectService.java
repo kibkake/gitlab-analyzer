@@ -162,7 +162,7 @@ public class ProjectService {
     private Developer findDeveloperWithUsernameField(String username, int projectId) {
         List<Developer> developers = getProjectDevelopers(projectId);
         for (Developer developer: developers) {
-            if (developer.getUsername().equals(username)) {
+                if (developer.getUsername().equals(username)) {
                 return developer;
             }
         }
@@ -173,6 +173,7 @@ public class ProjectService {
         return commit.getCommitterName().equals(nameOrUsername)
                || commit.getAuthorName().equals(nameOrUsername);
     }
+
 
     private boolean didDeveloperAuthorCommit(Commit commit, Developer developer,
                                              UseWhichDevField devField) {
