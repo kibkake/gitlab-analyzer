@@ -77,7 +77,7 @@ public class CommitController {
     }
 
 
-    @GetMapping("projects/{projectId}/Commit/{hash}")
+    @GetMapping("projects/{projectId}/Commits/{hash}")
     public Commit getCommit(@PathVariable("projectId") int projectId,
                             @PathVariable("hash") String hash) {
 

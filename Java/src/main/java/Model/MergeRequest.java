@@ -14,6 +14,7 @@ public class MergeRequest {
 
     @Id
     private Integer id;
+    private int mergeRequestIdForASpecificProject; // this is the iid provided by gitLab
     private int projectId;
     private String title;
     private String description;
@@ -137,6 +138,19 @@ public class MergeRequest {
 
     public void setMergedDate(Date mergedDate) {
         this.mergedDate = mergedDate;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @JsonProperty("iid")
+    public int getMergeRequestIdForASpecificProject() {
+        return mergeRequestIdForASpecificProject;
+    }
+
+    public void setMergeRequestIdForASpecificProject(int mergeRequestIdForASpecificProject) {
+        this.mergeRequestIdForASpecificProject = mergeRequestIdForASpecificProject;
     }
 
     @Override

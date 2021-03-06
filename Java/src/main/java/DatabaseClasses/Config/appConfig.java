@@ -12,10 +12,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @EnableAutoConfiguration
 @Configuration
 public class appConfig {
-    private static String database = "nateTest";
+    private static String database = "gitlab";
     private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/"
         + database + "?retryWrites=true&w=majority";
-
 
     public MongoClient mongoClient() {
         return MongoClients.create(mongoDBConnectionAddress);

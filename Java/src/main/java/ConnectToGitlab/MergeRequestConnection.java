@@ -20,7 +20,7 @@ public class MergeRequestConnection {
         String pageNumber = "1";
         List<MergeRequest> mergeRequests = new ArrayList<>();
         do {
-            String myUrl = user.getServerUrl() +"/projects/" + projectId
+            String myUrl = user.getServerUrl() +"projects/" + projectId
                     + "/merge_requests?state=merged&all=true&per_page=100&page=" + pageNumber + "&access_token="
                     + user.getToken();
 
@@ -33,19 +33,19 @@ public class MergeRequestConnection {
         }while (!pageNumber.equals(""));
 
         for (MergeRequest mergeRequest : mergeRequests) {
-            mergeRequest.setContributors(getMergeRequestContributors(projectId, mergeRequest.getId()));
-            mergeRequest.setDiffs(getMergeDiffs(projectId, mergeRequest.getId()));
+            mergeRequest.setContributors(getMergeRequestContributors(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
+            mergeRequest.setDiffs(getMergeDiffs(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
             mergeRequest.setMrScore(calcMergeRequestScore(mergeRequest.getDiffs())); // must be done after diffs
-            mergeRequest.setNotes(getMergeRequestNotes(projectId, mergeRequest.getId()));
-            mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getId()));
+            mergeRequest.setNotes(getMergeRequestNotes(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
+            mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
         }
         return mergeRequests;
     }
 
-    public static List<Developer> getMergeRequestContributors(int projectId, int mergeRequestId) {
+    public static List<Developer> getMergeRequestContributors(int projectId, int mergeRequestIdForASpecificProject) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
-        String url = user.getServerUrl() +"/projects/" + projectId + "/merge_requests/" + mergeRequestId
+        String url = user.getServerUrl() +"projects/" + projectId + "/merge_requests/" + mergeRequestIdForASpecificProject
                 + "/participants?access_token=" + user.getToken();
 
         ResponseEntity<List<Developer>> commitsResponse = restTemplate.exchange(url,
@@ -53,10 +53,10 @@ public class MergeRequestConnection {
         return commitsResponse.getBody();
     }
 
-    public static List<Commit> getMergeRequestCommits(int projectId, int mergeRequestId) {
+    public static List<Commit> getMergeRequestCommits(int projectId, int mergeRequestIdForASpecificProject) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
-        String url = (user.getServerUrl() +"projects/"  + projectId  + "/merge_requests/" + mergeRequestId + "/commits"
+        String url = (user.getServerUrl() + "projects/"  + projectId  + "/merge_requests/" + mergeRequestIdForASpecificProject + "/commits"
                 + "?access_token=" + user.getToken());
 
         ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(url,
@@ -79,13 +79,13 @@ public class MergeRequestConnection {
         return score;
     }
 
-    public static List<Note> getMergeRequestNotes(int projectId, int mergeRequestIid) {
+    public static List<Note> getMergeRequestNotes(int projectId, int mergeRequestIdForASpecificProject) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Note> mergeNotes = new ArrayList<>();
         do {
-            String url = (user.getServerUrl() + "projects/" + projectId + "/merge_requests/" + mergeRequestIid + "/notes"
+            String url = (user.getServerUrl() + "projects/" + projectId + "/merge_requests/" + mergeRequestIdForASpecificProject + "/notes"
                     + "?per_page=100&page=" + pageNumber +"&access_token=" + user.getToken());
 
             ResponseEntity<List<Note>> mergeNoteResponse = restTemplate.exchange(url,
@@ -104,13 +104,13 @@ public class MergeRequestConnection {
         return mergeNotes;
     }
 
-    public static List<Diff> getMergeDiffs(int projectId, int mergeRequestId) {
+    public static List<Diff> getMergeDiffs(int projectId, int mergeRequestIdForASpecificProject) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<MergeRequestDiff> mergeRequestDiff = new ArrayList<>();
         do {
-            String url = (user.getServerUrl() + "projects/" + projectId + "/merge_requests/" + mergeRequestId +
+            String url = (user.getServerUrl() + "projects/" + projectId + "/merge_requests/" + mergeRequestIdForASpecificProject +
                     "/changes?per_page=100&page=" + pageNumber +"&access_token=" + user.getToken());
             ResponseEntity<MergeRequestDiff> mergeDiffResponse = restTemplate.exchange(url,
                     HttpMethod.GET, null, new ParameterizedTypeReference<MergeRequestDiff>() {
