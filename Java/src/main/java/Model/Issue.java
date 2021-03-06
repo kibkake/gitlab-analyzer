@@ -8,7 +8,6 @@ import java.util.List;
 @Document(value = "Issue")
 public class Issue {
     private int id;
-    private int iid;
     private int projectId;
     private Developer author;
     private String title;
@@ -27,14 +26,6 @@ public class Issue {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getIid() {
-        return iid;
-    }
-
-    public void setIid(int iid) {
-        this.iid = iid;
     }
 
     @JsonProperty("project_id")

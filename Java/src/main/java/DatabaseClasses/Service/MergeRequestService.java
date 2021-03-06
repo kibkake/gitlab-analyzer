@@ -1,7 +1,6 @@
 package main.java.DatabaseClasses.Service;
 
 import main.java.ConnectToGitlab.MergeRequestConnection;
-import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.DatabaseClasses.Repository.MergeRequestRepository;
 import main.java.Model.MergeRequest;
@@ -33,7 +32,7 @@ public class MergeRequestService {
     }
 
     public MergeRequest getMergeRequest(int projectId, int mrId) {
-        return mergeRequestRepository.findByProjectIdAndIid(projectId, mrId);
+        return mergeRequestRepository.findByProjectIdAndId(projectId, mrId);
     }
 
     public List<MergeRequest> getProjectMRs(int projectId) {

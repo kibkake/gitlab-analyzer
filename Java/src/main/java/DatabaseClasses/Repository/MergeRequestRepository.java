@@ -14,7 +14,7 @@ public interface MergeRequestRepository extends MongoRepository<MergeRequest, In
 
     List<MergeRequest> findByProjectIdAndAuthorUsernameAndMergedDateBetween(int projectId, String authorUsername, Date start, Date end);
 
-    MergeRequest findByProjectIdAndIid(int projectId, int iid);
+    MergeRequest findByProjectIdAndId(int projectId, int id);
 
     List<MergeRequest> findByProjectId(int projectId);
 

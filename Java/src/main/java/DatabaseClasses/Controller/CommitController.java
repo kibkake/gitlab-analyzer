@@ -1,7 +1,6 @@
 package main.java.DatabaseClasses.Controller;
 
 import main.java.DatabaseClasses.Model.CommitDateScore;
-import main.java.DatabaseClasses.Model.CommitTotalScore;
 import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Service.CommitService;
 import main.java.DatabaseClasses.Service.ProjectService;
@@ -18,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/")
+@RequestMapping("api/v2/")
 public class CommitController {
 
     private final CommitService commitService;
@@ -67,7 +66,7 @@ public class CommitController {
         return commitService.getScorePerDay(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/Commitsarray/{committerName}/{start}/{end}")
+    @GetMapping("projects/{projectId}/Commits/array/{committerName}/{start}/{end}")
     public List<CommitDateScore> getCommitsArray(@PathVariable("projectId") int projectId,
                                            @PathVariable("committerName") String committerName,
                                            @PathVariable("start") String start,

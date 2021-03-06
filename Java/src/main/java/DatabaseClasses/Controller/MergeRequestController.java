@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/")
+@RequestMapping("api/v2/")
 public class MergeRequestController {
 
     private final MergeRequestService mergeRequestService;
@@ -28,7 +28,7 @@ public class MergeRequestController {
     }
 
     @GetMapping("projects/{projectId}/MergeRequest/save")
-    public void saveProjectCommits(@PathVariable int projectId) {
+    public void saveProjectMergeRequests(@PathVariable int projectId) {
         mergeRequestService.saveProjectMergeRequests(projectId);
     }
 
@@ -64,7 +64,7 @@ public class MergeRequestController {
     }
 
     @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
-    public MergeRequest getMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
+    public MergeRequest getSingleMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
         return mergeRequestService.getMergeRequest(projectId, mrId);
     }
 

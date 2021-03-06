@@ -14,7 +14,6 @@ public class MergeRequest {
 
     @Id
     private Integer id;
-    private int iid;
     private int projectId;
     private String title;
     private String description;
@@ -49,14 +48,6 @@ public class MergeRequest {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getIid() {
-        return iid;
-    }
-
-    public void setIid(int iid) {
-        this.iid = iid;
     }
 
     @JsonProperty("project_id")
@@ -152,7 +143,6 @@ public class MergeRequest {
     public String toString() {
         return "MergeRequest{" +
                 "id=" + id +
-                ", iid=" + iid +
                 ", project_id=" + projectId +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

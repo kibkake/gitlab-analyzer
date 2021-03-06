@@ -33,18 +33,18 @@ public class IssueConnection {
         }while (!pageNumber.equals(""));
 
         for(Issue issue: issues) {
-            issue.setNotes(getIssueNotes(issue.getProjectId(), issue.getIid()));
+            issue.setNotes(getIssueNotes(issue.getProjectId(), issue.getId()));
         }
         return issues;
     }
 
-    private static List<Note> getIssueNotes(int projectId , int issueIid) {
+    private static List<Note> getIssueNotes(int projectId , int issueId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
         List<Note> notes = new ArrayList<>();
         do {
-            String url = user.getServerUrl() + "projects/" + projectId + "/issues/" + issueIid + "/notes"
+            String url = user.getServerUrl() + "projects/" + projectId + "/issues/" + issueId + "/notes"
                     + "?per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
             ResponseEntity<List<Note>> noteResponse = restTemplate.exchange(url,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Note>>() {

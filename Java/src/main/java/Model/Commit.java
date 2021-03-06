@@ -18,6 +18,7 @@ public class Commit {
     private String title; // 1st line of commit message
     private String message; // other lines of commit message
     private String authorName;
+    private String committerName;
     private String authorEmail;
     private String authorDate;
     private List<Diff> diffs;
@@ -25,6 +26,8 @@ public class Commit {
     private String sha;
     private int projectId;
     private double commitScore;
+
+
 
     public Commit() {
     }
@@ -51,6 +54,15 @@ public class Commit {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @JsonProperty("committer_name")
+    public String getCommitterName() {
+        return committerName;
+    }
+
+    public void setCommitterName(String committerName) {
+        this.committerName = committerName;
     }
 
     //https://www.baeldung.com/jackson-name-of-property
