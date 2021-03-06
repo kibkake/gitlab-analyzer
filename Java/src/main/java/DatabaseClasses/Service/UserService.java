@@ -33,6 +33,8 @@ public class UserService {
 
     public void changeToken(User user){userRepository.changeToken(user);}
 
+    public void setToken(User user){userRepository.setToken(user);}
+
     public User retrieveUserInfo(String username) {
         return userRepository.retrieveUserInfo(username);
     }
