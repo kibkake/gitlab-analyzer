@@ -21,10 +21,14 @@ class Summary extends Component {
         var developersArray = JSON.parse(strDevelopers);
 
         return (
+
             <div >
+
                 <DropDownMenuSummary listOfDevelopers={developersArray}/>
                 <br>
                 </br>
+
+
             </div>
         )
     }
