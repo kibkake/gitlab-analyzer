@@ -1,27 +1,7 @@
 import {Table} from "react-bootstrap";
 import React, {Component} from "react";
 import axios from "axios";
-/*
-function copyText(htmlElement) {
-    if(!htmlElement){
-        return;
-    }
 
-    let elementText = htmlElement.innerText;
-    let inputElement = document.createElement('input');
-    inputElement.setAttribute('value',elementText);
-    document.body.appendChild(inputElement);
-    inputElement.select();
-
-
-
-        document.execCommand('copy');
-}
-document.querySelector('#copy-btn').onclick =
-    function(){
-        copyText(document.querySelector('#copy1'));
-    }
-*/
 const scoreSummary = [
     {commitScore:3, scoreMR: 204, wordCountComment: 100},
     {commitScore:2, scoreMR: 12, wordCountComment: 200},
@@ -70,7 +50,6 @@ class SummaryScoreTable extends Component{
 
     render () {
         const {parentdata} = this.state;
-        let toCopy = "Commits: " + this.state.scoreSummary.totalCommitScore + " Merge Requests: " + this.state.scoreSummary.totalMergeRequestScore + " Word count of comments: " + this.state.scoreSummary.totalCommentWordCount;
         return (
             <div className="container">
                 <Table striped bordered hover>
@@ -78,14 +57,12 @@ class SummaryScoreTable extends Component{
                             <th>Commit</th>
                             <th>Merge Request</th>
                             <th>Word Count of Comments</th>
-                            <th>Copy Fields</th>
                         </tr>
                     <tbody>
                         <tr>
                             <td>{this.state.scoreSummary.totalCommitScore}</td>
                             <td>{this.state.scoreSummary.totalMergeRequestScore}</td>
                             <td>{this.state.scoreSummary.totalCommentWordCount}</td>
-                            <td><button onClick={()=>navigator.clipboard.writeText(toCopy)}> Copy Fields</button></td>
                         </tr>
 
                     </tbody>
