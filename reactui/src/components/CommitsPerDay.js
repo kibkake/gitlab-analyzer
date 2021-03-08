@@ -40,36 +40,46 @@ class CommitsPerDay extends Component{
     }
 
     render(){
-
-        str = "iirfomr";
-        str.substring()
+        /* old way, for reference
         var str = window.location.pathname;
         var strArr = str.split("/");
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
+         */
+
+        var output = this.state.data.map(function(item) {
+            return {
+                id: item.id,
+                date: item.date
+            };
+        });
+
+        var data = JSON.stringify(output);
+        var DataArray = JSON.parse(data)
+        {DataArray.map(item => console.log(item.id))}
+
 
         return(
-            //<div> Name: {DataArray} </div>
 
-            <ul>
-                <header></header>
-                {DataArray.map(item => {
-                    return <li>
-                        <a href= {"Developers/" + item }target= "_blank">
-                            <Button className="Footer" to={item.id}
-                                    type="button"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        window.location.href=  window.location.pathname + "/" + item.id;
+        <ul>
+            <header></header>
+            {DataArray.map(item => {
+                return <li>
+                    <a href= {"Developers/" + item }target= "_blank">
+                        <Button className="Footer" to={item.id}
+                                type="button"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    window.location.href=  window.location.pathname + "/" + item.id;
 
-                                    }}
-                            >
-                                <span >{item.id}          commited at:      {item.created_at.substring(11,19)}</span>
-                            </Button>
-                        </a>
-                    </li>;
-                })}
-            </ul>
+                                }}
+                        >
+                            <span >{item.id}          commited at:      {item.date.substring(11,19)}</span>
+                        </Button>
+                    </a>
+                </li>;
+            })}
+        </ul>
 
 
 
