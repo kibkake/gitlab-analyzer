@@ -109,21 +109,21 @@ export default class MergeListTable extends Component {
         super(props);
         this.state = {
             merges:[
-                {merged_at: '',
-                    mrScore: '',
-                    title: '',
-                    diffs: '',
-                    commits:[
-                        {created_at: '',
-                            author_email: '',
-                            commitScore: '',
-                            message: '',
-                            diffs : [
-                                {diff:''}
-                            ]
-                        }
-                        ]
-        }
+        //         {merged_at: '',
+        //             mrScore: '',
+        //             title: '',
+        //             diffs: '',
+        //             commits:[
+        //                 {created_at: '',
+        //                     author_email: '',
+        //                     commitScore: '',
+        //                     message: '',
+        //                     diffs : [
+        //                         {diff:''}
+        //                     ]
+        //                 }
+        //                 ]
+        // }
         ]
             // parentdata: this.props.devName
         }
@@ -137,9 +137,12 @@ export default class MergeListTable extends Component {
         axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
             .then(response => {
                 const result = response.data
-                this.setState({merges : {merged_at: result.merged_at, mrScore: result.mrScore, title: result.title,
-                        diffs: result.diffs, commits: result.commits(commit => {commit.created_at, })
-
+                this.setState([{merges: result}])
+                //https://spin.atomicobject.com/2018/08/20/objects-not-valid-react-child/
+                //https://www.akashmittal.com/react-error-objects-not-valid-react-child/
+                    // {merges : {merged_at: result.merged_at, mrScore: result.mrScore, title: result.title,
+                    //         diffs: result.diffs, commits: result.commits(commit => {commit.created_at: result.commits.created_at, commit.author_email,
+                    //             commit.commitScore, commit.diffs})}})
                 console.log(this.state.merges)
             }).catch((error) => {
             console.error(error);

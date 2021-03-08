@@ -37,7 +37,7 @@ function DropDownMenuMerge ({listOfDevelopers}) {
 
             <Select
                 options={devArray}
-                defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
+                defaultValue={{ label: selectedValue, value: selectedValue }}
                 onChange={handleChange}/>
             </div>
             <br>
@@ -47,10 +47,10 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             <h2 style={{textAlign: 'center'}}>-code diff should be shown in the same page</h2>
             <h4 style={{textAlign: 'center'}}>-Highlight + part?</h4>
 
-            <CodeDiffTable  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+            {/*<CodeDiffTable  devName = {selectedValue}/>*/}
 
-            <MergeListTable  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-            <CollapsibleTable/>
+            <MergeListTable  devName = {selectedValue}/>
+            {/*<CollapsibleTable/>*/}
         </div>
     )
 
