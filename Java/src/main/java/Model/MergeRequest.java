@@ -231,7 +231,7 @@ public class MergeRequest {
         List<Note> tempCodeReviewNotes = new ArrayList<>();
         for (Note note : notes) {
             int noteAuthorId = note.getAuthor().getId();
-            int MRContributorId = contributors.get(0).getId();
+            int MRContributorId = this.author.getId();
             if (noteAuthorId != MRContributorId) {
                 tempCodeReviewNotes.add(note);
             }
