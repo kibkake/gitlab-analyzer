@@ -3,6 +3,7 @@ package main.java;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequestConnection;
+import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.Model.Commit;
 import main.java.Model.Issue;
 import main.java.Model.MergeRequest;
@@ -38,6 +39,7 @@ public class Main {
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
+//        System.out.println( new CommitConnection().getProjectCommitsFromGitLab(6));
         SpringApplication.run(Main.class,args);
     }
 
