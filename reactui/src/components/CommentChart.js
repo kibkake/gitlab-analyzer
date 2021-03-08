@@ -55,7 +55,7 @@ export default class CommentChart extends PureComponent {
     }
 
     render() {
-        var output = this.state.commentScore.map(function(item) {
+        const output = this.state.commentScore.map(function(item) {
             return {
                 date: (new Date(item.created_at)).getTime(),
                 wordCount: item.wordCount
