@@ -2,6 +2,9 @@ package main.java.DatabaseClasses.Service;
 
 import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Model.AllScores;
+import main.java.DatabaseClasses.Repository.CommitRepository;
+import main.java.DatabaseClasses.Repository.MergeRequestRepository;
+import main.java.DatabaseClasses.Repository.UserRepository;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
@@ -20,14 +23,24 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
-    private final ProjectRepository projectRepository;
 
-    public enum UseWhichDevField {EITHER, NAME, USERNAME};
+    private final ProjectRepository projectRepository;
+    private final MergeRequestRepository mergeRequestRepository;
+    private final CommitRepository commitRepository;
+    private final UserRepository userRepository;
+
+
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, MergeRequestRepository mergeRequestRepository,
+                          CommitRepository commitRepository, UserRepository userRepository) {
         this.projectRepository = projectRepository;
-    }
+        this.mergeRequestRepository = mergeRequestRepository;
+        this.commitRepository = commitRepository;
+        this.userRepository = userRepository;
+7    }
+
+    public enum UseWhichDevField {EITHER, NAME, USERNAME};
 
     public List<Project> getAllProjects() {
         return projectRepository.getAllBy();
@@ -73,7 +86,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public void setProjectInfo(int projectId) {
+    public void setProjectInfo(int projectId, UserQuery userSettings) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
 
@@ -83,6 +96,16 @@ public class ProjectService {
         project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
+
+        //after all info has been collected we can now query the database to build each developers info
+        List<Developer> projectDevs = project.getDevelopers();
+        UserQuery userQuery = UserRepository.
+        for (Developer dev: projectDevs) {
+            List<MergeRequest> devsMrs = mergeRequestRepository.findByProjectIdAndAuthorUsernameAndMergedDateBetween(
+                    projectId, dev.getUsername(),
+            )
+            dev.setMergeRequests();
+        }
     }
 
     public List<DateScore> getDevCommitScoresPerDay(int projectId, String username, LocalDate start,

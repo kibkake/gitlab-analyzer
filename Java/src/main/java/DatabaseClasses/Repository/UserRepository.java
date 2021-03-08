@@ -1,7 +1,9 @@
 package main.java.DatabaseClasses.Repository;
 
 import main.java.Model.User;
+import main.java.Model.UserQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String>, main.java.DatabaseClasses.Repository.UserRepositoryCustom {
+public interface UserRepository extends MongoRepository<User, String>, UserRepositoryCustom {
 
     void createUserAccount(User user);
     void changePassword(User user);
@@ -20,4 +22,5 @@ public interface UserRepository extends MongoRepository<User, String>, main.java
     void setToken(User user);
 
     User retrieveUserInfo(String username);
+
 }

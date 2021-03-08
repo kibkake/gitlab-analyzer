@@ -2,8 +2,11 @@ package main.java.DatabaseClasses.Repository;
 
 import main.java.DatabaseClasses.DatabaseFunctions;
 import main.java.Model.User;
+import main.java.Model.UserQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.repository.Query;
 
 /**
  * Works with the database functions written for the Java MongoDB driver and is used in the UserRepository using the
@@ -12,7 +15,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
  * autowiring.
  */
 
-public class UserRepositoryCustomImpl implements main.java.DatabaseClasses.Repository.UserRepositoryCustom {
+public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     private final MongoTemplate mongoTemplate;
 
     @Autowired
@@ -46,6 +49,7 @@ public class UserRepositoryCustomImpl implements main.java.DatabaseClasses.Repos
     public User retrieveUserInfo(String username) {
         return DatabaseFunctions.retrieveUserInfo(username);
     }
+
 
 
 }

@@ -1,5 +1,7 @@
 package main.java.Model;
 
+import main.java.DatabaseClasses.Model.CommitDateScore;
+import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -15,6 +17,9 @@ public class Developer {
     private String name;
     private String username;
     private List<String> emails;
+    private List<CommitDateScore> commitDateScores;
+    private List<MergeRequestDateScore> mergeRequestDateScores;
+    private List<MergeRequest> mergeRequests;
 
     public Developer() {
     }
@@ -53,6 +58,30 @@ public class Developer {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<CommitDateScore> getCommitDateScores() {
+        return commitDateScores;
+    }
+
+    public void setCommitDateScores(List<CommitDateScore> commitDateScores) {
+        this.commitDateScores = commitDateScores;
+    }
+
+    public List<MergeRequestDateScore> getMergeRequestDateScores() {
+        return mergeRequestDateScores;
+    }
+
+    public void setMergeRequestDateScores(List<MergeRequestDateScore> mergeRequestDateScores) {
+        this.mergeRequestDateScores = mergeRequestDateScores;
+    }
+
+    public List<MergeRequest> getMergeRequests() {
+        return mergeRequests;
+    }
+
+    public void setMergeRequests(List<MergeRequest> mergeRequests) {
+        this.mergeRequests = mergeRequests;
     }
 
     @Override

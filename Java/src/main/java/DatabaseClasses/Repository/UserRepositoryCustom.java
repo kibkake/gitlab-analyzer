@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.Repository;
 
 import main.java.Model.User;
+import main.java.Model.UserQuery;
 
 /**
  * Is used to help integrate the custom functions that are already written working with UserRepository,
@@ -15,5 +16,8 @@ public interface UserRepositoryCustom {
     void setToken(User user);
 
     User retrieveUserInfo(String username);
+
+    UserQuery findUserSettingsForProject(String username, int projectId);
+
 }
 

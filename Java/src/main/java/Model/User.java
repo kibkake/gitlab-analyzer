@@ -3,6 +3,9 @@ package main.java.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Holds the user and login information
  */
@@ -19,6 +22,7 @@ public class User {
     private String email;
     private String password;
     private boolean isLoggedIn;
+    private List<UserQuery> userQueries;
 
 
     private static User singleton = new User( );
@@ -115,5 +119,21 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public List<UserQuery> getUserQueries() {
+        return userQueries;
+    }
+
+    public void setUserQueries(List<UserQuery> userQueries) {
+        this.userQueries = userQueries;
+    }
+
+    public static User getSingleton() {
+        return singleton;
+    }
+
+    public static void setSingleton(User singleton) {
+        User.singleton = singleton;
     }
 }
