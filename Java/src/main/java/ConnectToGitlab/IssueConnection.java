@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class IssueConnection {
 
-    public List<Issue> getProjectIssuesFromGitLab(int projectId) {
+    public static List<Issue> getProjectIssuesFromGitLab(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";

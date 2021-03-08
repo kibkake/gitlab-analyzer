@@ -22,7 +22,7 @@ public class User {
     private String email;
     private String password;
     private boolean isLoggedIn;
-    private List<ProjectSettings> userQueries;
+    private List<ProjectSettings> projectSettings;
 
 
     private static User singleton = new User( );
@@ -35,7 +35,7 @@ public class User {
     }
 
     public User() {
-        userQueries = new ArrayList<>();
+        projectSettings = new ArrayList<>();
     }
 
     private User(String serverUrl, String token, String name, String email) {
@@ -122,12 +122,12 @@ public class User {
                 '}';
     }
 
-    public List<ProjectSettings> getUserQueries() {
-        return userQueries;
+    public List<ProjectSettings> getProjectSettings() {
+        return projectSettings;
     }
 
-    public void setUserQueries(List<ProjectSettings> userQueries) {
-        this.userQueries = userQueries;
+    public void setProjectSettings(List<ProjectSettings> projectSettings) {
+        this.projectSettings = projectSettings;
     }
 
     public static User getSingleton() {

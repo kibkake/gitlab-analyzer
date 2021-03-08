@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     @Override
     public ProjectSettings retrieveUserSettings(String username, String settingName, int projectId) {
         final Criteria nameMatchCriteria = Criteria.where("username").is(username);
-        final Criteria settingNameMatch = Criteria.where("ProjectSettings.settingName").is(settingName);
+        final Criteria settingNameMatch = Criteria.where("ProjectSettings.name").is(settingName);
         final Criteria projectIdMatch = Criteria.where("ProjectSettings.projectId").is(projectId);
         Criteria criterias = new Criteria().andOperator(nameMatchCriteria, settingNameMatch, projectIdMatch);
 
@@ -64,6 +65,20 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         query.addCriteria(criterias);
         query.fields().include("name").position("ProjectSettings", 1);
         return mongoTemplate.findOne(query, ProjectSettings.class);
+    }
+    @Override
+    public void addSetting(String username, ProjectSettings setting) {
+        User user = DatabaseFunctions.retrieveUserInfo(username);
+        List<ProjectSettings> settings = user.getProjectSettings();
+        settings.add(setting);
+        Update update = new Update();
+        update.set("projectSettings", settings);
+
+        final Criteria nameMatchCriteria = Criteria.where("username").is(username);
+        Query query = new Query();
+        query.addCriteria(nameMatchCriteria);
+        mongoTemplate.updateFirst(query, update, User.class);
+
     }
 
 

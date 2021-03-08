@@ -3,38 +3,37 @@ package main.java.Model;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Document(collection = "userQuery")
 public class ProjectSettings {
 
-    private String queryName;
-    private LocalDate queryStartDate;
-    private LocalDate queryEndDate;
+    private String name;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private int projectId;
 
-    public String getQueryName() {
-        return queryName;
+    public String getName() {
+        return name;
     }
 
-    public void setQueryName(String queryName) {
-        this.queryName = queryName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public LocalDate getQueryStartDate() {
-        return queryStartDate;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setQueryStartDate(LocalDate queryStartDate) {
-        this.queryStartDate = queryStartDate;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDate getQueryEndDate() {
-        return queryEndDate;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setQueryEndDate(LocalDate queryEndDate) {
-        this.queryEndDate = queryEndDate;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public int getProjectId() {
@@ -43,5 +42,15 @@ public class ProjectSettings {
 
     public void setProjectId(int projectId) {
         this.projectId = projectId;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectSettings{" +
+                "name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", projectId=" + projectId +
+                '}';
     }
 }

@@ -39,7 +39,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
                 // how to group by date in mongo, our time includes minutes and this complicates a group by
                 //https://stackoverflow.com/questions/34577877/mongotemplate-aggregate-group-by-date
                 Aggregation.project("mergedDate", "mrScore")
-                        .and(DateOperators.DateToString.dateOf("date").toString("%Y-%m-%d")).as("groupByDate"),
+                        .and(DateOperators.DateToString.dateOf("mergedDate").toString("%Y-%m-%d")).as("groupByDate"),
                 Aggregation.group("groupByDate").count().as("numMergeRequests")
                         .sum("mrScore").as("mergeRequestScore")
 //                        .addToSet("contributors.username").as("authorName")

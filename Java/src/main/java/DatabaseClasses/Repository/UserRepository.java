@@ -19,6 +19,8 @@ public interface UserRepository extends MongoRepository<User, String>, UserRepos
     void changeToken(User user);
     void setToken(User user);
 
+    User findUserByUsername(String username);
+
     User retrieveUserInfo(String username);
 
 

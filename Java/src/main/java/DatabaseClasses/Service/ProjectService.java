@@ -92,10 +92,10 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
 
-        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
-        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
-        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
-        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
+        project.setDevelopers(DeveloperConnection.getProjectDevelopersFromGitLab(projectId));
+        project.setCommits(CommitConnection.getProjectCommitsFromGitLab(projectId));
+        project.setMergedRequests(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
+        project.setIssues(IssueConnection.getProjectIssuesFromGitLab(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
     }
@@ -105,30 +105,31 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
 
-        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
-        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
-        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
-        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
+        project.setDevelopers(DeveloperConnection.getProjectDevelopersFromGitLab(projectId));
+        project.setCommits(CommitConnection.getProjectCommitsFromGitLab(projectId));
+        project.setMergedRequests(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
+        project.setIssues(IssueConnection.getProjectIssuesFromGitLab(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
 
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = project.getDevelopers();
         for (Developer dev: projectDevs) {
-            Date startDate = java.sql.Date.valueOf(projectSettings.getQueryStartDate());
-            Date endDate = java.sql.Date.valueOf(projectSettings.getQueryEndDate());
+            Date startDate = java.sql.Date.valueOf(projectSettings.getStartDate());
+            Date endDate = java.sql.Date.valueOf(projectSettings.getEndDate());
             List<MergeRequest> devsMrs = mergeRequestRepository.findByProjectIdAndAuthorUsernameAndMergedDateBetween(
                     projectId, dev.getUsername(), startDate, endDate);
             List<MergeRequestDateScore> devMrScores = mergeRequestRepository.devsMrsScoreADay(projectId, dev.getUsername(),
-                    projectSettings.getQueryStartDate(), projectSettings.getQueryEndDate());
+                    projectSettings.getStartDate(), projectSettings.getEndDate());
             List<CommitDateScore> devCommitScores = commitRepository.getDevDateScore(projectId, dev.getUsername(),
-                    projectSettings.getQueryStartDate(), projectSettings.getQueryEndDate());
+                    projectSettings.getStartDate(), projectSettings.getEndDate());
 
             dev.setMergeRequests(devsMrs);
             dev.setMergeRequestDateScores(devMrScores);
             dev.setCommitDateScores(devCommitScores);
-
         }
+
+
     }
 
 

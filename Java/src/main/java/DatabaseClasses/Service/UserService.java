@@ -50,7 +50,12 @@ public class UserService {
     }
 
     public void addSetting(String username, ProjectSettings setting) {
-        User user = userRepository.retrieveUserInfo(username);
-        user.getUserQueries().add(setting);
+        userRepository.addSetting(username, setting);
     }
+
+    public List<ProjectSettings> getUserSettings(String username) {
+        User user = userRepository.findUserByUsername(username);
+        return user.getProjectSettings();
+    }
+
 }

@@ -14,10 +14,10 @@ import java.util.List;
 /**
  * Calls to GitLab Api to get user information
  */
-@RestController
+
 public class DeveloperConnection {
 
-    public List<Developer> getProjectDevelopersFromGitLab(int projectId) {
+    public static List<Developer> getProjectDevelopersFromGitLab(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String myUrl = user.getServerUrl() +"/projects/" + projectId + "/users?access_token=" + user.getToken();

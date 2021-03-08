@@ -83,9 +83,14 @@ public class UserController {
         DatabaseFunctions.setUserLoggedInStatus(username, isLoggedIn);
     }
 
-    @PostMapping(path = "{username}/addSettings")
+    @PostMapping(path = "user/{username}/addSettings")
     public void addProjectSettings(@PathVariable("username") String username, @RequestBody ProjectSettings setting){
         userService.addSetting(username, setting);
+    }
+
+    @GetMapping("user/{username}/settings")
+    public List<ProjectSettings> getUserSettings(@PathVariable("username") String username) {
+        return userService.getUserSettings(username);
     }
 
 }

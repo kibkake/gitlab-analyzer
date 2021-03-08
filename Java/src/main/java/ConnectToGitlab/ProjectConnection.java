@@ -18,11 +18,10 @@ import java.util.Objects;
 /**
  * Calls to GitLab Api to get Project information
  */
-@RestController
 public class ProjectConnection {
 
 
-    public List<Project> getAllProjectsFromGitLab() {
+    public static List<Project> getAllProjectsFromGitLab() {
         User user = User.getInstance();
         String pageNumber = "1";
         List<Project> projects = new ArrayList<>();

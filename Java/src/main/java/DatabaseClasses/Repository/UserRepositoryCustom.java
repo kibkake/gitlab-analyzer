@@ -20,5 +20,8 @@ public interface UserRepositoryCustom {
 
     ProjectSettings retrieveUserSettings(String username, String settingName, int projectId);
 
+    void addSetting(String userName, ProjectSettings settings);
+
+
 }
 

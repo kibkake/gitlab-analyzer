@@ -1,5 +1,7 @@
 package main.java.DatabaseClasses.Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Model.AllScores;
 import main.java.Model.*;
@@ -12,6 +14,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +56,12 @@ public class ProjectController {
         projectService.setProjectInfo(projectId);
     }
 
+    @RequestMapping("setProjectInfoWithSettings/{projectId}")
+    public void setProjectInfoWithSettings(@PathVariable int projectId, ProjectSettings projectSettings) {
+        projectSettings.setProjectId(projectId);
+        projectService.setProjectInfo(projectId, projectSettings);
+    }
+
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
@@ -63,7 +72,6 @@ public class ProjectController {
             return projectService.getAllProjects();
         }
     }
-
 
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {
