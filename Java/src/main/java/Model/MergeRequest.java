@@ -225,7 +225,7 @@ public class MergeRequest {
         this.mrScore = mrScore;
     }
 
-    public void setNotes(List<Note> notes) {
+    public void setMergeRequestNotes(List<Note> notes) {
         this.allNotes = notes;
         
         List<Note> tempCodeReviewNotes = new ArrayList<>();

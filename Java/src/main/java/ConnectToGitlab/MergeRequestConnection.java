@@ -36,7 +36,7 @@ public class MergeRequestConnection {
             mergeRequest.setContributors(getMergeRequestContributors(projectId, mergeRequest.getIid()));
             mergeRequest.setDiffs(getMergeDiffs(projectId, mergeRequest.getIid()));
             mergeRequest.setMrScore(calcMergeRequestScore(mergeRequest.getDiffs())); // must be done after diffs
-            mergeRequest.setNotes(getMergeRequestNotes(projectId, mergeRequest.getIid()));
+            mergeRequest.setMergeRequestNotes(getMergeRequestNotes(projectId, mergeRequest.getIid()));
             mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getIid()));
         }
         return mergeRequests;
