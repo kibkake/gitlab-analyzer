@@ -19,13 +19,13 @@ import java.util.Objects;
  */
 public class CommitConnection {
 
-    public List<Commit> getProjectCommitsFromGitLab(int projectId) {
+    public static List<Commit> getProjectCommitsFromGitLab(int projectId) {
         User user = User.getInstance();
         String pageNumber = "1";
         List<Commit> commits = new ArrayList<>();
         do {
-            String myUrl = user.getServerUrl() + "/projects/" + projectId +
-                    "/repository/commits?all=true&per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
+            String myUrl = user.getServerUrl() + "projects/" + projectId +
+                    "/repository/commits?ref_name=master&per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {
@@ -51,7 +51,7 @@ public class CommitConnection {
         List<Diff> diffs = new ArrayList<>();
 
         do {
-            String url = user.getServerUrl() + "/projects/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" +
+            String url = user.getServerUrl() + "projects/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" +
                     "?per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
             ResponseEntity<List<Diff>> diffsResponse = restTemplate.exchange(url,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Diff>>() {

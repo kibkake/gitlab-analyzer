@@ -27,5 +27,4 @@ public interface ProjectRepository extends MongoRepository <Project, Integer> {
     @Query(value = "{ id : ?0}", fields="{ 'commits : 1'}")
     List<Commit> getAllProjectCommitsById(int projectId);
 
-
 }

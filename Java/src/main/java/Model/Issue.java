@@ -1,17 +1,14 @@
 package main.java.Model;
 
-import main.java.Model.Developer;
-import main.java.Model.Note;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Document(value = "Issue")
 public class Issue {
     private int id;
-    private int iid;
-    private int project_id;
+    private int projectId;
     private Developer author;
     private String title;
     private String created_at;
@@ -31,20 +28,13 @@ public class Issue {
         this.id = id;
     }
 
-    public int getIid() {
-        return iid;
+    @JsonProperty("project_id")
+    public int getProjectId() {
+        return projectId;
     }
 
-    public void setIid(int iid) {
-        this.iid = iid;
-    }
-
-    public int getProject_id() {
-        return project_id;
-    }
-
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
     public Developer getAuthor() {

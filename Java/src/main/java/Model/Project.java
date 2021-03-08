@@ -1,5 +1,6 @@
 package main.java.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -16,10 +17,7 @@ public class Project {
     private int id;
     private String description;
     private String name;
-    private String created_at;
-    private String default_branch;
-    private String readme_url;
-    private String last_activity_at;
+    private String createdAt;
     private List<MergeRequest> mergedRequests;
     private List<Issue> issues;
     private List<Commit> commits;
@@ -60,36 +58,13 @@ public class Project {
         this.name = name;
     }
 
+    @JsonProperty("created_at")
     public String getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
     public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public String getDefault_branch() {
-        return default_branch;
-    }
-
-    public void setDefault_branch(String default_branch) {
-        this.default_branch = default_branch;
-    }
-
-    public String getReadme_url() {
-        return readme_url;
-    }
-
-    public void setReadme_url(String readme_url) {
-        this.readme_url = readme_url;
-    }
-
-    public String getLast_activity_at() {
-        return last_activity_at;
-    }
-
-    public void setLast_activity_at(String last_activity_at) {
-        this.last_activity_at = last_activity_at;
+        this.createdAt = created_at;
     }
 
     public List<MergeRequest> getMergedRequests() {
@@ -146,10 +121,7 @@ public class Project {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
-                ", created_at='" + created_at + '\'' +
-                ", default_branch='" + default_branch + '\'' +
-                ", readme_url='" + readme_url + '\'' +
-                ", last_activity_at='" + last_activity_at + '\'' +
+                ", created_at='" + createdAt + '\'' +
                 ", mergedRequests=" + mergedRequests +
                 ", issues=" + issues +
                 ", commits=" + commits +

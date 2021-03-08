@@ -12,8 +12,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @EnableAutoConfiguration
 @Configuration
 public class appConfig {
-    private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/gitlab?retryWrites=true&w=majority";
-
+    private static String database = "gitlab";
+    private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/"
+        + database + "?retryWrites=true&w=majority";
 
     public MongoClient mongoClient() {
         return MongoClients.create(mongoDBConnectionAddress);
@@ -21,7 +22,7 @@ public class appConfig {
 
     public @Bean
     MongoTemplate mongoTemplate() {
-        return new MongoTemplate(mongoClient(), "gitlab");
-    } //test
+        return new MongoTemplate(mongoClient(), database);
+    }
 }
 
