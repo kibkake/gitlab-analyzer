@@ -1,7 +1,9 @@
 package main.java.DatabaseClasses.Service;
 
+import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Model.AllScores;
+import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.DatabaseClasses.Repository.CommitRepository;
 import main.java.DatabaseClasses.Repository.MergeRequestRepository;
 import main.java.DatabaseClasses.Repository.UserRepository;
@@ -38,7 +40,8 @@ public class ProjectService {
         this.mergeRequestRepository = mergeRequestRepository;
         this.commitRepository = commitRepository;
         this.userRepository = userRepository;
-7    }
+    }
+
 
     public enum UseWhichDevField {EITHER, NAME, USERNAME};
 
@@ -85,8 +88,20 @@ public class ProjectService {
         return devMRs.size();
     }
 
+    public void setProjectInfo(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+
+        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
+        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
+        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
+        project.setInfoSet(true);
+        projectRepository.save(project);
+    }
+
     @Transactional
-    public void setProjectInfo(int projectId, UserQuery userSettings) {
+    public void setProjectInfo(int projectId, ProjectSettings projectSettings) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
 
@@ -99,14 +114,23 @@ public class ProjectService {
 
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = project.getDevelopers();
-        UserQuery userQuery = UserRepository.
         for (Developer dev: projectDevs) {
+            Date startDate = java.sql.Date.valueOf(projectSettings.getQueryStartDate());
+            Date endDate = java.sql.Date.valueOf(projectSettings.getQueryEndDate());
             List<MergeRequest> devsMrs = mergeRequestRepository.findByProjectIdAndAuthorUsernameAndMergedDateBetween(
-                    projectId, dev.getUsername(),
-            )
-            dev.setMergeRequests();
+                    projectId, dev.getUsername(), startDate, endDate);
+            List<MergeRequestDateScore> devMrScores = mergeRequestRepository.devsMrsScoreADay(projectId, dev.getUsername(),
+                    projectSettings.getQueryStartDate(), projectSettings.getQueryEndDate());
+            List<CommitDateScore> devCommitScores = commitRepository.getDevDateScore(projectId, dev.getUsername(),
+                    projectSettings.getQueryStartDate(), projectSettings.getQueryEndDate());
+
+            dev.setMergeRequests(devsMrs);
+            dev.setMergeRequestDateScores(devMrScores);
+            dev.setCommitDateScores(devCommitScores);
+
         }
     }
+
 
     public List<DateScore> getDevCommitScoresPerDay(int projectId, String username, LocalDate start,
                                                     LocalDate end, UseWhichDevField devField) {

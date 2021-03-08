@@ -2,15 +2,16 @@ package main.java.Model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Document(collection = "userQuery")
-public class UserQuery {
+public class ProjectSettings {
 
     private String queryName;
-    private Date queryStartDate;
-    private Date queryEndDate;
-    private Date projectId;
+    private LocalDate queryStartDate;
+    private LocalDate queryEndDate;
+    private int projectId;
 
     public String getQueryName() {
         return queryName;
@@ -20,27 +21,27 @@ public class UserQuery {
         this.queryName = queryName;
     }
 
-    public Date getQueryStartDate() {
+    public LocalDate getQueryStartDate() {
         return queryStartDate;
     }
 
-    public void setQueryStartDate(Date queryStartDate) {
+    public void setQueryStartDate(LocalDate queryStartDate) {
         this.queryStartDate = queryStartDate;
     }
 
-    public Date getQueryEndDate() {
+    public LocalDate getQueryEndDate() {
         return queryEndDate;
     }
 
-    public void setQueryEndDate(Date queryEndDate) {
+    public void setQueryEndDate(LocalDate queryEndDate) {
         this.queryEndDate = queryEndDate;
     }
 
-    public Date getProjectId() {
+    public int getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Date projectId) {
+    public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
 }

@@ -2,11 +2,14 @@ package main.java.DatabaseClasses.Repository;
 
 import main.java.DatabaseClasses.DatabaseFunctions;
 import main.java.Model.User;
-import main.java.Model.UserQuery;
+import main.java.Model.ProjectSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.util.List;
+
 
 /**
  * Works with the database functions written for the Java MongoDB driver and is used in the UserRepository using the
@@ -50,6 +53,18 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return DatabaseFunctions.retrieveUserInfo(username);
     }
 
+    @Override
+    public ProjectSettings retrieveUserSettings(String username, String settingName, int projectId) {
+        final Criteria nameMatchCriteria = Criteria.where("username").is(username);
+        final Criteria settingNameMatch = Criteria.where("ProjectSettings.settingName").is(settingName);
+        final Criteria projectIdMatch = Criteria.where("ProjectSettings.projectId").is(projectId);
+        Criteria criterias = new Criteria().andOperator(nameMatchCriteria, settingNameMatch, projectIdMatch);
+
+        Query query = new Query();
+        query.addCriteria(criterias);
+        query.fields().include("name").position("ProjectSettings", 1);
+        return mongoTemplate.findOne(query, ProjectSettings.class);
+    }
 
 
 }

@@ -3,7 +3,7 @@ package main.java.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +22,7 @@ public class User {
     private String email;
     private String password;
     private boolean isLoggedIn;
-    private List<UserQuery> userQueries;
+    private List<ProjectSettings> userQueries;
 
 
     private static User singleton = new User( );
@@ -35,6 +35,7 @@ public class User {
     }
 
     public User() {
+        userQueries = new ArrayList<>();
     }
 
     private User(String serverUrl, String token, String name, String email) {
@@ -121,11 +122,11 @@ public class User {
                 '}';
     }
 
-    public List<UserQuery> getUserQueries() {
+    public List<ProjectSettings> getUserQueries() {
         return userQueries;
     }
 
-    public void setUserQueries(List<UserQuery> userQueries) {
+    public void setUserQueries(List<ProjectSettings> userQueries) {
         this.userQueries = userQueries;
     }
 

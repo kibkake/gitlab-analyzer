@@ -1,9 +1,7 @@
 package main.java.DatabaseClasses.Repository;
 
 import main.java.Model.User;
-import main.java.Model.UserQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -22,5 +20,7 @@ public interface UserRepository extends MongoRepository<User, String>, UserRepos
     void setToken(User user);
 
     User retrieveUserInfo(String username);
+
+
 
 }
