@@ -1,6 +1,7 @@
 import "../App.css"
 import React,{ Component } from "react";
-import DropDownMenuMerges from "../components/DropDownMenuMerges";
+import DropDownMenuMerge from "../components/DropDownMenuMerge";
+import ProjectService from "../Service/ProjectService";
 
 
 class MergeRequest extends Component{
@@ -13,7 +14,13 @@ class MergeRequest extends Component{
     }
 
     async componentDidMount() {
-        this.setState({developers:JSON.parse(sessionStorage.getItem("Developers"))})
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+
+        if(sessionStorage.getItem("Developers" + repNum) == null) {
+            await ProjectService.getListOfDevs(repNum)
+        }
+        await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
     }
 
     render() {
@@ -23,7 +30,7 @@ class MergeRequest extends Component{
 
         return(
             <div>
-                <DropDownMenuMerges listOfDevelopers = {developersArray}/>
+                <DropDownMenuMerge listOfDevelopers = {developersArray}/>
 
             </div>
         )

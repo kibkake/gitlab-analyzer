@@ -1,6 +1,7 @@
 import '../App.css';
 import React, {Component} from "react";
 import DropDownMenuComments from "../components/DropDownMenuComments";
+import ProjectService from "../Service/ProjectService";
 
 
 class Comments extends Component{
@@ -13,7 +14,13 @@ class Comments extends Component{
     }
 
     async componentDidMount() {
-        this.setState({developers:JSON.parse(sessionStorage.getItem("Developers"))})
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+
+        if(sessionStorage.getItem("Developers" + repNum) == null) {
+            await ProjectService.getListOfDevs(repNum)
+        }
+        await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
     }
 
 

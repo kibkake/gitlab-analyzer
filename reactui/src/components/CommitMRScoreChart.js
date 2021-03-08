@@ -3,7 +3,6 @@ import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Respo
 import axios from "axios";
 import * as d3 from "d3-time";
 import moment from 'moment'
-import ProjectService from "../Service/ProjectService";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class CommitMRScoreChart extends PureComponent {
@@ -12,39 +11,44 @@ export default class CommitMRScoreChart extends PureComponent {
         super(props);
         this.state = {
             codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0}],
-            parentdata: this.props.devName
+            parentdata: this.props.devName,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         const {parentdata} = this.state;
-        this.getDataFromBackend(parentdata)
+        await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 
-    getDataFromBackend (username) {
+    async getDataFromBackend (username, startTm, endTm) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
         var name = username;
-        for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers')).length; i++){
-            if(JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers'))[i])){
-                name = JSON.parse(sessionStorage.getItem('DeveloperNames'))[i]//use name to retrieve data
+        if(sessionStorage.getItem('DeveloperNames' + id) != null && sessionStorage.getItem('Developers' + id) != null) {
+            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
+                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
+                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
+                }
             }
         }
 
-        axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + '/' + username + "/2021-01-01/2021-02-23")
-            .then(response => {
-                const score = response.data
-                this.setState({codeScore : score})
-                console.log(this.state.codeScore)
-            }).catch((error) => {
-            console.error(error);
-        });
+        const response = await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
+            startTm + '/' +
+            endTm)
+
+        const score = await response.data
+        await this.setState({codeScore : score, parentdata: username,startTime: startTm,
+            endTime: endTm})
+        await console.log(this.state.codeScore)
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.devName !== prevProps.devName){
-            this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName)
+    async componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime ||
+            this.props.endTime !== prevProps.endTime){
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }
 
@@ -57,14 +61,15 @@ export default class CommitMRScoreChart extends PureComponent {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
                 commitScore: item.commitScore,
-                mergeScore: item.mergeRequestScore,
+                mergeScore: item.mergeRequestScore
             };
         });
         console.log(output);
-        const from = Number(new Date('2021-01-15'));
-        const to = Number(new Date('2021-02-28'));
 
 
+        const from = Number(new Date(this.props.startTime));
+        const to = Number(new Date(this.props.endTime));
+//ceil
         return (
             <div>
                 <ResponsiveContainer width = '100%' height = {500} >
@@ -77,7 +82,7 @@ export default class CommitMRScoreChart extends PureComponent {
                                type ="number"
                                name = 'date'
                                domain={[
-                                   d3.timeDay.floor(from).getTime(),
+                                   d3.timeDay.ceil(from).getTime(),
                                    d3.timeDay.ceil(to).getTime()
                                ]}
                                tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}

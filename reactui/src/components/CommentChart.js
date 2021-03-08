@@ -1,31 +1,35 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import axios from "axios";
 import * as d3 from "d3-time";
 import moment from "moment";
 
 
-export default class CommentChart extends Component {
+export default class CommentChart extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
             commentScore: [],
-            parentdata: this.props.devName
+            parentdata: this.props.devName,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
         }
     }
 
     componentDidMount(){
         const {parentdata} = this.state;
-        this.getDataFromBackend(parentdata)
+        this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 
-    getDataFromBackend (username) {
+    getDataFromBackend (username, startTm, endTm) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
 
         //response ref: http://localhost:8090/api/v1/projects/6/allUserNotes/arahilin/2021-01-01/2021-02-22
-        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ username +"/2021-01-01/2021-02-22")
+        axios.get("/api/v1/projects/" + id + "/allUserNotes/"+ username + '/' +
+            startTm + '/' +
+            endTm)
             .then(response => {
                 const commentInfo = response.data
                 this.setState({commentScore: commentInfo})//{date: commentInfo.created_at, wordCount: commentInfo.wordCount }})
@@ -38,7 +42,15 @@ export default class CommentChart extends Component {
     componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName){
             this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName)
+            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
+        if(this.props.startTime !== prevProps.startTime){
+            this.setState({startTime: this.props.startTime});
+            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
+        if(this.props.endTime !== prevProps.endTime){
+            this.setState({endTime: this.props.endTime});
+            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime)
         }
     }
 
@@ -50,9 +62,9 @@ export default class CommentChart extends Component {
             };
         });
         console.log(output);
-        const from = Number(new Date('2021-01-15'));
-        const to = Number(new Date('2021-02-23'));
-
+        const from = Number(new Date( this.props.startTime));
+        const to = Number(new Date(this.props.endTime));
+//floor
         return (
             <div>
                 <ResponsiveContainer width = '100%' height = {500} >
@@ -65,7 +77,7 @@ export default class CommentChart extends Component {
                                type = "number"
                                name = 'date'
                                domain={[
-                                   d3.timeDay.floor(from).getTime(),
+                                   d3.timeDay.ceil(from).getTime(),
                                    d3.timeDay.ceil(to).getTime()
                                ]}
                                tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}

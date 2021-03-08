@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, useEffect, useRef} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
@@ -6,16 +6,17 @@ import CommitChart from "./CommitChart";
 import './DropDownMenu.css';
 
 
-function DropDownMenuCommits ({listOfDevelopers}) {
+function DropDownMenuCommit ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
         devArray.push({label: item, value: item})
     })
 
-    const currentDeveloper = sessionStorage.getItem("CurrentDeveloper")
+    const pathArray = window.location.pathname.split('/');
+
     const [selectedValue, setSelectedValue] = useState(
-        null
+        pathArray[4]
     );
 
     const handleChange = obj => {
@@ -26,24 +27,30 @@ function DropDownMenuCommits ({listOfDevelopers}) {
     return (
 
         <div>
-            <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+            <Navbar_Developers devName = {selectedValue}/>
             <br>
             </br>
             <div className="DropDownMenu">
 
             <Select
                 options={devArray}
-                defaultValue={{ label: currentDeveloper, value: currentDeveloper }}
+                defaultValue={{ label: selectedValue, value: selectedValue }}
                 onChange={handleChange}/>
             </div>
+            <CommitChart devName = {selectedValue}
+                         startTime = {sessionStorage.getItem("startdate")}
+                         endTime = {sessionStorage.getItem("enddate")}/>
             <br>
             </br>
-            <CommitChart  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-
         </div>
     )
 
 
 }
 
-export default DropDownMenuCommits;
+export default DropDownMenuCommit;
+
+/*    <div className='dateRangeSetting'>
+                <DateRangeCommits/>
+            </div>
+*/

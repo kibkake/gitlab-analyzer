@@ -1,42 +1,71 @@
 import "../App.css"
-import { MuiPickersUtilsProvider,DateTimePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider,DateTimePicker, DatePicker } from '@material-ui/pickers';
 import React,{ Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
+import ProjectService from '../Service/ProjectService'
 
 function DateRangeSettings(){
-    
+
+    function getStartDate(){
+        if(sessionStorage.getItem("startdate") == null){
+            sessionStorage.setItem("startdate", "2021-01-11")
+        }
+        if(localStorage.getItem("startdate") == null){
+            localStorage.setItem("startdate", "2021-01-11")
+        }
+        return new Date(sessionStorage.getItem("startdate") + "T12:00:00")
+    }
+
+    function getEndDate(){
+        if(sessionStorage.getItem("enddate") == null){
+            sessionStorage.setItem("enddate", "2021-02-22")
+        }
+        if(localStorage.getItem("enddate") == null){
+            localStorage.setItem("enddate", "2021-02-22")
+        }
+        return new Date(sessionStorage.getItem("enddate") + "T12:00:00")
+    }
+
     const [selectedStartDate,setSelectedStartDate] = React.useState(
-        new Date('2021-02-08T12:00:00')
+        getStartDate()
     )
     
     const [selectedEndDate,setSelectedEndDate] = React.useState(
-        new Date('2021-02-08T12:00:00')
+        getEndDate()
     )
+
+    function formatDate(date){
+        var startDateArr = (date.toDateString()).split(" ");
+
+        var monthLetter = startDateArr[1];
+        var month = ProjectService.convertMonthToNumber(monthLetter);
+        var day = startDateArr[2];
+        var year = startDateArr[3];
+
+        return year + "-" + month + "-" + day;
+
+    }
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)
         const data = { starttime: selectedStartDate };
-        const result = fetch("http://localhost:8080/api/v1/setstartdate", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data),
-        })
+        var completeDate = formatDate(date)
+
+        sessionStorage.setItem("startdate", completeDate);
+        localStorage.setItem("startdate", completeDate)
+        console.log(sessionStorage.getItem("startdate"))
+        console.log(localStorage.getItem("startdate"))
     }
     const handleEndDateChange= (date) =>{
         setSelectedEndDate(date)
-        console.log("hahah")
-        const data2 = { endtime: selectedEndDate };
-        const result = fetch("http://localhost:8080/api/v1/setenddate", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data2),
-        })
+        const data = { endtime: selectedEndDate };
+        var completeDate = formatDate(date)
+
+        sessionStorage.setItem("enddate", completeDate);
+        localStorage.setItem("enddate", completeDate)
+        console.log(sessionStorage.getItem("enddate"))
+        console.log(localStorage.getItem("enddate"))
+
     }
     return(   
         <>
@@ -44,9 +73,9 @@ function DateRangeSettings(){
         <Grid container justify="center">
             <span className="startDate">   
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>   
-                        <DateTimePicker 
+                        <DatePicker
                             variant='inline' 
-                            format='MM/dd/yyyy h:mm a' 
+                            format='MM/dd/yyyy'
                             margin='normal' 
                             id='startDate'
                             label='Start Date' 
@@ -58,9 +87,9 @@ function DateRangeSettings(){
             
             <span className="endDate">   
             <MuiPickersUtilsProvider utils={DateFnsUtils}>  
-                    <DateTimePicker 
+                    <DatePicker
                         variant='inline' 
-                        format='MM/dd/yyyy h:mm a' 
+                        format='MM/dd/yyyy'
                         margin='normal' 
                         id='endDate'
                         label='End Date' 

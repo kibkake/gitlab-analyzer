@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import DropDownMenuCommits from "../components/DropDownMenuCommits";
+import DropDownMenuCommit from "../components/DropDownMenuCommits";
+import ProjectService from "../Service/ProjectService";
 
 class Chart extends Component{
 
@@ -11,7 +12,13 @@ class Chart extends Component{
     }
 
     async componentDidMount() {
-        this.setState({developers:JSON.parse(sessionStorage.getItem("Developers"))})
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+
+        if(sessionStorage.getItem("Developers" + repNum) == null) {
+            await ProjectService.getListOfDevs(repNum)
+        }
+        await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
     }
 
 
@@ -22,7 +29,7 @@ class Chart extends Component{
         return (
 
             <header classname='Rest'>
-                <DropDownMenuCommits listOfDevelopers = {developersArray}/>
+                <DropDownMenuCommit listOfDevelopers = {developersArray}/>
             </header>
 
         )

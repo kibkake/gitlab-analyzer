@@ -1,11 +1,9 @@
 import "../App.css"
 import React, {Component, useRef} from "react";
 import {Button, Table} from 'react-bootstrap'
-import Highlight from 'react-highlight'
 import axios from "axios";
 import Popup from "./Popup";
 import {useState,useEffect} from "react";
-import { MenuItems } from "./MenuItem_Developers";
 
 
 function createData(id, date, score, title, fullDiff) {

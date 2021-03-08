@@ -9,16 +9,17 @@ import MergeListTable from "./MergeListTable";
 import CollapsibleTable from "./CollapsibleRef";
 
 
-function DropDownMenuMerges ({listOfDevelopers}) {
+function DropDownMenuMerge ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
         devArray.push({label: item, value: item})
     })
 
-    const currentDeveloper = sessionStorage.getItem("CurrentDeveloper")
+    const pathArray = window.location.pathname.split('/');
+
     const [selectedValue, setSelectedValue] = useState(
-        null
+        pathArray[4]
     );
 
     const handleChange = obj => {
@@ -46,6 +47,7 @@ function DropDownMenuMerges ({listOfDevelopers}) {
             <h2 style={{textAlign: 'center'}}>-code diff should be shown in the same page</h2>
             <h4 style={{textAlign: 'center'}}>-Highlight + part?</h4>
 
+            <CodeDiffTable  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
 
             <MergeListTable  devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <CollapsibleTable/>
@@ -55,4 +57,4 @@ function DropDownMenuMerges ({listOfDevelopers}) {
 
 }
 
-export default DropDownMenuMerges;
+export default DropDownMenuMerge;
