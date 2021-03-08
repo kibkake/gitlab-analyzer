@@ -20,8 +20,7 @@ public class MergeRequest {
     private String target_branch;
     private String updated_after;
     private String updated_before;
-    private int  author_id;
-    private int author_username;
+    private Developer author;
     private int approver_ids;
     private String created_at;
     private String created_before;
@@ -133,22 +132,6 @@ public class MergeRequest {
         this.updated_before = updated_before;
     }
 
-    public int getAuthor_id() {
-        return author_id;
-    }
-
-    public void setAuthor_id(int author_id) {
-        this.author_id = author_id;
-    }
-
-    public int getAuthor_username() {
-        return author_username;
-    }
-
-    public void setAuthor_username(int author_username) {
-        this.author_username = author_username;
-    }
-
     public int getApprover_ids() {
         return approver_ids;
     }
@@ -197,6 +180,14 @@ public class MergeRequest {
         this.mergedDate = mergedDate;
     }
 
+    public Developer getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Developer author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
         return "MergeRequest{" +
@@ -210,8 +201,6 @@ public class MergeRequest {
                 ", target_branch='" + target_branch + '\'' +
                 ", updated_after='" + updated_after + '\'' +
                 ", updated_before='" + updated_before + '\'' +
-                ", author_id=" + author_id +
-                ", author_username=" + author_username +
                 ", approver_ids=" + approver_ids +
                 ", created_at='" + created_at + '\'' +
                 ", created_before='" + created_before + '\'' +
