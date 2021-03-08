@@ -1,0 +1,10 @@
+.box-container {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.horizontalBar {
+    width: 1000px;
+    height: 2500px;
+}

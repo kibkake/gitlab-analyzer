@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import "./HBox.css"
+
 
 class CommitChart extends Component {
 
@@ -11,7 +13,8 @@ class CommitChart extends Component {
             data: [],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
-            endTime: this.props.endTime
+            endTime: this.props.endTime,
+            y_Axis : "non"
         };
     }
 
@@ -96,7 +99,8 @@ class CommitChart extends Component {
         var location = window.location.pathname.split("/")
 
         return (
-            <div>
+            <div className="box-container" >
+                <div className="horizontalBar">
                 <HorizontalBar
 
                     data={{labels: daylist,
@@ -120,9 +124,7 @@ class CommitChart extends Component {
                                     var month = yAxis.toString().split(" ")[1]
                                     var day = yAxis.toString().split(" ")[2]
                                     var year = yAxis.toString().split(" ")[3]
-                                    window.location.href =  '/' + location[1] +'/' + location[2] +
-                                        '/' + location[3] + '/' + this.props.devName + '/commits/' +
-                                        yAxis
+                                    this.setState({y_Axis:yAxis})
                                 }
 
                             } , maintainAspectRatio:true,
@@ -138,9 +140,18 @@ class CommitChart extends Component {
                             }
                         }}
                 />
+                </div>
+                <div>{this.state.y_Axis}</div>
+
             </div>
         )
     }
 }
 
 export default CommitChart
+
+/*to swtich to a different page
+   window.location.href =  '/' + location[1] +'/' + location[2] +
+   '/' + location[3] + '/' + this.props.devName + '/commits/' +
+   yAxis
+ */
