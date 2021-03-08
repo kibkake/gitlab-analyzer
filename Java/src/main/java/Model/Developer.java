@@ -14,9 +14,6 @@ public class Developer {
     private int id;
     private String name;
     private String username;
-    private String state;
-    private String avatar_url;
-    private String web_url;
     private List<String> emails;
 
     public Developer() {
@@ -64,9 +61,6 @@ public class Developer {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
-                ", state='" + state + '\'' +
-                ", avatar_url='" + avatar_url + '\'' +
-                ", web_url='" + web_url + '\'' +
                 '}';
     }
 }
