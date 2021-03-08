@@ -65,7 +65,7 @@ public class ProjectController {
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
+            List<Project> projects = ProjectConnection.getAllProjectsFromGitLab();
             projectService.saveNewProjects(projects);
             return projects;
         } else {

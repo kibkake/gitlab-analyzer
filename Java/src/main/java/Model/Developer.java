@@ -13,27 +13,32 @@ import java.util.List;
  */
 @Document(value = "Developer")
 public class Developer {
-    private int id;
+    private int devId;
+
+    /* a Dev can belong to many projects but should only be scored for the project in question so we will use project id
+      to link them to there work in a specific project */
+    private int projectId;
+
     private String name;
     private String username;
     private List<String> emails;
     private List<CommitDateScore> commitDateScores;
     private List<MergeRequestDateScore> mergeRequestDateScores;
-    private List<MergeRequest> mergeRequests;
+    private List<MergeRequest> mergeRequestsAndCommits;
 
     public Developer() {
     }
 
-    public Developer(int id) {
-        this.id = id;
+    public Developer(int devId) {
+        this.devId = devId;
     }
 
-    public int getId() {
-        return id;
+    public int getDevId() {
+        return devId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDevId(int devId) {
+        this.devId = devId;
     }
 
     public String getName() {
@@ -76,18 +81,26 @@ public class Developer {
         this.mergeRequestDateScores = mergeRequestDateScores;
     }
 
-    public List<MergeRequest> getMergeRequests() {
-        return mergeRequests;
+    public List<MergeRequest> getMergeRequestsAndCommits() {
+        return mergeRequestsAndCommits;
     }
 
-    public void setMergeRequests(List<MergeRequest> mergeRequests) {
-        this.mergeRequests = mergeRequests;
+    public void setMergeRequestsAndCommits(List<MergeRequest> mergeRequestsAndCommits) {
+        this.mergeRequestsAndCommits = mergeRequestsAndCommits;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
     @Override
     public String toString() {
         return "Developer{" +
-                "id=" + id +
+                "id=" + devId +
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 '}';

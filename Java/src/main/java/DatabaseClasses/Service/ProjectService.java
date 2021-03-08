@@ -4,15 +4,12 @@ import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Model.AllScores;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
-import main.java.DatabaseClasses.Repository.CommitRepository;
-import main.java.DatabaseClasses.Repository.MergeRequestRepository;
-import main.java.DatabaseClasses.Repository.UserRepository;
+import main.java.DatabaseClasses.Repository.*;
 import main.java.Model.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
 import main.java.ConnectToGitlab.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequestConnection;
-import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +27,18 @@ public class ProjectService {
     private final MergeRequestRepository mergeRequestRepository;
     private final CommitRepository commitRepository;
     private final UserRepository userRepository;
+    private final DeveloperRepository developerRepository;
 
 
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository, MergeRequestRepository mergeRequestRepository,
-                          CommitRepository commitRepository, UserRepository userRepository) {
+                          CommitRepository commitRepository, UserRepository userRepository, DeveloperRepository developerRepository) {
         this.projectRepository = projectRepository;
         this.mergeRequestRepository = mergeRequestRepository;
         this.commitRepository = commitRepository;
         this.userRepository = userRepository;
+        this.developerRepository = developerRepository;
     }
 
 
@@ -115,8 +114,10 @@ public class ProjectService {
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = project.getDevelopers();
         for (Developer dev: projectDevs) {
+            //The provided sql quires by mongo require the Date Class
             Date startDate = java.sql.Date.valueOf(projectSettings.getStartDate());
             Date endDate = java.sql.Date.valueOf(projectSettings.getEndDate());
+
             List<MergeRequest> devsMrs = mergeRequestRepository.findByProjectIdAndAuthorUsernameAndMergedDateBetween(
                     projectId, dev.getUsername(), startDate, endDate);
             List<MergeRequestDateScore> devMrScores = mergeRequestRepository.devsMrsScoreADay(projectId, dev.getUsername(),
@@ -124,12 +125,12 @@ public class ProjectService {
             List<CommitDateScore> devCommitScores = commitRepository.getDevDateScore(projectId, dev.getUsername(),
                     projectSettings.getStartDate(), projectSettings.getEndDate());
 
-            dev.setMergeRequests(devsMrs);
+            dev.setProjectId(projectId);
+            dev.setMergeRequestsAndCommits(devsMrs);
             dev.setMergeRequestDateScores(devMrScores);
             dev.setCommitDateScores(devCommitScores);
         }
-
-
+        developerRepository.saveAll(projectDevs);
     }
 
 
