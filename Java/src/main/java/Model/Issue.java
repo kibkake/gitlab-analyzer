@@ -8,6 +8,7 @@ import java.util.List;
 @Document(value = "Issue")
 public class Issue {
     private int id;
+    private int issueIdForASpecificProject;
     private int projectId;
     private Developer author;
     private String title;
@@ -83,5 +84,14 @@ public class Issue {
 
     public void setModified_at(String modified_at) {
         this.modified_at = modified_at;
+    }
+
+    @JsonProperty("iid")
+    public int getIssueIdForASpecificProject() {
+        return issueIdForASpecificProject;
+    }
+
+    public void setIssueIdForASpecificProject(int issueIdForASpecificProject) {
+        this.issueIdForASpecificProject = issueIdForASpecificProject;
     }
 }
