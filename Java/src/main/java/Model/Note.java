@@ -147,7 +147,6 @@ public class Note {
         if(day.length() < 2){
             day = "0" + Integer.toString(cal.get(Calendar.DATE));
         }
-        System.out.println(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
         return cal.get(Calendar.YEAR) + "-" + month+ "-" + day;
 
     }
