@@ -3,7 +3,7 @@ import {HorizontalBar} from 'react-chartjs-2'
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import "./HBox.css"
-
+import CommitsPerDay from "./CommitsPerDay";
 
 class CommitChart extends Component {
 
@@ -14,13 +14,13 @@ class CommitChart extends Component {
             parentdata: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime,
-            y_Axis : "non"
+            y_Axis : "1970-12-12"
         };
     }
 
     async componentDidMount() {
         const {parentdata} = this.state;
-        this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
+        await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 
     async getDataFromBackend (username, startTm, endTm) {
@@ -141,7 +141,7 @@ class CommitChart extends Component {
                         }}
                 />
                 </div>
-                <div>{this.state.y_Axis}</div>
+                <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} />
 
             </div>
         )
