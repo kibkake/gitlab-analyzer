@@ -48,7 +48,6 @@ class SummaryScoreTable extends Component{
 
     render () {
         const {parentdata} = this.state;
-
         let toCopy = "Commits: " + this.state.scoreSummary.totalCommitScore + " Merge Requests: " + this.state.scoreSummary.totalMergeRequestScore + " Word count of comments: " + this.state.scoreSummary.totalCommentWordCount;
         return (
             <div className="container">
