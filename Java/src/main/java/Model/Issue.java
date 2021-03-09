@@ -7,12 +7,13 @@ import java.util.List;
 
 @Document(value = "Issue")
 public class Issue {
-    private int id;
+    private int issueIdForServer;
+    private int internalIssueIdForASpecificProject;
     private int projectId;
     private Developer author;
     private String title;
-    private String created_at;
-    private String modified_at;
+    private String createdAt;
+    private String modifiedAt;
     private String username;
     private List<Note> notes;
 
@@ -20,12 +21,13 @@ public class Issue {
     public Issue() {
     }
 
-    public int getId() {
-        return id;
+    @JsonProperty("id")
+    public int getIssueIdForServer() {
+        return issueIdForServer;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int issueIdForServer) {
+        this.issueIdForServer = issueIdForServer;
     }
 
     @JsonProperty("project_id")
@@ -53,12 +55,13 @@ public class Issue {
         this.title = title;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    @JsonProperty("created_at")
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getUsername() {
@@ -77,11 +80,21 @@ public class Issue {
         this.notes = notes;
     }
 
-    public String getModified_at() {
-        return modified_at;
+    @JsonProperty("modified_at")
+    public String getModifiedAt() {
+        return modifiedAt;
     }
 
-    public void setModified_at(String modified_at) {
-        this.modified_at = modified_at;
+    public void setModifiedAt(String modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    @JsonProperty("iid")
+    public int getIssueIdForASpecificProject() {
+        return internalIssueIdForASpecificProject;
+    }
+
+    public void setInternalIssueIdForASpecificProject(int internalIssueIdForASpecificProject) {
+        this.internalIssueIdForASpecificProject = internalIssueIdForASpecificProject;
     }
 }
