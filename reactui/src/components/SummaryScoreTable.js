@@ -19,12 +19,13 @@ class SummaryScoreTable extends Component{
          }
      }
 
-    async componentDidMount() {
+     async componentDidMount() {
         const {parentdata} = this.state;
         await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime)
-    }
+     }
 
-    async getDataFromBackend (username, startTm, endTm) {
+
+     async getDataFromBackend (username, startTm, endTm) {
 
         const pathArray = window.location.pathname.split('/');
         const id = pathArray[2];
@@ -45,8 +46,10 @@ class SummaryScoreTable extends Component{
 
         const scores = await response.data
         await this.setState({scoreSummary: scores, parentdata: username,startTime: startTm,
-                    endTime: endTm})
-    }
+            endTime: endTm})
+     }
+
+
 
     async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName || this.props.startTime !== prevProps.startTime ||
@@ -55,20 +58,26 @@ class SummaryScoreTable extends Component{
         }
     }
 
+
     render () {
+        const {parentdata} = this.state;
+        // copy button
+        let toCopy = "Commits: " + this.state.scoreSummary.totalCommitScore + " Merge Requests: " + this.state.scoreSummary.totalMergeRequestScore + " Word count of comments: " + this.state.scoreSummary.totalCommentWordCount;
         return (
             <div className="container">
                 <Table striped bordered hover>
-                    <tr>
+                        <tr>
                             <th>Commit</th>
                             <th>Merge Request</th>
                             <th>Word Count of Comments</th>
+                            <th>Copy Fields</th>
                         </tr>
                     <tbody>
                         <tr>
                             <td>{this.state.scoreSummary.totalCommitScore}</td>
                             <td>{this.state.scoreSummary.totalMergeRequestScore}</td>
                             <td>{this.state.scoreSummary.totalCommentWordCount}</td>
+                            <td><button onClick={()=>navigator.clipboard.writeText(toCopy)}> Copy Fields</button></td>
                         </tr>
                     </tbody>
                 </Table>
