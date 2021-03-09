@@ -8,7 +8,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import CommitMRScoreChart from "./CommitMRScoreChart";
 import CommitMRNumChart from "./CommitMRNumChart";
-import CommentChart from "./CommentChart";
+import CommentChart from "./CommentChart2";
 import "./RadioButtonSummaryCharts.css"
 import CommitChart from "./CommitChart";
 //[https://material-ui.com/components/radio-buttons/]

@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import main.java.Model.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.StringTokenizer;
+import java.util.*;
 
 @Document(value = "Note")
 public class Note {
@@ -130,4 +131,29 @@ public class Note {
         return numWords;
     }
 
+    public String getFormattedDate() throws ParseException{
+
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+        Date result = createdDate;
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result);
+
+        String month = Integer.toString((cal.get(Calendar.MONTH)+1));
+        String day = Integer.toString(cal.get(Calendar.DATE));
+
+        if(month.length() < 2){
+            month = "0" + Integer.toString((cal.get(Calendar.MONTH)+1));
+        }
+        if(day.length() < 2){
+            day = "0" + Integer.toString(cal.get(Calendar.DATE));
+        }
+        return cal.get(Calendar.YEAR) + "-" + month+ "-" + day;
+
+    }
+
+    public void addWordCount(int wordCount) {
+        this.wordCount += wordCount;
+    }
 }

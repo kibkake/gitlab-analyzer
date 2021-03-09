@@ -27,6 +27,17 @@ function DateRangeSettings(){
         return new Date(sessionStorage.getItem("enddate") + "T12:00:00")
     }
 
+    function sendDateToBackEnd(date){
+        fetch("/api/v1/setstartdate", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(date),
+        })
+    }
+
     const [selectedStartDate,setSelectedStartDate] = React.useState(
         getStartDate()
     )
