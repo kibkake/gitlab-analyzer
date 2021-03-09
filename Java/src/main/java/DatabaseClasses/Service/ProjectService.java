@@ -284,7 +284,7 @@ public class ProjectService {
         List<Issue> devIssues = new ArrayList<>();
         for (Issue issue : issues) {
             LocalDate modifiedDate = null;
-            String whenIssueModified = issue.getModified_at();
+            String whenIssueModified = issue.getModifiedAt();
             if (whenIssueModified != null && whenIssueModified != "") {
                 modifiedDate = LocalDate.parse(whenIssueModified);
             }
@@ -299,7 +299,7 @@ public class ProjectService {
 
             LocalDate createdAt;
             try {
-                createdAt = LocalDate.parse(issue.getCreated_at());
+                createdAt = LocalDate.parse(issue.getCreatedAt());
             }
             catch (Exception e) {
                 continue;
