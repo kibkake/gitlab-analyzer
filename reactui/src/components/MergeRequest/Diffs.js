@@ -3,6 +3,7 @@ import './Diffs.css'
 import Highlight from "react-highlight";
 
 function Diffs(props){
+
     return (props.trigger) ? (
         <div>
                 <button className="close-btn" onClick={()=> props.setTrigger(false)}>close</button>
@@ -16,6 +17,6 @@ function Diffs(props){
                     )
                 })}
         </div>
-    ) : "";
+    ) : null;
 }
 export default Diffs;

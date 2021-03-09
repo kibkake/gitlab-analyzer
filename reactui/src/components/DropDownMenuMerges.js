@@ -45,10 +45,7 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             <h1 style={{textAlign: 'center'}}>Merge Requests</h1>
             <br></br>
 
-            <CodeDiffTable  devName = {selectedValue}/>
-
             <MergeListTable  devName = {selectedValue}/>
-            {/*<CollapsibleTable/>*/}
         </div>
     )
 
