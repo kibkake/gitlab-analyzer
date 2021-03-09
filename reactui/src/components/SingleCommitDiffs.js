@@ -8,39 +8,32 @@ import RepoButton from "./RepoButton";
 import "./ProjectList.css";
 import {Table} from "react-bootstrap";
 
-
-
-
 class SingleCommitDiff extends Component{
     constructor(props){
         super(props);
         this.state={
-            data: []
+            data: [],
+            hash : this.props.hash
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         var userName = str.split("/")[4];
         var date = str.split("/")[6];
         var hash = str.split("/")[7];
 
-
-
-        let url2 = '/api/v1/projects/' + repNum + '/Commit/' + hash;
-        fetch(url2, {
+        let url2 = '/api/v1/projects/' + repNum + '/Commit/' + this.props.hash;
+        const result = await fetch(url2, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then((result)=> {
-            result.json().then((resp) => {
-                this.setState({data:resp})
-            })
         })
-
+        const resp = await result.json();
+        await this.setState({data:resp})
     }
 
 
