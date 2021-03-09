@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import "./HBox.css"
 import CommitsPerDay from "./CommitsPerDay";
+import SingleCommitDiff from "./SingleCommitDiffs"
 
 class CommitChart extends Component {
 
@@ -14,8 +15,26 @@ class CommitChart extends Component {
             parentdata: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime,
-            y_Axis : "1970-12-12"
+            y_Axis : "1970-12-12",
+            childVal : "non",
+            diff: false,
         };
+        this.handler = this.handler.bind(this)
+        this.handler2 = this.handler2.bind(this)
+
+    }
+
+    handler(hash) {
+        this.setState({
+            childVal: hash,
+            diff : true
+        })
+    }
+
+    handler2() {
+        this.setState({
+            diff: false
+        })
     }
 
     async componentDidMount() {
