@@ -56,6 +56,8 @@ class SummaryScoreTable extends Component{
     }
 
     render () {
+        const {parentdata} = this.state;
+        let toCopy = "Commits: " + this.state.scoreSummary.totalCommitScore + " Merge Requests: " + this.state.scoreSummary.totalMergeRequestScore + " Word count of comments: " + this.state.scoreSummary.totalCommentWordCount;
         return (
             <div className="container">
                 <Table striped bordered hover>
@@ -63,12 +65,14 @@ class SummaryScoreTable extends Component{
                             <th>Commit</th>
                             <th>Merge Request</th>
                             <th>Word Count of Comments</th>
+                            <th>Copy Fields</th>
                         </tr>
                     <tbody>
                         <tr>
                             <td>{this.state.scoreSummary.totalCommitScore}</td>
                             <td>{this.state.scoreSummary.totalMergeRequestScore}</td>
                             <td>{this.state.scoreSummary.totalCommentWordCount}</td>
+                            <td><button onClick={()=>navigator.clipboard.writeText(toCopy)}> Copy Fields</button></td>
                         </tr>
                     </tbody>
                 </Table>
