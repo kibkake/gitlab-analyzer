@@ -1,5 +1,4 @@
 import React, {Component, PureComponent, useEffect, useRef, useState} from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
@@ -42,117 +41,112 @@ const useRowStyles = makeStyles({
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
+    const [showDiff, setShowDiff] = React.useState(false);
     const classes = useRowStyles();
-    const [showDiff, setShowDiff] = useState(false);
 
 
     return (
         <React.Fragment>
-            <TableRow className={classes.root}>
-                <TableCell component="th" scope="row">
-                    {row.date}
-                </TableCell>
-                <TableCell>#{row.id} {row.title}</TableCell>
-                <TableCell align="right">{row.score}</TableCell>
-                <TableCell align="right">
-                    <IconButton aria-label="expand column" size="small" onClick={() => setOpen(!open)}>
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </TableCell>
-                <TableCell>
-                    <IconButton aria-label="expand row" size="small" onClick={() => setShowDiff(true)}>
-                        {showDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
-                    </IconButton>
-                    {/*<Diffs closeOnOutsideClick={true} trigger={showDiff} setTrigger = {setShowDiff()} >*/}
-                    {/*    {row.diffs}*/}
-                    {/*</Diffs>*/}
-                </TableCell>
-
-            </TableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box margin={1}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Commits
-                            </Typography>
-                            <Table size="small" aria-label="commits">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Date</TableCell>
-                                        <TableCell>Commit Message</TableCell>
-                                        <TableCell align="right">Committer</TableCell>
-                                        <TableCell align="right">Score</TableCell>
-                                        <TableCell align="right">Code Diff</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {row.commits.map((commitsRow) => (
-                                        <TableRow key={commitsRow.commitDate}>
-                                            <TableCell component="th" scope="row">
-                                                {commitsRow.commitDate}
-                                            </TableCell>
-                                            <TableCell>{commitsRow.message}</TableCell>
-                                            <TableCell align="right">{commitsRow.author}</TableCell>
-                                            <TableCell align="right">{commitsRow.score}</TableCell>
-                                            {/*<TableCell align="right">{commitsRow.commitDiffs}</TableCell>*/}
+                <TableRow className={classes.root}>
+                    <TableCell component="th" scope="row">
+                        {row.date}
+                    </TableCell>
+                    <TableCell>#{row.id} {row.title}</TableCell>
+                    <TableCell align="right">{row.score}</TableCell>
+                    <TableCell align="right">
+                        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        </IconButton>
+                    </TableCell>
+                    <TableCell>
+                        <IconButton aria-label="expand column" size="small" onClick={() => setShowDiff(!showDiff)}>
+                            {showDiff ? <KeyboardArrowRightRounded /> : <KeyboardArrowLeftRounded />}
+                        </IconButton>
+                        {/*<Popup closeOnOutsideClick={true} trigger={showDiff} setTrigger = {setShowDiff()} >*/}
+                        {/*    {row.diffs}*/}
+                        {/*</Popup>*/}
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                            <Box margin={1}>
+                                <Typography variant="h6" gutterBottom component="div">
+                                    Commits
+                                </Typography>
+                                <Table size="small" aria-label="commits">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Date</TableCell>
+                                            <TableCell>Commit Message</TableCell>
+                                            <TableCell align="right">Committer</TableCell>
+                                            <TableCell align="right">Score</TableCell>
+                                            <TableCell align="right">Code Diff</TableCell>
                                         </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {row.commits.map((commitsRow) => (
+                                            <TableRow key={commitsRow.commitDate}>
+                                                <TableCell component="th" scope="row">
+                                                    {commitsRow.commitDate}
+                                                </TableCell>
+                                                <TableCell>{commitsRow.message}</TableCell>
+                                                <TableCell align="right">{commitsRow.author}</TableCell>
+                                                <TableCell align="right">{commitsRow.score}</TableCell>
+                                                {/*<TableCell align="right">{commitsRow.commitDiffs}</TableCell>*/}
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </Box>
+                        </Collapse>
+                    </TableCell>
+                </TableRow>
         </React.Fragment>
-
     );
 }
-
 
 export default function MergeListTable  ({devName}) { //extends Component
 
     const [merges, getMerges] = useState([]);
     const mounted = useRef();
 
-    var pathArray = window.location.pathname.split('/');
-    var id = pathArray[2];
+    // var pathArray = window.location.pathname.split('/');
+    // var id = pathArray[2];
+    //
+    // useEffect(()=> {
+    //     if (!mounted.current) {
+    //         mounted.current = true;
+    //     }
+    //     const fetchData = async() => {
+    //         const result = await axios.get("/api/v1/projects/" + id + "/mergeRequests/" + devName + "/2021-01-01/2021-05-09")
+    //             .catch((error) => {
+    //             console.error(error);
+    //         });
+    //         getMerges(result.data);
+    //     };
+    //
+    //     fetchData();
+    // }, [merges]);
+
 
     useEffect(()=> {
         if (!mounted.current) {
             mounted.current = true;
         }
-        const fetchData = async() => {
-            const result = await axios.get("/api/v1/projects/" + id + "/mergeRequests/" + devName + "/2021-01-01/2021-05-09")
-                .catch((error) => {
-                console.error(error);
-            });
-            getMerges(result.data);
-        };
-
-        fetchData();
+        getDataFromBackend(devName);
     }, [merges]);
 
 
-    // useEffect(()=> {
-    //     if (!mounted.current) {
-    //         getDataFromBackend(devName);
-    //         mounted.current = true;
-    //     } else {
-    //         getDataFromBackend(devName)
-    //     }
-    // }, [merges]);
-    //
-    //
-    // function getDataFromBackend (username) {
-    //     var pathArray = window.location.pathname.split('/');
-    //     var id = pathArray[2];
-    //     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
-    //     .then(res => {
-    //         getMerges(res.data);
-    //     }).catch((error) => {
-    //     console.error(error);
-    // });}
+    function getDataFromBackend (username) {
+        var pathArray = window.location.pathname.split('/');
+        var id = pathArray[2];
+        axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
+        .then(res => {
+            getMerges(res.data);
+        }).catch((error) => {
+        console.error(error);
+    });}
 
     const output = merges.map(function(item) {
         return {
@@ -185,26 +179,32 @@ export default function MergeListTable  ({devName}) { //extends Component
     console.log(output);
 
     const classes = useRowStyles();
+    // const {showHideDiff} = this.
 
     return (
-        <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
-                <TableHead>
-                    <TableRow className={classes.tablecell}>
-                        <TableCell align="left">Date </TableCell>
-                        <TableCell>Merge Title</TableCell>
-                        <TableCell align="right">Score</TableCell>
-                        <TableCell align="right">Commits </TableCell>
-                        <TableCell align="right">Full Diff</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {output.map((merge) => (
-                            <Row key={merge.date} row={merge} />
-                        ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <div class="d-flex flex-row">
+            <TableContainer component={Paper} class="p-2">
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow className={classes.tablecell}>
+                            <TableCell align="left">Date </TableCell>
+                            <TableCell>Merge Title</TableCell>
+                            <TableCell align="right">Score</TableCell>
+                            <TableCell align="right">Commits </TableCell>
+                            <TableCell align="right">Full Diff</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {output.map((merge) => (
+                                <Row key={merge.date} row={merge} />
+                            ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <div class="p-2">
+                <h4>hise</h4>
+            </div>
+        </div>
     );
 }
 
