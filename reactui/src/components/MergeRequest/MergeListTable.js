@@ -16,14 +16,23 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import axios from "axios";
 import {merge} from "d3-array";
+import {KeyboardArrowLeftRounded, KeyboardArrowRightRounded} from "@material-ui/icons";
 
 //[https://material-ui.com/components/tables/]
 const useRowStyles = makeStyles({
     root: {
         '& > *': {
             borderBottom: 'unset',
+            fontSize: '15pt',
         },
     },
+    tablecell: {
+        '& > *': {
+            borderBottom: 'unset',
+            fontSize: '20pt',
+            fontWeight: 'bold',
+        },
+    }
 });
 
 function Row(props) {
@@ -34,16 +43,23 @@ function Row(props) {
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
-                <TableCell>
+
+                <TableCell component="th" scope="row">
+                    {row.date}
+                </TableCell>
+                <TableCell>#{row.id} {row.title}</TableCell>
+                <TableCell align="right">{row.score}</TableCell>
+                <TableCell align="right">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                <TableCell component="th" scope="row">
-                    {row.date}
+
+                <TableCell align="right">
+                    <IconButton aria-label="expand column" size="small" onClick={() => setOpen(!open)}>
+                        {open ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
+                    </IconButton>
                 </TableCell>
-                <TableCell>{row.title}</TableCell>
-                <TableCell align="right">{row.score}</TableCell>
                 {/*<TableCell align="right">{row.diffs}</TableCell>*/}
             </TableRow>
             <TableRow>
@@ -141,21 +157,23 @@ export default function MergeListTable  ({devName}) { //extends Component
     });
     console.log(output);
 
+    const classes = useRowStyles();
+
     return (
         <TableContainer component={Paper}>
             <Table aria-label="collapsible table">
                 <TableHead>
-                    <TableRow>
-                        <TableCell/>
-                        <TableCell aligh="left">Date</TableCell>
+                    <TableRow className={classes.tablecell}>
+                        <TableCell align="left">Date </TableCell>
                         <TableCell>Merge Title</TableCell>
                         <TableCell align="right">Score</TableCell>
+                        <TableCell align="right">Commits </TableCell>
                         <TableCell align="right">Full Diff</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {output.map((merge) => (
-                            <Row key={merge.id} row={merge} />
+                            <Row key={merge.date} row={merge} />
                         ))}
                 </TableBody>
             </Table>
@@ -178,7 +196,6 @@ export default function MergeListTable  ({devName}) { //extends Component
 //                 message: PropTypes.string.isRequired,
 //                 diffs: PropTypes.string.isRequired,
 //             }),
-//         ).isRequired,
 //         diffs: PropTypes.string.isRequired,
 //     }).isRequired,
 // };

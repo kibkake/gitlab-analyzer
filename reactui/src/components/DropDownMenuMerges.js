@@ -5,7 +5,7 @@ import Navbar_Developers from "./Navbar_Developers";
 import CommitChart from "./CommitChart";
 import CodeDiffTable from "./CodeDiffTable";
 import './DropDownMenu.css';
-import MergeListTable from "./MergeListTable";
+import MergeListTable from "./MergeRequest/MergeListTable";
 import CollapsibleTable from "./CollapsibleRef";
 
 
@@ -42,12 +42,10 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             </div>
             <br>
             </br>
-            <h1 style={{textAlign: 'center'}}>List of MR + full diff</h1>
-            <h2 style={{textAlign: 'center'}}>-list of commits for each MR + code diff</h2>
-            <h2 style={{textAlign: 'center'}}>-code diff should be shown in the same page</h2>
-            <h4 style={{textAlign: 'center'}}>-Highlight + part?</h4>
+            <h1 style={{textAlign: 'center'}}>Merge Requests</h1>
+            <br></br>
 
-            {/*<CodeDiffTable  devName = {selectedValue}/>*/}
+            <CodeDiffTable  devName = {selectedValue}/>
 
             <MergeListTable  devName = {selectedValue}/>
             {/*<CollapsibleTable/>*/}
