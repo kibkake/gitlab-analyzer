@@ -1,5 +1,6 @@
 package main.java.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.java.Model.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +21,7 @@ public class Note {
     private int month;
     private int day;
     private String username;
-    private String created_at;
+    private String createdAt;
     private Date createdDate;
     private Boolean isIssueNote;
     private int wordCount;
@@ -89,13 +90,14 @@ public class Note {
         this.username = username;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    @JsonProperty("created_at")
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(created_at);
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(createdAt);
         setCreatedDate(Date.from(dateWithOffSet.toInstant()));
     }
 

@@ -27,12 +27,12 @@ public class CommitConnection {
             String myUrl = user.getServerUrl() + "projects/" + projectId +
                     "/repository/commits?ref_name=master&per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
+            ResponseEntity<List<Commit>> commitJSON = restTemplate.exchange(myUrl,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {
                     });
 
-            commits.addAll(Objects.requireNonNull(commitsResponse.getBody()));
-            HttpHeaders headers = commitsResponse.getHeaders();
+            commits.addAll(Objects.requireNonNull(commitJSON.getBody()));
+            HttpHeaders headers = commitJSON.getHeaders();
             pageNumber = headers.getFirst("X-Next-Page");
         }while (!pageNumber.equals(""));
 
