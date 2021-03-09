@@ -6,7 +6,6 @@ import {RepoItems} from '../Pages/sampleRepo';
 import RepoButton from "./RepoButton";
 //import "./RepoButton.css"
 
-
 class CommitsPerDay extends Component{
     constructor(props){
         super(props);
@@ -65,35 +64,27 @@ class CommitsPerDay extends Component{
 
         var data = JSON.stringify(output);
         var DataArray = JSON.parse(data)
-        {DataArray.map(item => console.log(item.id))}
-
+        //{DataArray.map(item => console.log(item.id))}
 
         return(
-
-        <ul>
-            <header></header>
-            {DataArray.map(item => {
+            <ul>
+            {this.state.data.map(item => {
                 return <li>
                     <a href= {"Developers/" + item }target= "_blank">
                         <Button className="Footer" to={item.id}
                                 type="button"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    window.location.href=  window.location.pathname + "/" + item.id;
+                                    {this.props.handler(item.id)}
 
-                                }}
-                        >
+                                }}>
                             <span >{item.id}          commited at:      {item.date.substring(11,19)}</span>
                         </Button>
                     </a>
                 </li>;
             })}
         </ul>
-
-
-
         );
-
     }
 }
 
