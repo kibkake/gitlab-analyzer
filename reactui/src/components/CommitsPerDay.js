@@ -11,32 +11,41 @@ class CommitsPerDay extends Component{
     constructor(props){
         super(props);
         this.state={
-            data: []
+            data: [],
+            devName: this.props.devName,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
         };
     }
-//http://localhost:3000/Repo/6/Developers/user2/commits/2021-01-24
 
-    //http://localhost:8090/api/v1/projects/6/Commits/arahilin/2021-01-24/2021-01-24
-    componentDidMount() {
+    async componentDidMount(){
+        const {devName} = this.state;
+        await this.getDataFromBackend(this.props.devName, this.props.startTime,  this.props.endTime )
+    }
+
+    async getDataFromBackend(userName, date, date2) {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        var userName = str.split("/")[4];
-        var date = str.split("/")[6];
-
 
         let url2 = '/api/v1/projects/' + repNum + '/Commits/' + userName + '/' + date + "/" + date
-        fetch(url2, {
+        const result = await fetch(url2, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then((result)=> {
-            result.json().then((resp) => {
-                this.setState({data:resp})
-            })
         })
+        const resp = await result.json();
+        await this.setState({data:resp})
+    }
 
+    async componentDidUpdate(prevProps){
+        console.log(this.props.devName)
+        if(this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime ||
+            this.props.endTime !== prevProps.endTime){
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
     }
 
     render(){
