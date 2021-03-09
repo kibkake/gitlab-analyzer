@@ -135,7 +135,7 @@ public class Note {
 
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
-        Date result = df1.parse(created_at);
+        Date result = createdDate;
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(result);
