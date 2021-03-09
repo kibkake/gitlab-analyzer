@@ -1,11 +1,12 @@
 import React from "react";
-import './Popup.css'
+import './Diffs.css'
 import Highlight from "react-highlight";
 
-function Popup(props){
+function Diffs(props){
     return(props.trigger) ? (
-        <div className="popup">
-            <div className="popup-inner">
+        // <div className="popup">
+        //     <div className="popup-inner">
+        <div>
                 <button className="close-btn" onClick={()=> props.setTrigger(false)}>close</button>
                 {props.children.map((item,index)=>{
                     return(
@@ -16,8 +17,7 @@ function Popup(props){
                         
                     )
                 })}
-            </div>
         </div>
     ) :"";
 }
-export default Popup
+export default Diffs

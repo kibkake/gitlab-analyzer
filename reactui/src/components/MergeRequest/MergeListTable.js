@@ -17,6 +17,8 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import axios from "axios";
 import {merge} from "d3-array";
 import {KeyboardArrowLeftRounded, KeyboardArrowRightRounded} from "@material-ui/icons";
+import Popup from "../Popup";
+import Diffs from './Diffs'
 
 //[https://material-ui.com/components/tables/]
 const useRowStyles = makeStyles({
@@ -24,6 +26,8 @@ const useRowStyles = makeStyles({
         '& > *': {
             borderBottom: 'unset',
             fontSize: '15pt',
+            backgroundColor: 'lightgrey',
+
         },
     },
     tablecell: {
@@ -39,28 +43,31 @@ function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
+    const [showDiff, setShowDiff] = useState(false);
+
 
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
-
                 <TableCell component="th" scope="row">
                     {row.date}
                 </TableCell>
                 <TableCell>#{row.id} {row.title}</TableCell>
                 <TableCell align="right">{row.score}</TableCell>
                 <TableCell align="right">
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                    <IconButton aria-label="expand column" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-
-                <TableCell align="right">
-                    <IconButton aria-label="expand column" size="small" onClick={() => setOpen(!open)}>
-                        {open ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
+                <TableCell>
+                    <IconButton aria-label="expand row" size="small" onClick={() => setShowDiff(true)}>
+                        {showDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
                     </IconButton>
+                    {/*<Diffs closeOnOutsideClick={true} trigger={showDiff} setTrigger = {setShowDiff()} >*/}
+                    {/*    {row.diffs}*/}
+                    {/*</Diffs>*/}
                 </TableCell>
-                {/*<TableCell align="right">{row.diffs}</TableCell>*/}
+
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -98,6 +105,7 @@ function Row(props) {
                 </TableCell>
             </TableRow>
         </React.Fragment>
+
     );
 }
 
@@ -107,26 +115,44 @@ export default function MergeListTable  ({devName}) { //extends Component
     const [merges, getMerges] = useState([]);
     const mounted = useRef();
 
+    var pathArray = window.location.pathname.split('/');
+    var id = pathArray[2];
+
     useEffect(()=> {
         if (!mounted.current) {
-            getDataFromBackend(devName)
             mounted.current = true;
-        } else {
-            getDataFromBackend(devName)
         }
+        const fetchData = async() => {
+            const result = await axios.get("/api/v1/projects/" + id + "/mergeRequests/" + devName + "/2021-01-01/2021-05-09")
+                .catch((error) => {
+                console.error(error);
+            });
+            getMerges(result.data);
+        };
+
+        fetchData();
     }, [merges]);
 
 
-
-    function getDataFromBackend (username) {
-        var pathArray = window.location.pathname.split('/');
-        var id = pathArray[2];
-        axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
-        .then(res => {
-            getMerges(res.data);
-        }).catch((error) => {
-        console.error(error);
-    });}
+    // useEffect(()=> {
+    //     if (!mounted.current) {
+    //         getDataFromBackend(devName);
+    //         mounted.current = true;
+    //     } else {
+    //         getDataFromBackend(devName)
+    //     }
+    // }, [merges]);
+    //
+    //
+    // function getDataFromBackend (username) {
+    //     var pathArray = window.location.pathname.split('/');
+    //     var id = pathArray[2];
+    //     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
+    //     .then(res => {
+    //         getMerges(res.data);
+    //     }).catch((error) => {
+    //     console.error(error);
+    // });}
 
     const output = merges.map(function(item) {
         return {
@@ -136,6 +162,7 @@ export default function MergeListTable  ({devName}) { //extends Component
             score: item.mrScore,
             diffs: item.diffs.map(function (diffs) {
                 return {
+                    path: diffs.new_path,
                     diff: diffs.diff
                 };
             }),
@@ -145,9 +172,9 @@ export default function MergeListTable  ({devName}) { //extends Component
                     message: commit.message,
                     score: commit.commitScore,
                     author: commit.author_email,
-
                     commitDiffs: commit.diffs.map(function (diffs) {
                         return {
+                            path: diffs.new_path,
                             diff: diffs.diff
                         };
                     })
