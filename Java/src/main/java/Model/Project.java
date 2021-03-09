@@ -59,12 +59,12 @@ public class Project {
     }
 
     @JsonProperty("created_at")
-    public String getCreated_at() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.createdAt = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public List<MergeRequest> getMergedRequests() {
@@ -121,7 +121,7 @@ public class Project {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
-                ", created_at='" + createdAt + '\'' +
+                ", createdAt='" + createdAt + '\'' +
                 ", mergedRequests=" + mergedRequests +
                 ", issues=" + issues +
                 ", commits=" + commits +
