@@ -27,6 +27,7 @@ class SummaryScoreTable extends Component{
         const pathArray = window.location.pathname.split('/');
         const id = pathArray[2];
 
+        //
         //request ref: http://localhost:8090/api/v1/projects/6/allTotalScores/user2/2021-01-01/2021-02-23
         axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/2021-01-01/2021-02-23")
             .then(response => {
