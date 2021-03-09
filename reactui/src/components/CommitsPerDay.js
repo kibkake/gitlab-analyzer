@@ -13,16 +13,15 @@ class CommitsPerDay extends Component{
         this.state={
             data: [],
             devName: this.props.devName,
-            startTime: this.props.startTime,
-            endTime: this.props.endTime
+            startTime: this.props.startTime
         };
     }
 
     async componentDidMount(){
-        await this.getDataFromBackend(this.props.devName, this.props.startTime,  this.props.endTime )
+        await this.getDataFromBackend(this.props.devName, this.props.startTime)
     }
 
-    async getDataFromBackend(userName, date, date2) {
+    async getDataFromBackend(userName, date) {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
 
@@ -41,8 +40,7 @@ class CommitsPerDay extends Component{
     async componentDidUpdate(prevProps){
         console.log(this.props.devName)
         if(this.props.devName !== prevProps.devName ||
-            this.props.startTime !== prevProps.startTime ||
-            this.props.endTime !== prevProps.endTime){
+            this.props.startTime !== prevProps.startTime){
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }

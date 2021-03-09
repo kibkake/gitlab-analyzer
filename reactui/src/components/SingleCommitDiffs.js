@@ -20,11 +20,9 @@ class SingleCommitDiff extends Component{
     async componentDidMount() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        var userName = str.split("/")[4];
-        var date = str.split("/")[6];
-        var hash = str.split("/")[7];
+        var hash = this.props.hash;
 
-        let url2 = '/api/v1/projects/' + repNum + '/Commit/' + this.props.hash;
+        let url2 = '/api/v1/projects/' + repNum + '/Commit/' + hash;
         const result = await fetch(url2, {
             method: 'GET',
             headers: {
@@ -35,8 +33,6 @@ class SingleCommitDiff extends Component{
         const resp = await result.json();
         await this.setState({data:resp})
     }
-
-
 
     splitToLines = (par) => {
         var lineBegin = 0;
@@ -96,8 +92,6 @@ class SingleCommitDiff extends Component{
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
 
-
-
         return (
     <div>
         <div>
@@ -123,8 +117,6 @@ class SingleCommitDiff extends Component{
                                 <td>{this.splitToLines(item2.diff)}</td>
 
                             </tr>
-
-
                         ))}
                     </tbody>
                 </Table>
