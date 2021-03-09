@@ -28,7 +28,7 @@ function DateRangeSettings(){
     }
 
     function sendDateToBackEnd(date){
-        fetch("http://localhost:8080/api/v1/setstartdate", {
+        fetch("/api/v1/setstartdate", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
