@@ -22,12 +22,14 @@ public class MergeRequest {
     private String mergedAt;
     private int authorId;
     private String authorUsername;
+    private Developer author;
     private List<Developer> contributors;
     List<Commit> commits;
     private String sha;
     double mrScore;
     private Date mergedDate;
-    List<Note> notes;
+    List<Note> allNotes;
+    List<Note> codeReviewNotes;
     List<Diff> diffs;
 
     public MergeRequest() {
@@ -35,7 +37,7 @@ public class MergeRequest {
     }
 
     public boolean isAContributor(String username) {
-        for (Developer currentDev: contributors) {
+        for (Developer currentDev : contributors) {
             if (currentDev.getUsername().equals(username)) {
                 return true;
             }
@@ -140,8 +142,12 @@ public class MergeRequest {
         this.mergedDate = mergedDate;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Developer getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Developer author) {
+        this.author = author;
     }
 
     @JsonProperty("iid")
@@ -185,12 +191,26 @@ public class MergeRequest {
         this.mrScore = mrScore;
     }
 
-    public List<Note> getNotes() {
-        return notes;
+    public void setMergeRequestNotes(List<Note> notes) {
+        this.allNotes = notes;
+        
+        List<Note> tempCodeReviewNotes = new ArrayList<>();
+        for (Note note : notes) {
+            int noteAuthorId = note.getAuthor().getId();
+            int MRContributorId = this.author.getId();
+            if (noteAuthorId != MRContributorId) {
+                tempCodeReviewNotes.add(note);
+            }
+        }
+        this.codeReviewNotes = tempCodeReviewNotes;
     }
 
-    public void setNotes(List<Note> notes9) {
-        this.notes = notes;
+    public List<Note> getAllNotes() {
+        return allNotes;
+    }
+
+    public List<Note> getCodeReviewNotes() {
+        return codeReviewNotes;
     }
 
     public List<Diff> getDiffs() {
