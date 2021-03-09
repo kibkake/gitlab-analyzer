@@ -106,7 +106,7 @@ function DateRangeSummary({devName}){
             </Grid>
             <br>
             </br>
-            <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
+            <h4 style={{textAlign:'center'}}>Total Scores</h4>
             <SummaryScoreTable devName = {devName}
                                startTime = {changeDateFormat(selectedStartDate)}
                                endTime = {changeDateFormat(selectedEndDate)}

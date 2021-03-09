@@ -1,10 +1,4 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-
-import {RepoItems} from '../Pages/sampleRepo';
-import RepoButton from "./RepoButton";
-//import "./RepoButton.css"
 import "./ProjectList.css";
 import {Table} from "react-bootstrap";
 
@@ -89,18 +83,15 @@ class SingleCommitDiff extends Component{
 
     render() {
 
-        var data = JSON.stringify(this.state.data);
-        var DataArray = JSON.parse(data)
-
         return (
-    <div>
-        <div>
-            { DataArray.map(projects =>
-                <span>
-                    <td className="commitscore">Commit Score = {projects.commitScore}</td>
-                </span>
-            )}
-        </div>
+            <div>
+                <div>
+                    { this.state.data.map(projects =>
+                        <span>
+                            <td className="commitscore">Commit Score = {projects.commitScore}</td>
+                        </span>
+                    )}
+                </div>
             <div className="CodeDiffTable">
 
                 <Table striped bordered hover>
@@ -110,7 +101,7 @@ class SingleCommitDiff extends Component{
                             <td>Diff</td>
                         </tr>
 
-                        {DataArray.map((item) =>
+                        {this.state.data.map((item) =>
                         item.diffs.map((item2, index) =>
                             <tr key ={index}>
                                 <td>{item2.new_path}</td>

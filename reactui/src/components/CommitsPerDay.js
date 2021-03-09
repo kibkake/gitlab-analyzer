@@ -36,7 +36,7 @@ class CommitsPerDay extends Component{
         console.log(this.props.devName)
         if(this.props.devName !== prevProps.devName ||
             this.props.startTime !== prevProps.startTime){
-            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+            await this.getDataFromBackend(this.props.devName, this.props.startTime)
         }
     }
 
