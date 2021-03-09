@@ -15,6 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import axios from "axios";
+import {merge} from "d3-array";
 
 //[https://material-ui.com/components/tables/]
 const useRowStyles = makeStyles({
@@ -24,7 +25,6 @@ const useRowStyles = makeStyles({
         },
     },
 });
-
 
 function Row(props) {
     const { row } = props;
@@ -40,11 +40,11 @@ function Row(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {row.merged_at}
+                    {row.date}
                 </TableCell>
-                <TableCell align="right">{row.title}</TableCell>
-                <TableCell align="right">{row.mrScore}</TableCell>
-                <TableCell align="right">{row.diffs}</TableCell>
+                <TableCell>{row.title}</TableCell>
+                <TableCell align="right">{row.score}</TableCell>
+                {/*<TableCell align="right">{row.diffs}</TableCell>*/}
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -57,22 +57,22 @@ function Row(props) {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Date</TableCell>
-                                        <TableCell>Committer</TableCell>
+                                        <TableCell>Commit Message</TableCell>
+                                        <TableCell align="right">Committer</TableCell>
                                         <TableCell align="right">Score</TableCell>
-                                        <TableCell align="right">Commit Message</TableCell>
                                         <TableCell align="right">Code Diff</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {row.commits.map((commitsRow) => (
-                                        <TableRow key={commitsRow.created_at}>
+                                        <TableRow key={commitsRow.commitDate}>
                                             <TableCell component="th" scope="row">
-                                                {commitsRow.created_at}
+                                                {commitsRow.commitDate}
                                             </TableCell>
-                                            <TableCell>{commitsRow.author_email}</TableCell>
-                                            <TableCell>{commitsRow.commitScore}</TableCell>
-                                            <TableCell align="right">{commitsRow.message}</TableCell>
-                                            <TableCell align="right">{commitsRow.diffs}</TableCell>
+                                            <TableCell>{commitsRow.message}</TableCell>
+                                            <TableCell align="right">{commitsRow.author}</TableCell>
+                                            <TableCell align="right">{commitsRow.score}</TableCell>
+                                            {/*<TableCell align="right">{commitsRow.commitDiffs}</TableCell>*/}
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -85,41 +85,6 @@ function Row(props) {
     );
 }
 
-
-// const rows = [
-//     createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-//     createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-//     createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-//     createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-//     createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-// ];
-
-function createData(id, date, score, title, fullDiff, commits) {
-    return {
-        date,
-        score,
-        title,
-        fullDiff,
-        commits // [
-        //     { created_at: null, author_email: null, commitScore: 1, message: null, diffs : [{diff:null}] }]
-    };
-}
-
-//         {merged_at: '',
-//             mrScore: '',
-//             title: '',
-//             diffs: '',
-//             commits:[
-//                 {created_at: '',
-//                     author_email: '',
-//                     commitScore: '',
-//                     message: '',
-//                     diffs : [
-//                         {diff:''}
-//                     ]
-//                 }
-//                 ]
-// }
 
 export default function MergeListTable  ({devName}) { //extends Component
 
@@ -135,19 +100,21 @@ export default function MergeListTable  ({devName}) { //extends Component
         }
     }, [merges]);
 
+
+
     function getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
         axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
         .then(res => {
             getMerges(res.data);
-            console.log(merges);
         }).catch((error) => {
         console.error(error);
     });}
 
     const output = merges.map(function(item) {
         return {
+            id: item.id,
             date: item.merged_at,
             title: item.title,
             score: item.mrScore,
@@ -158,12 +125,12 @@ export default function MergeListTable  ({devName}) { //extends Component
             }),
             commits: item.commits.map(function (commit) {
                 return {
-                    date: commit.date,
+                    commitDate: commit.date,
                     message: commit.message,
                     score: commit.commitScore,
                     author: commit.author_email,
 
-                    diffs: commit.diffs.map(function (diffs) {
+                    commitDiffs: commit.diffs.map(function (diffs) {
                         return {
                             diff: diffs.diff
                         };
@@ -172,11 +139,7 @@ export default function MergeListTable  ({devName}) { //extends Component
             })
         };
     });
-
     console.log(output);
-    const [open, setOpen] = React.useState(false);
-    const classes = useRowStyles();
-
 
     return (
         <TableContainer component={Paper}>
@@ -191,44 +154,34 @@ export default function MergeListTable  ({devName}) { //extends Component
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow className={classes.root}>
-                        <TableCell>
-                            <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                            </IconButton>
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                            {output.date}
-                        </TableCell>
-                        <TableCell align="right">{output.title}</TableCell>
-                        <TableCell align="right">{output.score}</TableCell>
-                        {/*<TableCell align="right">{output.diffs}</TableCell>*/}
-                    </TableRow>
+                    {output.map((merge) => (
+                            <Row key={merge.id} row={merge} />
+                        ))}
                 </TableBody>
             </Table>
         </TableContainer>
     );
 }
 
-
-
-Row.propTypes = {
-    row: PropTypes.shape({
-        merged_at: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        mrScore: PropTypes.number.isRequired,
-        commits: PropTypes.arrayOf(
-            PropTypes.shape({
-                created_at: PropTypes.string.isRequired,
-                author_email: PropTypes.string.isRequired,
-                commitScore: PropTypes.number.isRequired,
-                message: PropTypes.string.isRequired,
-                diffs: PropTypes.string.isRequired,
-            }),
-        ).isRequired,
-        diffs: PropTypes.string.isRequired,
-    }).isRequired,
-};
+//
+//
+// Row.propTypes = {
+//     row: PropTypes.shape({
+//         merged_at: PropTypes.string.isRequired,
+//         title: PropTypes.string.isRequired,
+//         mrScore: PropTypes.number.isRequired,
+//         commits: PropTypes.arrayOf(
+//             PropTypes.shape({
+//                 created_at: PropTypes.string.isRequired,
+//                 author_email: PropTypes.string.isRequired,
+//                 commitScore: PropTypes.number.isRequired,
+//                 message: PropTypes.string.isRequired,
+//                 diffs: PropTypes.string.isRequired,
+//             }),
+//         ).isRequired,
+//         diffs: PropTypes.string.isRequired,
+//     }).isRequired,
+// };
 
 //
 // constructor(props) {
@@ -289,4 +242,20 @@ Row.propTypes = {
 //         this.props.endTime !== prevProps.endTime){
 //         await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
 //     }
+// }
+
+//         {merged_at: '',
+//             mrScore: '',
+//             title: '',
+//             diffs: '',
+//             commits:[
+//                 {created_at: '',
+//                     author_email: '',
+//                     commitScore: '',
+//                     message: '',
+//                     diffs : [
+//                         {diff:''}
+//                     ]
+//                 }
+//                 ]
 // }
