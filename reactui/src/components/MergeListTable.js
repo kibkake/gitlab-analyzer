@@ -15,6 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import axios from "axios";
+import * as classes from "postcss";
 
 //[https://material-ui.com/components/tables/]
 const useRowStyles = makeStyles({
@@ -25,16 +26,6 @@ const useRowStyles = makeStyles({
     },
 });
 
-function createData(id, date, score, title, fullDiff, commits) {
-    return {
-        date,
-        score,
-        title,
-        fullDiff,
-        commits // [
-        //     { created_at: null, author_email: null, commitScore: 1, message: null, diffs : [{diff:null}] }]
-    };
-}
 
 function Row(props) {
     const { row } = props;
@@ -104,77 +95,177 @@ function Row(props) {
 //     createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
 // ];
 
-export default class MergeListTable extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            merges:[
-        //         {merged_at: '',
-        //             mrScore: '',
-        //             title: '',
-        //             diffs: '',
-        //             commits:[
-        //                 {created_at: '',
-        //                     author_email: '',
-        //                     commitScore: '',
-        //                     message: '',
-        //                     diffs : [
-        //                         {diff:''}
-        //                     ]
-        //                 }
-        //                 ]
-        // }
-        ]
-            // parentdata: this.props.devName
-        }
-    }
+function createData(id, date, score, title, fullDiff, commits) {
+    return {
+        date,
+        score,
+        title,
+        fullDiff,
+        commits // [
+        //     { created_at: null, author_email: null, commitScore: 1, message: null, diffs : [{diff:null}] }]
+    };
+}
 
-    componentDidMount(){
+//         {merged_at: '',
+//             mrScore: '',
+//             title: '',
+//             diffs: '',
+//             commits:[
+//                 {created_at: '',
+//                     author_email: '',
+//                     commitScore: '',
+//                     message: '',
+//                     diffs : [
+//                         {diff:''}
+//                     ]
+//                 }
+//                 ]
+// }
+
+export default function MergeListTable ({devName}) { //extends Component
+    const [merges, getMerges] = useState({});
+        // merged_at: '',
+        // mrScore: '',
+        // title: '',
+        // diffs: '',
+        // commits:[
+        //     {created_at: '',
+        //         author_email: '',
+        //         commitScore: '',
+        //         message: '',
+        //         diffs : [
+        //             {diff:''}
+        //         ]
+        //     }]});
+
+    const mounted = useRef();
+
+    useEffect(()=>{
+        if (!mounted.current) {
+            getDataFromBackend(devName)
+            mounted.current = true;
+        } else {
+            getDataFromBackend(devName)}
+    }, merges);
+
+
+    function getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
-        var username = pathArray[4];
-
         axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
-            .then(response => {
-                const result = response.data
-                this.setState([{merges: result}])
-                //https://spin.atomicobject.com/2018/08/20/objects-not-valid-react-child/
-                //https://www.akashmittal.com/react-error-objects-not-valid-react-child/
-                    // {merges : {merged_at: result.merged_at, mrScore: result.mrScore, title: result.title,
-                    //         diffs: result.diffs, commits: result.commits(commit => {commit.created_at: result.commits.created_at, commit.author_email,
-                    //             commit.commitScore, commit.diffs})}})
-                console.log(this.state.merges)
-            }).catch((error) => {
-            console.error(error);
-        });
-    }
+        .then(res => {
+            getMerges(res.data);
+            console.log(merges);
+            // let commitData = res.commits;
+            // let diff = res.diffs;
+            // getMerges ({merged_at: res.merged_at,
+            //     mrScore: res.mrScore,
+            //     title: res.title,
+            //     diffs: diff,
+            //     commits:[
+            //     {created_at: commitData.created_at,
+            //         author_email: commitData.author_email,
+            //         commitScore: commitData.commitScore,
+            //         message: commitData.message,
+            //         diffs : [
+            //             {diff:commitData.diffs.diff}
+            //         ]
+            //     }]})
+        }).catch((error) => {
+        console.error(error);
+    });}
 
-    render () {
+    // componentDidMount(){
+    //     var pathArray = window.location.pathname.split('/');
+    //     var id = pathArray[2];
+    //     console.log(id);
+    //     var username = pathArray[4];
+    //     console.log(username);
+    //
+    //     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
+    //         .then(response => {
+    //             const result = response.data
+    //             this.setState({merges: result})
+    //             //https://spin.atomicobject.com/2018/08/20/objects-not-valid-react-child/
+    //             //https://www.akashmittal.com/react-error-objects-not-valid-react-child/
+    //                 // {merges : {merged_at: result.merged_at, mrScore: result.mrScore, title: result.title,
+    //                 //         diffs: result.diffs, commits: result.commits(commit => {commit.created_at: result.commits.created_at, commit.author_email,
+    //                 //             commit.commitScore, commit.diffs})}})
+    //             console.log(this.state.merges)
+    //         }).catch((error) => {
+    //         console.error(error);
+    //     });
+    // }
+
+
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         merges:[],
+    //         parentdata: this.props.devName
+    //     }
+    // }
+    //
+    // componentDidMount() {
+    //     const {parentdata} = this.state;
+    //     this.getDataFromBackend(parentdata)
+    // }
+    //
+    // getDataFromBackend (username) {
+    //     const pathArray = window.location.pathname.split('/');
+    //     const id = pathArray[2];
+    //     const developer = pathArray[4];
+    //
+    //     //empty request ref: http://localhost:8090/api/v1/projects/6/mergeRequests/user2/2021-01-01/2021-02-23
+    //     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-02-23")
+    //         .then(response => {
+    //             const result = response.data
+    //             this.setState({merges: [result]})
+    //             console.log(this.state.merges);
+    //         }).catch((error) => {
+    //         console.error(error);
+    //     });
+    // }
+    //
+    // componentDidUpdate(prevProps) {
+    //     if (this.props.devName !== prevProps.devName) {
+    //         this.setState({parentdata: this.props.devName});
+    //         this.getDataFromBackend(this.props.devName)
+    //     }
+    // }
+
+
+
+    // render () {
         return (
-        <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell/>
-                        <TableCell>Date</TableCell>
-                        <TableCell align="right">Merge Title</TableCell>
-                        <TableCell align="right">Score</TableCell>
-                        <TableCell align="right">Full Diff</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        this.state.merges.map(row => (
-                            <Row key={row.merged_at} row={row}/>
-                            // <TableCell> {row.merged_at}</TableCell>
-                            // <TableCell> {row.title}</TableCell>
-                            // <TableCell align="right"> {row.mrScore}</TableCell>
-                            // <TableCell align="right"> {row.diffs}</TableCell>
+            <TableContainer component={Paper}>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell/>
+                            <TableCell>Date</TableCell>
+                            <TableCell align="right">Merge Title</TableCell>
+                            <TableCell align="right">Score</TableCell>
+                            <TableCell align="right">Full Diff</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {merges.map((merge) => (
+                            <TableRow>
+                                {/*key={merge.merged_at}>*/}
+                        <TableCell>
+                                    {merges.merged_at}
+                                </TableCell>
+                                <TableCell align="right">{merges.title}</TableCell>
+                                <TableCell align="right">{merges.mrScore}</TableCell>
+                                <TableCell align="right">{merges.diffs}</TableCell>
+                            </TableRow>
                         ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );}
+
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
 }
 
 

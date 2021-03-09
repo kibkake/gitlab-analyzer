@@ -50,7 +50,7 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             {/*<CodeDiffTable  devName = {selectedValue}/>*/}
 
             <MergeListTable  devName = {selectedValue}/>
-            {/*<CollapsibleTable/>*/}
+            <CollapsibleTable/>
         </div>
     )
 
