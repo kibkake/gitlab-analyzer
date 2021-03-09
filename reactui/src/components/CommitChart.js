@@ -116,9 +116,11 @@ class CommitChart extends Component {
         var comarr = this.state.data;
         const daylist = getDaysArray(new Date(this.props.startTime + "T12:00:00"),new Date(this.props.endTime+ "T12:00:00"));
         var location = window.location.pathname.split("/")
+        console.log(this.state.childVal)
 
         return (
             <div className="box-container" >
+                {console.log("are we looking at diff?", this.state.diff)}
                 <div className="horizontalBar">
                 <HorizontalBar
 
@@ -143,7 +145,7 @@ class CommitChart extends Component {
                                     var month = yAxis.toString().split(" ")[1]
                                     var day = yAxis.toString().split(" ")[2]
                                     var year = yAxis.toString().split(" ")[3]
-                                    this.setState({y_Axis:yAxis})
+                                    this.setState({y_Axis:yAxis, diff : false})
                                 }
 
                             } , maintainAspectRatio:true,
@@ -160,8 +162,7 @@ class CommitChart extends Component {
                         }}
                 />
                 </div>
-                <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} />
-
+                {(this.state.diff !== false) ? <SingleCommitDiff handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
             </div>
         )
     }
