@@ -54,13 +54,13 @@ export default function Row(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell>
-                    <IconButton align ="right" aria-label="expand column" size="small" onClick={() => setShowDiff(!showDiff)}>
+                    <IconButton align ="right" aria-label="expand column" size="small" onClick={() => setShowDiff(true)}>
                         {showDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
                     </IconButton>
-                    <Diffs data = {showDiff}></Diffs>
-                    {/*<Popup closeOnOutsideClick={true} trigger={showDiff} setTrigger = {setShowDiff()} >*/}
-                    {/*    {row.diffs}*/}
-                    {/*</Popup>*/}
+                    {/*<Diffs data = {showDiff}></Diffs>*/}
+                    <Diffs closeOnOutsideClick={true} trigger={showDiff} setTrigger = {setShowDiff} >
+                        {row.diffs}
+                    </Diffs>
                 </TableCell>
             </TableRow>
             <TableRow>
