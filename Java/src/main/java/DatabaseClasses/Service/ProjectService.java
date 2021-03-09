@@ -465,7 +465,16 @@ public class ProjectService {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
                     if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
                             && didDeveloperWriteNote(note, username)) {
-                        devNotes.add(note);
+                        boolean dateAlreadyExists = false;
+                        for(int i = 0; i < devNotes.size(); i++){
+                            if(devNotes.get(i).getFormattedDate().equals(note.getFormattedDate())){
+                                devNotes.get(i).addWordCount(note.getWordCount());
+                                dateAlreadyExists = true;
+                            }
+                        }
+                        if(!dateAlreadyExists) {
+                            devNotes.add(note);
+                        }
                     }
                 }
             }
