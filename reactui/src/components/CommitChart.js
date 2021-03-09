@@ -63,22 +63,14 @@ class CommitChart extends Component {
         await DataArray.map(item => {
             arr.push(item)
         })
-        this.setState({data: arr})
+        await this.setState({data: arr})
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.devName !== prevProps.devName){
-            this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
-        }
-        if(this.props.startTime !== prevProps.startTime){
-            this.setState({startTime: this.props.startTime});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
-
-        }
-        if(this.props.endTime !== prevProps.endTime){
-            this.setState({endTime: this.props.endTime});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime)
+    async componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime ||
+            this.props.endTime !== prevProps.endTime){
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }
 
@@ -115,12 +107,10 @@ class CommitChart extends Component {
 
         var comarr = this.state.data;
         const daylist = getDaysArray(new Date(this.props.startTime + "T12:00:00"),new Date(this.props.endTime+ "T12:00:00"));
-        var location = window.location.pathname.split("/")
         console.log(this.state.childVal)
 
         return (
             <div className="box-container" >
-                {console.log("are we looking at diff?", this.state.diff)}
                 <div className="horizontalBar">
                 <HorizontalBar
 
@@ -162,7 +152,7 @@ class CommitChart extends Component {
                         }}
                 />
                 </div>
-                {(this.state.diff !== false) ? <SingleCommitDiff handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
+                {(this.state.diff !== false) ? <SingleCommitDiff  handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
             </div>
         )
     }
