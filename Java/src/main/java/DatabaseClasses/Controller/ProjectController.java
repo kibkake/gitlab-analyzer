@@ -56,16 +56,22 @@ public class ProjectController {
         projectService.setProjectInfo(projectId);
     }
 
+    @GetMapping("setProjectMrs/{projectId}")
+    public void setProjectMRs(@PathVariable int projectId) {
+        projectService.setProjectMrs(projectId);
+    }
+
+
     @RequestMapping("setProjectInfoWithSettings/{projectId}")
     public void setProjectInfoWithSettings(@PathVariable int projectId, ProjectSettings projectSettings) {
         projectSettings.setProjectId(projectId);
-        projectService.setProjectInfo(projectId, projectSettings);
+        projectService.setProjectInfoWithSettings(projectId, projectSettings);
     }
 
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = ProjectConnection.getAllProjectsFromGitLab();
+            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
             projectService.saveNewProjects(projects);
             return projects;
         } else {

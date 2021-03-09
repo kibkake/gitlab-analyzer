@@ -6,8 +6,10 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -17,20 +19,20 @@ import java.util.Objects;
 /**
  * Calls to GitLab Api to get Commit information
  */
+@RestController
 public class CommitConnection {
 
-    public static List<Commit> getProjectCommitsFromGitLab(int projectId) {
+    public List<Commit> getProjectCommitsFromGitLab(int projectId) {
         User user = User.getInstance();
         String pageNumber = "1";
+        RestTemplate restTemplate = new RestTemplate();
         List<Commit> commits = new ArrayList<>();
         do {
             String myUrl = user.getServerUrl() + "projects/" + projectId +
                     "/repository/commits?ref_name=master&per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
-            RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<List<Commit>> commitsResponse = restTemplate.exchange(myUrl,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {
                     });
-
             commits.addAll(Objects.requireNonNull(commitsResponse.getBody()));
             HttpHeaders headers = commitsResponse.getHeaders();
             pageNumber = headers.getFirst("X-Next-Page");

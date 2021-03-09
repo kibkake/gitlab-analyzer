@@ -46,7 +46,7 @@ public class CommitService {
     }
 
     public void saveProjectCommits(int projectId){
-        commitRepository.saveAll(CommitConnection.getProjectCommitsFromGitLab(projectId));
+        commitRepository.saveAll(new CommitConnection().getProjectCommitsFromGitLab(projectId));
     }
 
     public Commit getCommit(int projectId, String commitHash) {

@@ -42,6 +42,7 @@ public class ProjectService {
     }
 
 
+
     public enum UseWhichDevField {EITHER, NAME, USERNAME};
 
     public List<Project> getAllProjects() {
@@ -87,27 +88,37 @@ public class ProjectService {
         return devMRs.size();
     }
 
+    @Transactional(timeout = 1200) // 20 min
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
 
-        project.setDevelopers(DeveloperConnection.getProjectDevelopersFromGitLab(projectId));
-        project.setCommits(CommitConnection.getProjectCommitsFromGitLab(projectId));
-        project.setMergedRequests(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
-        project.setIssues(IssueConnection.getProjectIssuesFromGitLab(projectId));
+        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
+//        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
+        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
     }
 
-    @Transactional
-    public void setProjectInfo(int projectId, ProjectSettings projectSettings) {
+    public void setProjectMrs(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+        List<MergeRequest> projectMrs = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
+        project.setMergedRequests(projectMrs);
+        projectRepository.save(project);
+
+    }
+
+    @Transactional(timeout = 1200) // 20 min
+    public void setProjectInfoWithSettings(int projectId, ProjectSettings projectSettings) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
 
-        project.setDevelopers(DeveloperConnection.getProjectDevelopersFromGitLab(projectId));
-        project.setCommits(CommitConnection.getProjectCommitsFromGitLab(projectId));
-        project.setMergedRequests(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
-        project.setIssues(IssueConnection.getProjectIssuesFromGitLab(projectId));
+        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
+        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
+        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
 

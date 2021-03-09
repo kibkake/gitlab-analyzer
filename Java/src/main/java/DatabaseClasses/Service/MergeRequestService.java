@@ -24,7 +24,7 @@ public class MergeRequestService {
 
     @Transactional
     public void saveProjectMergeRequests(int projectId) {
-        mergeRequestRepository.saveAll(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
+        mergeRequestRepository.saveAll(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
     }
 
     public List<MergeRequestDateScore> getMrScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate) {

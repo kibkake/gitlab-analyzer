@@ -7,15 +7,19 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@RestController
 public class IssueConnection {
 
-    public static List<Issue> getProjectIssuesFromGitLab(int projectId) {
+    public List<Issue> getProjectIssuesFromGitLab(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";
