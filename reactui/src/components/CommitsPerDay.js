@@ -1,10 +1,5 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-
-import {RepoItems} from '../Pages/sampleRepo';
-import RepoButton from "./RepoButton";
-//import "./RepoButton.css"
 import  "./HBox.css"
 
 class CommitsPerDay extends Component{
@@ -53,10 +48,7 @@ class CommitsPerDay extends Component{
                 date: item.date
             };
         });
-
-        var data = JSON.stringify(output);
-        var DataArray = JSON.parse(data)
-        //{DataArray.map(item => console.log(item.id))}
+        //console.log(output)
 
         return(
             <ul>

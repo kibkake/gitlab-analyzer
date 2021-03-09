@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
-import Button from "react-bootstrap/Button";
-import axios from "axios";
 import "./HBox.css"
 import CommitsPerDay from "./CommitsPerDay";
 import SingleCommitDiff from "./SingleCommitDiffs"
@@ -23,15 +21,15 @@ class CommitChart extends Component {
         this.handler2 = this.handler2.bind(this)
     }
 
-    handler(hash) {
-        this.setState({
+    async handler(hash) {
+        await this.setState({
             childVal: hash,
             diff : true
         })
     }
 
-    handler2() {
-        this.setState({
+    async handler2() {
+        await this.setState({
             diff: false
         })
     }
