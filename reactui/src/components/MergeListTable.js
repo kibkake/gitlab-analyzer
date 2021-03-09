@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useRef, useState} from 'react';
+import React, {Component, PureComponent, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -15,7 +15,6 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import axios from "axios";
-import * as classes from "postcss";
 
 //[https://material-ui.com/components/tables/]
 const useRowStyles = makeStyles({
@@ -122,32 +121,19 @@ function createData(id, date, score, title, fullDiff, commits) {
 //                 ]
 // }
 
-export default function MergeListTable ({devName}) { //extends Component
-    const [merges, getMerges] = useState({});
-        // merged_at: '',
-        // mrScore: '',
-        // title: '',
-        // diffs: '',
-        // commits:[
-        //     {created_at: '',
-        //         author_email: '',
-        //         commitScore: '',
-        //         message: '',
-        //         diffs : [
-        //             {diff:''}
-        //         ]
-        //     }]});
+export default function MergeListTable  ({devName}) { //extends Component
 
+    const [merges, getMerges] = useState([]);
     const mounted = useRef();
 
-    useEffect(()=>{
+    useEffect(()=> {
         if (!mounted.current) {
             getDataFromBackend(devName)
             mounted.current = true;
         } else {
-            getDataFromBackend(devName)}
-    }, merges);
-
+            getDataFromBackend(devName)
+        }
+    }, [merges]);
 
     function getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
@@ -156,117 +142,74 @@ export default function MergeListTable ({devName}) { //extends Component
         .then(res => {
             getMerges(res.data);
             console.log(merges);
-            // let commitData = res.commits;
-            // let diff = res.diffs;
-            // getMerges ({merged_at: res.merged_at,
-            //     mrScore: res.mrScore,
-            //     title: res.title,
-            //     diffs: diff,
-            //     commits:[
-            //     {created_at: commitData.created_at,
-            //         author_email: commitData.author_email,
-            //         commitScore: commitData.commitScore,
-            //         message: commitData.message,
-            //         diffs : [
-            //             {diff:commitData.diffs.diff}
-            //         ]
-            //     }]})
         }).catch((error) => {
         console.error(error);
     });}
 
-    // componentDidMount(){
-    //     var pathArray = window.location.pathname.split('/');
-    //     var id = pathArray[2];
-    //     console.log(id);
-    //     var username = pathArray[4];
-    //     console.log(username);
-    //
-    //     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
-    //         .then(response => {
-    //             const result = response.data
-    //             this.setState({merges: result})
-    //             //https://spin.atomicobject.com/2018/08/20/objects-not-valid-react-child/
-    //             //https://www.akashmittal.com/react-error-objects-not-valid-react-child/
-    //                 // {merges : {merged_at: result.merged_at, mrScore: result.mrScore, title: result.title,
-    //                 //         diffs: result.diffs, commits: result.commits(commit => {commit.created_at: result.commits.created_at, commit.author_email,
-    //                 //             commit.commitScore, commit.diffs})}})
-    //             console.log(this.state.merges)
-    //         }).catch((error) => {
-    //         console.error(error);
-    //     });
-    // }
+    const output = merges.map(function(item) {
+        return {
+            date: item.merged_at,
+            title: item.title,
+            score: item.mrScore,
+            diffs: item.diffs.map(function (diffs) {
+                return {
+                    diff: diffs.diff
+                };
+            }),
+            commits: item.commits.map(function (commit) {
+                return {
+                    date: commit.date,
+                    message: commit.message,
+                    score: commit.commitScore,
+                    author: commit.author_email,
+
+                    diffs: commit.diffs.map(function (diffs) {
+                        return {
+                            diff: diffs.diff
+                        };
+                    })
+                };
+            })
+        };
+    });
+
+    console.log(output);
+    const [open, setOpen] = React.useState(false);
+    const classes = useRowStyles();
 
 
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         merges:[],
-    //         parentdata: this.props.devName
-    //     }
-    // }
-    //
-    // componentDidMount() {
-    //     const {parentdata} = this.state;
-    //     this.getDataFromBackend(parentdata)
-    // }
-    //
-    // getDataFromBackend (username) {
-    //     const pathArray = window.location.pathname.split('/');
-    //     const id = pathArray[2];
-    //     const developer = pathArray[4];
-    //
-    //     //empty request ref: http://localhost:8090/api/v1/projects/6/mergeRequests/user2/2021-01-01/2021-02-23
-    //     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-02-23")
-    //         .then(response => {
-    //             const result = response.data
-    //             this.setState({merges: [result]})
-    //             console.log(this.state.merges);
-    //         }).catch((error) => {
-    //         console.error(error);
-    //     });
-    // }
-    //
-    // componentDidUpdate(prevProps) {
-    //     if (this.props.devName !== prevProps.devName) {
-    //         this.setState({parentdata: this.props.devName});
-    //         this.getDataFromBackend(this.props.devName)
-    //     }
-    // }
-
-
-
-    // render () {
-        return (
-            <TableContainer component={Paper}>
-                <Table aria-label="collapsible table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell/>
-                            <TableCell>Date</TableCell>
-                            <TableCell align="right">Merge Title</TableCell>
-                            <TableCell align="right">Score</TableCell>
-                            <TableCell align="right">Full Diff</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {merges.map((merge) => (
-                            <TableRow>
-                                {/*key={merge.merged_at}>*/}
+    return (
+        <TableContainer component={Paper}>
+            <Table aria-label="collapsible table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell/>
+                        <TableCell aligh="left">Date</TableCell>
+                        <TableCell>Merge Title</TableCell>
+                        <TableCell align="right">Score</TableCell>
+                        <TableCell align="right">Full Diff</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    <TableRow className={classes.root}>
                         <TableCell>
-                                    {merges.merged_at}
-                                </TableCell>
-                                <TableCell align="right">{merges.title}</TableCell>
-                                <TableCell align="right">{merges.mrScore}</TableCell>
-                                <TableCell align="right">{merges.diffs}</TableCell>
-                            </TableRow>
-                        ))}
-
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        );
+                            <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                            </IconButton>
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            {output.date}
+                        </TableCell>
+                        <TableCell align="right">{output.title}</TableCell>
+                        <TableCell align="right">{output.score}</TableCell>
+                        {/*<TableCell align="right">{output.diffs}</TableCell>*/}
+                    </TableRow>
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
 }
+
 
 
 Row.propTypes = {
@@ -286,62 +229,64 @@ Row.propTypes = {
         diffs: PropTypes.string.isRequired,
     }).isRequired,
 };
-// getDataFromBackend (username) {
+
+//
+// constructor(props) {
+//     super(props);
+//     this.state = {
+//         merges:[
+//             //     {
+//             //     merged_at: '',
+//             //     mrScore: '',
+//             //     title: '',
+//             //     diffs: '',
+//             //     commits:[
+//             //         {created_at: '',
+//             //             author_email: '',
+//             //             commitScore: '',
+//             //             message: '',
+//             //             diffs : [
+//             //                 {diff:''}
+//             //             ]
+//             //         }]
+//             // }
+//         ],
+//         parentdata: this.props.devName,
+//         startTime: this.props.startTime,
+//         endTime: this.props.endTime
+//     }
+// }
+//
+// async componentDidMount(){
+//     const {parentdata} = this.state;
+//     await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
+// }
+//
+// async getDataFromBackend (username, startTm, endTm) {
 //     var pathArray = window.location.pathname.split('/');
 //     var id = pathArray[2];
 //     var name = username;
-//     for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers')).length; i++) {
-//         if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers'))[i])) {
-//             name = JSON.parse(sessionStorage.getItem('DeveloperNames'))[i]//use name to retrieve data
+//     if(sessionStorage.getItem('DeveloperNames' + id) != null && sessionStorage.getItem('Developers' + id) != null) {
+//         for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
+//             if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
+//                 name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
+//             }
 //         }
 //     }
 //
-//     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
-//         .then(response => {
-//             const result = response.data
-//             this.setState({merges: result})
-//             console.log(this.state.merges)
-//         }).catch((error) => {
-//         console.error(error);
-//     });
+//     const response = await axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + '/' +
+//         startTm + '/' + endTm)
+//
+//     const mergeData = await response.data
+//     await this.setState({merges : mergeData, parentdata: username, startTime: startTm,
+//         endTime: endTm})
+//     await console.log(this.state.merges)
 // }
 //
-// componentDidUpdate(prevProps){
-//     if(this.props.devName !== prevProps.devName){
-//         this.setState({parentdata: this.props.devName});
-//         this.getDataFromBackend(this.props.devName)
+// async componentDidUpdate(prevProps){
+//     if (this.props.devName !== prevProps.devName ||
+//         this.props.startTime !== prevProps.startTime ||
+//         this.props.endTime !== prevProps.endTime){
+//         await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
 //     }
 // }
-// const [commits, getCommits] = useState([]);
-// const [merges, getMerges] = useState(false);
-// var newArr;
-// const mounted = useRef();
-// useEffect(()=>{
-//     if (!mounted.current) {
-//         getDataFromBackend(devName)
-//         mounted.current = true;
-//     } else {
-//         getDataFromBackend(devName)}
-// }, [merges]);
-//
-// function getDataFromBackend (username) {
-//     var pathArray = window.location.pathname.split('/');
-//     var id = pathArray[2];
-//
-//     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + devName + "/2021-01-01/2021-05-09")
-//         .then(response => {
-//             const result = response.data
-//             newArr = Object.keys(result)
-//             getMerges(newArr)
-//             console.log(newArr)
-//             console.log(merges)
-//         }).catch((error) => {
-//         console.error(error);
-//     });
-// }
-// axios.get("/api/v1/projects/" + id + "/Commits/" + devName + "/2021-01-01/2021-05-09")
-//     .then(response => {
-//         getCommits(response.data)
-//     }).catch((error) => {
-//     console.error(error);
-// });}
