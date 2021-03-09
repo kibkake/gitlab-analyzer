@@ -21,7 +21,6 @@ class CommitChart extends Component {
         };
         this.handler = this.handler.bind(this)
         this.handler2 = this.handler2.bind(this)
-
     }
 
     handler(hash) {
@@ -132,9 +131,6 @@ class CommitChart extends Component {
                                     const chart = Event[0]._chart;
                                     const element = chart.getElementAtEvent(e)[0];
                                     const yAxis = chart.data.labels[element._index];
-                                    var month = yAxis.toString().split(" ")[1]
-                                    var day = yAxis.toString().split(" ")[2]
-                                    var year = yAxis.toString().split(" ")[3]
                                     this.setState({y_Axis:yAxis, diff : false})
                                 }
 
@@ -159,9 +155,3 @@ class CommitChart extends Component {
 }
 
 export default CommitChart
-
-/*to swtich to a different page
-   window.location.href =  '/' + location[1] +'/' + location[2] +
-   '/' + location[3] + '/' + this.props.devName + '/commits/' +
-   yAxis
- */

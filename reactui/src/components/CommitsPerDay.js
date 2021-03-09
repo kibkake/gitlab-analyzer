@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import {RepoItems} from '../Pages/sampleRepo';
 import RepoButton from "./RepoButton";
 //import "./RepoButton.css"
+import  "./HBox.css"
 
 class CommitsPerDay extends Component{
     constructor(props){
@@ -18,7 +19,6 @@ class CommitsPerDay extends Component{
     }
 
     async componentDidMount(){
-        const {devName} = this.state;
         await this.getDataFromBackend(this.props.devName, this.props.startTime,  this.props.endTime )
     }
 
@@ -48,12 +48,6 @@ class CommitsPerDay extends Component{
     }
 
     render(){
-        /* old way, for reference
-        var str = window.location.pathname;
-        var strArr = str.split("/");
-        var data = JSON.stringify(this.state.data);
-        var DataArray = JSON.parse(data)
-         */
 
         var output = this.state.data.map(function(item) {
             return {
@@ -71,7 +65,7 @@ class CommitsPerDay extends Component{
             {this.state.data.map(item => {
                 return <li>
                     <a href= {"Developers/" + item }target= "_blank">
-                        <Button className="Footer" to={item.id}
+                        <Button className="Footer2" to={item.id}
                                 type="button"
                                 onClick={(e) => {
                                     e.preventDefault();
