@@ -3,7 +3,7 @@ import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Respo
 import axios from "axios";
 import * as d3 from "d3-time";
 import moment from 'moment'
-import ProjectService from "../Service/ProjectService";
+import ProjectService from "../../Service/ProjectService";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class CommitMRNumChart extends PureComponent {

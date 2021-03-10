@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-import './Navbar.css';
+import './NavBars_Menu/Navbar.css';
 
 class Developers2Button extends Component{
     constructor(props){

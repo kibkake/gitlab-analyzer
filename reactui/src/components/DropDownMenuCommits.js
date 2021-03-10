@@ -1,7 +1,7 @@
 import React, {Component, useEffect, useRef} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
-import Navbar_Developers from "./Navbar_Developers";
+import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
 import CommitChart from "./CommitChart";
 import './DropDownMenu.css';
 
