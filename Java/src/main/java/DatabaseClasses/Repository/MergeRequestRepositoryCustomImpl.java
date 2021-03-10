@@ -77,14 +77,10 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria hashMatchCriteria = Criteria.where("commits.Id").is(hash);
 
-        Criteria criterias = new Criteria().andOperator(projectMatchCriteria );
-
+        Criteria criterias = new Criteria().andOperator(projectMatchCriteria, hashMatchCriteria );
         Query query = new Query(criterias);
 
         final MergeRequest mergeRequests = mongoTemplate.findOne(query, MergeRequest.class);
-
         return mergeRequests;
     }
-
-
 }

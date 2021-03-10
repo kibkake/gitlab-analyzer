@@ -58,21 +58,10 @@ public class MergeRequestService {
                 startLocalTime, endLocalTime);
     }
 
-    public MergeRequest getProjectMrByCommitHash(int projectId, String hash ) {
-
-        String myUrl =  "http://localhost:8090/api/v2/projects/" + projectId + "/Commits/" + hash;
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Commit> commitJSON = restTemplate.exchange(myUrl,
-                HttpMethod.GET, null, new ParameterizedTypeReference<Commit>() {
-        });
-
-        Commit commit = Objects.requireNonNull(commitJSON.getBody());
+    public MergeRequest getMrByCommitHash(int projectId, String hash) {
 
         return mergeRequestRepository.getMrByCommitHash(projectId, hash);
-        //return commit;
-        //System.out.println(commit);
-        //System.out.println(mergeRequestRepository.findByProjectIdAndCommitsContains(projectId,commit));
-        //return mergeRequestRepository.findByProjectIdAndCommitsContains(projectId,commit);
+
     }
 
 }

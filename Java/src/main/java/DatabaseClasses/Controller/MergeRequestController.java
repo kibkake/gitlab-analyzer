@@ -72,10 +72,10 @@ public class MergeRequestController {
         return mergeRequestService.getProjectMRs(projectId);
     }
 
-    @GetMapping("projects/{projectId}/mergeRequest/{commitHash}")
-    public MergeRequest getMrByCommitHash(@PathVariable("projectId") int projectId,
+    @GetMapping("projects/{projectId}/mergeRequests/{commitHash}")
+    public MergeRequest getCommitMr(@PathVariable("projectId") int projectId,
                      @PathVariable("commitHash") String commitHash) {
 
-        return mergeRequestService.getProjectMrByCommitHash(projectId, commitHash);
+        return mergeRequestService.getMrByCommitHash(projectId, commitHash);
     }
 }
