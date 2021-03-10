@@ -3,6 +3,7 @@ import {HorizontalBar} from 'react-chartjs-2'
 import CommitsPerDay from "./CommitsPerDay";
 import SingleCommitDiff from "./SingleCommitDiffs"
 import "./HBox.css"
+import CommitMergeRequest from "./CommitMergeRequest";
 
 
 class CommitChart extends Component {
@@ -148,6 +149,7 @@ class CommitChart extends Component {
                 />
                 </div>
                 {(this.state.diff !== false) ? <SingleCommitDiff  handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
+                <CommitMergeRequest/>
             </div>
         )
     }
