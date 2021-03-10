@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 
 import java.util.ArrayList;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Project {
     private List<Commit> commits;
     private List<Developer> developers;
     private boolean infoSet;
-    private Date infoSetDate;
+    private Instant infoSetDate;
 
     public Project() {
         mergedRequests = new ArrayList<>();
@@ -107,11 +108,11 @@ public class Project {
         this.infoSet = infoSet;
     }
 
-    public Date getInfoSetDate() {
+    public Instant getInfoSetDate() {
         return infoSetDate;
     }
 
-    public void setInfoSetDate(Date infoSetDate) {
+    public void setInfoSetDate(Instant infoSetDate) {
         this.infoSetDate = infoSetDate;
     }
 

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -83,6 +85,9 @@ public class ProjectService {
         project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
         project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
         project.setInfoSet(true);
+
+        Instant infoSetDate = Clock.systemUTC().instant();
+        project.setInfoSetDate(infoSetDate);
         projectRepository.save(project);
     }
 
