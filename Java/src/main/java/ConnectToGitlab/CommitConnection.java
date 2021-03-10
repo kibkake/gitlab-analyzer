@@ -55,12 +55,12 @@ public class CommitConnection {
         do {
             String url = user.getServerUrl() + "projects/" + projectId + "/repository/commits/" + commitHash + "/" + "diff" +
                     "?per_page=100&page=" + pageNumber + "&access_token=" + user.getToken();
-            ResponseEntity<List<Diff>> diffsResponse = restTemplate.exchange(url,
+            ResponseEntity<List<Diff>> diffsJSON = restTemplate.exchange(url,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Diff>>() {
                     });
 
-            diffs.addAll(Objects.requireNonNull(diffsResponse.getBody()));
-            HttpHeaders headers = diffsResponse.getHeaders();
+            diffs.addAll(Objects.requireNonNull(diffsJSON.getBody()));
+            HttpHeaders headers = diffsJSON.getHeaders();
             pageNumber = headers.getFirst("X-Next-Page");
         }while (!pageNumber.equals(""));
 
