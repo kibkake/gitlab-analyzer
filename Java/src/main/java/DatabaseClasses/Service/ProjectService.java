@@ -134,6 +134,10 @@ public class ProjectService {
             List<CommitDateScore> devCommitScores = commitRepository.getDevDateScore(projectId, dev.getUsername(),
                     projectSettings.getStartDate(), projectSettings.getEndDate());
 
+            /* Because spring generates the user object we have to make our own custom key and it cant be done in a
+               constructor because of spring
+             */
+            dev.setDbKey(String.valueOf(dev.getProjectId()) +  String.valueOf(dev.getDevId()));
 
             dev.setProjectId(projectId);
             dev.setMergeRequestsAndCommits(devsMrs);

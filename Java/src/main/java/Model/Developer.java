@@ -16,10 +16,12 @@ import java.util.List;
 @Document(value = "Developer")
 public class Developer {
 
-    @Id
-    private int devId;
     /* a Dev can belong to many projects but should only be scored for the project in question so we will use project id
-      to link them to there work in a specific project */
+     to link them to there work in a specific project so i will make the key the combination of them */
+    @Id
+    private String dbKey;
+
+    private int devId;
     private int projectId;
 
     private String name;
@@ -99,6 +101,14 @@ public class Developer {
 
     public void setProjectId(int projectId) {
         this.projectId = projectId;
+    }
+
+    public String getDbKey() {
+        return dbKey;
+    }
+
+    public void setDbKey(String dbKey) {
+        this.dbKey = dbKey;
     }
 
     @Override

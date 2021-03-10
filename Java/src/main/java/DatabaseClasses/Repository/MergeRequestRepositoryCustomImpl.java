@@ -84,4 +84,5 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
         List<Object> result = groupResults.getMappedResults();
         return result;
     }
+
 }
