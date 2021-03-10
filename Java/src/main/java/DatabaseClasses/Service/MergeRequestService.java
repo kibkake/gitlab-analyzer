@@ -3,6 +3,7 @@ package main.java.DatabaseClasses.Service;
 import main.java.ConnectToGitlab.MergeRequestConnection;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.DatabaseClasses.Repository.MergeRequestRepository;
+import main.java.Model.Commit;
 import main.java.Model.MergeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,4 +51,9 @@ public class MergeRequestService {
         return mergeRequestRepository.userTotalMergeRequestScore(projectId, authorName,
                 startLocalTime, endLocalTime);
     }
+
+    public MergeRequest getProjectMRs(int projectId, Commit commit) {
+        return mergeRequestRepository.findByProjectIdAndCommitsContains(projectId, commit);
+    }
+
 }
