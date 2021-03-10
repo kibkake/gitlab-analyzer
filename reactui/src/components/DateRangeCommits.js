@@ -8,7 +8,7 @@ import SummaryScoreTable from "./SummaryScoreTable";
 import CommentChart from "./CommentChart";
 import DateRangeSettingComponent from "./DateRangeSettings";
 import CommitChart from "./CommitChart";
-import SummaryChartRadios from "./RadioButtonSummaryChart";
+import RadioButtonSummaryChart from "./RadioButtonSummaryChart";
 
 function DateRangeCommits({devName}){
 

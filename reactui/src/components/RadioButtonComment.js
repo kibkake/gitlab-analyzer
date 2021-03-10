@@ -6,6 +6,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import CommitMRScoreChart from "./CommitMRScoreChart";
+import CommitMRNumChart from "./CommitMRNumChart";
+import CommentChart from "./CommentChart2";
 
 //[https://material-ui.com/components/radio-buttons/]
 const useStyles = makeStyles({
@@ -49,6 +52,7 @@ const useStyles = makeStyles({
     },
 });
 
+
 // Inspired by blueprintjs
 function StyledRadio(props) {
     const classes = useStyles();
@@ -65,14 +69,16 @@ function StyledRadio(props) {
     );
 }
 
-export default function CustomizedRadios() {
+export default function RadioButtonComments() {
     return (
         <FormControl component="fieldset">
             <FormLabel component="legend">View Comments On</FormLabel>
             <RadioGroup defaultValue="codeReview" aria-label="comment" name="customized-radios">
-                <FormControlLabel value="codeReview" control={<StyledRadio />} label="Code Review" />
+                <FormControlLabel value="codeReview" control={<StyledRadio/>} label="Code Review" />
                 <FormControlLabel value="issue" control={<StyledRadio />} label="Issue" />
             </RadioGroup>
         </FormControl>
     );
 }
+// checked={this.state.value === "issue"}
+// onChange={this.handleRadioChange}

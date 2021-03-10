@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
-import ProjectService from "../Service/ProjectService";
+
 
 class CommentTable extends Component{
-
     constructor(props) {
         super(props);
         this.state = {
@@ -23,8 +22,8 @@ class CommentTable extends Component{
         const id = pathArray[2];
         const developer = pathArray[4];
 
-        //empty request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-02-23
-        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/2021-01-01/2021-02-23")
+        //empty request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-05-09
+        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments = response.data
                 this.setState({comments: comments})
@@ -32,9 +31,6 @@ class CommentTable extends Component{
             }).catch((error) => {
             console.error(error);
         });
-        // ProjectService.getCommentInfo(id, developer, '2021-01-01','2021-02-15').then((response) => {
-        //     this.setState({comments: response.data})
-        // });
     }
 
     componentDidUpdate(prevProps){
@@ -44,8 +40,29 @@ class CommentTable extends Component{
         }
     }
 
-
     render() {
+        const issueNote = this.state.comments.map(function(item) {
+            // if (item.issueNote) {
+                return {
+                    if (item.issueNote)
+                    date: item.createdDate,
+                    wordCount: item.wordCount,
+                    comments: item.body
+                };
+            // };
+        });
+        console.log(issueNote);
+
+        const MRNote = this.state.comments.map(function(item) {
+            if (!item.issueNote) {
+                return {
+                    date: item.createdDate,
+                    wordCount: item.wordCount,
+                    comments: item.body
+                }
+            }
+        })
+
         return (
             <div className="container">
                 <Table striped bordered hover>
@@ -56,11 +73,11 @@ class CommentTable extends Component{
                     </tr>
                     <tbody>
                     {
-                        this.state.comments.map(comments =>//(item, index) =>
+                        issueNote.map(comments =>//(item, index) =>
                             <tr>
-                                <td>{comments.createdDate}</td>
+                                <td>{comments.date}</td>
                                 <td>{comments.wordCount}</td>
-                                <td>{comments.body}</td>
+                                <td>{comments.comments}</td>
                             </tr>
                         )}
                     </tbody>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
-import CustomizedRadios from "./RadioButtonComment";
+import RadioButtonComments from "./RadioButtonComment";
 import CommentTable from "./CommentTable";
 import './DropDownMenu.css';
 
@@ -41,7 +41,7 @@ function DropDownMenuComments ({listOfDevelopers}) {
             <h1 style={{textAlign:'center'}}>Comment Contribution</h1>
             <br></br>
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-                <CustomizedRadios/>
+                <RadioButtonComments/>
             </div>
             <br></br>
             <h4 style={{textAlign:'center'}}>Top 10 comments </h4>

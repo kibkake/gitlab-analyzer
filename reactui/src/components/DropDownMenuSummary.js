@@ -1,10 +1,8 @@
 import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
-import SummaryScoreTable from "./SummaryScoreTable";
 import Navbar_Developers from "./Navbar_Developers";
 import './DropDownMenu.css';
-import SummaryChartRadios from "./RadioButtonSummaryChart";
 import DateRangeSummary from './DateRangeSummary'
 
 

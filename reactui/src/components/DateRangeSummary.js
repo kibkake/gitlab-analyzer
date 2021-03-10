@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import {DateTimePicker, MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import SummaryScoreTable from "./SummaryScoreTable";
-import SummaryChartRadios from "./RadioButtonSummaryChart";
+import RadioButtonSummaryChart from "./RadioButtonSummaryChart";
 import CommitMRScoreChart from "./CommitMRScoreChart";
 
 
@@ -111,9 +111,9 @@ function DateRangeSummary({devName}){
                                startTime = {changeDateFormat(selectedStartDate)}
                                endTime = {changeDateFormat(selectedEndDate)}
                                />
-            <SummaryChartRadios devName = {devName}
-                                startTime = {changeDateFormat(selectedStartDate)}
-                                endTime = {changeDateFormat(selectedEndDate)}/>
+            <RadioButtonSummaryChart devName = {devName}
+                                     startTime = {changeDateFormat(selectedStartDate)}
+                                     endTime = {changeDateFormat(selectedEndDate)}/>
             <br>
             </br>
 
