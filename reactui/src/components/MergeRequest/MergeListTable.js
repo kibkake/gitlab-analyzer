@@ -25,19 +25,41 @@ import Row from "./Rows";
 export default function MergeListTable  ({devName}) { //extends Component
 
     const [merges, getMerges] = useState([]);
-    const mounted = useRef();
+    const nameRef = useRef();
+    // const name = useRef(devName);
 
     useEffect(()=> {
-        if (!mounted.current) {
-            mounted.current = true;
+        if (nameRef.current == null) {
+            getDataFromBackend(devName);
+            nameRef.current = devName;
         }
-        getDataFromBackend(devName);
+        var name1 = devName;
+        var name = nameRef.current;
+        console.log(name)
+        console.log(name1)
+
+        if (name != name1){
+            console.log(devName)
+            console.log(nameRef.current)
+
+            nameRef.current = devName;
+            getDataFromBackend(name1);
+        }
     }, [merges]);
 
-
+    //
+    // useEffect(() => {
+    //     if (!mounted.current) {
+    //         mounted.current = true;
+    //     }
+    //     getDataFromBackend(devName);
+    // }, [merges]);
+    //
+    //
     function getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
+
         axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
         .then(res => {
             getMerges(res.data);
@@ -196,23 +218,7 @@ const useRowStyles = makeStyles({
 //     );
 // }
 
-// var pathArray = window.location.pathname.split('/');
-// var id = pathArray[2];
-//
-// useEffect(()=> {
-//     if (!mounted.current) {
-//         mounted.current = true;
-//     }
-//     const fetchData = async() => {
-//         const result = await axios.get("/api/v1/projects/" + id + "/mergeRequests/" + devName + "/2021-01-01/2021-05-09")
-//             .catch((error) => {
-//             console.error(error);
-//         });
-//         getMerges(result.data);
-//     };
-//
-//     fetchData();
-// }, [merges]);
+
 
 
 //
