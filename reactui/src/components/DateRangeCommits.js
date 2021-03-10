@@ -4,10 +4,7 @@ import React, {Component, useEffect, useRef, useState} from "react";
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import ProjectService from '../Service/ProjectService'
-import SummaryScoreTable from "./SummaryScoreTable";
-import DateRangeSettingComponent from "./DateRangeSettings";
 import CommitChart from "./CommitChart";
-import SummaryChartRadios from "./RadioButtonSummaryChart";
 
 function DateRangeCommits({devName}){
 

@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
-import CommitChart from "./CommitChart";
 import CodeDiffTable from "./CodeDiffTable";
 import './DropDownMenu.css';
 

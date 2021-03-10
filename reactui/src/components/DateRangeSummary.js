@@ -1,11 +1,10 @@
 import React,{ Component } from "react";
 import ProjectService from "../Service/ProjectService";
 import Grid from "@material-ui/core/Grid";
-import {DateTimePicker, MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
+import {MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
-import CommitMRScoreChart from "./CommitMRScoreChart";
 
 
 function DateRangeSummary({devName}){
