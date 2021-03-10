@@ -4,7 +4,6 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import {KeyboardArrowLeftRounded, KeyboardArrowRightRounded} from "@material-ui/icons";
 import Collapse from "@material-ui/core/Collapse";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
@@ -12,9 +11,7 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import {makeStyles} from "@material-ui/core/styles";
-import Diffs from './Diffs'
 import {OverlayTrigger, Popover} from 'react-bootstrap'
-import Button from "react-bootstrap/Button";
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -37,13 +34,10 @@ const PopOver = ({Diffs}) => {
     )
 }
 
-
+// Table structure is based on the library from [https://material-ui.com/components/tables/]
 export default function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
-    const [showDiff, setShowDiff] = React.useState(false);
-    const [showCommitDiff, setShowCommitDiff] = React.useState(false);
-
     const classes = useRowStyles();
 
     return (
@@ -62,9 +56,6 @@ export default function Row(props) {
                 <TableCell align ="right">
                     <OverlayTrigger trigger="focus" placement="right" class = "justify-content-end" overlay={<PopOver Diffs={row.diffs} />}>
                         <button type="button" className="btn btn-secondary">View</button>
-                        {/*<IconButton aria-label="expand column" size="small" onClick={() => setShowDiff(!showDiff)}>*/}
-                        {/*    {showDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}*/}
-                        {/*</IconButton>*/}
                     </OverlayTrigger>
                 </TableCell>
             </TableRow>
@@ -97,10 +88,6 @@ export default function Row(props) {
                                             <TableCell align="right" >
                                                 <OverlayTrigger trigger="focus"  placement="right" overlay={<PopOver Diffs={commitsRow.commitDiffs}/>}>
                                                     <button type="button" className="btn btn-outline-secondary">View</button>
-
-                                                    {/*<IconButton aria-label="expand column" size="small" onClick={() => setShowCommitDiff(!showCommitDiff)}>*/}
-                                                    {/*  {showCommitDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}*/}
-                                                    {/*</IconButton>*/}
                                                 </OverlayTrigger>
                                             </TableCell>
                                         </TableRow>
@@ -112,10 +99,8 @@ export default function Row(props) {
                 </TableCell>
             </TableRow>
         </React.Fragment>
-
     );
 }
-
 
 const useRowStyles = makeStyles({
     root: {
@@ -126,17 +111,4 @@ const useRowStyles = makeStyles({
 
         },
     },
-    tablecell: {
-        '& > *': {
-            borderBottom: 'unset',
-            fontSize: '20pt',
-            fontWeight: 'bold',
-        },
-    }
 });
-
-// {/*    <div class="p-2">*/}
-// {/*        */}
-// {/*    </div>*/}
-// {/*        */}
-// {/*</div>*/}

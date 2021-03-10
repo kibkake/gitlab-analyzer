@@ -1,6 +1,6 @@
 import "../App.css"
 import ChartCommit from "../components/ChartCommit";
-import FullDiffTable from "../components/FullDiffTable";
+import FullDiffTable from "../components/storage_unused/FullDiffTable";
 import Navbar_Developers from "../components/Navbar_Developers";
 
 
