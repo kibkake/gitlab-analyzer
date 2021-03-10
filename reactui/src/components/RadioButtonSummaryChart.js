@@ -12,12 +12,13 @@ import CommentChart from "./CommentChart2";
 import "./RadioButtonSummaryCharts.css"
 import CommitChart from "./CommitChart";
 //[https://material-ui.com/components/radio-buttons/]
+import "./RadioButtonSummaryCharts.css"
 
 function Chart(props){
 
     if (props.value === "score") {
         return (<div>
-            <h4 style={{textAlign:'center'}}>Score of Commits/Merge Per Day</h4>
+            <h4 className={"title"}>Score of Commits/Merge Per Day</h4>
             <CommitMRScoreChart devName = {props.devName}
                                 startTime = {props.startTime}
                                 endTime = {props.endTime}/>
@@ -25,15 +26,15 @@ function Chart(props){
     }
     else if (props.value === "number") {
         return (<div>
-            <h4 style={{textAlign: 'center'}}>Number of Commits/Merge Per Day</h4>
+            <h4 className={"title"}>Number of Commits/Merge Per Day</h4>
             <CommitMRNumChart devName={props.devName}
                               startTime = {props.startTime}
                               endTime = {props.endTime}/>
         </div>);
     }
-    if (props.value === "words") {
+    else {
         return (<div>
-            <h4 style={{textAlign: 'center'}}>Number of Words Per Day</h4>
+            <h4 className={"title"}>Number of Words Per Day</h4>
             <CommentChart devName={props.devName}
                           startTime = {props.startTime}
                           endTime = {props.endTime}/>
@@ -63,7 +64,7 @@ export default class SummaryChartRadios extends Component {
 
         return (
             <div onChange={this.setState.bind(this)} >
-            <FormControl component="fieldset" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+            <FormControl component="fieldset" className={"radio"}>
                 <RadioGroup row defaultValue="score" aria-label="comment" name="customized-radios" >
                     <FormControlLabel value="score" control={ <StyledRadio checked={this.state.value === "score"}
                                                                            onChange={this.handleRadioChange}/>} label="Score of Commit/Merge"/>
