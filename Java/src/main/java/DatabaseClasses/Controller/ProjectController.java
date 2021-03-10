@@ -10,6 +10,7 @@ import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -325,6 +326,22 @@ public class ProjectController {
         }
         java.util.Collections.sort(memberUsernames);
         return memberUsernames;
+    }
+
+    @GetMapping("projects/{projectId}/allUserNotesForChart/{committerName}/{start}/{end}")
+    public List<Note> getAllDevNotesForChart(@PathVariable("projectId") int projectId,
+                                     @PathVariable("committerName") String committerName,
+                                     @PathVariable("start") String start,
+                                     @PathVariable("end")String end) {
+        LocalDate StartLocalTime = LocalDate.parse(start);
+        LocalDate endLocalTime = LocalDate.parse(end);
+        try {
+            return projectService.getDevNotesForChart(projectId, committerName, StartLocalTime, endLocalTime);
+        }catch(ParseException exception){
+            System.out.println(exception.getMessage());
+            List<Note> notes = new ArrayList<>();
+            return notes;
+        }
     }
 }
 

@@ -1,13 +1,15 @@
 package main.java.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.java.Model.Developer;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.StringTokenizer;
+import java.util.*;
 
 @Document(value = "Note")
 public class Note {
@@ -20,7 +22,7 @@ public class Note {
     private int month;
     private int day;
     private String username;
-    private String created_at;
+    private String createdAt;
     private Date createdDate;
     private Boolean isIssueNote;
     private int wordCount;
@@ -89,13 +91,14 @@ public class Note {
         this.username = username;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    @JsonProperty("created_at")
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(created_at);
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(createdAt);
         setCreatedDate(Date.from(dateWithOffSet.toInstant()));
     }
 
@@ -128,4 +131,29 @@ public class Note {
         return numWords;
     }
 
+    public String getFormattedDate() throws ParseException{
+
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        df1.setTimeZone(TimeZone.getTimeZone("PT"));
+        Date result = createdDate;
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(result);
+
+        String month = Integer.toString((cal.get(Calendar.MONTH)+1));
+        String day = Integer.toString(cal.get(Calendar.DATE));
+
+        if(month.length() < 2){
+            month = "0" + Integer.toString((cal.get(Calendar.MONTH)+1));
+        }
+        if(day.length() < 2){
+            day = "0" + Integer.toString(cal.get(Calendar.DATE));
+        }
+        return cal.get(Calendar.YEAR) + "-" + month+ "-" + day;
+
+    }
+
+    public void addWordCount(int wordCount) {
+        this.wordCount += wordCount;
+    }
 }

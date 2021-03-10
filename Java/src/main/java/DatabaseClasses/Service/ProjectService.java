@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -349,7 +350,7 @@ public class ProjectService {
         List<Issue> devIssues = new ArrayList<>();
         for (Issue issue : issues) {
             LocalDate modifiedDate = null;
-            String whenIssueModified = issue.getModified_at();
+            String whenIssueModified = issue.getModifiedAt();
             if (whenIssueModified != null && whenIssueModified != "") {
                 modifiedDate = LocalDate.parse(whenIssueModified);
             }
@@ -364,7 +365,7 @@ public class ProjectService {
 
             LocalDate createdAt;
             try {
-                createdAt = LocalDate.parse(issue.getCreated_at());
+                createdAt = LocalDate.parse(issue.getCreatedAt());
             }
             catch (Exception e) {
                 continue;
@@ -416,7 +417,7 @@ public class ProjectService {
         }
         List<MergeRequest> mergeRequests = project.getMergedRequests();
         for (MergeRequest mergeRequest : mergeRequests) {
-            List<Note> mrNotes = mergeRequest.getNotes();
+            List<Note> mrNotes = mergeRequest.getAllNotes();
             if (mrNotes != null) {
                 for (Note note : mrNotes) {
                     LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
@@ -494,6 +495,57 @@ public class ProjectService {
     public List<Developer> getMembers(int ProjectId){
         Project project = projectRepository.findProjectById(ProjectId);
         return project.getDevelopers();
+    }
+
+    public List<Note> getDevNotesForChart(int projectId, String username, LocalDate start, LocalDate end)
+            throws ParseException {
+        Project project = projectRepository.findProjectById(projectId);
+        List<Issue> issues = project.getIssues();
+        List<Note> devNotes = new ArrayList<>();
+        for (Issue issue : issues) {
+            List<Note> issueNotes = issue.getNotes();
+            if (issueNotes != null) {
+                for (Note note : issueNotes) {
+                    LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
+                            && didDeveloperWriteNote(note, username)) {
+                        boolean dateAlreadyExists = false;
+                        for(int i = 0; i < devNotes.size(); i++){
+                            if(devNotes.get(i).getFormattedDate().equals(note.getFormattedDate())){
+                                devNotes.get(i).addWordCount(note.getWordCount());
+                                dateAlreadyExists = true;
+                            }
+                        }
+                        if(!dateAlreadyExists) {
+                            devNotes.add(note);
+                        }
+                    }
+                }
+            }
+        }
+        List<MergeRequest> mergeRequests = project.getMergedRequests();
+        for (MergeRequest mergeRequest : mergeRequests) {
+            List<Note> mrNotes = mergeRequest.getAllNotes();
+            if (mrNotes != null) {
+                for (Note note : mrNotes) {
+                    LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
+                    if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
+                            && didDeveloperWriteNote(note, username)) {
+                        boolean dateAlreadyExists = false;
+                        for(int i = 0; i < devNotes.size(); i++){
+                            if(devNotes.get(i).getFormattedDate().equals(note.getFormattedDate())){
+                                devNotes.get(i).addWordCount(note.getWordCount());
+                                dateAlreadyExists = true;
+                            }
+                        }
+                        if(!dateAlreadyExists) {
+                            devNotes.add(note);
+                        }
+                    }
+                }
+            }
+        }
+        return devNotes;
     }
 
 }

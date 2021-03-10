@@ -20,8 +20,7 @@ public class MergeRequestController {
 
     private final MergeRequestService mergeRequestService;
     private String isoEnding = "T00:00:00.000Z";
-
-
+    
     @Autowired
     public MergeRequestController(MergeRequestService mergeRequestService) {
         this.mergeRequestService = mergeRequestService;
@@ -39,8 +38,6 @@ public class MergeRequestController {
         LocalDate endLocalTime = LocalDate.parse(endDate);
         return mergeRequestService.getMrScorePerDay(projectId, userName, StartLocalTime, endLocalTime);
     }
-
-
 
     @GetMapping("projects/{projectId}/MergeRequest/scores/total/{userName}/{startDate}/{endDate}")
     public Object getTotalMergeRequestScores(@PathVariable int projectId, @PathVariable String userName,
