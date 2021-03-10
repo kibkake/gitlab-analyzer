@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.Repository;
 
 import main.java.DatabaseClasses.Model.CommitDateScore;
+import main.java.Functions.LocalDateFunctions;
 import main.java.Model.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -8,6 +9,8 @@ import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
@@ -22,8 +25,8 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 //        https://gist.github.com/normoes/53c46a3ef2bbe3a1bff817573362f6ee
 //     Follows desing patter needed for custom implementation in spring
     @Override
-    public List<CommitDateScore> getDevDateScore(int projectId, String devUserName,
-                                                 LocalDate startDate, LocalDate endDate) {
+    public List<CommitDateScore> getDevCommitDateScore(int projectId, String devUserName,
+                                                       LocalDate startDate, LocalDate endDate) {
 
         //https://stackoverflow.com/questions/62340986/aggregation-with-multiple-criteria
         final Criteria nameMatchCriteria = Criteria.where("authorName").is(devUserName);
@@ -66,6 +69,26 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
         Object result = groupResults.getMappedResults();
         return result;
 
+    }
+
+    @Override
+    public List<CommitDateScore> getDevCommitArray(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+        List<CommitDateScore> userCommitScores = new ArrayList<>(getDevCommitDateScore(projectId, devUserName, startDate, endDate));
+
+        ArrayList<LocalDate> dates = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
+        for(LocalDate date: dates){
+            if(!containsDate(userCommitScores, date)) {
+                CommitDateScore scoreForDate = new CommitDateScore(date, 0, 0, devUserName);
+                userCommitScores.add(scoreForDate);
+            }
+        }
+        System.out.println(userCommitScores);
+        userCommitScores.sort(Comparator.comparing(CommitDateScore::getDate));
+        return userCommitScores;
+    }
+
+    public boolean containsDate(final List<CommitDateScore> UserScores, final LocalDate date){
+        return UserScores.stream().anyMatch(scores -> scores.getDate().compareTo(date) == 0);
     }
 
 }

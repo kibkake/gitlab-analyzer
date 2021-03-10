@@ -28,6 +28,7 @@ public class Developer {
     private String username;
     private List<String> emails;
     private List<CommitDateScore> commitDateScores;
+    private List<CommitDateScore> commitArray;
     private List<MergeRequestDateScore> mergeRequestDateScores;
     private List<MergeRequest> mergeRequestsAndCommits;
 
@@ -109,6 +110,14 @@ public class Developer {
 
     public void setDbKey(String dbKey) {
         this.dbKey = dbKey;
+    }
+
+    public List<CommitDateScore> getCommitArray() {
+        return commitArray;
+    }
+
+    public void setCommitArray(List<CommitDateScore> commitArray) {
+        this.commitArray = commitArray;
     }
 
     @Override

@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface CommitRepositoryCustom {
 
-    List<CommitDateScore> getDevDateScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+    List<CommitDateScore> getDevCommitDateScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 
     Object userTotalCommitScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 
+    List<CommitDateScore> getDevCommitArray(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 }
