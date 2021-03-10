@@ -16,13 +16,14 @@ import Diffs from './Diffs'
 import {OverlayTrigger, Popover} from 'react-bootstrap'
 import Button from "react-bootstrap/Button";
 import Highlight from "react-highlight";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 //[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
-const PopOver = ({fullDiffs}) => {
+const PopOver = ({Diffs}) => {
     return (
          <div>
-             <Popover id="popover-basic">
-                 {fullDiffs.map((item => {
+             <Popover id="popover-basic" placement='right' class="justify-content-end" >
+                 {Diffs.map((item => {
                      return(
                          <ul>
                              <Popover.Title as="h3">{item.path}</Popover.Title>
@@ -46,7 +47,6 @@ export default function Row(props) {
     const classes = useRowStyles();
 
     return (
-        // <div className="d-flex flex-row">
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
@@ -59,17 +59,13 @@ export default function Row(props) {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                <TableCell>
-                    <OverlayTrigger trigger="click" placement="right" overlay={<PopOver fullDiffs={row.diffs}/>}>
-                    <IconButton align ="right" aria-label="expand column" size="small" onClick={() => setShowDiff(!showDiff)}>
-                        {showDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
-                    </IconButton>
+                <TableCell align ="right">
+                    <OverlayTrigger trigger="focus" placement="right" class = "justify-content-end" overlay={<PopOver Diffs={row.diffs} />}>
+                        <button type="button" className="btn btn-secondary">View</button>
+                        {/*<IconButton aria-label="expand column" size="small" onClick={() => setShowDiff(!showDiff)}>*/}
+                        {/*    {showDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}*/}
+                        {/*</IconButton>*/}
                     </OverlayTrigger>
-
-                    {/*/!*<Diffs data = {showDiff}></Diffs>*!/*/}
-                    {/*<Diffs closeOnOutsideClick={true} trigger={showDiff} setTrigger = {setShowDiff} >*/}
-                    {/*    {row.diffs}*/}
-                    {/*</Diffs>*/}
                 </TableCell>
             </TableRow>
             <TableRow>
@@ -98,11 +94,13 @@ export default function Row(props) {
                                             <TableCell>{commitsRow.message}</TableCell>
                                             <TableCell align="right">{commitsRow.author}</TableCell>
                                             <TableCell align="right">{commitsRow.score}</TableCell>
-                                            <TableCell>
-                                                <OverlayTrigger trigger="click" placement="right" overlay={<PopOver diffs={row.diffs}/>}>
-                                                    <IconButton aligh="right" aria-label="expand column" size="small" onClick={() => setShowCommitDiff(!showCommitDiff)}>
-                                                    {showCommitDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
-                                                    </IconButton>
+                                            <TableCell align="right" >
+                                                <OverlayTrigger trigger="focus"  placement="right" overlay={<PopOver Diffs={commitsRow.commitDiffs}/>}>
+                                                    <button type="button" className="btn btn-outline-secondary">View</button>
+
+                                                    {/*<IconButton aria-label="expand column" size="small" onClick={() => setShowCommitDiff(!showCommitDiff)}>*/}
+                                                    {/*  {showCommitDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}*/}
+                                                    {/*</IconButton>*/}
                                                 </OverlayTrigger>
                                             </TableCell>
                                         </TableRow>

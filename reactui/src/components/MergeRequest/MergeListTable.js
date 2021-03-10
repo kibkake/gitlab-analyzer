@@ -26,37 +26,37 @@ import Row from "./Rows";
 export default function MergeListTable  ({devName}) { //extends Component
 
     const [merges, getMerges] = useState([]);
-    const nameRef = useRef();
-    // const name = useRef(devName);
+    // const nameRef = useRef();
+    const mounted = useRef();
 
-    useEffect(()=> {
-        if (nameRef.current == null) {
-            getDataFromBackend(devName);
-            nameRef.current = devName;
+    // useEffect(()=> {
+    //     if (nameRef.current == null) {
+    //         getDataFromBackend(devName);
+    //         nameRef.current = devName;
+    //     }
+    //     var name1 = devName;
+    //     var name = nameRef.current;
+    //     console.log(name)
+    //     console.log(name1)
+    //
+    //     if (name != name1){
+    //         console.log(devName)
+    //         console.log(nameRef.current)
+    //
+    //         nameRef.current = devName;
+    //         getDataFromBackend(name1);
+    //     }
+    // }, [merges]);
+
+    //
+    useEffect(() => {
+        if (!mounted.current) {
+            mounted.current = true;
         }
-        var name1 = devName;
-        var name = nameRef.current;
-        console.log(name)
-        console.log(name1)
-
-        if (name != name1){
-            console.log(devName)
-            console.log(nameRef.current)
-
-            nameRef.current = devName;
-            getDataFromBackend(name1);
-        }
+        getDataFromBackend(devName);
     }, [merges]);
 
-    //
-    // useEffect(() => {
-    //     if (!mounted.current) {
-    //         mounted.current = true;
-    //     }
-    //     getDataFromBackend(devName);
-    // }, [merges]);
-    //
-    //
+
     function getDataFromBackend (username) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
@@ -100,17 +100,6 @@ export default function MergeListTable  ({devName}) { //extends Component
 
     const classes = useRowStyles();
 
-    // console.log(showDiffs)
-    const popover = (
-        <Popover id="popover-basic">
-            <Popover.Title as="h3">Popover right</Popover.Title>
-            <Popover.Content>
-                And here's some <strong>amazing</strong> content. It's very engaging.
-                right?
-            </Popover.Content>
-        </Popover>
-    );
-
     return (
         <div class="d-flex flex-row">
             <TableContainer component={Paper} class="p-2">
@@ -152,79 +141,6 @@ const useRowStyles = makeStyles({
         },
     }
 });
-
-//
-// function Row(props) {
-//     const { row } = props;
-//     const [open, setOpen] = React.useState(false);
-//     const [showDiff, setShowDiff] = React.useState(false);
-//     const [showCommitDiff, setShowCommitDiff] = React.useState(false);
-//
-//     const classes = useRowStyles();
-//
-//     return (
-//         <React.Fragment>
-//                 <TableRow className={classes.root}>
-//                     <TableCell component="th" scope="row">
-//                         {row.date}
-//                     </TableCell>
-//                     <TableCell>#{row.id} {row.title}</TableCell>
-//                     <TableCell align="right">{row.score}</TableCell>
-//                     <TableCell align="right">
-//                         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-//                             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-//                         </IconButton>
-//                     </TableCell>
-//                     <TableCell>
-//                         <IconButton aria-label="expand column" size="small" onClick={() => setShowDiff(!showDiff)}>
-//                             {showDiff ? <KeyboardArrowRightRounded /> : <KeyboardArrowLeftRounded />}
-//                         </IconButton>
-//                     </TableCell>
-//                 </TableRow>
-//                 <TableRow>
-//                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-//                         <Collapse in={open} timeout="auto" unmountOnExit>
-//                             <Box margin={1}>
-//                                 <Typography variant="h6" gutterBottom component="div">
-//                                     Commits
-//                                 </Typography>
-//                                 <Table size="small" aria-label="commits">
-//                                     <TableHead>
-//                                         <TableRow>
-//                                             <TableCell>Date</TableCell>
-//                                             <TableCell>Commit Message</TableCell>
-//                                             <TableCell align="right">Committer</TableCell>
-//                                             <TableCell align="right">Score</TableCell>
-//                                             <TableCell align="right">Code Diff</TableCell>
-//                                         </TableRow>
-//                                     </TableHead>
-//                                     <TableBody>
-//                                         {row.commits.map((commitsRow) => (
-//                                             <TableRow key={commitsRow.commitDate}>
-//                                                 <TableCell component="th" scope="row">
-//                                                     {commitsRow.commitDate}
-//                                                 </TableCell>
-//                                                 <TableCell>{commitsRow.message}</TableCell>
-//                                                 <TableCell align="right">{commitsRow.author}</TableCell>
-//                                                 <TableCell align="right">{commitsRow.score}</TableCell>
-//                                                 <TableCell align="right">
-//                                                     <IconButton aria-label="expand column" size="small" onClick={() => setShowCommitDiff(!showCommitDiff)}>
-//                                                         {showCommitDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
-//                                                     </IconButton>
-//                                                 </TableCell>
-//                                             </TableRow>
-//                                         ))}
-//                                     </TableBody>
-//                                 </Table>
-//                             </Box>
-//                         </Collapse>
-//                     </TableCell>
-//                 </TableRow>
-//         </React.Fragment>
-//     );
-// }
-
-
 
 
 //
