@@ -4,12 +4,14 @@ import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.Model.Commit;
 import main.java.Model.MergeRequest;
+import main.java.Model.ProjectSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.DateOperators;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,7 +29,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
 
     @Override
-    public List<MergeRequestDateScore> devsMrsScoreADay(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public List<MergeRequestDateScore> getDevsMrsScoreADay(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
         //https://stackoverflow.com/questions/62340986/aggregation-with-multiple-criteria
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
@@ -52,7 +54,20 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
     }
 
     @Override
-    public Object userTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public List<MergeRequest> getDevMergeRequests(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+
+        final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
+        final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
+        final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);
+        Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);
+
+        Query query = new Query();
+        query.addCriteria(criterias);
+        return mongoTemplate.find(query, MergeRequest.class);
+    }
+
+    @Override
+    public Object getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);

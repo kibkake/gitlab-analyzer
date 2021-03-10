@@ -20,18 +20,22 @@ public class DeveloperService {
         this.developerRepository = developerRepository;
     }
 
+    public List<Developer> getProjectDevs(int projectId) {
+        return developerRepository.findDevelopersByProjectId(projectId);
+    }
+
     public List<MergeRequest> getDevMergeRequestsAndCommits(int projectId, int devId) {
-        Developer developer = developerRepository.findDeveloperByDevIdAndProjectId(projectId, devId);
+        Developer developer = developerRepository.findDeveloperByProjectIdAndDevId(projectId, devId);
         return developer.getMergeRequestsAndCommits();
     }
 
     public List<MergeRequestDateScore> getDevMergeRequestsScores(int projectId, int devId) {
-        Developer developer = developerRepository.findDeveloperByDevIdAndProjectId(projectId, devId);
+        Developer developer = developerRepository.findDeveloperByProjectIdAndDevId(projectId, devId);
         return developer.getMergeRequestDateScores();
     }
 
     public List<CommitDateScore> getDevCommitScores(int projectId, int devId) {
-        Developer developer = developerRepository.findDeveloperByDevIdAndProjectId(projectId, devId);
+        Developer developer = developerRepository.findDeveloperByProjectIdAndDevId(projectId, devId);
         return developer.getCommitDateScores();
     }
 }

@@ -16,5 +16,4 @@ public interface CommitRepository extends MongoRepository<Commit, String>, Commi
 
     Commit findByProjectIdAndId(int projectId, String commitHash);
 
-
 }

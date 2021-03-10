@@ -1,7 +1,9 @@
 package main.java.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -13,8 +15,9 @@ import java.util.List;
  */
 @Document(value = "Developer")
 public class Developer {
-    private int devId;
 
+    @Id
+    private int devId;
     /* a Dev can belong to many projects but should only be scored for the project in question so we will use project id
       to link them to there work in a specific project */
     private int projectId;
@@ -33,6 +36,7 @@ public class Developer {
         this.devId = devId;
     }
 
+    @JsonProperty("id")
     public int getDevId() {
         return devId;
     }

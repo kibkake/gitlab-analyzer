@@ -26,18 +26,16 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final MergeRequestRepository mergeRequestRepository;
     private final CommitRepository commitRepository;
-    private final UserRepository userRepository;
     private final DeveloperRepository developerRepository;
 
 
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository, MergeRequestRepository mergeRequestRepository,
-                          CommitRepository commitRepository, UserRepository userRepository, DeveloperRepository developerRepository) {
+                          CommitRepository commitRepository, DeveloperRepository developerRepository) {
         this.projectRepository = projectRepository;
         this.mergeRequestRepository = mergeRequestRepository;
         this.commitRepository = commitRepository;
-        this.userRepository = userRepository;
         this.developerRepository = developerRepository;
     }
 
@@ -127,23 +125,25 @@ public class ProjectService {
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
         for (Developer dev: projectDevs) {
-            //The provided sql quires by mongo require the Date Class
-            Date startDate = java.sql.Date.valueOf(projectSettings.getStartDate());
-            Date endDate = java.sql.Date.valueOf(projectSettings.getEndDate());
+            List<MergeRequest> devsMrs = mergeRequestRepository.getDevMergeRequests(
+                    projectId, dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
 
-            List<MergeRequest> devsMrs = mergeRequestRepository.findByProjectIdAndAuthorUsernameAndMergedDateBetween(
-                    projectId, dev.getUsername(), startDate, endDate);
-            List<MergeRequestDateScore> devMrScores = mergeRequestRepository.devsMrsScoreADay(projectId, dev.getUsername(),
+            System.out.println(devsMrs);
+            List<MergeRequestDateScore> devMrScores = mergeRequestRepository.getDevsMrsScoreADay(projectId, dev.getUsername(),
                     projectSettings.getStartDate(), projectSettings.getEndDate());
             List<CommitDateScore> devCommitScores = commitRepository.getDevDateScore(projectId, dev.getUsername(),
                     projectSettings.getStartDate(), projectSettings.getEndDate());
+
 
             dev.setProjectId(projectId);
             dev.setMergeRequestsAndCommits(devsMrs);
             dev.setMergeRequestDateScores(devMrScores);
             dev.setCommitDateScores(devCommitScores);
+            developerRepository.saveDev(dev);
         }
-        developerRepository.saveAll(projectDevs);
+        /* TODO I should be able to call developerRepository.saveAll(projectDevs)
+            but I get an error saying that this method (.saveAll) does not exist
+         */
     }
 
 
