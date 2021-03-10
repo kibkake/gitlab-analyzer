@@ -18,6 +18,7 @@ import {merge} from "d3-array";
 import {KeyboardArrowLeftRounded, KeyboardArrowRightRounded} from "@material-ui/icons";
 import Popup from "../Popup";
 import Diffs from './Diffs'
+import {Popover} from "@material-ui/core";
 import Row from "./Rows";
 
 //[https://material-ui.com/components/tables/]
@@ -98,10 +99,17 @@ export default function MergeListTable  ({devName}) { //extends Component
     console.log(output);
 
     const classes = useRowStyles();
-    const {showDiffs} = true;
+
     // console.log(showDiffs)
-    const [open, setOpen] = React.useState(false);
-    const [showDiff, setShowDiff] = React.useState(false);
+    const popover = (
+        <Popover id="popover-basic">
+            <Popover.Title as="h3">Popover right</Popover.Title>
+            <Popover.Content>
+                And here's some <strong>amazing</strong> content. It's very engaging.
+                right?
+            </Popover.Content>
+        </Popover>
+    );
 
     return (
         <div class="d-flex flex-row">
@@ -123,12 +131,6 @@ export default function MergeListTable  ({devName}) { //extends Component
                     </TableBody>
                 </Table>
             </TableContainer>
-            <div class="p-2">
-                { showDiffs ? <h4>hi</h4> : null }
-                {/*<Diffs trigger={showDiff} setTrigger = {setShowDiff()} >*/}
-                {/*    {merges.diffs}*/}
-                {/*</Diffs>*/}
-            </div>
         </div>
     );
 }
@@ -151,10 +153,13 @@ const useRowStyles = makeStyles({
     }
 });
 
+//
 // function Row(props) {
 //     const { row } = props;
 //     const [open, setOpen] = React.useState(false);
 //     const [showDiff, setShowDiff] = React.useState(false);
+//     const [showCommitDiff, setShowCommitDiff] = React.useState(false);
+//
 //     const classes = useRowStyles();
 //
 //     return (
@@ -174,9 +179,6 @@ const useRowStyles = makeStyles({
 //                         <IconButton aria-label="expand column" size="small" onClick={() => setShowDiff(!showDiff)}>
 //                             {showDiff ? <KeyboardArrowRightRounded /> : <KeyboardArrowLeftRounded />}
 //                         </IconButton>
-//                         {/*<Popup closeOnOutsideClick={true} trigger={showDiff} setTrigger = {setShowDiff()} >*/}
-//                         {/*    {row.diffs}*/}
-//                         {/*</Popup>*/}
 //                     </TableCell>
 //                 </TableRow>
 //                 <TableRow>
@@ -205,7 +207,11 @@ const useRowStyles = makeStyles({
 //                                                 <TableCell>{commitsRow.message}</TableCell>
 //                                                 <TableCell align="right">{commitsRow.author}</TableCell>
 //                                                 <TableCell align="right">{commitsRow.score}</TableCell>
-//                                                 {/*<TableCell align="right">{commitsRow.commitDiffs}</TableCell>*/}
+//                                                 <TableCell align="right">
+//                                                     <IconButton aria-label="expand column" size="small" onClick={() => setShowCommitDiff(!showCommitDiff)}>
+//                                                         {showCommitDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
+//                                                     </IconButton>
+//                                                 </TableCell>
 //                                             </TableRow>
 //                                         ))}
 //                                     </TableBody>

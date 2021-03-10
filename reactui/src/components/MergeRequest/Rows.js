@@ -12,31 +12,37 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import {makeStyles} from "@material-ui/core/styles";
-import MergeListTable from "./MergeListTable";
 import Diffs from './Diffs'
+import {OverlayTrigger, Popover} from 'react-bootstrap'
+import Button from "react-bootstrap/Button";
+import Highlight from "react-highlight";
 
-const useRowStyles = makeStyles({
-    root: {
-        '& > *': {
-              borderBottom: 'unset',
-            fontSize: '15pt',
-            backgroundColor: 'lightgrey',
+//[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
+const PopOver = ({fullDiffs}) => {
+    return (
+         <div>
+             <Popover id="popover-basic">
+                 {fullDiffs.map((item => {
+                     return(
+                         <ul>
+                             <Popover.Title as="h3">{item.path}</Popover.Title>
+                             <Popover.Content><Highlight className="highlighted-text"> {item.diff} </Highlight>
+                             </Popover.Content>
+                         </ul>
+                     )
+                }))}
+             </Popover>
+         </div>
+    )
+}
 
-        },
-    },
-    tablecell: {
-        '& > *': {
-            borderBottom: 'unset',
-            fontSize: '20pt',
-            fontWeight: 'bold',
-        },
-    }
-});
 
 export default function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const [showDiff, setShowDiff] = React.useState(false);
+    const [showCommitDiff, setShowCommitDiff] = React.useState(false);
+
     const classes = useRowStyles();
 
     return (
@@ -54,13 +60,16 @@ export default function Row(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell>
-                    <IconButton align ="right" aria-label="expand column" size="small" onClick={() => setShowDiff(true)}>
+                    <OverlayTrigger trigger="click" placement="right" overlay={<PopOver fullDiffs={row.diffs}/>}>
+                    <IconButton align ="right" aria-label="expand column" size="small" onClick={() => setShowDiff(!showDiff)}>
                         {showDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
                     </IconButton>
-                    {/*<Diffs data = {showDiff}></Diffs>*/}
-                    <Diffs closeOnOutsideClick={true} trigger={showDiff} setTrigger = {setShowDiff} >
-                        {row.diffs}
-                    </Diffs>
+                    </OverlayTrigger>
+
+                    {/*/!*<Diffs data = {showDiff}></Diffs>*!/*/}
+                    {/*<Diffs closeOnOutsideClick={true} trigger={showDiff} setTrigger = {setShowDiff} >*/}
+                    {/*    {row.diffs}*/}
+                    {/*</Diffs>*/}
                 </TableCell>
             </TableRow>
             <TableRow>
@@ -90,9 +99,11 @@ export default function Row(props) {
                                             <TableCell align="right">{commitsRow.author}</TableCell>
                                             <TableCell align="right">{commitsRow.score}</TableCell>
                                             <TableCell>
-                                            <IconButton aligh="right" aria-label="expand column" size="small" onClick={() => setShowDiff(!showDiff)}>
-                                                {showDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
-                                            </IconButton>
+                                                <OverlayTrigger trigger="click" placement="right" overlay={<PopOver diffs={row.diffs}/>}>
+                                                    <IconButton aligh="right" aria-label="expand column" size="small" onClick={() => setShowCommitDiff(!showCommitDiff)}>
+                                                    {showCommitDiff ? <KeyboardArrowLeftRounded /> : <KeyboardArrowRightRounded />}
+                                                    </IconButton>
+                                                </OverlayTrigger>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -106,6 +117,25 @@ export default function Row(props) {
 
     );
 }
+
+
+const useRowStyles = makeStyles({
+    root: {
+        '& > *': {
+            borderBottom: 'unset',
+            fontSize: '15pt',
+            backgroundColor: 'lightgrey',
+
+        },
+    },
+    tablecell: {
+        '& > *': {
+            borderBottom: 'unset',
+            fontSize: '20pt',
+            fontWeight: 'bold',
+        },
+    }
+});
 
 // {/*    <div class="p-2">*/}
 // {/*        */}
