@@ -29,6 +29,12 @@ function CodeDiffTable({devName}) {
                 getCommits(response.data)
             });}
 
+    function applyMultipliers(){
+        var newCommitDiff=0;
+        for(var k in commits){
+            
+        }
+    }
     return (
         <div className="CodeDiffTable">
             <Table striped bordered hover>

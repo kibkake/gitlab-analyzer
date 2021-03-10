@@ -8,27 +8,35 @@ class LanguageScaleTable extends Component{
 
     constructor() {
         super();
+        const me=this
         this.state = {
             LanguageScale:[{
                 name:'Default',
                 extention:"",
-                multiplier:1
+                multiplier:1,
             }],
             newScaleIsShown:false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.deleteModifier= this.deleteModifier.bind(this);
+    }
+    componentDidMount(){
+        sessionStorage.setItem('languageScale',JSON.stringify(this.state.LanguageScale))
     }
     handleSubmit(e) {
-        
+        e.preventDefault();
+        const{LanguageScale}=this.state.LanguageScale;
         const newScale={
-            name:e.target.name.value,
-            extention:e.target.extention.value,
-            multiplier:e.target.multiplier.value,
+            name:this.name.value,
+            extention:this.extention.value,
+            multiplier:this.multiplier.value,
         }
-       this.setState(prevState=>({
-           LanguageScale:[...prevState.LanguageScale,newScale]
-       }))
-       sessionStorage.setItem('languageScale',LanguageScale);
+        this.setState({
+            LanguageScale:[...this.state.LanguageScale,newScale],
+            newScaleIsShown:false,
+        })
+
+        this.saveTable();
     }
     showModal = () => {
         this.setState({ 
@@ -40,51 +48,66 @@ class LanguageScaleTable extends Component{
             newScaleIsShown: false 
         });
     };
+    saveTable=()=>{
+        sessionStorage.setItem('languageScale',JSON.stringify(this.state.LanguageScale));
+    }
+    deleteModifier(index){
+        let tempScale = this.state.LanguageScale;
+        tempScale.splice(index, 1);
+        this.setState({
+            LanguageScale: tempScale 
+        });
+        this.saveTable();
+    }
+
+
     render(){
         return(
         <>
-                <div   style={{
+                <div style={{
                     marginTop:'20px',
                     marginBottom:'20px',
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
-                    <Button className='AddNewScale' Style='primary' onClick={this.showModal}>
-                        Add new Language Multiplier
-                    </Button>
-
+                    <div>
+                        <Button className='AddNewScale' variant='primary' onClick={this.showModal} style={{marginRight:'10px'}}>
+                            Add new Language Multiplier
+                        </Button>
+                        <Button className='saveScale' variant='info' onClick={this.saveTable}>
+                            Submit modifiers
+                        </Button>
+                    </div>
                     <Modal show={this.state.newScaleIsShown}>
                         <Modal.Header closeButton>
                             <Modal.Title>Add a new multiplier</Modal.Title>
                         </Modal.Header>
-                        <Form className="addForm" onSubmit={this.handleSubmit}>
+                        <Form className="addForm" onSubmit={(e)=> {this.handleSubmit(e)}}>
                             <Form.Row>
-                                <Form.Group controlId="name">
+                                <Form.Group controlId="name" style={{marginLeft:'12px', marginRight:'12px'}}>
                                     <Form.Label>Language Name</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter name"/>
+                                    <Form.Control type="text" ref={(input)=>{this.name=input}} placeholder="Enter name"/>
                                 </Form.Group>
                                 <Form.Group controlId="extention">
                                     <Form.Label>Extention Name</Form.Label>
-                                    <Form.Control type="text" placeholder='(eg. ".js")'/>
+                                    <Form.Control type="text" ref={(input)=>{this.extention=input}} placeholder='(eg. ".js")'/>
                                 </Form.Group>
                             </Form.Row>
-                            <Form.Group controlId="multiplier">
+                            <Form.Group controlId="multiplier" >
                                     <Form.Label>Language Multiplier</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter multiplier"/>
+                                    <Form.Control type="number" ref={(input)=>{this.multiplier=input}} placeholder="Enter multiplier"/>
                             </Form.Group>
-                            <Button Style="primary" type="submit" onClick={this.handleSubmit}>Submit</Button>
-                            <Button Style="secondary" onClick={this.closeModal}>Cancel</Button>
+                            <Button variant="primary" type="submit" onClick={this.handleSubmit} style={{marginLeft:'12px'}}>
+                                Submit
+                            </Button>
+                            <Button variant="secondary" onClick={this.closeModal} style={{float:'right',marginRight:'12px'}}>
+                                    Cancel
+                            </Button>
                         </Form>
                     </Modal>
-                        
-
-
-
-
-
-                    
                 </div>
+
                 <div>
                     <Table striped bordered hover 
                         style={{
@@ -100,26 +123,26 @@ class LanguageScaleTable extends Component{
                                 </tr>
                             </thead>
                             <tbody>
-
-                                {this.state.LanguageScale.map(scales=>
+                                {this.state.LanguageScale.map((scales,index)=>
                                     <tr>
                                         <td>{scales.name}</td>
                                         <td>{scales.extention}</td>
                                         <td>{scales.multiplier}</td>
                                         <td>
-                                            <Button className="editButton" variant="outline-secondary" 
+                                            {/* <Button className="editButton" variant="outline-secondary" 
                                                 style={{
                                                     marginRight:'12px',
                                                     width:'80px',
                                                 }}
                                             >
                                                 Edit
-                                            </Button>
+                                            </Button> */}
                                             
-                                            <Button className='deleteButton' variant="danger" 
+                                            <Button className='deleteButton' variant="danger" onClick={()=> this.deleteModifier(index)}
                                                 style={{
                                                     width:'80px',
-                                                }}
+                                                    marginLeft:'15px',
+                                                }} 
                                             >
                                                 Delete
                                             </Button>
