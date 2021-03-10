@@ -23,105 +23,129 @@ import Row from "./Rows";
 
 //[https://material-ui.com/components/tables/]
 
-export default function MergeListTable  ({devName}) { //extends Component
+export default class MergeListTable  extends PureComponent { //({devName}) {
 
-    const [merges, getMerges] = useState([]);
-    // const nameRef = useRef();
-    const mounted = useRef();
-
-    // useEffect(()=> {
-    //     if (nameRef.current == null) {
-    //         getDataFromBackend(devName);
-    //         nameRef.current = devName;
-    //     }
-    //     var name1 = devName;
-    //     var name = nameRef.current;
-    //     console.log(name)
-    //     console.log(name1)
+    // const [merges, getMerges] = useState([]);
+    // // const nameRef = useRef();
+    // const mounted = useRef();
     //
-    //     if (name != name1){
-    //         console.log(devName)
-    //         console.log(nameRef.current)
-    //
-    //         nameRef.current = devName;
-    //         getDataFromBackend(name1);
+    // useEffect(() => {
+    //     if (!mounted.current) {
+    //         mounted.current = true;
     //     }
+    //     getDataFromBackend(devName);
     // }, [merges]);
-
     //
-    useEffect(() => {
-        if (!mounted.current) {
-            mounted.current = true;
+    //
+    // function getDataFromBackend (username) {
+    //     var pathArray = window.location.pathname.split('/');
+    //     var id = pathArray[2];
+    //
+    //     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
+    //     .then(res => {
+    //         getMerges(res.data);
+    //     }).catch((error) => {
+    //     console.error(error);
+    // });}
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            merges:[],
+            parentData: this.props.devName
         }
-        getDataFromBackend(devName);
-    }, [merges]);
+    }
+
+    componentDidMount(){
+        const {parentData: parentData} = this.state;
+        this.getDataFromBackend(parentData)
+    }
+
+    getDataFromBackend (username, startTm, endTm) {
+        const pathArray = window.location.pathname.split('/');
+        const id = pathArray[2];
+        var name = username;
+        if(sessionStorage.getItem('DeveloperNames' + id) != null && sessionStorage.getItem('Developers' + id) != null) {
+            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
+                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
+                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
+                }
+            }
+        }
+
+        const response = axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
+            .then(res => {
+                        this.setState({merges : res.data, parentData: username});
+                    }).catch((error) => {
+                    console.error(error);})
+
+        console.log(this.state.merges)
+    }
+
+    async componentDidUpdate(prevProps){
+        if (this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime ||
+            this.props.endTime !== prevProps.endTime){
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+        }
+    }
 
 
-    function getDataFromBackend (username) {
-        var pathArray = window.location.pathname.split('/');
-        var id = pathArray[2];
+    // const classes = useRowStyles();
+    render () {
+        const output = this.state.merges.map(function(item) {
+            return {
+                id: item.id,
+                date: item.merged_at,
+                title: item.title,
+                score: item.mrScore,
+                diffs: item.diffs.map(function (diffs) {
+                    return {
+                        path: diffs.new_path,
+                        diff: diffs.diff
+                    };
+                }),
+                commits: item.commits.map(function (commit) {
+                    return {
+                        commitDate: commit.date,
+                        message: commit.message,
+                        score: commit.commitScore,
+                        author: commit.author_email,
+                        commitDiffs: commit.diffs.map(function (diffs) {
+                            return {
+                                path: diffs.new_path,
+                                diff: diffs.diff
+                            };
+                        })
+                    };
+                })
+            };
+        });
+        console.log(output);
 
-        axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
-        .then(res => {
-            getMerges(res.data);
-        }).catch((error) => {
-        console.error(error);
-    });}
-
-    const output = merges.map(function(item) {
-        return {
-            id: item.id,
-            date: item.merged_at,
-            title: item.title,
-            score: item.mrScore,
-            diffs: item.diffs.map(function (diffs) {
-                return {
-                    path: diffs.new_path,
-                    diff: diffs.diff
-                };
-            }),
-            commits: item.commits.map(function (commit) {
-                return {
-                    commitDate: commit.date,
-                    message: commit.message,
-                    score: commit.commitScore,
-                    author: commit.author_email,
-                    commitDiffs: commit.diffs.map(function (diffs) {
-                        return {
-                            path: diffs.new_path,
-                            diff: diffs.diff
-                        };
-                    })
-                };
-            })
-        };
-    });
-    console.log(output);
-
-    const classes = useRowStyles();
-
-    return (
-        <div class="d-flex flex-row">
-            <TableContainer component={Paper} class="p-2">
-                <Table aria-label="collapsible table">
-                    <TableHead>
-                        <TableRow className={classes.tablecell}>
-                            <TableCell align="left">Date </TableCell>
-                            <TableCell>Merge Title</TableCell>
-                            <TableCell align="right">Score</TableCell>
-                            <TableCell align="right">Commits </TableCell>
-                            <TableCell align="right">Full Diff</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {output.map((merge) => (
-                            <Row key={merge.date} row={merge} />
+        return (
+            <div class="d-flex flex-row">
+                <TableContainer component={Paper} class="p-2">
+                    <Table aria-label="collapsible table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="left"> Date </TableCell>
+                                <TableCell>Merge Title</TableCell>
+                                <TableCell align="right"> Score</TableCell>
+                                <TableCell align="right">Commits </TableCell>
+                                <TableCell align="right">Full Diff</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {output.map((merge) => (
+                                <Row key={merge.date} row={merge}/>
                             ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
-    );
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
+        );
+    }
 }
 
 const useRowStyles = makeStyles({
