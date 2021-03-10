@@ -51,11 +51,11 @@ class CommitsPerDay extends Component{
         //console.log(output)
 
         return(
-            <ul>
+            <ul style={{ overflow: "scroll", height: "1000px", width: "1000px"}}>
             {this.state.data.map(item => {
-                return <li>
+                return <li >
                     <a href= {"Developers/" + item }target= "_blank">
-                        <Button className="Footer2" to={item.id}
+                        <Button className="Footer2"to={item.id}
                                 type="button"
                                 onClick={(e) => {
                                     e.preventDefault();

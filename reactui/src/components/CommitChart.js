@@ -109,7 +109,7 @@ class CommitChart extends Component {
 
         return (
             <div className="box-container" >
-                <div className="horizontalBar">
+                <div className="horizontalBar" style={{ overflow: "scroll", height: "1000px", width: "1000px"}}>
                 <HorizontalBar
 
                     data={{labels: daylist,
