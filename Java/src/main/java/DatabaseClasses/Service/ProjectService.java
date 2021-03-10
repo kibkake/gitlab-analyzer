@@ -138,6 +138,11 @@ public class ProjectService {
             List<CommitDateScore> devCommitArray = commitRepository.getDevCommitArray(projectId, dev.getUsername(),
                     projectSettings.getStartDate(), projectSettings.getEndDate());
 
+            Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId, dev.getUsername(),
+                    projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId, dev.getUsername(),
+                    projectSettings.getStartDate(), projectSettings.getEndDate());
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
                constructor because of spring
              */

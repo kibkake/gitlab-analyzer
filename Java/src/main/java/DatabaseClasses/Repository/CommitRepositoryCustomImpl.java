@@ -52,7 +52,7 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
     }
 
     @Override
-    public Object userTotalCommitScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public Double userTotalCommitScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
         final Criteria nameMatchCriteria = Criteria.where("authorName").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("date").gte(startDate).lte(endDate);
@@ -65,9 +65,9 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 
         );
 
-        AggregationResults<Object> groupResults = mongoTemplate.aggregate(aggregation, Commit.class, Object.class);
-        Object result = groupResults.getMappedResults();
-        return result;
+        AggregationResults<Double> groupResults = mongoTemplate.aggregate(aggregation, Commit.class, Double.class);
+        List<Double> result = groupResults.getMappedResults();
+        return result.get(0);
 
     }
 

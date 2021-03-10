@@ -16,5 +16,5 @@ public interface MergeRequestRepositoryCustom {
 
     List<MergeRequest> getDevMergeRequests(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 
-    Object getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+    Double getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 }

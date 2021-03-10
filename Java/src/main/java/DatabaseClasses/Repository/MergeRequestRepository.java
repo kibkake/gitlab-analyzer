@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface MergeRequestRepository extends MongoRepository<MergeRequest, String>, MergeRequestRepositoryCustom {
 
-    List<MergeRequest> findMergeRequestsByProjectIdAndAuthorUsernameAndMergedDateBetween(int projectId, String authorUsername, Date start, Date end);
-
     MergeRequest findByProjectIdAndId(int projectId, int id);
 
     List<MergeRequest> findByProjectId(int projectId);

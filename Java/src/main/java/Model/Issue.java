@@ -8,7 +8,7 @@ import java.util.List;
 @Document(value = "Issue")
 public class Issue {
     private int issueIdForServer;
-    private int internalIssueIdForASpecificProject;
+    private int internalIssueId;
     private int projectId;
     private Developer author;
     private String title;
@@ -91,10 +91,11 @@ public class Issue {
 
     @JsonProperty("iid")
     public int getIssueIdForASpecificProject() {
-        return internalIssueIdForASpecificProject;
+        return internalIssueId;
     }
 
-    public void setInternalIssueIdForASpecificProject(int internalIssueIdForASpecificProject) {
-        this.internalIssueIdForASpecificProject = internalIssueIdForASpecificProject;
+    @JsonProperty("iid")
+    public void setInternalIssueId(int internalIssueId) {
+        this.internalIssueId = internalIssueId;
     }
 }

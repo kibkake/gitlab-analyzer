@@ -23,7 +23,6 @@ public class Developer {
 
     private int devId;
     private int projectId;
-
     private String name;
     private String username;
     private List<String> emails;
@@ -31,6 +30,8 @@ public class Developer {
     private List<CommitDateScore> commitArray;
     private List<MergeRequestDateScore> mergeRequestDateScores;
     private List<MergeRequest> mergeRequestsAndCommits;
+    private double totalCommitScore;
+    private double totalMergeRequestScore;
 
     public Developer() {
     }
@@ -118,6 +119,22 @@ public class Developer {
 
     public void setCommitArray(List<CommitDateScore> commitArray) {
         this.commitArray = commitArray;
+    }
+
+    public double getTotalCommitScore() {
+        return totalCommitScore;
+    }
+
+    public void setTotalCommitScore(double totalCommitScore) {
+        this.totalCommitScore = totalCommitScore;
+    }
+
+    public double getTotalMergeRequestScore() {
+        return totalMergeRequestScore;
+    }
+
+    public void setTotalMergeRequestScore(double totalMergeRequestScore) {
+        this.totalMergeRequestScore = totalMergeRequestScore;
     }
 
     @Override

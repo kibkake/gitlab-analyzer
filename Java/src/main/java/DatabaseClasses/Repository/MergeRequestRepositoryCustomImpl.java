@@ -67,7 +67,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
     }
 
     @Override
-    public Object getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public Double getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);
@@ -80,9 +80,9 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
                 Aggregation.group("username").sum("mrScore").as("mergeRequestTotalScore")
         );
 
-        AggregationResults<Object> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, Object.class);
-        List<Object> result = groupResults.getMappedResults();
-        return result;
+        AggregationResults<Double> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, Double.class);
+        List<Double> result = groupResults.getMappedResults();
+        return result.get(0);
     }
 
 }

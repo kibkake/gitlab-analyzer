@@ -7,6 +7,7 @@ import main.java.Model.MergeRequest;
 import main.java.Model.User;
 
 import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
+import org.hamcrest.core.Is;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
@@ -37,7 +38,9 @@ public class Main {
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
-        SpringApplication.run(Main.class,args);
+        List<Issue> is = new IssueConnection().getProjectIssuesFromGitLab(6);
+        System.out.println(is);
+//        SpringApplication.run(Main.class,args);
     }
 
     @Bean
