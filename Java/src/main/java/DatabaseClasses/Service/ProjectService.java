@@ -116,14 +116,16 @@ public class ProjectService {
                 "Project with id " + projectId + " does not exist"));
 
         project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
-        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
-        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
+        List<Commit> projectCommits = new CommitConnection().getProjectCommitsFromGitLab(projectId);
+        List<MergeRequest> projectMergeRequests = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
         project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
         project.setInfoSet(true);
         projectRepository.save(project);
+        commitRepository.saveAll(projectCommits);
+        mergeRequestRepository.saveAll(projectMergeRequests);
 
         //after all info has been collected we can now query the database to build each developers info
-        List<Developer> projectDevs = project.getDevelopers();
+        List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
         for (Developer dev: projectDevs) {
             //The provided sql quires by mongo require the Date Class
             Date startDate = java.sql.Date.valueOf(projectSettings.getStartDate());
