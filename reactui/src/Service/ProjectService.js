@@ -50,7 +50,7 @@ class ProjectService {
     getMrsAndCommitScoresPerDay(startTm,endTm, id, username){
          return axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
-            endTm)
+            endTm + "/either")
     }
 
     getTopUserNotes(startTm,endTm, id, username){
