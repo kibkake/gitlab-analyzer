@@ -49,29 +49,29 @@ export default class MergeListTable  extends PureComponent {
     }
 
     applyMultipliers(){
-        var newCommitDiff=0;
         var scale = JSON.parse(sessionStorage.getItem('languageScale'));
-        console.log(scale);
-        console.log(this.state.merges);
-        for(const k in this.state.merges){
-
-            for(var i in this.state.merges[k].diffs){
-                var fileExtension = this.state.merges[k].diffs[i].new_path.split(".").pop();
+        var newMerges = [...this.state.merges];
+        for(const k in newMerges){
+            var newMRScore=0;
+            for(var i in newMerges[k].diffs){
+                var fileExtension = newMerges[k].diffs[i].new_path.split(".").pop();
                 const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
                 if(extensionIndex!==-1){
-                    this.setState(prevState=>{
-                        let temp = {...prevState.merges[k].diffs[i]};
-                        var newScore = scale[extensionIndex].multiplier * temp.diffScore;
-                        newCommitDiff = newCommitDiff+newScore;
-                        temp.diffScore=newScore;
-                        console.log("temp");
-                        console.log(temp);
-                        return{temp};
-                    })
+                    var newScore = scale[extensionIndex].multiplier * newMerges[k].diffs[i].diffScore;
+                    newMerges[k].diffs[i] = {...newMerges[k].diffs[i], diffScore:newScore};
+                    newMRScore = newMRScore+newScore;
+                }else{
+                    newMRScore = newMRScore+newMerges[k].diffs[i].diffScore;
                 }
             }
+            newMerges[k].mrScore=newMRScore;
         }
+        this.setState({
+            merges:newMerges,
+        })
         console.log("new merges");
+        console.log(newMerges);
+        console.log("state");
         console.log(this.state.merges);
     }
 
