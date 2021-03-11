@@ -130,7 +130,7 @@ public class ProjectService {
 
     private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
         for (Developer dev: projectDevs) {
-            List<MergeRequest> devMergeRequests = getMergeRequests(projectId, projectSettings, dev);
+            List<MergeRequest> devMergeRequests = mergeRequestRepository.getMergeRequests(projectId, projectSettings, dev);
             List<MergeRequestDateScore> devMergeRequestDateScores = getMergeRequestsDateScores(projectId, projectSettings, dev);
             List<CommitDateScore> devCommitScores = getCommitDateScores(projectId, projectSettings, dev);
             List<CommitDateScore> devCommitScoresWithEveryDay = getCommitsWithEveryDateBetweenRange(projectId, projectSettings, dev);
@@ -154,42 +154,6 @@ public class ProjectService {
         /* TODO I should be able to call developerRepository.saveAll(projectDevs)
             but I get an error saying that this method (.saveAll) does not exist
          */
-    }
-
-    private Double getDevTotalMergeRequestScore(int projectId, ProjectSettings projectSettings, Developer dev) {
-        Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId, dev.getUsername(),
-                projectSettings.getStartDate(), projectSettings.getEndDate());
-        return devTotalMergeRequestScore;
-    }
-
-    private Double getDevTotalCommitScore(int projectId, ProjectSettings projectSettings, Developer dev) {
-        Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId, dev.getUsername(),
-                projectSettings.getStartDate(), projectSettings.getEndDate());
-        return devTotalCommitScore;
-    }
-
-    private List<CommitDateScore> getCommitsWithEveryDateBetweenRange(int projectId, ProjectSettings projectSettings, Developer dev) {
-        List<CommitDateScore> devCommitArray = commitRepository.getCommitsWithEveryDateBetweenRange(projectId,
-                dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
-        return devCommitArray;
-    }
-
-    private List<CommitDateScore> getCommitDateScores(int projectId, ProjectSettings projectSettings, Developer dev) {
-        List<CommitDateScore> devCommitScores = commitRepository.getDevCommitDateScore(projectId, dev.getUsername(),
-                projectSettings.getStartDate(), projectSettings.getEndDate());
-        return devCommitScores;
-    }
-
-    private List<MergeRequest> getMergeRequests(int projectId, ProjectSettings projectSettings, Developer dev) {
-        List<MergeRequest> devsMrs = mergeRequestRepository.getDevMergeRequests(
-                projectId, dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
-        return devsMrs;
-    }
-
-    private List<MergeRequestDateScore> getMergeRequestsDateScores(int projectId, ProjectSettings projectSettings, Developer dev) {
-        List<MergeRequestDateScore> devsMrs = mergeRequestRepository.getDevsMrsScoreADay(
-                projectId, dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
-        return devsMrs;
     }
 
 
