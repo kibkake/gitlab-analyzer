@@ -23,6 +23,7 @@ import Navbar_dropdown from "./components/storage/Navbar_dropdown";
 import {SiGnuprivacyguard} from "react-icons/all";
 import {AiOutlineHome} from "react-icons/ai";
 import SignupComponent from "./components/SignupComponent";
+import LoginToken from "./components/LoginToken.js";
 
 function signupHandler(){
     sessionStorage.setItem('new','true');
@@ -47,7 +48,10 @@ function App() {
                 <br/>
                 <LoginState setUser={setUser} />
                 <br/>
-                <p>Don't have an account?<button className="login" onClick={signupHandler}><SiGnuprivacyguard/>Sign Up</button></p>
+                <LoginToken/>
+                <br/>
+                <br/>
+                <p className="signuptext">Don't have an account?<button className="login" onClick={signupHandler}><SiGnuprivacyguard/>Sign Up</button></p>
             </div>
 
         </>
