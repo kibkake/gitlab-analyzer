@@ -80,15 +80,14 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
 
-        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
-        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
-        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
-        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
-        project.setInfoSet(true);
-
-        Instant infoSetDate = Clock.systemUTC().instant();
-        project.setInfoSetDate(infoSetDate);
-        projectRepository.save(project);
+        if (project.projectHasBeenUpdated()) {
+            project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+            project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
+            project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
+            project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
+            project.setSyncInfo();
+            projectRepository.save(project);
+        }
     }
 
     public List<DateScore> getDevCommitScoresPerDay(int projectId, String username, LocalDate start,
