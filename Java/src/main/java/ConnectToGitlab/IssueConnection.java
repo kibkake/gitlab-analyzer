@@ -38,6 +38,21 @@ public class IssueConnection {
         return issues;
     }
 
+    public static String getMostRecentIssueUpdateDate (int projectId) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        List<Issue> issues = new ArrayList<>();
+        String url =user.getServerUrl() + "projects/" + projectId + "/issues"
+                + "?per_page=1&order_by=updated_at&page=1&access_token=" + user.getToken();
+        ResponseEntity<List<Issue>> issueResponse = restTemplate.exchange(url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Issue>>() {
+                });
+        issues.addAll(Objects.requireNonNull(issueResponse.getBody()));
+        Issue issue = issues.get(0);
+
+        return issue.getUpdatedAt();
+    }
+
     private static List<Note> getIssueNotes(int projectId , int issueIForProject) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();

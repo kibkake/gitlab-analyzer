@@ -49,7 +49,7 @@ public class MergeRequestConnection {
         List<MergeRequest> mergeRequests = new ArrayList<>();
 
         String myUrl = user.getServerUrl() +"projects/" + projectId
-                + "/merge_requests?state=merged&order_by=updated_at&all=true&per_page=100&page=1&access_token="
+                + "/merge_requests?state=merged&order_by=updated_at&all=true&per_page=1&page=1&access_token="
                 + user.getToken();
 
         ResponseEntity<List<MergeRequest>> mergeRequestsResponse = restTemplate.exchange(myUrl,
@@ -66,9 +66,9 @@ public class MergeRequestConnection {
         RestTemplate restTemplate = new RestTemplate();
         String url = user.getServerUrl() +"projects/" + projectId + "/merge_requests/" + mergeRequestIdForASpecificProject
                 + "/participants?access_token=" + user.getToken();
-
         ResponseEntity<List<Developer>> commitsResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
+
         return commitsResponse.getBody();
     }
 
