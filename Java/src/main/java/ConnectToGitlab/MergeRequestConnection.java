@@ -43,7 +43,7 @@ public class MergeRequestConnection {
         return mergeRequests;
     }
 
-    public static String getMostRecentMergeRequestUpdateDate(int projectId) {
+    public static Instant getMostRecentMergeRequestUpdateDate(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         List<MergeRequest> mergeRequests = new ArrayList<>();
@@ -57,8 +57,9 @@ public class MergeRequestConnection {
                 });
         mergeRequests.addAll(Objects.requireNonNull(mergeRequestsResponse.getBody()));
         MergeRequest mergeRequest = mergeRequests.get(0);
+        String dateString = mergeRequest.getUpdatedAt();
 
-        return mergeRequest.getUpdatedAt();
+        return Instant.parse(dateString);
     }
 
     public static List<Developer> getMergeRequestContributors(int projectId, int mergeRequestIdForASpecificProject) {

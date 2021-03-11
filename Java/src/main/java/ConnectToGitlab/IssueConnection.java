@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +39,7 @@ public class IssueConnection {
         return issues;
     }
 
-    public static String getMostRecentIssueUpdateDate(int projectId) {
+    public static Instant getMostRecentIssueUpdateDate(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         List<Issue> issues = new ArrayList<>();
@@ -49,8 +50,9 @@ public class IssueConnection {
                 });
         issues.addAll(Objects.requireNonNull(issueResponse.getBody()));
         Issue issue = issues.get(0);
+        String dateString = issue.getUpdatedAt();
 
-        return issue.getUpdatedAt();
+        return Instant.parse(dateString);
     }
 
     private static List<Note> getIssueNotes(int projectId , int issueIForProject) {

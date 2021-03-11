@@ -10,6 +10,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +45,7 @@ public class CommitConnection {
         return commits;
     }
 
-    public static String getMostRecentCommitDate(int projectId) {
+    public static Instant getMostRecentCommitDate(int projectId) {
         User user = User.getInstance();
         List<Commit> commits = new ArrayList<>();
         String myUrl = user.getServerUrl() + "projects/" + projectId +
@@ -56,7 +57,7 @@ public class CommitConnection {
         commits.addAll(Objects.requireNonNull(commitJSON.getBody()));
         Commit commit = commits.get(0);
 
-        return commit.getDate().toInstant().toString();
+        return commit.getDate().toInstant();
     }
 
     public static List<Diff> getSingleCommitDiffs(Integer projectId, String commitHash) {

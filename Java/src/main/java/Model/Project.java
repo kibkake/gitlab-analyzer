@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * spring
  */
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
@@ -104,16 +105,34 @@ public class Project {
         return infoSet;
     }
 
-    public void setInfoSet(boolean infoSet) {
-        this.infoSet = infoSet;
+    public void setSyncInfo() {
+        this.infoSet = true;
+        this.infoSetDate = Clock.systemUTC().instant();;
     }
 
-    public Instant getInfoSetDate() {
-        return infoSetDate;
+    public boolean projectHasBeenUpdated() {
+        Instant lastUpdateDate = lastProjectUpdateDate();
+        if (lastUpdateDate.compareTo(infoSetDate) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void setInfoSetDate(Instant infoSetDate) {
-        this.infoSetDate = infoSetDate;
+    private Instant lastProjectUpdateDate() {
+        Instant mostRecentMergeRequestUpdateDate = new main.java.ConnectToGitlab.MergeRequestConnection().getMostRecentMergeRequestUpdateDate(id);
+        Instant mostRecentIssueUpdateDate = new main.java.ConnectToGitlab.IssueConnection().getMostRecentIssueUpdateDate(id);
+        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
+
+        Instant mostRecentUpdateDate = mostRecentMergeRequestUpdateDate;
+        if (mostRecentIssueUpdateDate.compareTo(mostRecentUpdateDate) > 0) {
+            mostRecentUpdateDate = mostRecentIssueUpdateDate;
+        }
+        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
+            mostRecentUpdateDate = mostRecentCommitDate;
+        }
+
+        return mostRecentUpdateDate;
     }
 
     @Override
