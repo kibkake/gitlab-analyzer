@@ -1,0 +1,12 @@
+.root {
+'& > *'
+   borderBottom: 'unset';
+   fontSize: '15pt';
+   backgroundColor: 'lightgrey';
+}
+
+.tableCell {
+'& > *'
+   fontSize: '20pt';
+   fontWeight: 'bold';
+}

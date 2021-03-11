@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, {Component} from 'react'
+import {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
-import CustomizedRadios from "./Comment/RadioButtonComment";
-import CommentTable from "./Comment/CommentTable";
 import './DropDownMenu.css';
+import MergeListTable from "./MergeRequest/MergeListTable";
 
-function DropDownMenuComments ({listOfDevelopers}) {
+function DropDownMenuMerge ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -25,8 +25,8 @@ function DropDownMenuComments ({listOfDevelopers}) {
 
     return (
 
-        <div>
-            <Navbar_Developers devName = {selectedValue}/>
+        <div classname='CodeDiff'>
+            <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
             </br>
             <div className="DropDownMenu">
@@ -38,17 +38,13 @@ function DropDownMenuComments ({listOfDevelopers}) {
             </div>
             <br>
             </br>
-            <h1 style={{textAlign:'center'}}>Comment Contribution</h1>
-            <br></br>
-            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-                <CustomizedRadios/>
-            </div>
-            <br></br>
-            <h4 style={{textAlign:'center'}}>Top 10 comments </h4>
-            <CommentTable devName = {selectedValue}/>
+            <h2 style={{textAlign: 'left'}}> Merge Requests</h2>
 
+            <MergeListTable  devName = {selectedValue}/>
         </div>
     )
+
+
 }
 
-export default DropDownMenuComments;
+export default DropDownMenuMerge;
