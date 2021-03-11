@@ -39,7 +39,6 @@ public class ProjectConnection {
             projects.addAll(Objects.requireNonNull(projectResponse.getBody()));
             HttpHeaders headers = projectResponse.getHeaders();
             pageNumber = headers.getFirst("X-Next-Page");
-            System.out.println(pageNumber);
         } while (!pageNumber.equals(""));
 
         return projects;

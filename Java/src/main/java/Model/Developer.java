@@ -1,6 +1,7 @@
 package main.java.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import main.java.DatabaseClasses.Model.AllScores;
 import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import org.springframework.data.annotation.Id;
@@ -30,8 +31,7 @@ public class Developer {
     private List<CommitDateScore> commitArray;
     private List<MergeRequestDateScore> mergeRequestDateScores;
     private List<MergeRequest> mergeRequestsAndCommits;
-    private double totalCommitScore;
-    private double totalMergeRequestScore;
+    private AllScores allScores;
 
     public Developer() {
     }
@@ -121,20 +121,12 @@ public class Developer {
         this.commitArray = commitArray;
     }
 
-    public double getTotalCommitScore() {
-        return totalCommitScore;
+    public AllScores getAllScores() {
+        return allScores;
     }
 
-    public void setTotalCommitScore(double totalCommitScore) {
-        this.totalCommitScore = totalCommitScore;
-    }
-
-    public double getTotalMergeRequestScore() {
-        return totalMergeRequestScore;
-    }
-
-    public void setTotalMergeRequestScore(double totalMergeRequestScore) {
-        this.totalMergeRequestScore = totalMergeRequestScore;
+    public void setAllScores(AllScores allScores) {
+        this.allScores = allScores;
     }
 
     @Override

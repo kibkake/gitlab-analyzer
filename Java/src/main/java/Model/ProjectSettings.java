@@ -4,6 +4,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
+/**
+ * Used to store the setting that a user wants. This allows us to pass less args around aswell since we often need these
+ * settings.
+ */
 @Document(collection = "userQuery")
 public class ProjectSettings {
 

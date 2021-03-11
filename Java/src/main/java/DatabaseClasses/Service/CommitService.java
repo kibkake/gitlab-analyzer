@@ -3,7 +3,6 @@ package main.java.DatabaseClasses.Service;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Repository.CommitRepository;
-import main.java.Functions.LocalDateFunctions;
 import main.java.Model.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class CommitService {
     }
 
     public List<CommitDateScore> getUserCommitsArray(int projectId, String authorName, LocalDate startLocalTime, LocalDate endLocalTime) {
-        return commitRepository.getDevCommitArray(projectId, authorName, startLocalTime, endLocalTime);
+        return commitRepository.getCommitsWithEveryDateBetweenRange(projectId, authorName, startLocalTime, endLocalTime);
     }
 
     public List<Commit> getUserCommits(int projectId, Date start, Date end, String author_name) {

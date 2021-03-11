@@ -25,6 +25,13 @@ public class AllScores {
         this.totalMergeRequestScore = totalMergeRequestScore;
     }
 
+    public AllScores(LocalDate startDate, LocalDate endDate, Double totalCommitScore, Double totalMergeRequestScore) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.totalCommitScore = totalCommitScore;
+        this.totalMergeRequestScore = totalMergeRequestScore;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }

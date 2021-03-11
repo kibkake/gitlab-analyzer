@@ -7,6 +7,9 @@ import main.java.Model.MergeRequest;
 import java.time.LocalDate;
 import java.util.List;
 
+/*** Is needed to follow the spring naming conventions and help implement aggregation for getting a user scores.
+ *
+ */
 public interface MergeRequestRepositoryCustom {
 
     //https://stackoverflow.com/questions/19583540/spring-data-jpa-no-property-found-for-type-exception

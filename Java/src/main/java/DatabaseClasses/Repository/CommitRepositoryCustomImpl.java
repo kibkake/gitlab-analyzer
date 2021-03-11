@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/*** Implements custom quires to get users commits and scores through aggregation and other techniques with
+ * mongoTemplate
+ */
+
 public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 
     private final MongoTemplate mongoTemplate;
@@ -22,8 +26,8 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
         this.mongoTemplate = mongoTemplate;
     }
 
-//        https://gist.github.com/normoes/53c46a3ef2bbe3a1bff817573362f6ee
-//     Follows desing patter needed for custom implementation in spring
+//  https://gist.github.com/normoes/53c46a3ef2bbe3a1bff817573362f6ee
+//  Follows desing patter needed for custom implementation in sprin
     @Override
     public List<CommitDateScore> getDevCommitDateScore(int projectId, String devUserName,
                                                        LocalDate startDate, LocalDate endDate) {
@@ -72,7 +76,7 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
     }
 
     @Override
-    public List<CommitDateScore> getDevCommitArray(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public List<CommitDateScore> getCommitsWithEveryDateBetweenRange(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
         List<CommitDateScore> userCommitScores = new ArrayList<>(getDevCommitDateScore(projectId, devUserName, startDate, endDate));
 
         ArrayList<LocalDate> dates = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
@@ -82,7 +86,6 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
                 userCommitScores.add(scoreForDate);
             }
         }
-        System.out.println(userCommitScores);
         userCommitScores.sort(Comparator.comparing(CommitDateScore::getDate));
         return userCommitScores;
     }

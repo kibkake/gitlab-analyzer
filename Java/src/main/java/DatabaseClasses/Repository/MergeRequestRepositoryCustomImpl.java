@@ -18,6 +18,10 @@ import java.util.List;
 
 import static org.springframework.data.mongodb.core.aggregation.Fields.fields;
 
+
+/** Queries merge Request db to aggregate and get user scores
+ *
+ */
 public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryCustom {
 
     private final MongoTemplate mongoTemplate;
@@ -44,7 +48,6 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
                         .and(DateOperators.DateToString.dateOf("mergedDate").toString("%Y-%m-%d")).as("groupByDate"),
                 Aggregation.group("groupByDate").count().as("numMergeRequests")
                         .sum("mrScore").as("mergeRequestScore")
-//                        .addToSet("contributors.username").as("authorName")
                         .addToSet("mergedDate").as("date")
         );
 

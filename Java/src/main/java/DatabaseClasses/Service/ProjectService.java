@@ -125,38 +125,71 @@ public class ProjectService {
 
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
+        setDeveloperInfo(projectId, projectSettings, projectDevs);
+    }
+
+    private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
         for (Developer dev: projectDevs) {
-            List<MergeRequest> devsMrs = mergeRequestRepository.getDevMergeRequests(
-                    projectId, dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+            List<MergeRequest> devMergeRequests = getMergeRequests(projectId, projectSettings, dev);
+            List<MergeRequestDateScore> devMergeRequestDateScores = getMergeRequestsDateScores(projectId, projectSettings, dev);
+            List<CommitDateScore> devCommitScores = getCommitDateScores(projectId, projectSettings, dev);
+            List<CommitDateScore> devCommitScoresWithEveryDay = getCommitsWithEveryDateBetweenRange(projectId, projectSettings, dev);
+            Double devTotalCommitScore = getDevTotalCommitScore(projectId, projectSettings, dev);
+            Double devTotalMergeRequestScore = getDevTotalMergeRequestScore(projectId, projectSettings, dev);
+            AllScores devAllScores = new AllScores(projectSettings.getStartDate(), projectSettings.getEndDate(), devTotalCommitScore,
+                    devTotalMergeRequestScore);
 
-            System.out.println(devsMrs);
-            List<MergeRequestDateScore> devMrScores = mergeRequestRepository.getDevsMrsScoreADay(projectId, dev.getUsername(),
-                    projectSettings.getStartDate(), projectSettings.getEndDate());
-            List<CommitDateScore> devCommitScores = commitRepository.getDevCommitDateScore(projectId, dev.getUsername(),
-                    projectSettings.getStartDate(), projectSettings.getEndDate());
-
-            List<CommitDateScore> devCommitArray = commitRepository.getDevCommitArray(projectId, dev.getUsername(),
-                    projectSettings.getStartDate(), projectSettings.getEndDate());
-
-            Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId, dev.getUsername(),
-                    projectSettings.getStartDate(), projectSettings.getEndDate());
-
-            Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId, dev.getUsername(),
-                    projectSettings.getStartDate(), projectSettings.getEndDate());
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
                constructor because of spring
              */
             dev.setDbKey(String.valueOf(dev.getProjectId()) +  String.valueOf(dev.getDevId()));
             dev.setProjectId(projectId);
-            dev.setMergeRequestsAndCommits(devsMrs);
-            dev.setCommitArray(devCommitArray);
-            dev.setMergeRequestDateScores(devMrScores);
+            dev.setMergeRequestsAndCommits(devMergeRequests);
+            dev.setMergeRequestDateScores(devMergeRequestDateScores);
             dev.setCommitDateScores(devCommitScores);
+            dev.setCommitArray(devCommitScoresWithEveryDay);
+            dev.setAllScores(devAllScores);
             developerRepository.saveDev(dev);
         }
         /* TODO I should be able to call developerRepository.saveAll(projectDevs)
             but I get an error saying that this method (.saveAll) does not exist
          */
+    }
+
+    private Double getDevTotalMergeRequestScore(int projectId, ProjectSettings projectSettings, Developer dev) {
+        Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId, dev.getUsername(),
+                projectSettings.getStartDate(), projectSettings.getEndDate());
+        return devTotalMergeRequestScore;
+    }
+
+    private Double getDevTotalCommitScore(int projectId, ProjectSettings projectSettings, Developer dev) {
+        Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId, dev.getUsername(),
+                projectSettings.getStartDate(), projectSettings.getEndDate());
+        return devTotalCommitScore;
+    }
+
+    private List<CommitDateScore> getCommitsWithEveryDateBetweenRange(int projectId, ProjectSettings projectSettings, Developer dev) {
+        List<CommitDateScore> devCommitArray = commitRepository.getCommitsWithEveryDateBetweenRange(projectId,
+                dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+        return devCommitArray;
+    }
+
+    private List<CommitDateScore> getCommitDateScores(int projectId, ProjectSettings projectSettings, Developer dev) {
+        List<CommitDateScore> devCommitScores = commitRepository.getDevCommitDateScore(projectId, dev.getUsername(),
+                projectSettings.getStartDate(), projectSettings.getEndDate());
+        return devCommitScores;
+    }
+
+    private List<MergeRequest> getMergeRequests(int projectId, ProjectSettings projectSettings, Developer dev) {
+        List<MergeRequest> devsMrs = mergeRequestRepository.getDevMergeRequests(
+                projectId, dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+        return devsMrs;
+    }
+
+    private List<MergeRequestDateScore> getMergeRequestsDateScores(int projectId, ProjectSettings projectSettings, Developer dev) {
+        List<MergeRequestDateScore> devsMrs = mergeRequestRepository.getDevsMrsScoreADay(
+                projectId, dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+        return devsMrs;
     }
 
 
@@ -213,7 +246,6 @@ public class ProjectService {
                 dateScore.addMergeRequestIds(mergeRequest.getId());
             }
         }
-        System.out.println(dateMap);
         List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devFieldForGettingCommits);
         for (Commit currentCommit: allDevCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
@@ -230,7 +262,6 @@ public class ProjectService {
             }
         }
         List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
-        System.out.println(dateScores);
         return dateScores;
     }
 
