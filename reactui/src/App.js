@@ -4,7 +4,6 @@ import {BrowserRouter as Router, Switch, Route, Redirect, Link} from 'react-rout
 import React, {useState} from 'react';
 import Repo from './Pages/Repo';
 import Home from './Pages/Home';
-import Developers from './Pages/Developers';
 import Developers2 from './Pages/Developers2';
 import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
@@ -19,9 +18,7 @@ import LoginState from "./components/LoginState";
 import Chart from "./Pages/Chart";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useToken from "./useToken";
-import Navbar_dropdown from "./components/storage/Navbar_dropdown";
 import {SiGnuprivacyguard, SiJsonwebtokens} from "react-icons/all";
-import {AiOutlineHome} from "react-icons/ai";
 import SignupComponent from "./components/SignupComponent";
 import LoginToken from "./components/LoginToken.js";
 
@@ -40,7 +37,7 @@ function App() {
       event.preventDefault();
   }
 
-    // requires a authentication token to proceed
+  // requires a authentication token to proceed
   if(!sessionStorage.getItem('user')) {
     return (
         <>
