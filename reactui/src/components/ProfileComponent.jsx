@@ -122,8 +122,7 @@ export default class ProfileComponent extends Component {
         if (this.state.logout) {
             return (
                 <>
-                    {window.location.reload()}
-                    <Redirect to='/Home'/>
+                    {window.location.href="/"}
                 </>
             )
         }
