@@ -29,6 +29,23 @@ class CommitMergeRequest extends PureComponent {
         await this.setState({data:resp})*/
     }
 
+    async getDataFromBackend () {
+
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+        var hash = this.props.hash;
+        console.log("hash is ", hash)
+
+        await axios.get("/api/v2/projects/" + repNum + "/mergeRequests/" + "81dcd6aab70ebf99195e234d9f4f49ec13d0a252")
+            .then(response => {
+                const nums = response.data
+                this.setState({data : nums})
+                console.log(this.state.data)
+            }).catch((error) => {
+                console.error(error);
+            });
+    }
+
     render() {
 
         return(
