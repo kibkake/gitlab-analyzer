@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import axios from "axios";
 import Row from "./Rows";
 import './MergeListTable.css'
+// import { merge } from 'jquery';
 
 export default class MergeListTable  extends PureComponent {
     constructor(props) {
@@ -40,10 +41,38 @@ export default class MergeListTable  extends PureComponent {
         const response = axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
             .then(res => {
                         this.setState({merges : res.data, parentData: username});
+                        this.applyMultipliers();
                     }).catch((error) => {
                     console.error(error);})
 
-        console.log(this.state.merges)
+
+    }
+
+    applyMultipliers(){
+        var newCommitDiff=0;
+        var scale = JSON.parse(sessionStorage.getItem('languageScale'));
+        console.log(scale);
+        console.log(this.state.merges);
+        for(const k in this.state.merges){
+
+            for(var i in this.state.merges[k].diffs){
+                var fileExtension = this.state.merges[k].diffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                if(extensionIndex!==-1){
+                    this.setState(prevState=>{
+                        let temp = {...prevState.merges[k].diffs[i]};
+                        var newScore = scale[extensionIndex].multiplier * temp.diffScore;
+                        newCommitDiff = newCommitDiff+newScore;
+                        temp.diffScore=newScore;
+                        console.log("temp");
+                        console.log(temp);
+                        return{temp};
+                    })
+                }
+            }
+        }
+        console.log("new merges");
+        console.log(this.state.merges);
     }
 
     async componentDidUpdate(prevProps){
@@ -52,6 +81,7 @@ export default class MergeListTable  extends PureComponent {
             this.props.endTime !== prevProps.endTime){
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
+        console.log("update");
     }
 
 
