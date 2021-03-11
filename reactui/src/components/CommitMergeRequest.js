@@ -6,15 +6,34 @@ class CommitMergeRequest extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            data: [],
+            hash : this.props.hash
+        }
     }
+//http://localhost:8090/api/v2/projects/6/mergeRequests/81dcd6aab70ebf99195e234d9f4f49ec13d0a252
+    async componentDidMount() {
+        /*var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+        var hash = this.props.hash;
 
+        let url2 = '/api/v2/projects/' + repNum + '/mergeRequests/' + hash;
+        const result = await fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        const resp = await result.json();
+        await this.setState({data:resp})*/
+    }
 
     render() {
 
         return(
-        <div className="horizontalBar" style={{ overflow: "scroll", height: "1000px", width: "700px"}}>
-            Commit's Merge request to be added here
+        <div style={{ overflow: "scroll", height: "1050px", width: "300px"}}>
+            Commit's Merge request to be added here: {this.props.hash}
             </div>
         )
     }

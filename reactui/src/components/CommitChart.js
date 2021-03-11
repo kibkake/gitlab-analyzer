@@ -110,7 +110,7 @@ class CommitChart extends Component {
 
         return (
             <div className="box-container" >
-                <div className="horizontalBar" style={{ overflow: "scroll", height: "1000px", width: "1000px"}}>
+                <div className="horizontalBar" style={{ overflow: "scroll", height: "1050px", width: "1000px"}}>
                 <HorizontalBar
 
                     data={{labels: daylist,
@@ -149,7 +149,7 @@ class CommitChart extends Component {
                 />
                 </div>
                 {(this.state.diff !== false) ? <SingleCommitDiff  handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
-                <CommitMergeRequest/>
+                <CommitMergeRequest hash = {this.state.childVal}/>
             </div>
         )
     }

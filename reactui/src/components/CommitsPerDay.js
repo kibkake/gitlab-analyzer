@@ -51,7 +51,7 @@ class CommitsPerDay extends Component{
         //console.log(output)
 
         return(
-            <ul style={{ overflow: "scroll", height: "1000px", width: "1000px"}}>
+            <ul style={{ overflow: "scroll", height: "1050px", width: "1000px"}}>
             {this.state.data.map(item => {
                 return <li >
                     <a href= {"Developers/" + item }target= "_blank">

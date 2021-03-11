@@ -84,7 +84,7 @@ class SingleCommitDiff extends Component{
     render() {
 
         return (
-            <div   style={{ overflow: "scroll", height: "1000px", width: "1000px"}}>
+            <div   style={{ overflow: "scroll", height: "1050px", width: "1000px"}}>
                 <div>
                     { this.state.data.map(projects =>
                         <span>
