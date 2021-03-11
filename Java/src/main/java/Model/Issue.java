@@ -3,6 +3,8 @@ package main.java.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Document(value = "Issue")
@@ -14,6 +16,7 @@ public class Issue {
     private String title;
     private String createdAt;
     private String modifiedAt;
+    private String updatedAt;
     private String username;
     private List<Note> notes;
 
@@ -91,6 +94,15 @@ public class Issue {
     @JsonProperty("modified_at")
     public void setModifiedAt(String modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    @JsonProperty("updated_at")
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @JsonProperty("iid")
