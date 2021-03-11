@@ -30,7 +30,7 @@ export default function LoginToken(){
             <form onSubmit={handleSubmit}>
                 <label>
                     <h5>Token:</h5>
-                    <input name="username" type="text"  onChange={event => setUserToken(event.target.value)} />
+                    <input name="u_token" type="text"  onChange={event => setUserToken(event.target.value)} />
                 </label>
                 <br/>
                 <br/>
