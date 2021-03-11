@@ -8,7 +8,7 @@ import java.util.List;
 @Document(value = "Issue")
 public class Issue {
     private int issueIdForServer;
-    private int internalIssueId;
+    private int internalIssueIdForASpecificProject;
     private int projectId;
     private Developer author;
     private String title;
@@ -26,6 +26,7 @@ public class Issue {
         return issueIdForServer;
     }
 
+    @JsonProperty("id")
     public void setId(int issueIdForServer) {
         this.issueIdForServer = issueIdForServer;
     }
@@ -35,6 +36,7 @@ public class Issue {
         return projectId;
     }
 
+    @JsonProperty("project_id")
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
@@ -60,6 +62,7 @@ public class Issue {
         return createdAt;
     }
 
+    @JsonProperty("created_at")
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
@@ -85,17 +88,18 @@ public class Issue {
         return modifiedAt;
     }
 
+    @JsonProperty("modified_at")
     public void setModifiedAt(String modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
     @JsonProperty("iid")
     public int getIssueIdForASpecificProject() {
-        return internalIssueId;
+        return internalIssueIdForASpecificProject;
     }
 
     @JsonProperty("iid")
-    public void setInternalIssueId(int internalIssueId) {
-        this.internalIssueId = internalIssueId;
+    public void setInternalIssueIdForASpecificProject(int internalIssueIdForASpecificProject) {
+        this.internalIssueIdForASpecificProject = internalIssueIdForASpecificProject;
     }
 }

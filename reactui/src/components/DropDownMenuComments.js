@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import Select from 'react-select'
-import Navbar_Developers from "./Navbar_Developers";
-import CustomizedRadios from "./RadioButtonComment";
-import CommentTable from "./CommentTable";
+import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
+import CustomizedRadios from "./Comment/RadioButtonComment";
+import CommentTable from "./Comment/CommentTable";
 import './DropDownMenu.css';
 
 function DropDownMenuComments ({listOfDevelopers}) {

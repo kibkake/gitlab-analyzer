@@ -66,6 +66,7 @@ public class Project {
         return createdAt;
     }
 
+    @JsonProperty("created_at")
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }

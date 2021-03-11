@@ -42,7 +42,7 @@ class SummaryScoreTable extends Component{
         //request ref: http://localhost:8090/api/v1/projects/6/allTotalScores/user2/2021-01-01/2021-02-23
         const response = await axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/" +
             startTm + "/"
-            + endTm)
+            + endTm + "/either")
 
         const scores = await response.data
         await this.setState({scoreSummary: scores, parentdata: username,startTime: startTm,
