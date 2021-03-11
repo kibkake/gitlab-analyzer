@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.mongodb.core.aggregation.Fields.fields;
 
@@ -58,7 +59,6 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
     @Override
     public List<MergeRequest> getDevMergeRequests(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
-
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);
@@ -84,8 +84,8 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
         );
 
         AggregationResults<Double> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, Double.class);
-        List<Double> result = groupResults.getMappedResults();
-        return result.get(0);
+        Optional<Double> result = Optional.ofNullable(groupResults.getUniqueMappedResult());
+        return result.orElse(0.0);
     }
 
 }

@@ -9,9 +9,7 @@ import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /*** Implements custom quires to get users commits and scores through aggregation and other techniques with
  * mongoTemplate
@@ -66,12 +64,11 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
                 Aggregation.match(criterias),
                 Aggregation.project( "commitScore", "authorName"),
                 Aggregation.group("authorName").sum("commitScore").as("commitTotalScore")
-
         );
 
         AggregationResults<Double> groupResults = mongoTemplate.aggregate(aggregation, Commit.class, Double.class);
-        List<Double> result = groupResults.getMappedResults();
-        return result.get(0);
+        Optional<Double> result = Optional.ofNullable(groupResults.getUniqueMappedResult());
+        return result.orElse(0.0);
 
     }
 
