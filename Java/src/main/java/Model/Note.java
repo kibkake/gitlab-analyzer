@@ -18,11 +18,7 @@ public class Note {
     private String body;
     private Developer author;
     private int score;
-    private int year;
-    private int month;
-    private int day;
     private String username;
-    private String createdAt;
     private Date createdDate;
     private Boolean isIssueNote;
     private int wordCount;
@@ -59,47 +55,12 @@ public class Note {
         this.score = score;
     }
 
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    @JsonProperty("created_at")
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(createdAt);
-        setCreatedDate(Date.from(dateWithOffSet.toInstant()));
     }
 
     public Date getCreatedDate() {
