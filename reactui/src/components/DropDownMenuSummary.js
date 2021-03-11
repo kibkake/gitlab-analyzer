@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
-import SummaryScoreTable from "./SummaryScoreTable";
 import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
 import './DropDownMenu.css';
 import DateRangeSummary from './DateRangeSummary'

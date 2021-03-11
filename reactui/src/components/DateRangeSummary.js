@@ -5,9 +5,6 @@ import {MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import SummaryScoreTable from "./Summary/SummaryScoreTable";
 import SummaryChartRadios from "./Summary/RadioButtonSummaryChart";
-//import SummaryScoreTable from "./SummaryScoreTable";
-//import SummaryChartRadios from "./RadioButtonSummaryChart";
-import CommitMRScoreChart from "./CommitMRScoreChart";
 
 
 function DateRangeSummary({devName}){
