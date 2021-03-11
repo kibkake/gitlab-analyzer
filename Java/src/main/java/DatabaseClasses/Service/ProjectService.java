@@ -426,10 +426,7 @@ public class ProjectService {
         return allScores;
     }
 
-    public String getMergeUrl(int projectId, String username, LocalDate date) {
 
-        return "String is working";
-    }
 
     public List<Developer> getMembers(int ProjectId){
         Project project = projectRepository.findProjectById(ProjectId);

@@ -249,20 +249,6 @@ public class ProjectController {
                 whichDevFieldIsString(whichDevField));
     }
 
-    @GetMapping("projects/{projectId}/getMergeUrl/{username}/{date}")
-    public String getMergeUrl(@PathVariable ("projectId") int projectId,
-                                    @PathVariable ("username") String username,
-                                    @PathVariable ("date") String date ){
-
-        LocalDate mergeDate = LocalDate.parse(date);
-
-        return projectService.getMergeUrl(projectId, username, mergeDate);
-    }
-
-
-
-
-
     @PostMapping("/setstartdate")
     public void setStartDate(@RequestBody Map<String, String> requestBody) {
         if(requestBody.get("starttime") != null) {
