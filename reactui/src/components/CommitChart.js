@@ -48,7 +48,7 @@ class CommitChart extends Component {
         var arr=[];
 
         let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + username + '/' +
-            startTm + "/" + endTm
+            startTm + "/" + endTm + "/either"
         const result = await fetch(url3, {
             method: 'GET',
             headers: {

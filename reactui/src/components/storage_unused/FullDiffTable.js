@@ -1,4 +1,4 @@
-import "../App.css"
+import "../../App.css"
 import React, { Component, useState, useEffect } from "react";
 import {Table} from 'react-bootstrap'
 import Highlight from 'react-highlight'

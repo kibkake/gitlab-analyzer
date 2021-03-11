@@ -3,8 +3,11 @@ import ProjectService from "../Service/ProjectService";
 import Grid from "@material-ui/core/Grid";
 import {MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import SummaryScoreTable from "./SummaryScoreTable";
-import SummaryChartRadios from "./RadioButtonSummaryChart";
+import SummaryScoreTable from "./Summary/SummaryScoreTable";
+import SummaryChartRadios from "./Summary/RadioButtonSummaryChart";
+//import SummaryScoreTable from "./SummaryScoreTable";
+//import SummaryChartRadios from "./RadioButtonSummaryChart";
+import CommitMRScoreChart from "./CommitMRScoreChart";
 
 
 function DateRangeSummary({devName}){
