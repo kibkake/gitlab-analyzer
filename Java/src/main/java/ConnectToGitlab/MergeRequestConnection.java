@@ -43,7 +43,7 @@ public class MergeRequestConnection {
         return mergeRequests;
     }
 
-    public static String getMostRecentMergeRequestUpdateDate (int projectId) {
+    public static String getMostRecentMergeRequestUpdateDate(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         List<MergeRequest> mergeRequests = new ArrayList<>();

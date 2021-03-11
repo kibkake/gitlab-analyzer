@@ -38,7 +38,7 @@ public class IssueConnection {
         return issues;
     }
 
-    public static String getMostRecentIssueUpdateDate (int projectId) {
+    public static String getMostRecentIssueUpdateDate(int projectId) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         List<Issue> issues = new ArrayList<>();
