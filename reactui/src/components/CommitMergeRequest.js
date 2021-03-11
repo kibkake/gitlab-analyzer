@@ -52,12 +52,15 @@ class CommitMergeRequest extends PureComponent {
         }
 
         return(
-            <div>
-                    ???
+            <div style={{ overflow: "scroll", height: "1050px", width: "1000px"}}>
+                <div>
+                    <span>
+                        <td className="commitscore">Merge Score = {this.state.data.mrScore}</td>
+                    </span>
+                </div>
             </div>
         )
     }
-
 }
 
 export default CommitMergeRequest;
