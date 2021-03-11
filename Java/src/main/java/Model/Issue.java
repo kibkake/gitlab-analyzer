@@ -11,12 +11,10 @@ public class Issue {
     private int internalIssueIdForASpecificProject;
     private int projectId;
     private Developer author;
-    private String title;
     private String createdAt;
     private String modifiedAt;
     private String username;
     private List<Note> notes;
-
 
     public Issue() {
     }
@@ -45,14 +43,6 @@ public class Issue {
 
     public void setAuthor(Developer author) {
         this.author = author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     @JsonProperty("created_at")
@@ -94,6 +84,7 @@ public class Issue {
         return internalIssueIdForASpecificProject;
     }
 
+    @JsonProperty("iid")
     public void setInternalIssueIdForASpecificProject(int internalIssueIdForASpecificProject) {
         this.internalIssueIdForASpecificProject = internalIssueIdForASpecificProject;
     }

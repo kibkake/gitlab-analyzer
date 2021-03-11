@@ -15,7 +15,6 @@ import java.util.List;
 @Document("Project")
 public class Project {
     private int id;
-    private String description;
     private String name;
     private String createdAt;
     private List<MergeRequest> mergedRequests;
@@ -23,7 +22,6 @@ public class Project {
     private List<Commit> commits;
     private List<Developer> developers;
     private boolean infoSet;
-    private Date infoSetDate;
 
     public Project() {
         mergedRequests = new ArrayList<>();
@@ -40,14 +38,6 @@ public class Project {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getName() {
@@ -107,19 +97,10 @@ public class Project {
         this.infoSet = infoSet;
     }
 
-    public Date getInfoSetDate() {
-        return infoSetDate;
-    }
-
-    public void setInfoSetDate(Date infoSetDate) {
-        this.infoSetDate = infoSetDate;
-    }
-
     @Override
     public String toString() {
         return "Project{" +
                 "id=" + id +
-                ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 ", mergedRequests=" + mergedRequests +
@@ -127,7 +108,6 @@ public class Project {
                 ", commits=" + commits +
                 ", developers=" + developers +
                 ", infoSet=" + infoSet +
-                ", infoSetDate=" + infoSetDate +
                 '}';
     }
 }

@@ -15,19 +15,13 @@ public class Commit {
 
     @Id //check unique per project
     private String id;
-    private String title; // 1st line of commit message
-    private String message; // other lines of commit message
     private String authorName;
     private String committerName;
-    private String authorEmail;
-    private String authorDate;
     private List<Diff> diffs;
     private Date date;
     private String sha;
     private int projectId;
     private double commitScore;
-
-
 
     public Commit() {
     }
@@ -38,22 +32,6 @@ public class Commit {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     @JsonProperty("committer_name")
@@ -73,26 +51,6 @@ public class Commit {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
-    }
-
-    @JsonProperty("author_email")
-    public String getAuthorEmail() {
-        return authorEmail;
-    }
-
-    public void setAuthorEmail(String authorEmail) {
-        this.authorEmail = authorEmail;
-    }
-
-    @JsonProperty("authored_date")
-    public String getAuthorDate() {
-        return authorDate;
-    }
-
-    public void setAuthorDate(String authorDate) {
-        this.authorDate = authorDate;
-        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(authorDate);
-        setDate(Date.from(dateWithOffSet.toInstant()));
     }
 
     public String getSha() {
@@ -131,11 +89,7 @@ public class Commit {
     public String toString() {
         return "Commit{" +
                 "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", message='" + message + '\'' +
-                ", author_name='" + authorName + '\'' +
-                ", author_email='" + authorEmail + '\'' +
-                ", authored_date=" + authorDate +
+                ", author_name='" + authorName +
                 '}';
     }
 

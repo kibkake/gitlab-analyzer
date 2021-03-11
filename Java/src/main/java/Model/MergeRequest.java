@@ -16,9 +16,6 @@ public class MergeRequest {
     private Integer id;
     private int mergeRequestIdForASpecificProject; // this is the iid provided by gitLab
     private int projectId;
-    private String title;
-    private String description;
-    private String state;
     private String mergedAt;
     private int authorId;
     private String authorUsername;
@@ -60,30 +57,6 @@ public class MergeRequest {
 
     public void setProjectId(int projectId) {
         this.projectId = projectId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     @JsonProperty("merged_at")
@@ -164,9 +137,6 @@ public class MergeRequest {
         return "MergeRequest{" +
                 "id=" + id +
                 ", project_id=" + projectId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", state='" + state + '\'' +
                 ", merged_at='" + mergedAt + '\'' +
                 ", author_id=" + authorId +
                 ", author_username=" + authorUsername +
