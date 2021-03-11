@@ -14,7 +14,7 @@ export const MenuItems = [
     //}
     {
         title: 'Merge Requests',
-        url: '/Repo/' + rep + '/Developers/' + user + '/codediff',
+        url: '/Repo/' + rep + '/Developers/' + user + '/merges',
         cName: 'nav-links'
     },
     {

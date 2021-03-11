@@ -59,7 +59,6 @@ public class ProjectController {
         }
     }
 
-
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {
         Project project = projectService.getProject(projectId);
@@ -120,38 +119,53 @@ public class ProjectController {
         return projectService.getDevMergeRequests(projectId, userName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/MRsAndCommitScoresPerDay/{committerName}/{start}/{end}")
+    private ProjectService.UseWhichDevField whichDevFieldIsString(String whichDevField) {
+        if (whichDevField.equalsIgnoreCase("username")) {
+            return ProjectService.UseWhichDevField.USERNAME;
+        }
+        else if (whichDevField.equalsIgnoreCase("name")) {
+            return ProjectService.UseWhichDevField.NAME;
+        }
+        else {
+            return ProjectService.UseWhichDevField.EITHER;
+        }
+    }
+
+    @GetMapping("projects/{projectId}/MRsAndCommitScoresPerDay/{committerName}/{start}/{end}/{whichDevField}")
     public List<DateScore> getDevMRsAndCommitScorePerDay(@PathVariable("projectId") int projectId,
                                                          @PathVariable("committerName") String committerName,
                                                          @PathVariable("start") String start,
-                                                         @PathVariable("end")String end) {
+                                                         @PathVariable("end")String end,
+                                                         @PathVariable("whichDevField")String whichDevField) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime,
-                ProjectService.UseWhichDevField.EITHER);
+                whichDevFieldIsString(whichDevField));
     }
 
-    @GetMapping("projects/{projectId}/Commits/{committerName}/{start}/{end}")
+    @GetMapping("projects/{projectId}/Commits/{committerName}/{start}/{end}/{whichDevField}")
     public List<Commit> getAllDevCommits(@PathVariable("projectId") int projectId,
                                          @PathVariable("committerName") String committerName,
                                          @PathVariable("start") String start,
-                                         @PathVariable("end")String end) {
+                                         @PathVariable("end")String end,
+                                         @PathVariable("whichDevField")String whichDevField) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getDevCommits(projectId, committerName, StartLocalTime, endLocalTime,
-                ProjectService.UseWhichDevField.EITHER);
+                whichDevFieldIsString(whichDevField));
     }
 
-    @GetMapping("projects/{projectId}/Commitsarray/{committerName}/{start}/{end}")
+    @GetMapping("projects/{projectId}/Commitsarray/{committerName}/{start}/{end}/{whichDevField}")
     public List<String> getCommitsArray(@PathVariable("projectId") int projectId,
                                         @PathVariable("committerName") String committerName,
                                         @PathVariable("start") String start,
-                                        @PathVariable("end")String end) {
+                                        @PathVariable("end")String end,
+                                        @PathVariable("whichDevField")String whichDevField) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         List<String> commitsArray = new ArrayList<>();
         commitsArray = projectService.getAllDevCommitsArray(projectId, committerName, StartLocalTime, endLocalTime,
-                ProjectService.UseWhichDevField.EITHER);
+                whichDevFieldIsString(whichDevField));
         return commitsArray;
     }
 
@@ -162,16 +176,17 @@ public class ProjectController {
         return projectService.getCommitByHash(projectId, hash);
     }
 
-    @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}")
+    @GetMapping("projects/{projectId}/commitScoresPerDay/{committerName}/{start}/{end}/{whichDevField}")
     public List<DateScore> getDevCommitScoresWithDates(@PathVariable("projectId") int projectId,
                                                        @PathVariable("committerName") String committerName,
                                                        @PathVariable("start") String start,
-                                                       @PathVariable("end")String end) {
+                                                       @PathVariable("end")String end,
+                                                       @PathVariable("whichDevField")String whichDevField) {
 
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
         return projectService.getDevCommitScoresPerDay(projectId, committerName, StartLocalTime, endLocalTime,
-                ProjectService.UseWhichDevField.EITHER);
+                whichDevFieldIsString(whichDevField));
     }
 
     // TODO: should be checked, doesn't return data.
@@ -197,15 +212,16 @@ public class ProjectController {
         return projectService.getDevNotes(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}")
+    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}/{whichDevField}")
     public double totalCommitScore(@PathVariable("projectId") int projectId,
                                    @PathVariable("committerName") String committerName,
                                    @PathVariable("start") String start,
-                                   @PathVariable("end") String end) {
+                                   @PathVariable("end") String end,
+                                   @PathVariable("whichDevField") String whichDevField) {
         LocalDate startLocalDate = LocalDate.parse(start);
         LocalDate endLocalDate = LocalDate.parse(end);
         return projectService.getTotalDevCommitScore(projectId, committerName, startLocalDate,
-                endLocalDate, ProjectService.UseWhichDevField.EITHER);
+                endLocalDate, whichDevFieldIsString(whichDevField));
     }
 
     @GetMapping("projects/{projectId}/commit/{commitId}")
@@ -218,16 +234,17 @@ public class ProjectController {
         return projectService.getMergeRequest(projectId, mrId);
     }
 
-    @GetMapping("projects/{projectId}/allTotalScores/{username}/{start}/{end}")
+    @GetMapping("projects/{projectId}/allTotalScores/{username}/{start}/{end}/{whichDevField}")
     public AllScores allTotalScores(@PathVariable ("projectId") int projectId,
                                     @PathVariable ("username") String username,
                                     @PathVariable ("start") String start,
-                                    @PathVariable ("end") String end) {
+                                    @PathVariable ("end") String end,
+                                    @PathVariable ("whichDevField") String whichDevField) {
 
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
         return projectService.getAllScores(projectId, username, startDate, endDate,
-                ProjectService.UseWhichDevField.EITHER);
+                whichDevFieldIsString(whichDevField));
     }
 
 

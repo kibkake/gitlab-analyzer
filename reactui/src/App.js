@@ -1,5 +1,5 @@
 import './App.css';
-import Navbar from './components/Navbar';
+import Navbar from './components/NavBars_Menu/Navbar';
 import {BrowserRouter as Router, Switch, Route, Redirect, Link} from 'react-router-dom';
 import React, {useState} from 'react';
 import Repo from './Pages/Repo';
@@ -19,6 +19,7 @@ import Chart from "./Pages/Chart";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useToken from "./useToken";
 import {SiGnuprivacyguard, SiJsonwebtokens} from "react-icons/all";
+import {AiOutlineHome} from "react-icons/ai";
 import SignupComponent from "./components/SignupComponent";
 import LoginToken from "./components/LoginToken.js";
 
