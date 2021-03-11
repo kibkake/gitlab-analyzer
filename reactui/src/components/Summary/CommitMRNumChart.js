@@ -30,7 +30,7 @@ export default class CommitMRNumChart extends PureComponent {
         //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
         await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
-            endTm)
+            endTm + "/either")
             .then(response => {
                 const nums = response.data
                 this.setState({frequency : nums, parentdata: username,startTime: startTm,
