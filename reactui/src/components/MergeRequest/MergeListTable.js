@@ -71,6 +71,7 @@ export default class MergeListTable  extends PureComponent {
                 date: item.merged_at,
                 title: item.title,
                 score: item.mrScore,
+                mrUrl: item.mrUrl,
                 diffs: item.diffs.map(function (diffs) {
                     return {
                         path: diffs.new_path,

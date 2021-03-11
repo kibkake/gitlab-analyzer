@@ -41,13 +41,14 @@ export default function Row(props) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
+
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
                     {moment(row.date).format('LLL')}
                 </TableCell>
-                <TableCell>#{row.id} {row.title} <h1>link</h1></TableCell>
+                <TableCell>#{row.id} {row.title} <a href= {row.mrUrl}>Click here for MR page</a></TableCell>
                 <TableCell align="right">{row.score.toFixed(1)}</TableCell>
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
