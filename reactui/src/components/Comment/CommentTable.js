@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
 
-
 class CommentTable extends Component{
     constructor(props) {
         super(props);
@@ -22,7 +21,7 @@ class CommentTable extends Component{
         const id = pathArray[2];
         const developer = pathArray[4];
 
-        //empty request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-05-09
+        //request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-05-09
         axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments = response.data
@@ -40,49 +39,42 @@ class CommentTable extends Component{
         }
     }
 
-    render() {
-        const issueNote = this.state.comments.map(function(item) {
-            // if (item.issueNote) {
-                return {
-                    if (item.issueNote)
-                    date: item.createdDate,
-                    wordCount: item.wordCount,
-                    comments: item.body
-                };
-            // };
-        });
-        console.log(issueNote);
 
-        const MRNote = this.state.comments.map(function(item) {
-            if (!item.issueNote) {
-                return {
-                    date: item.createdDate,
-                    wordCount: item.wordCount,
-                    comments: item.body
-                }
-            }
-        })
+    render() {
+        var Data = this.state.comments.map(function (item) {
+            return {
+                date: item.formattedDate,
+                wordCount: item.wordCount,
+                comments: item.body,
+                onIssue: item.issueNote
+            };})
+
+        let issueBoolean = {true: "Issue", false: "Code Review"};
+        let comments = Data.map(({date, wordCount, comments, onIssue})=>
+            ({date, wordCount, comments, issueOrReview: issueBoolean[onIssue]}));
+        console.log(comments);
+
 
         return (
-            <div className="container">
-                <Table striped bordered hover>
+            <Table striped bordered hover>
                     <tr>
-                        <td>Date/Time</td>
-                        <td>Word Count</td>
-                        <td>Comments</td>
+                        <th>Date</th>
+                        <th>Word Count</th>
+                        <th>Comments</th>
+                        <th>On Issue/Code Review</th>
                     </tr>
-                    <tbody>
-                    {
-                        issueNote.map(comments =>//(item, index) =>
-                            <tr>
-                                <td>{comments.date}</td>
-                                <td>{comments.wordCount}</td>
-                                <td>{comments.comments}</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </Table>
-            </div>
+                <tbody>
+                    {comments.map(comments =>//(item, index) =>
+                        <tr>
+                            <td>{comments.date}</td>
+                            <td>{comments.wordCount}</td>
+                            <td>{comments.comments}</td>
+                            <td>{comments.issueOrReview}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </Table>
+
         );
     }
 }
