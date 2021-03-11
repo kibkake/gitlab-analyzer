@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
+import moment from "moment";
 
 class CommentTable extends Component{
 
@@ -57,7 +58,7 @@ class CommentTable extends Component{
                     {
                         this.state.comments.map(comments =>//(item, index) =>
                             <tr>
-                                <td>{comments.createdDate}</td>
+                                <td>{ moment(comments.createdDate).format('LLL')}</td>
                                 <td>{comments.wordCount}</td>
                                 <td>{comments.body}</td>
                             </tr>
