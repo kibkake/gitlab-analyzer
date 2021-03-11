@@ -130,7 +130,7 @@ export default class ProfileComponent extends Component {
         return (
             <>
                 <div className="profile">
-                    <h2>Profile</h2>
+                    <h2 className="profile-h2">Profile</h2>
                     <br/>
                     <h5>Username:</h5>
                     <p>{this.state.username}</p>

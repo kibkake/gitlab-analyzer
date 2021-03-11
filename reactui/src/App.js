@@ -48,7 +48,7 @@ function App() {
                 </switch>
             </Router>
             <div className="loginwrapper">
-                <h2> Please Login or Sign Up to Continue</h2>
+                <h2 className="login-h2"> Please Login or Sign Up to Continue</h2>
                 <br/>
                 {!token_toggle &&
                     <>
