@@ -1,26 +1,25 @@
 import {SiJsonwebtokens, TiCancel} from "react-icons/all";
 import React, {useState} from "react";
-import {user} from "./Navbar_Developers";
 import ProfileService from "../Service/ProfileService";
 
 export default function LoginToken(){
 
     const [usertoken, setUserToken] = useState("");
 
-    // event handler onSubmit
     const handleSubmit = async event => {
         if(usertoken === ""){
             alert("Token cannot be empty");
         }else{
             sessionStorage.setItem("user","temp");
             sessionStorage.setItem("token",usertoken);
+            // need to change the temp user token in database before user can go home
             await ProfileService.changeUserToken("temp",usertoken);
             window.location.href="/Home";
         }
         event.preventDefault();
     }
 
-    // cancel
+    // cancel simply by reloading
     const handleCancel = event =>{
         window.location.reload();
         event.preventDefault();
