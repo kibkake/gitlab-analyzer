@@ -149,7 +149,7 @@ class CommitChart extends Component {
                 />
                 </div>
                 {(this.state.diff !== false) ? <SingleCommitDiff  handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
-                <CommitMergeRequest hash = {this.state.childVal}/>
+                {(this.state.diff !== false) ? <CommitMergeRequest hash = {this.state.childVal}/>: <div> </div>}
             </div>
         )
     }
