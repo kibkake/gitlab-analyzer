@@ -65,3 +65,8 @@ h2{
 input{
     width:270px !important;
 }
+
+.login-h2{
+    margin-left: 10px !important;
+    padding-top:20px;
+}
