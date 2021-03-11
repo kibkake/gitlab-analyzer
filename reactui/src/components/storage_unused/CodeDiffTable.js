@@ -1,4 +1,4 @@
-import "../App.css"
+import "../../App.css"
 import React, {Component, useRef} from "react";
 import {Button, Table} from 'react-bootstrap'
 import axios from "axios";
@@ -40,7 +40,7 @@ function CodeDiffTable({devName}) {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         var name = str.split("/")[4];
-        axios.get("/api/v1/projects/" + repNum + "/Commits/" + devName + "/2021-01-01/2021-05-09")
+        axios.get("/api/v1/projects/" + repNum + "/Commits/" + devName + "/2021-01-01/2021-05-09/either")
             .then(response => {
                 getCommits(response.data)
             });}

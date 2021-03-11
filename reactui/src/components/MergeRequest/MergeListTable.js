@@ -89,8 +89,8 @@ export default class MergeListTable  extends PureComponent {
         return (
             <div class="d-flex justify-content-start">
                 <TableContainer component={Paper} class="p-2">
-                    <Table aria-label="collapsible table" stickyHeader aria-label="sticky table">
-                        <TableHead>
+                    <Table aria-label="collapsible table">
+                        <TableHead className="tableCell">
                             <TableRow>
                                 <TableCell align="left" className="tableCell"> Date </TableCell>
                                 <TableCell>Merge Title</TableCell>

@@ -3,45 +3,43 @@ import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Respo
 import axios from "axios";
 import * as d3 from "d3-time";
 import moment from 'moment'
+import ProjectService from "../../Service/ProjectService";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
-export default class CommitMRScoreChart extends PureComponent {
+export default class CommitMRNumChart extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
-            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0}],
+            frequency:[{date: null, numCommits: 0, numMergeRequest: 0}],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime
         }
     }
 
-    async componentDidMount(){
+    componentDidMount(){
         const {parentdata} = this.state;
-        await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
+        this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 
     async getDataFromBackend (username, startTm, endTm) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
-        var name = username;
-        if(sessionStorage.getItem('DeveloperNames' + id) != null && sessionStorage.getItem('Developers' + id) != null) {
-            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
-                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
-                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
-                }
-            }
-        }
 
-        const response = await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
+        //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
+        await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
-            endTm)
+            endTm + "/either")
+            .then(response => {
+                const nums = response.data
+                this.setState({frequency : nums, parentdata: username,startTime: startTm,
+                    endTime: endTm})
+                console.log(this.state.frequency)
+            }).catch((error) => {
+            console.error(error);
+        });
 
-        const score = await response.data
-        await this.setState({codeScore : score, parentdata: username,startTime: startTm,
-            endTime: endTm})
-        await console.log(this.state.codeScore)
     }
 
     async componentDidUpdate(prevProps){
@@ -51,25 +49,22 @@ export default class CommitMRScoreChart extends PureComponent {
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }
-
 //        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
 //            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
 //        });
 
     render() {
-        var output = this.state.codeScore.map(function(item) {
+        var output = this.state.frequency.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
-                commitScore: item.commitScore,
-                mergeScore: item.mergeRequestScore
+                commitNum: item.numCommits,
+                mergeNum: item.numMergeRequests
             };
         });
         console.log(output);
-
-
-        const from = Number(new Date(this.props.startTime));
+        const from = Number(new Date( this.props.startTime));
         const to = Number(new Date(this.props.endTime));
-//ceil
+
         return (
             <div>
                 <ResponsiveContainer width = '100%' height = {500} >
@@ -90,8 +85,8 @@ export default class CommitMRScoreChart extends PureComponent {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="commitScore" stackId="a" fill="orange" />
-                        <Bar dataKey="mergeScore" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="commitNum" stackId="a" fill="orange" />
+                        <Bar dataKey="mergeNum" stackId="a" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

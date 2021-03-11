@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
-import Navbar_Developers from "./Navbar_Developers";
+import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
 import './DropDownMenu.css';
 import MergeListTable from "./MergeRequest/MergeListTable";
 
@@ -38,8 +38,7 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             </div>
             <br>
             </br>
-            <h1 style={{textAlign: 'center'}}>Merge Requests</h1>
-            <br></br>
+            <h2 style={{textAlign: 'left'}}> Merge Requests</h2>
 
             <MergeListTable  devName = {selectedValue}/>
         </div>
