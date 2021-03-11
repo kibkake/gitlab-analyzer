@@ -1,9 +1,25 @@
-import "../App.css"
+import "../../App.css"
 import React, {Component, useRef} from "react";
 import {Button, Table} from 'react-bootstrap'
 import axios from "axios";
 import Popup from "./Popup";
 import {useState,useEffect} from "react";
+
+
+function createData(id, date, score, title, fullDiff) {
+    return {
+        id,
+        date,
+        score,
+        title,
+        fullDiff,
+        commits: [
+            { date: '2020-01-05', committer: '11091700', score: 1, msg: 3, codeDiff:"" },
+            { date: '2020-01-02', committer: 'Anonymous', score: 1, msg: 1, codeDiff:"" },
+        ],
+    };
+}
+
 
 function CodeDiffTable({devName}) {
 
@@ -24,7 +40,7 @@ function CodeDiffTable({devName}) {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         var name = str.split("/")[4];
-        axios.get("/api/v1/projects/" + repNum + "/Commits/" + devName + "/2021-01-01/2021-05-09")
+        axios.get("/api/v1/projects/" + repNum + "/Commits/" + devName + "/2021-01-01/2021-05-09/either")
             .then(response => {
                 getCommits(response.data)
             });}
