@@ -43,7 +43,23 @@ public class MergeRequestConnection {
         return mergeRequests;
     }
 
-    public static Instant
+    public static String getMostRecentMergeRequestUpdateDate (int projectId) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        List<MergeRequest> mergeRequests = new ArrayList<>();
+
+        String myUrl = user.getServerUrl() +"projects/" + projectId
+                + "/merge_requests?state=merged&order_by=updated_at&all=true&per_page=100&page=1&access_token="
+                + user.getToken();
+
+        ResponseEntity<List<MergeRequest>> mergeRequestsResponse = restTemplate.exchange(myUrl,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<MergeRequest>>() {
+                });
+        mergeRequests.addAll(Objects.requireNonNull(mergeRequestsResponse.getBody()));
+        MergeRequest mergeRequest = mergeRequests.get(0);
+
+        return mergeRequest.getUpdatedAt();
+    }
 
     public static List<Developer> getMergeRequestContributors(int projectId, int mergeRequestIdForASpecificProject) {
         User user = User.getInstance();
