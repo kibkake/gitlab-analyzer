@@ -45,14 +45,6 @@ class CommitMergeRequest extends PureComponent {
 
         console.log(this.state.data.mrScore);
 
-        if(this.state.data.length === 0){
-            return (
-                <div>
-                    no MR!
-                    </div>
-            )
-        }
-
         if(this.state.data === "") {
             return (
                 <div>
@@ -75,7 +67,13 @@ class CommitMergeRequest extends PureComponent {
                                 <td>File Name</td>
                                 <td>Diff</td>
                             </tr>
-                    </tbody>
+                            {this.state.data.diffs.map((item2, index) =>
+                                <tr key ={index}>
+                                    <td>{item2.new_path}</td>
+                                    <td>{item2.diff.toString()}</td>
+                                </tr>
+                            )}
+                        </tbody>
                 </Table>
                </div>
             </div>
