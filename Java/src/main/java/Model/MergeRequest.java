@@ -58,6 +58,7 @@ public class MergeRequest {
         return projectId;
     }
 
+    @JsonProperty("project_id")
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
@@ -92,6 +93,7 @@ public class MergeRequest {
     }
 
     // Spring calls this to create a mergeRequest object use it to create a Date
+    @JsonProperty("merged_at")
     public void setMergedAt(String mergedAt) {
         this.mergedAt = mergedAt;
         if(mergedAt !=null) {
@@ -105,6 +107,7 @@ public class MergeRequest {
         return authorId;
     }
 
+    @JsonProperty("author_id")
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
     }
@@ -114,6 +117,7 @@ public class MergeRequest {
         return authorUsername;
     }
 
+    @JsonProperty("author_username")
     public void setAuthorUsername(String authorUsername) {
         this.authorUsername = authorUsername;
     }
@@ -155,6 +159,7 @@ public class MergeRequest {
         return mergeRequestIdForASpecificProject;
     }
 
+    @JsonProperty("iid")
     public void setMergeRequestIdForASpecificProject(int mergeRequestIdForASpecificProject) {
         this.mergeRequestIdForASpecificProject = mergeRequestIdForASpecificProject;
     }

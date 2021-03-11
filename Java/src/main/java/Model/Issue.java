@@ -26,6 +26,7 @@ public class Issue {
         return issueIdForServer;
     }
 
+    @JsonProperty("id")
     public void setId(int issueIdForServer) {
         this.issueIdForServer = issueIdForServer;
     }
@@ -35,6 +36,7 @@ public class Issue {
         return projectId;
     }
 
+    @JsonProperty("project_id")
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
@@ -60,6 +62,7 @@ public class Issue {
         return createdAt;
     }
 
+    @JsonProperty("created_at")
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
@@ -85,6 +88,7 @@ public class Issue {
         return modifiedAt;
     }
 
+    @JsonProperty("modified_at")
     public void setModifiedAt(String modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
@@ -94,6 +98,7 @@ public class Issue {
         return internalIssueIdForASpecificProject;
     }
 
+    @JsonProperty("iid")
     public void setInternalIssueIdForASpecificProject(int internalIssueIdForASpecificProject) {
         this.internalIssueIdForASpecificProject = internalIssueIdForASpecificProject;
     }
