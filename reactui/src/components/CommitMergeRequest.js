@@ -41,16 +41,14 @@ class CommitMergeRequest extends PureComponent {
 
     render() {
 
-        if(this.state.data.diff.length === 0){
-            return(
+        console.log(this.state.data.mrScore);
+
+        if(this.state.data === "") {
+            return (
                 <div>
-                    no merge request!
-                    </div>
+                    No merge request for this commit: Either commited directly to master or MR is not in db
+                </div>
             )
-        }else if (this.state.data.diff.length > 0) {
-            <div>
-                merge request goes here
-            </div>
         }
 
         return(
