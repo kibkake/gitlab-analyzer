@@ -16,6 +16,12 @@ class CommitMergeRequest extends PureComponent {
         await this.getDataFromBackend();
     }
 
+    async componentDidUpdate(prevProps){
+        if(this.props.hash !== prevProps.hash){
+            await this.getDataFromBackend()
+        }
+    }
+
     async getDataFromBackend () {
 
         var str = window.location.pathname;
@@ -23,14 +29,14 @@ class CommitMergeRequest extends PureComponent {
         var hash = this.props.hash;
         console.log("hash is ", hash)
 
-        await axios.get("/api/v2/projects/" + repNum + "/mergeRequests/" + "81dcd6aab70ebf99195e234d9f4f49ec13d0a252")
+        await axios.get("/api/v2/projects/" + repNum + "/mergeRequests/" + hash)
             .then(response => {
                 const nums = response.data
                 this.setState({data : nums})
                 console.log(this.state.data)
             }).catch((error) => {
                 console.error(error);
-            });
+        });
     }
 
     render() {
@@ -41,11 +47,15 @@ class CommitMergeRequest extends PureComponent {
                     no merge request!
                     </div>
             )
+        }else if (this.state.data.diff.length > 0) {
+            <div>
+                merge request goes here
+            </div>
         }
 
         return(
-        <div style={{ overflow: "scroll", height: "1050px", width: "300px"}}>
-            Commit's Merge request to be added here: {this.props.hash}
+            <div>
+                    ???
             </div>
         )
     }
