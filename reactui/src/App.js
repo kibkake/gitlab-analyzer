@@ -1,7 +1,7 @@
 import './App.css';
 import Navbar from './components/Navbar';
 import {BrowserRouter as Router, Switch, Route, Redirect, Link} from 'react-router-dom';
-import React from 'react';
+import React, {useState} from 'react';
 import Repo from './Pages/Repo';
 import Home from './Pages/Home';
 import Developers from './Pages/Developers';
@@ -20,7 +20,7 @@ import Chart from "./Pages/Chart";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useToken from "./useToken";
 import Navbar_dropdown from "./components/storage/Navbar_dropdown";
-import {SiGnuprivacyguard} from "react-icons/all";
+import {SiGnuprivacyguard, SiJsonwebtokens} from "react-icons/all";
 import {AiOutlineHome} from "react-icons/ai";
 import SignupComponent from "./components/SignupComponent";
 import LoginToken from "./components/LoginToken.js";
@@ -33,6 +33,13 @@ function signupHandler(){
 
 function App() {
   const { user, setUser } = useToken();
+  const [token_toggle, setTokenToggle] = useState(false);
+
+  const toggleTokenSubmit = event => {
+      setTokenToggle(!token_toggle);
+      event.preventDefault();
+  }
+
     // requires a authentication token to proceed
   if(!sessionStorage.getItem('user')) {
     return (
@@ -46,9 +53,16 @@ function App() {
             <div className="loginwrapper">
                 <h2> Please Login or Sign Up to Continue</h2>
                 <br/>
-                <LoginState setUser={setUser} />
-                <br/>
-                <LoginToken/>
+                {!token_toggle &&
+                    <>
+                        <LoginState setUser={setUser}/>
+                        <br/>
+                        <button className="login" onClick={toggleTokenSubmit}><SiJsonwebtokens/> Login with Token </button>
+                    </>
+                }
+                {token_toggle &&
+                    <LoginToken/>
+                }
                 <br/>
                 <br/>
                 <p className="signuptext">Don't have an account?<button className="login" onClick={signupHandler}><SiGnuprivacyguard/>Sign Up</button></p>
@@ -56,8 +70,8 @@ function App() {
 
         </>
     );
-  }else if(sessionStorage.getItem('new')){ // signup
-      return(
+  }else if(sessionStorage.getItem('new')) { // signup
+      return (
           <Router>
 
               <Navbar/>
