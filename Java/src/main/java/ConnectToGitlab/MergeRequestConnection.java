@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +42,8 @@ public class MergeRequestConnection {
         }
         return mergeRequests;
     }
+
+    public static Instant
 
     public static List<Developer> getMergeRequestContributors(int projectId, int mergeRequestIdForASpecificProject) {
         User user = User.getInstance();

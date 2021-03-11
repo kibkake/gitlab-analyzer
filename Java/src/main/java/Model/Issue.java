@@ -94,6 +94,7 @@ public class Issue {
         return internalIssueIdForASpecificProject;
     }
 
+    @JsonProperty("iid")
     public void setInternalIssueIdForASpecificProject(int internalIssueIdForASpecificProject) {
         this.internalIssueIdForASpecificProject = internalIssueIdForASpecificProject;
     }
