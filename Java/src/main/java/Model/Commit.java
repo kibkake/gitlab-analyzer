@@ -61,6 +61,7 @@ public class Commit {
         return committerName;
     }
 
+    @JsonProperty("committer_name")
     public void setCommitterName(String committerName) {
         this.committerName = committerName;
     }
@@ -71,6 +72,7 @@ public class Commit {
         return authorName;
     }
 
+    @JsonProperty("author_name")
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
@@ -80,6 +82,7 @@ public class Commit {
         return authorEmail;
     }
 
+    @JsonProperty("author_email")
     public void setAuthorEmail(String authorEmail) {
         this.authorEmail = authorEmail;
     }
@@ -89,6 +92,7 @@ public class Commit {
         return authorDate;
     }
 
+    @JsonProperty("authored_date")
     public void setAuthorDate(String authorDate) {
         this.authorDate = authorDate;
         OffsetDateTime dateWithOffSet = OffsetDateTime.parse(authorDate);
