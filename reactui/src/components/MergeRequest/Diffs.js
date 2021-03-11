@@ -1,22 +1,22 @@
 import React from "react";
-import './Popup.css'
+import './Diffs.css'
+import Highlight from "react-highlight";
 
-function Popup(props){
-    return(props.trigger) ? (
-        <div className="popup">
-            <div className="popup-inner">
+function Diffs(props){
+
+    return (props.trigger) ? (
+        <div>
                 <button className="close-btn" onClick={()=> props.setTrigger(false)}>close</button>
                 {props.children.map((item,index)=>{
                     return(
                         <ul key={index}>
-                            <h5 className="filename">{item.new_path}</h5>
-                            <li className="PopupCode">{item.diff}</li>
+                            <h5 className="filename">{item.path}</h5>
+                            <li className="PopupCode"><Highlight className="highlighted-text">{item.diff} </Highlight></li>
                         </ul>
                         
                     )
                 })}
-            </div>
         </div>
-    ) :"";
+    ) : null;
 }
-export default Popup
+export default Diffs;

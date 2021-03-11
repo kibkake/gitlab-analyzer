@@ -59,7 +59,6 @@ public class ProjectController {
         }
     }
 
-
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {
         Project project = projectService.getProject(projectId);

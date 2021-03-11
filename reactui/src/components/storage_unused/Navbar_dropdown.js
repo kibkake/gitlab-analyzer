@@ -1,11 +1,9 @@
-// import React, {Component} from 'react'
 import React, {useState} from 'react'
 
-import {MenuItems} from "../MenuItems";
 import {Link} from 'react-router-dom';
 import {AiOutlineHome} from 'react-icons/ai';
 
-import '../Navbar.css';
+import '../NavBars_Menu/Navbar.css';
 import * as HiIcons from "react-icons/hi";
 import * as AIIcons from "react-icons/ai";
 import {IoSettingsOutline} from "react-icons/io5";

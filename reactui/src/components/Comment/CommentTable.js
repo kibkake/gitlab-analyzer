@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
-import ProjectService from "../Service/ProjectService";
 
 class CommentTable extends Component{
 
