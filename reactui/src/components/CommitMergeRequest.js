@@ -1,6 +1,8 @@
 import React, {PureComponent} from "react";
 import "./HBox.css"
 import axios from "axios";
+import {Table} from "react-bootstrap";
+import "./ProjectList.css";
 
 class CommitMergeRequest extends PureComponent {
 
@@ -43,6 +45,14 @@ class CommitMergeRequest extends PureComponent {
 
         console.log(this.state.data.mrScore);
 
+        if(this.state.data.length === 0){
+            return (
+                <div>
+                    no MR!
+                    </div>
+            )
+        }
+
         if(this.state.data === "") {
             return (
                 <div>
@@ -58,7 +68,18 @@ class CommitMergeRequest extends PureComponent {
                         <td className="commitscore">Merge Score = {this.state.data.mrScore}</td>
                     </span>
                 </div>
+                <div className="CodeDiffTable">
+                    <Table striped bordered hover>
+                        <tbody>
+                            <tr>
+                                <td>File Name</td>
+                                <td>Diff</td>
+                            </tr>
+                    </tbody>
+                </Table>
+               </div>
             </div>
+
         )
     }
 }
