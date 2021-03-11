@@ -47,7 +47,7 @@ export default function Row(props) {
                 <TableCell component="th" scope="row">
                     {moment(row.date).format('LLL')}
                 </TableCell>
-                <TableCell>#{row.id} {row.title}</TableCell>
+                <TableCell>#{row.id} {row.title} <h1>link</h1></TableCell>
                 <TableCell align="right">{row.score.toFixed(1)}</TableCell>
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>

@@ -48,6 +48,8 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+
+
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
@@ -246,6 +248,19 @@ public class ProjectController {
         return projectService.getAllScores(projectId, username, startDate, endDate,
                 whichDevFieldIsString(whichDevField));
     }
+
+    @GetMapping("projects/{projectId}/getMergeUrl/{username}/{date}")
+    public String getMergeUrl(@PathVariable ("projectId") int projectId,
+                                    @PathVariable ("username") String username,
+                                    @PathVariable ("date") String date ){
+
+        LocalDate mergeDate = LocalDate.parse(date);
+
+        return projectService.getMergeUrl(projectId, username, mergeDate);
+    }
+
+
+
 
 
     @PostMapping("/setstartdate")

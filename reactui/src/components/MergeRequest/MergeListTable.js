@@ -44,6 +44,15 @@ export default class MergeListTable  extends PureComponent {
                     console.error(error);})
 
         console.log(this.state.merges)
+
+
+        const url = axios.get("/api/v1/projects/" + id + "/getMergeUrl/" + username + "/" + startTm )
+            .then(res => {
+                this.setState({merges : res.data, parentData: username});
+            }).catch((error) => {
+                console.error(error);})
+
+        console.log(this.state.merges)
     }
 
     async componentDidUpdate(prevProps){
