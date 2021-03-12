@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import "./ProjectList.css";
 import "./Projects/ProjectList.css";
 import {Table} from "react-bootstrap";
 
