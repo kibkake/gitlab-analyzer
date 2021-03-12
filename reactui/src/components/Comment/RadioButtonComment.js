@@ -49,6 +49,7 @@ const useStyles = makeStyles({
     },
 });
 
+
 // Inspired by blueprintjs
 function StyledRadio(props) {
     const classes = useStyles();
@@ -65,14 +66,16 @@ function StyledRadio(props) {
     );
 }
 
-export default function CustomizedRadios() {
+export default function RadioButtonComments() {
     return (
         <FormControl component="fieldset">
             <FormLabel component="legend">View Comments On</FormLabel>
             <RadioGroup defaultValue="codeReview" aria-label="comment" name="customized-radios">
-                <FormControlLabel value="codeReview" control={<StyledRadio />} label="Code Review" />
+                <FormControlLabel value="codeReview" control={<StyledRadio/>} label="Code Review" />
                 <FormControlLabel value="issue" control={<StyledRadio />} label="Issue" />
             </RadioGroup>
         </FormControl>
     );
 }
+// checked={this.state.value === "issue"}
+// onChange={this.handleRadioChange}

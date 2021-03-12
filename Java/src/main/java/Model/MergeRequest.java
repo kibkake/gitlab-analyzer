@@ -20,6 +20,7 @@ public class MergeRequest {
     private String description;
     private String state;
     private String mergedAt;
+    private String updatedAt;
     private int authorId;
     private String authorUsername;
     private Developer author;
@@ -28,6 +29,7 @@ public class MergeRequest {
     private String sha;
     double mrScore;
     private Date mergedDate;
+    private Date updatedDate;
     List<Note> allNotes;
     List<Note> codeReviewNotes;
     List<Diff> diffs;
@@ -58,6 +60,7 @@ public class MergeRequest {
         return projectId;
     }
 
+    @JsonProperty("project_id")
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
@@ -92,6 +95,7 @@ public class MergeRequest {
     }
 
     // Spring calls this to create a mergeRequest object use it to create a Date
+    @JsonProperty("merged_at")
     public void setMergedAt(String mergedAt) {
         this.mergedAt = mergedAt;
         if(mergedAt !=null) {
@@ -100,11 +104,39 @@ public class MergeRequest {
         }
     }
 
+    @JsonProperty("updated_at")
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(updatedAt);
+        setUpdatedDate(Date.from(dateWithOffSet.toInstant()));
+    }
+
+    public Date getMergedDate() {
+        return mergedDate;
+    }
+
+    public void setMergedDate(Date mergedDate) {
+        this.mergedDate = mergedDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
     @JsonProperty("author_id")
     public int getAuthorId() {
         return authorId;
     }
 
+    @JsonProperty("author_id")
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
     }
@@ -114,6 +146,7 @@ public class MergeRequest {
         return authorUsername;
     }
 
+    @JsonProperty("author_username")
     public void setAuthorUsername(String authorUsername) {
         this.authorUsername = authorUsername;
     }
@@ -134,14 +167,6 @@ public class MergeRequest {
         this.sha = sha;
     }
 
-    public Date getMergedDate() {
-        return mergedDate;
-    }
-
-    public void setMergedDate(Date mergedDate) {
-        this.mergedDate = mergedDate;
-    }
-
     public Developer getAuthor() {
         return author;
     }
@@ -155,6 +180,7 @@ public class MergeRequest {
         return mergeRequestIdForASpecificProject;
     }
 
+    @JsonProperty("iid")
     public void setMergeRequestIdForASpecificProject(int mergeRequestIdForASpecificProject) {
         this.mergeRequestIdForASpecificProject = mergeRequestIdForASpecificProject;
     }

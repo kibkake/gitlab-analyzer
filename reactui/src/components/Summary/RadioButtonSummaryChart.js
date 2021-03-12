@@ -40,7 +40,7 @@ function Chart(props){
     }
 }
 
-export default class SummaryChartRadios extends Component {
+export default class RadioButtonSummaryChart extends Component {
     constructor(props) {
         super(props);
         this.state = {value: "score",
@@ -77,7 +77,6 @@ export default class SummaryChartRadios extends Component {
                 <Chart value = {this.state.value}  devName = {this.props.devName}
                        startTime = {this.props.startTime}  endTime = {this.props.endTime}/>
             </div>
-
     );
     }
 }
