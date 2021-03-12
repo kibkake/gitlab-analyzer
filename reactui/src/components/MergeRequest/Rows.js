@@ -46,12 +46,11 @@ export default function Row(props) {
     return (
 
         <React.Fragment>
-            <p>{row.mrUrl} hello</p>
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
                     {moment(row.date).format('LLL')}
                 </TableCell>
-                <TableCell>#{row.id} {row.title}<a href= "{row.mrUrl}"> Click here for link to MR page</a> </TableCell>
+                <TableCell>#{row.id} <a href= {row.mrUrl}> {row.title}</a> </TableCell>
                 <TableCell align="right">{row.score.toFixed(1)}</TableCell>
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
