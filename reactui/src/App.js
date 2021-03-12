@@ -80,8 +80,7 @@ function App() {
           <Route path='/Repo/*/Developers/*/codeContribution' exact component={Commits}/>
           <Route path='/Repo/*/Developers/*/codediff' exact component={MergeRequest}/>
           <Route path='/Repo/*/Developers/*/comments' exact component={Comments}/>
-          <Route path='/Repo/*/Developers/*/commits/*/*' exact component={SingleCommit}/>
-          <Route path='/Repo/*/Developers/*/commits/*' exact component={Commits2}/>
+          <Route path='/Repo/*/Developers/*/commits/*' exact component={SingleCommit}/>
 
                 <Route path='/Settings' exact component={Setting}/>
               <Route path='/Profile' exact component={Profile}/>

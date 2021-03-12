@@ -26,7 +26,7 @@ function DropDownMenuCommit ({listOfDevelopers}) {
 
     return (
 
-        <div>
+        <div  style={{ overflow: "scroll"}}>
             <Navbar_Developers devName = {selectedValue}/>
             <br>
             </br>

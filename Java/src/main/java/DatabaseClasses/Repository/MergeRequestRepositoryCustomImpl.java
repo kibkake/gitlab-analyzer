@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.DateOperators;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -68,5 +69,18 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
         AggregationResults<Object> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, Object.class);
         List<Object> result = groupResults.getMappedResults();
         return result;
+    }
+
+    @Override
+    public MergeRequest getMrByCommitHash(int projectId, String hash){
+
+        final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
+        final Criteria hashMatchCriteria = Criteria.where("commits.Id").is(hash);
+
+        Criteria criterias = new Criteria().andOperator(projectMatchCriteria, hashMatchCriteria );
+        Query query = new Query(criterias);
+
+        final MergeRequest mergeRequests = mongoTemplate.findOne(query, MergeRequest.class);
+        return mergeRequests;
     }
 }
