@@ -1,49 +1,32 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-
-import {RepoItems} from '../Pages/sampleRepo';
-import RepoButton from "./RepoButton";
-//import "./RepoButton.css"
-import "./ProjectList.css";
+import "./Projects/ProjectList.css";
 import {Table} from "react-bootstrap";
-
-
-
 
 class SingleCommitDiff extends Component{
     constructor(props){
         super(props);
         this.state={
-            data: []
+            data: [],
+            hash : this.props.hash
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        var userName = str.split("/")[4];
-        var date = str.split("/")[6];
-        var hash = str.split("/")[7];
-
-
+        var hash = this.props.hash;
 
         let url2 = '/api/v1/projects/' + repNum + '/Commit/' + hash;
-        fetch(url2, {
+        const result = await fetch(url2, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then((result)=> {
-            result.json().then((resp) => {
-                this.setState({data:resp})
-            })
         })
-
+        const resp = await result.json();
+        await this.setState({data:resp})
     }
-
-
 
     splitToLines = (par) => {
         var lineBegin = 0;
@@ -100,20 +83,15 @@ class SingleCommitDiff extends Component{
 
     render() {
 
-        var data = JSON.stringify(this.state.data);
-        var DataArray = JSON.parse(data)
-
-
-
         return (
-    <div>
-        <div>
-            { DataArray.map(projects =>
-                <span>
-                    <td className="commitscore">Commit Score = {projects.commitScore}</td>
-                </span>
-            )}
-        </div>
+            <div   style={{ overflow: "scroll", height: "1050px", width: "1000px"}}>
+                <div>
+                    { this.state.data.map(projects =>
+                        <span>
+                            <td className="commitscore">Commit Score = {projects.commitScore}</td>
+                        </span>
+                    )}
+                </div>
             <div className="CodeDiffTable">
 
                 <Table striped bordered hover>
@@ -123,15 +101,13 @@ class SingleCommitDiff extends Component{
                             <td>Diff</td>
                         </tr>
 
-                        {DataArray.map((item) =>
+                        {this.state.data.map((item) =>
                         item.diffs.map((item2, index) =>
                             <tr key ={index}>
                                 <td>{item2.new_path}</td>
                                 <td>{this.splitToLines(item2.diff)}</td>
 
                             </tr>
-
-
                         ))}
                     </tbody>
                 </Table>

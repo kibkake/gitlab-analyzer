@@ -30,6 +30,7 @@
 
 .login{
     padding: 5px;
+    margin-left:20px;
 }
 
 .login:hover{
@@ -48,5 +49,24 @@
 
 h2{
     margin-left: 20px;
+    padding-top:20px;
+}
+
+.signuptext{
+    margin-left: 20px;
+}
+
+.spacer{
+    width:30px;
+    height:auto;
+    display:inline-block;
+}
+
+input{
+    width:270px !important;
+}
+
+.login-h2{
+    margin-left: 10px !important;
     padding-top:20px;
 }

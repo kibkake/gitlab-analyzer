@@ -92,48 +92,6 @@ public class WProjectController {
         WrapperUser user = new WrapperUser(userName, project);
         return user;
     }
-    //http://localhost:8080/getuserstats/6/arahilin/1-11-2021/2-22-2021
-    @CrossOrigin
-    @GetMapping("getuserstats/{pId}/{username}/{fromdate}/{todate}")
-    private List<String> getUserCommitPerDay(@PathVariable String pId, @PathVariable String username, @PathVariable String fromdate,
-                                             @PathVariable String todate) throws IOException, ParseException {
-
-        WrapperUser user = getProject(pId, username);
-
-//1-15-2021
-        int fromMonth = Integer.parseInt(fromdate.split("-")[0]);
-        int fromDay = Integer.parseInt(fromdate.split("-")[1]);
-        int fromYear = Integer.parseInt(fromdate.split("-")[2]);
-
-        int toMonth = Integer.parseInt(todate.split("-")[0]);
-        int tomDay = Integer.parseInt(todate.split("-")[1]);
-        int toYear = Integer.parseInt(todate.split("-")[2]);
-
-        LocalDate date = LocalDate.of(fromYear,fromMonth , fromDay);
-        LocalDate date2 = LocalDate.of(toYear,toMonth , tomDay);
-
-
-        List<String> commits = new ArrayList<>();
-
-        for (LocalDate start = date; start.isBefore(date2); start = start.plusDays(1))
-        {
-            int commitNumber = 0;
-            for(int i = 0; i < user.getMergedMergeRequests().size(); i++) {
-                for(int j = 0; j < user.getMergedMergeRequests().get(i).getMergeRequestCommits().size(); j++){
-
-                    if(user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getAuthorName().equals(username)
-                            &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitYear() == start.getYear()
-                            &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitMonth() == start.getMonthValue()
-                            &&user.getMergedMergeRequests().get(i).getMergeRequestCommits().get(j).getCommitDay() == start.getDayOfMonth()){
-                        commitNumber += 1;
-                    }
-                }
-            }
-
-            commits.add(Integer.toString(commitNumber));
-        }
-        return commits;
-    }
 
 }
 
