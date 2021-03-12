@@ -2,10 +2,6 @@ import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button';
 import  "./HBox.css"
 
-import {RepoItems} from '../Pages/sampleRepo';
-//import "./RepoButton.css"
-
-
 class CommitsPerDay extends Component{
     constructor(props){
         super(props);
