@@ -48,6 +48,8 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+
+
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
@@ -246,7 +248,6 @@ public class ProjectController {
         return projectService.getAllScores(projectId, username, startDate, endDate,
                 whichDevFieldIsString(whichDevField));
     }
-
 
     @PostMapping("/setstartdate")
     public void setStartDate(@RequestBody Map<String, String> requestBody) {
