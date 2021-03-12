@@ -3,6 +3,8 @@ package main.java.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Document(value = "Issue")
@@ -14,6 +16,7 @@ public class Issue {
     private String title;
     private String createdAt;
     private String modifiedAt;
+    private String updatedAt;
     private String username;
     private List<Note> notes;
 
@@ -26,6 +29,7 @@ public class Issue {
         return issueIdForServer;
     }
 
+    @JsonProperty("id")
     public void setId(int issueIdForServer) {
         this.issueIdForServer = issueIdForServer;
     }
@@ -35,6 +39,7 @@ public class Issue {
         return projectId;
     }
 
+    @JsonProperty("project_id")
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
@@ -60,6 +65,7 @@ public class Issue {
         return createdAt;
     }
 
+    @JsonProperty("created_at")
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
@@ -85,8 +91,18 @@ public class Issue {
         return modifiedAt;
     }
 
+    @JsonProperty("modified_at")
     public void setModifiedAt(String modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    @JsonProperty("updated_at")
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @JsonProperty("iid")
@@ -94,6 +110,7 @@ public class Issue {
         return internalIssueIdForASpecificProject;
     }
 
+    @JsonProperty("iid")
     public void setInternalIssueIdForASpecificProject(int internalIssueIdForASpecificProject) {
         this.internalIssueIdForASpecificProject = internalIssueIdForASpecificProject;
     }

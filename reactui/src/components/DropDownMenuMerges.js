@@ -3,8 +3,9 @@ import {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "./Navbar_Developers";
 import CodeDiffTable from "./CodeDiffTable";
+import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
 import './DropDownMenu.css';
-
+import MergeListTable from "./MergeRequest/MergeListTable";
 
 function DropDownMenuMerge ({listOfDevelopers}) {
 
@@ -27,7 +28,7 @@ function DropDownMenuMerge ({listOfDevelopers}) {
     return (
 
         <div classname='CodeDiff'>
-            <Navbar_Developers devName = {selectedValue}/>
+            <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
             </br>
             <div className="DropDownMenu">
@@ -44,8 +45,7 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             <h2 style={{textAlign: 'center'}}>-code diff should be shown in the same page</h2>
             <h4 style={{textAlign: 'center'}}>-Highlight + part?</h4>
 
-            <CodeDiffTable  devName = {selectedValue}/>
-
+            <MergeListTable  devName = {selectedValue}/>
         </div>
     )
 

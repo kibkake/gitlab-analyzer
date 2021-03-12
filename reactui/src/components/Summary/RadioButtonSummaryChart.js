@@ -5,7 +5,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import CommitMRScoreChart from "./CommitMRScoreChart";
 import CommitMRNumChart from "./CommitMRNumChart";
 import CommentChart from "./CommentChart2";
@@ -41,7 +40,7 @@ function Chart(props){
     }
 }
 
-export default class SummaryChartRadios extends Component {
+export default class RadioButtonSummaryChart extends Component {
     constructor(props) {
         super(props);
         this.state = {value: "score",
@@ -78,7 +77,6 @@ export default class SummaryChartRadios extends Component {
                 <Chart value = {this.state.value}  devName = {this.props.devName}
                        startTime = {this.props.startTime}  endTime = {this.props.endTime}/>
             </div>
-
     );
     }
 }

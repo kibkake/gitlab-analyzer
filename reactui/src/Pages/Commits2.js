@@ -1,5 +1,5 @@
 import CommitsPerDay from "../components/CommitsPerDay";
-import Navbar_Developers from "../components/Navbar_Developers";
+import Navbar_Developers from "../components/NavBars_Menu/Navbar_Developers";
 import React from "react";
 
 function Commits2(){

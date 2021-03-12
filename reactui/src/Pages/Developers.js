@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import '../components/Navbar.css';
-import Navbar_Developers from "../components/Navbar_Developers";
+import '../components/NavBars_Menu/Navbar.css';
+import Navbar_Developers from "../components/NavBars_Menu/Navbar_Developers";
 
 class Developers extends Component{
     render(){
