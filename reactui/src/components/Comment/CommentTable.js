@@ -67,7 +67,7 @@ class CommentTable extends Component{
                 <tbody>
                     {comments.map(comments =>//(item, index) =>
                         <tr>
-                            <td>{comments.date}</td>
+                            <td>{moment(comments.date).format('LLL')}</td>
                             <td>{comments.wordCount}</td>
                             <td>{comments.comments}</td>
                             <td>{comments.issueOrReview}</td>
