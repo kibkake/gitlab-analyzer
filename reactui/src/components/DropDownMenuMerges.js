@@ -38,7 +38,10 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             </div>
             <br>
             </br>
-            <h2 style={{textAlign: 'left'}}> Merge Requests</h2>
+            <h1 style={{textAlign: 'center'}}>List of MR + full diff</h1>
+            <h2 style={{textAlign: 'center'}}>-list of commits for each MR + code diff</h2>
+            <h2 style={{textAlign: 'center'}}>-code diff should be shown in the same page</h2>
+            <h4 style={{textAlign: 'center'}}>-Highlight + part?</h4>
 
             <MergeListTable  devName = {selectedValue}/>
         </div>

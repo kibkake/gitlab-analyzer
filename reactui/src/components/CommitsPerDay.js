@@ -1,79 +1,74 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-
-import {RepoItems} from '../Pages/sampleRepo';
-//import "./RepoButton.css"
-
+import  "./HBox.css"
 
 class CommitsPerDay extends Component{
     constructor(props){
         super(props);
         this.state={
-            data: []
+            data: [],
+            devName: this.props.devName,
+            startTime: this.props.startTime
         };
     }
-//http://localhost:3000/Repo/6/Developers/user2/commits/2021-01-24
 
-    //http://localhost:8090/api/v1/projects/6/Commits/arahilin/2021-01-24/2021-01-24
-    componentDidMount() {
+    async componentDidMount(){
+        await this.getDataFromBackend(this.props.devName, this.props.startTime)
+    }
+
+    async getDataFromBackend(userName, date) {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        var userName = str.split("/")[4];
-        var date = str.split("/")[6];
 
-
-        let url2 = '/api/v1/projects/' + repNum + '/Commits/' + userName + '/' + date + "/" + date + "/either"
-        fetch(url2, {
+        let url2 = '/api/v1/projects/' + repNum + '/Commits/' + userName + '/' + date + "/" + date  + "/either"
+        const result = await fetch(url2, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then((result)=> {
-            result.json().then((resp) => {
-                this.setState({data:resp})
-            })
         })
+        const resp = await result.json();
+        await this.setState({data:resp})
+    }
 
+    async componentDidUpdate(prevProps){
+        console.log(this.props.devName)
+        if(this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime){
+            await this.getDataFromBackend(this.props.devName, this.props.startTime)
+        }
     }
 
     render(){
 
-        str = "iirfomr";
-        str.substring()
-        var str = window.location.pathname;
-        var strArr = str.split("/");
-        var data = JSON.stringify(this.state.data);
-        var DataArray = JSON.parse(data)
+        var output = this.state.data.map(function(item) {
+            return {
+                id: item.id,
+                date: item.date
+            };
+        });
+        //console.log(output)
 
         return(
-            //<div> Name: {DataArray} </div>
+            <ul style={{ overflow: "scroll", height: "1050px", width: "1000px"}}>
+            {this.state.data.map(item => {
+                return <li >
+                    <a href= {"Developers/" + item }target= "_blank">
+                        <Button className="Footer2"to={item.id}
+                                type="button"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    {this.props.handler(item.id)}
 
-            <ul>
-                <header></header>
-                {DataArray.map(item => {
-                    return <li>
-                        <a href= {"Developers/" + item }target= "_blank">
-                            <Button className="Footer" to={item.id}
-                                    type="button"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        window.location.href=  window.location.pathname + "/" + item.id;
-
-                                    }}
-                            >
-                                <span >{item.id}          commited at:      {item.created_at.substring(11,19)}</span>
-                            </Button>
-                        </a>
-                    </li>;
-                })}
-            </ul>
-
-
-
+                                }}>
+                            <span >{item.id}          commited at:      {item.date.substring(11,19)}</span>
+                        </Button>
+                    </a>
+                </li>;
+            })}
+        </ul>
         );
-
     }
 }
 
