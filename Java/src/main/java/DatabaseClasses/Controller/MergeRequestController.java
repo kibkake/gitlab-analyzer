@@ -1,6 +1,5 @@
 package main.java.DatabaseClasses.Controller;
 
-import com.sun.scenario.effect.Merge;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.DatabaseClasses.Service.MergeRequestService;
 import main.java.Model.Commit;
