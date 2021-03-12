@@ -64,15 +64,27 @@ export default class MergeListTable  extends PureComponent {
                     newMRScore = newMRScore+newMerges[k].diffs[i].diffScore;
                 }
             }
+            for(var p in newMerges[k].commits){
+                var newCommitScore=0;
+                for(var i in newMerges[k].commits[p].diffs){
+                    var fileExtension = newMerges[k].commits[p].diffs[i].new_path.split(".").pop();
+                    const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                    if(extensionIndex!==-1){
+                        var newScore = scale[extensionIndex].multiplier * newMerges[k].commits[p].diffs[i].diffScore;
+                        newMerges[k].commits[p].diffs[i] = {...newMerges[k].commits[p].diffs[i], diffScore:newScore};
+                        newCommitScore = newCommitScore+newScore;
+                    }else{
+                        newCommitScore = newCommitScore+newMerges[k].commits[p].diffs[i].diffScore;
+                    }
+                    
+                }
+                newMerges[k].commits[p].commitScore=newCommitScore;
+            }
             newMerges[k].mrScore=newMRScore;
         }
         this.setState({
             merges:newMerges,
         })
-        console.log("new merges");
-        console.log(newMerges);
-        console.log("state");
-        console.log(this.state.merges);
     }
 
     async componentDidUpdate(prevProps){
