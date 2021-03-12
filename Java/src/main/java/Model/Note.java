@@ -96,6 +96,7 @@ public class Note {
         return createdAt;
     }
 
+    @JsonProperty("created_at")
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
         OffsetDateTime dateWithOffSet = OffsetDateTime.parse(createdAt);

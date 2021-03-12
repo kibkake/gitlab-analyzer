@@ -1,11 +1,5 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-
-import {RepoItems} from '../Pages/sampleRepo';
-import RepoButton from "./RepoButton";
-//import "./RepoButton.css"
-import "./ProjectList.css";
+import "./Projects/ProjectList.css";
 import {Table} from "react-bootstrap";
 
 

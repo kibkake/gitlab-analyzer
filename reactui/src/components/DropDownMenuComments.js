@@ -40,11 +40,13 @@ function DropDownMenuComments ({listOfDevelopers}) {
             </br>
             <h1 style={{textAlign:'center'}}>Comment Contribution</h1>
             <br></br>
-            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-                <CustomizedRadios/>
-            </div>
-            <br></br>
             <h4 style={{textAlign:'center'}}>Top 10 comments </h4>
+
+            {/*<div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>*/}
+            {/*    <CustomizedRadios/>*/}
+            {/*</div>*/}
+            <br></br>
+
             <CommentTable devName = {selectedValue}/>
 
         </div>

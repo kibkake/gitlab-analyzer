@@ -8,7 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * spring
  */
 
+import java.time.Clock;
 import java.util.ArrayList;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class Project {
     private List<Commit> commits;
     private List<Developer> developers;
     private boolean infoSet;
-    private Date infoSetDate;
+    private Instant infoSetDate;
 
     public Project() {
         mergedRequests = new ArrayList<>();
@@ -63,6 +65,7 @@ public class Project {
         return createdAt;
     }
 
+    @JsonProperty("created_at")
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
@@ -103,16 +106,30 @@ public class Project {
         return infoSet;
     }
 
-    public void setInfoSet(boolean infoSet) {
-        this.infoSet = infoSet;
+    public void setSyncInfo() {
+        this.infoSet = true;
+        this.infoSetDate = Clock.systemUTC().instant();;
     }
 
-    public Date getInfoSetDate() {
-        return infoSetDate;
+    public boolean projectHasBeenUpdated() {
+        Instant lastUpdateDate = lastProjectUpdateDate();
+        return lastUpdateDate.compareTo(infoSetDate) > 0;
     }
 
-    public void setInfoSetDate(Date infoSetDate) {
-        this.infoSetDate = infoSetDate;
+    private Instant lastProjectUpdateDate() {
+        Instant mostRecentMergeRequestUpdateDate = new main.java.ConnectToGitlab.MergeRequestConnection().getMostRecentMergeRequestUpdateDate(id);
+        Instant mostRecentIssueUpdateDate = new main.java.ConnectToGitlab.IssueConnection().getMostRecentIssueUpdateDate(id);
+        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
+
+        Instant mostRecentUpdateDate = mostRecentMergeRequestUpdateDate;
+        if (mostRecentIssueUpdateDate.compareTo(mostRecentUpdateDate) > 0) {
+            mostRecentUpdateDate = mostRecentIssueUpdateDate;
+        }
+        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
+            mostRecentUpdateDate = mostRecentCommitDate;
+        }
+
+        return mostRecentUpdateDate;
     }
 
     @Override
