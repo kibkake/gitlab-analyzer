@@ -104,6 +104,7 @@ export default class MergeListTable  extends PureComponent {
                 date: item.merged_at,
                 title: item.title,
                 score: item.mrScore,
+                mrUrl: item.web_url,
                 diffs: item.diffs.map(function (diffs) {
                     return {
                         path: diffs.new_path,
@@ -129,6 +130,7 @@ export default class MergeListTable  extends PureComponent {
         console.log(output);
 
         return (
+
             <div class="d-flex justify-content-start">
                 <TableContainer component={Paper} class="p-2">
                     <Table aria-label="collapsible table">
@@ -149,7 +151,9 @@ export default class MergeListTable  extends PureComponent {
                         </TableBody>
                     </Table>
                 </TableContainer>
+
             </div>
+
         );
     }
 }

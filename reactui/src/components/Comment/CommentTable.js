@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
+import moment from "moment";
 
 class CommentTable extends Component{
     constructor(props) {

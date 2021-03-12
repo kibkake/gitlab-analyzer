@@ -136,8 +136,13 @@ class SummaryScoreTable extends Component{
 
     render () {
         const {parentdata} = this.state;
+    // was done this way to round them since was taking too much time to get from database to directly round them using toFixed
+        let totalCommitSc = this.state.scoreSummary.totalCommitScore;
+        let totalMergeRequestSc = this.state.scoreSummary.totalMergeRequestScore;
+        let totalCommentWordCt = this.state.scoreSummary.totalCommentWordCount;
         // copy button
-        let toCopy = "Commits: " + this.state.scoreSummary.totalCommitScore + " Merge Requests: " + this.state.scoreSummary.totalMergeRequestScore + " Word count of comments: " + this.state.scoreSummary.totalCommentWordCount;
+        let toCopy = "Commits: " + (Math.round(totalCommitSc * 10) / 10) + " Merge Requests: " + (Math.round(totalMergeRequestSc * 10) / 10) + " Word count of comments: " + Math.round(totalCommentWordCt * 10) / 10;
+
         return (
             <div className="container">
                 <Table striped bordered hover>
@@ -149,9 +154,9 @@ class SummaryScoreTable extends Component{
                         </tr>
                     <tbody>
                         <tr>
-                            <td>{this.state.scoreSummary.totalCommitScore}</td>
-                            <td>{this.state.scoreSummary.totalMergeRequestScore}</td>
-                            <td>{this.state.scoreSummary.totalCommentWordCount}</td>
+                            <td>{Math.round(totalCommitSc * 10) / 10}</td>
+                            <td>{Math.round(totalMergeRequestSc * 10) / 10}</td>
+                            <td>{Math.round(totalCommentWordCt * 10) / 10}</td>
                             <td><button onClick={()=>navigator.clipboard.writeText(toCopy)}> Copy Fields</button></td>
                         </tr>
                     </tbody>
