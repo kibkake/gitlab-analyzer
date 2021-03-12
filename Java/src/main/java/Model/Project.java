@@ -8,13 +8,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * spring
  */
 
+import java.time.Clock;
 import java.util.ArrayList;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
 @Document("Project")
 public class Project {
     private int id;
+    private String description;
     private String name;
     private String createdAt;
     private List<MergeRequest> mergedRequests;
@@ -22,6 +25,7 @@ public class Project {
     private List<Commit> commits;
     private List<Developer> developers;
     private boolean infoSet;
+    private Instant infoSetDate;
 
     public Project() {
         mergedRequests = new ArrayList<>();
@@ -40,6 +44,14 @@ public class Project {
         this.id = id;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }
@@ -53,6 +65,7 @@ public class Project {
         return createdAt;
     }
 
+    @JsonProperty("created_at")
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
@@ -93,14 +106,37 @@ public class Project {
         return infoSet;
     }
 
-    public void setInfoSet(boolean infoSet) {
-        this.infoSet = infoSet;
+    public void setSyncInfo() {
+        this.infoSet = true;
+        this.infoSetDate = Clock.systemUTC().instant();;
+    }
+
+    public boolean projectHasBeenUpdated() {
+        Instant lastUpdateDate = lastProjectUpdateDate();
+        return lastUpdateDate.compareTo(infoSetDate) > 0;
+    }
+
+    private Instant lastProjectUpdateDate() {
+        Instant mostRecentMergeRequestUpdateDate = new main.java.ConnectToGitlab.MergeRequestConnection().getMostRecentMergeRequestUpdateDate(id);
+        Instant mostRecentIssueUpdateDate = new main.java.ConnectToGitlab.IssueConnection().getMostRecentIssueUpdateDate(id);
+        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
+
+        Instant mostRecentUpdateDate = mostRecentMergeRequestUpdateDate;
+        if (mostRecentIssueUpdateDate.compareTo(mostRecentUpdateDate) > 0) {
+            mostRecentUpdateDate = mostRecentIssueUpdateDate;
+        }
+        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
+            mostRecentUpdateDate = mostRecentCommitDate;
+        }
+
+        return mostRecentUpdateDate;
     }
 
     @Override
     public String toString() {
         return "Project{" +
                 "id=" + id +
+                ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 ", mergedRequests=" + mergedRequests +
@@ -108,6 +144,7 @@ public class Project {
                 ", commits=" + commits +
                 ", developers=" + developers +
                 ", infoSet=" + infoSet +
+                ", infoSetDate=" + infoSetDate +
                 '}';
     }
 }

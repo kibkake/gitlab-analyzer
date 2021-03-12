@@ -19,6 +19,7 @@ public class Note {
     private Developer author;
     private int score;
     private String username;
+    private String createdAt;
     private Date createdDate;
     private Boolean isIssueNote;
     private int wordCount;
@@ -61,6 +62,18 @@ public class Note {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @JsonProperty("created_at")
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    @JsonProperty("created_at")
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(createdAt);
+        setCreatedDate(Date.from(dateWithOffSet.toInstant()));
     }
 
     public Date getCreatedDate() {

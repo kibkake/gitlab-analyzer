@@ -1,5 +1,4 @@
-import RepoButton from "../components/RepoButton";
-import ProjectComponent from "../components/ProjectComponent";
+import ProjectComponent from "../components/Projects/ProjectComponent";
 
 function Repo(){
     return(

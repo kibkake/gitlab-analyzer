@@ -16,13 +16,16 @@ public class MergeRequest {
     private Integer id;
     private int mergeRequestIdForASpecificProject; // this is the iid provided by gitLab
     private int projectId;
+    private String title;
     private String mergedAt;
+    private String updatedAt;
     private Developer author;
     private List<Developer> contributors;
     List<Commit> commits;
     private String sha;
     double mrScore;
     private Date mergedDate;
+    private Date updatedDate;
     List<Note> allNotes;
     List<Note> codeReviewNotes;
     List<Diff> diffs;
@@ -53,8 +56,17 @@ public class MergeRequest {
         return projectId;
     }
 
+    @JsonProperty("project_id")
     public void setProjectId(int projectId) {
         this.projectId = projectId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @JsonProperty("merged_at")
@@ -63,12 +75,40 @@ public class MergeRequest {
     }
 
     // Spring calls this to create a mergeRequest object use it to create a Date
+    @JsonProperty("merged_at")
     public void setMergedAt(String mergedAt) {
         this.mergedAt = mergedAt;
         if(mergedAt !=null) {
             OffsetDateTime dateWithOffSet = OffsetDateTime.parse(mergedAt);
             setMergedDate(Date.from(dateWithOffSet.toInstant()));
         }
+    }
+
+    @JsonProperty("updated_at")
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(updatedAt);
+        setUpdatedDate(Date.from(dateWithOffSet.toInstant()));
+    }
+
+    public Date getMergedDate() {
+        return mergedDate;
+    }
+
+    public void setMergedDate(Date mergedDate) {
+        this.mergedDate = mergedDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public List<Developer> getContributors() {
@@ -87,14 +127,6 @@ public class MergeRequest {
         this.sha = sha;
     }
 
-    public Date getMergedDate() {
-        return mergedDate;
-    }
-
-    public void setMergedDate(Date mergedDate) {
-        this.mergedDate = mergedDate;
-    }
-
     public Developer getAuthor() {
         return author;
     }
@@ -108,6 +140,7 @@ public class MergeRequest {
         return mergeRequestIdForASpecificProject;
     }
 
+    @JsonProperty("iid")
     public void setMergeRequestIdForASpecificProject(int mergeRequestIdForASpecificProject) {
         this.mergeRequestIdForASpecificProject = mergeRequestIdForASpecificProject;
     }
@@ -117,6 +150,7 @@ public class MergeRequest {
         return "MergeRequest{" +
                 "id=" + id +
                 ", project_id=" + projectId +
+                ", title='" + title + '\'' +
                 ", merged_at='" + mergedAt + '\'' +
                 ", contributors=" + contributors +
                 ", sha='" + sha + '\'' +

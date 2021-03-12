@@ -15,6 +15,8 @@ public class Commit {
 
     @Id //check unique per project
     private String id;
+    private String title; // 1st line of commit message
+    private String message; // other lines of commit message
     private String authorName;
     private String committerName;
     private List<Diff> diffs;
@@ -34,11 +36,28 @@ public class Commit {
         this.id = id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @JsonProperty("committer_name")
     public String getCommitterName() {
         return committerName;
     }
 
+    @JsonProperty("committer_name")
     public void setCommitterName(String committerName) {
         this.committerName = committerName;
     }
@@ -49,6 +68,7 @@ public class Commit {
         return authorName;
     }
 
+    @JsonProperty("author_name")
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
@@ -89,7 +109,9 @@ public class Commit {
     public String toString() {
         return "Commit{" +
                 "id='" + id + '\'' +
-                ", author_name='" + authorName +
+                ", title='" + title + '\'' +
+                ", message='" + message + '\'' +
+                ", author_name='" + authorName + '\'' +
                 '}';
     }
 
