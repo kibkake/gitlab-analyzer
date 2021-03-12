@@ -73,7 +73,7 @@ export default class MergeListTable  extends PureComponent {
                         commitDate: commit.date,
                         message: commit.message,
                         score: commit.commitScore,
-                        author: commit.author_email,
+                        author: commit.committer_name,
                         commitDiffs: commit.diffs.map(function (diffs) {
                             return {
                                 path: diffs.new_path,
