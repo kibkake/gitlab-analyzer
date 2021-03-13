@@ -60,7 +60,7 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
         Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);
 
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.project( "commitScore", "authorName", "projectId", "date"),
+                Aggregation.project( "commitScore", "authorName"),
                 Aggregation.match(criterias),
                 Aggregation.group("authorName").sum("commitScore").as("commitTotalScore")
         );

@@ -72,7 +72,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
     @Override
     public Double getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
-        final Criteria nameMatchCriteria = Criteria.where("username").is(devUserName);
+        final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);
         Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);

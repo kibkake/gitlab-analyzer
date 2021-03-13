@@ -157,7 +157,7 @@ public class ProjectService {
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
                constructor because of spring
              */
-            dev.setDbKey(String.valueOf(dev.getProjectId()) +  String.valueOf(dev.getDevId()));
+            dev.setDbKey(Integer.toString(projectId) +  String.valueOf(dev.getDevId()));
             dev.setProjectId(projectId);
             dev.setMergeRequestsAndCommits(devMergeRequests);
             dev.setMergeRequestDateScores(devMergeRequestDateScores);
