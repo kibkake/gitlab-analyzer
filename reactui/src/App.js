@@ -22,10 +22,11 @@ import {SiGnuprivacyguard, SiJsonwebtokens} from "react-icons/all";
 import {AiOutlineHome} from "react-icons/ai";
 import SignupComponent from "./components/SignupComponent";
 import LoginToken from "./components/LoginToken.js";
+import Terms from "./Pages/Terms";
 
 function signupHandler(){
-    sessionStorage.setItem('new','true');
-    sessionStorage.setItem('user','temp');
+    sessionStorage.setItem('terms','view');
+    sessionStorage.setItem('user','signup');
     window.location.reload();
 }
 
@@ -46,6 +47,7 @@ function App() {
                   <Navbar/>
                   <switch>
                       <Route path='/Signup' exact component={Signup}/>
+                      <Route path='/Terms' exact component={Terms}/>
                   </switch>
               </Router>
               <div className="loginwrapper">
@@ -78,6 +80,19 @@ function App() {
               <Navbar/>
               <Redirect to='/Signup'/>
               <SignupComponent/>
+              <switch>
+                  <Route path='/Terms' exact component={Terms}/>
+              </switch>
+          </Router>
+      );
+  }else if(sessionStorage.getItem('terms')) { // terms
+      return (
+          <Router>
+              <Navbar/>
+              <Redirect to='/Terms'/>
+              <switch>
+                  <Route path='/Terms' exact component={Terms}/>
+              </switch>
           </Router>
       );
   }

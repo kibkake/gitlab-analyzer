@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Redirect, Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 import {
     BsInfoCircle,
     BsQuestionCircle, BsXCircle,
@@ -26,7 +26,6 @@ export default class SignupComponent extends Component {
             avail:null
         };
         this.handleChange=this.handleChange.bind(this);
-        this.termHandler = this.termHandler.bind(this);
         this.checkUser=this.checkUser.bind(this);
         this.updateUser = this.updateUser.bind(this);
         this.signupHandler = this.signupHandler.bind(this);
@@ -39,17 +38,12 @@ export default class SignupComponent extends Component {
         });
     }
 
-    termHandler(){
-        // placeholder right now
-        window.open('https://www.termsfeed.com/public/uploads/2019/04/terms-of-use-template.pdf','_blank');
-    }
-
-    checkUser(event){
+    async checkUser(event){
         event.preventDefault();
-        this.updateUser();
+        await this.updateUser();
         if(this.state.info==="NaN"){
-            this.setState({avail:true});
-        }else this.setState({avail:false});
+            await this.setState({avail:true});
+        }else await this.setState({avail:false});
     }
 
     updateUser(){
@@ -61,11 +55,7 @@ export default class SignupComponent extends Component {
 
     async signupHandler(event){
         event.preventDefault();
-        if(!window.confirm("By signing up, you hereby agree to the terms and conditions")){
-            await this.cancelHandler();
-            return;
-        }
-        this.updateUser();
+        await this.updateUser();
         if(this.state.info==="NaN" && this.state.password!=="" && this.state.token!==""){
             await LoginService.createNewAccount(this.state.username,this.state.password,this.state.token);
             sessionStorage.removeItem('new');
@@ -134,8 +124,6 @@ export default class SignupComponent extends Component {
                         <div className="spacer"/>
                         <button className="cancel" onClick={this.cancelHandler}><ImCancelCircle/> Cancel </button>
                     </form>
-                    <br/>
-                    <p className="terms">Before clicking on Confirm, please take a look at our <button className="signup terms-button" onClick={this.termHandler}><BsInfoCircle/> Terms and Conditions</button></p>
                 </div>
             </>
         )
