@@ -43,34 +43,45 @@ export default class CommitMRScoreChart extends PureComponent {
         console.log(score)
         await this.setState({codeScore : score, parentdata: username,startTime: startTm,
             endTime: endTm})
-        // this.applyMultipliers();
+        this.applyMultipliers();
         await console.log(this.state.codeScore)
     }
 
     applyMultipliers(){
         var scale = JSON.parse(sessionStorage.getItem('languageScale'));
-        var newMerges = [...this.state.merges];
-        for(const k in newMerges){
-            var newMRScore=0;
-            for(var i in newMerges[k].diffs){
-                var fileExtension = newMerges[k].diffs[i].new_path.split(".").pop();
-                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
-                if(extensionIndex!==-1){
-                    var newScore = scale[extensionIndex].multiplier * newMerges[k].diffs[i].diffScore;
-                    newMerges[k].diffs[i] = {...newMerges[k].diffs[i], diffScore:newScore};
-                    newMRScore = newMRScore+newScore;
-                }else{
-                    newMRScore = newMRScore+newMerges[k].diffs[i].diffScore;
+        var newCodeScore = [...this.state.codeScore];
+        for(const k in newCodeScore){
+            var newCommitScore=0;
+            var newMergeScore=0;
+            for(const i in newCodeScore[k].commitIds){
+                for(const p in newCodeScore[k].commitIds[i].diffs){
+                    var fileExtension = newCodeScore[k].commitIds[i].diffs[p].new_path.split(".").pop();
+                    const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                    if(extensionIndex!==-1){
+                        var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].commitIds[i].diffs[p].diffScore;
+                        newCommitScore = newCommitScore+tempCommitScore;
+                    }else{
+                        newCommitScore = newCommitScore+newCodeScore[k].commitIds[i].diffs[p].diffScore;
+                    }
                 }
             }
-            newMerges[k].mrScore=newMRScore;
+            for(const i in newCodeScore[k].mergeRequestIds){
+                for(const p in newCodeScore[k].mergeRequestIds[i].diffs){
+                    var fileExtension = newCodeScore[k].mergeRequestIds[i].diffs[p].new_path.split(".").pop();
+                    const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                    if(extensionIndex!==-1){
+                        var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].mergeRequestIds[i].diffs[p].diffScore;
+                        newMergeScore = newMergeScore+tempCommitScore;
+                    }else{
+                        newMergeScore = newMergeScore+newCodeScore[k].mergeRequestIds[i].diffs[p].diffScore;
+                    }
+                }
+            }
+            newCodeScore[k].mergeRequestScore=newMergeScore;
+            newCodeScore[k].commitScore=newCommitScore;
         }
-        const totalMRScore = newMerges.map(item => item.mrScore).reduce((prev, next) => prev + next);
-        var newscoreSummary ={...this.state.scoreSummary};
-        newscoreSummary={...newscoreSummary,totalMergeRequestScore:totalMRScore};
         this.setState({
-            merges:newMerges,
-            scoreSummary:newscoreSummary,
+            codeScore:newCodeScore,
         })
     }
     
