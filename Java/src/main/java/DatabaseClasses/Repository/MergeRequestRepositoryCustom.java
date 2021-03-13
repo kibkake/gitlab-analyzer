@@ -2,6 +2,8 @@ package main.java.DatabaseClasses.Repository;
 
 import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
+import main.java.Model.Commit;
+import main.java.Model.MergeRequest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,4 +16,7 @@ public interface MergeRequestRepositoryCustom {
     List<MergeRequestDateScore> devsMrsScoreADay(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 
     Object userTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+
+    MergeRequest getMrByCommitHash(int projectId, String hash);
+
 }

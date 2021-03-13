@@ -29,6 +29,19 @@ public class MergeRequest {
     List<Note> allNotes;
     List<Note> codeReviewNotes;
     List<Diff> diffs;
+    private String mrUrl;
+
+    @JsonProperty("web_url")
+    public String getMrUrl() {
+        return mrUrl;
+    }
+
+    @JsonProperty("web_url")
+    public void setMrUrl(String mrUrl) {
+        this.mrUrl = mrUrl;
+    }
+
+
 
     public MergeRequest() {
         contributors = new ArrayList<>();

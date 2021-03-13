@@ -14,6 +14,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {OverlayTrigger, Popover} from 'react-bootstrap'
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import moment from "moment";
 
 //[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
 const PopOver = ({Diffs}) => {
@@ -40,14 +41,17 @@ export default function Row(props) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
+
+
     return (
+
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
-                    {row.date}
+                    {moment(row.date).format('LLL')}
                 </TableCell>
-                <TableCell>#{row.id} {row.title}</TableCell>
-                <TableCell align="right">{row.score}</TableCell>
+                <TableCell>#{row.id} <a href= {row.mrUrl}> {row.title}</a> </TableCell>
+                <TableCell align="right">{row.score.toFixed(1)}</TableCell>
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -80,11 +84,12 @@ export default function Row(props) {
                                     {row.commits.map((commitsRow) => (
                                         <TableRow key={commitsRow.commitDate}>
                                             <TableCell component="th" scope="row">
-                                                {commitsRow.commitDate}
+                                                {moment(commitsRow.commitDate).format('LLL')}
+
                                             </TableCell>
                                             <TableCell>{commitsRow.message}</TableCell>
                                             <TableCell align="right">{commitsRow.author}</TableCell>
-                                            <TableCell align="right">{commitsRow.score}</TableCell>
+                                            <TableCell align="right">{commitsRow.score.toFixed(1)}</TableCell>
                                             <TableCell align="right" >
                                                 <OverlayTrigger trigger="focus"  placement="right" overlay={<PopOver Diffs={commitsRow.commitDiffs}/>}>
                                                     <button type="button" className="btn btn-outline-secondary">View</button>
@@ -98,6 +103,7 @@ export default function Row(props) {
                     </Collapse>
                 </TableCell>
             </TableRow>
+
         </React.Fragment>
     );
 }

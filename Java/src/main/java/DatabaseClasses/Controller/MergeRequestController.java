@@ -2,6 +2,7 @@ package main.java.DatabaseClasses.Controller;
 
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.DatabaseClasses.Service.MergeRequestService;
+import main.java.Model.Commit;
 import main.java.Model.MergeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,5 +69,12 @@ public class MergeRequestController {
     @GetMapping("projects/{projectId}/mergeRequests")
     public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
         return mergeRequestService.getProjectMRs(projectId);
+    }
+
+    @GetMapping("projects/{projectId}/mergeRequests/{commitHash}")
+    public MergeRequest getCommitMr(@PathVariable("projectId") int projectId,
+                     @PathVariable("commitHash") String commitHash) {
+
+        return mergeRequestService.getMrByCommitHash(projectId, commitHash);
     }
 }
