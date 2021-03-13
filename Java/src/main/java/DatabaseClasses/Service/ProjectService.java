@@ -52,11 +52,6 @@ public class ProjectService {
         return project.getIssues();
     }
 
-    public String getProjectDescription(int projectId) {
-        Project project = projectRepository.findProjectById(projectId);
-        return project.getDescription();
-    }
-
     public List<MergeRequest> getProjectMRs(int projectId) {
         Project project = projectRepository.findProjectById(projectId);
         return project.getMergedRequests();

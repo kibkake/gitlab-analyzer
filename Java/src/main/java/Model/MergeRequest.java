@@ -17,12 +17,8 @@ public class MergeRequest {
     private int mergeRequestIdForASpecificProject; // this is the iid provided by gitLab
     private int projectId;
     private String title;
-    private String description;
-    private String state;
     private String mergedAt;
     private String updatedAt;
-    private int authorId;
-    private String authorUsername;
     private Developer author;
     private List<Developer> contributors;
     List<Commit> commits;
@@ -86,22 +82,6 @@ public class MergeRequest {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     @JsonProperty("merged_at")
     public String getMergedAt() {
         return mergedAt;
@@ -144,26 +124,6 @@ public class MergeRequest {
         this.updatedDate = updatedDate;
     }
 
-    @JsonProperty("author_id")
-    public int getAuthorId() {
-        return authorId;
-    }
-
-    @JsonProperty("author_id")
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
-    }
-
-    @JsonProperty("author_username")
-    public String getAuthorUsername() {
-        return authorUsername;
-    }
-
-    @JsonProperty("author_username")
-    public void setAuthorUsername(String authorUsername) {
-        this.authorUsername = authorUsername;
-    }
-
     public List<Developer> getContributors() {
         return contributors;
     }
@@ -204,11 +164,7 @@ public class MergeRequest {
                 "id=" + id +
                 ", project_id=" + projectId +
                 ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", state='" + state + '\'' +
                 ", merged_at='" + mergedAt + '\'' +
-                ", author_id=" + authorId +
-                ", author_username=" + authorUsername +
                 ", contributors=" + contributors +
                 ", sha='" + sha + '\'' +
                 '}';
