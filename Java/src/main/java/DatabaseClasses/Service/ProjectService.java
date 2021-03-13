@@ -94,7 +94,6 @@ public class ProjectService {
         project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
         project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
         project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
-        project.setInfoSet(true);
         projectRepository.save(project);
         if (project.projectHasBeenUpdated()) {
             project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
@@ -112,7 +111,6 @@ public class ProjectService {
         List<MergeRequest> projectMrs = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
         project.setMergedRequests(projectMrs);
         projectRepository.save(project);
-
     }
 
     @Transactional(timeout = 1200) // 20 min
@@ -124,7 +122,6 @@ public class ProjectService {
         List<Commit> projectCommits = new CommitConnection().getProjectCommitsFromGitLab(projectId);
         List<MergeRequest> projectMergeRequests = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
         project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
-        project.setInfoSet(true);
         projectRepository.save(project);
         commitRepository.saveAll(projectCommits);
         mergeRequestRepository.saveAll(projectMergeRequests);
