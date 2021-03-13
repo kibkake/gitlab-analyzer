@@ -9,18 +9,34 @@ class LanguageScaleTable extends Component{
         super();
         const me=this
         this.state = {
-            LanguageScale:[{
-                name:'Default',
-                extention:"",
-                multiplier:1,
-            }],
+            LanguageScale:[],
             newScaleIsShown:false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.deleteModifier= this.deleteModifier.bind(this);
+        this.saveTable=this.saveTable.bind(this);
     }
-    componentDidMount(){
-        sessionStorage.setItem('languageScale',JSON.stringify(this.state.LanguageScale))
+    async componentDidMount(){
+        const baseScale=[{
+            name:'Default',
+            extention:"",
+            multiplier:1,
+        }]
+        console.log("mouting");
+        const tempScale =JSON.parse(sessionStorage.getItem('languageScale'));
+        console.log(Object.keys(tempScale).length);
+        if(Object.keys(tempScale).length==0){
+            console.log("null");
+            this.setState({
+                LanguageScale:baseScale,
+            })
+        }else{
+            console.log('in');
+            console.log(tempScale);
+            this.setState({
+                LanguageScale:tempScale
+            })
+        }
     }
     handleSubmit(e) {
         e.preventDefault();
@@ -36,7 +52,7 @@ class LanguageScaleTable extends Component{
         })
 
         this.saveTable();
-    }
+    };
     showModal = () => {
         this.setState({ 
             newScaleIsShown: true 
@@ -49,7 +65,7 @@ class LanguageScaleTable extends Component{
     };
     saveTable=()=>{
         sessionStorage.setItem('languageScale',JSON.stringify(this.state.LanguageScale));
-    }
+    };
     deleteModifier(index){
         let tempScale = this.state.LanguageScale;
         tempScale.splice(index, 1);
@@ -84,16 +100,16 @@ class LanguageScaleTable extends Component{
                         </Modal.Header>
                         <Form className="addForm" onSubmit={(e)=> {this.handleSubmit(e)}}>
                             <Form.Row>
-                                <Form.Group controlId="name" style={{marginLeft:'12px'}}>
+                                <Form.Group controlId="name" style={{marginLeft:'12px',marginRight:'12px'}}>
                                     <Form.Label>Language Name</Form.Label>
                                     <Form.Control type="text" ref={(input)=>{this.name=input}} placeholder="Enter name"/>
                                 </Form.Group>
-                                <Form.Group controlId="extention">
+                                <Form.Group controlId="extention" style={{marginLeft:'12px'}}>
                                     <Form.Label>Extention Name</Form.Label>
-                                    <Form.Control type="text" ref={(input)=>{this.extention=input}} placeholder='(eg. "js" do not include the . )'/>
+                                    <Form.Control type="text" ref={(input)=>{this.extention=input}} placeholder='(eg. "js")'/>
                                 </Form.Group>
                             </Form.Row>
-                            <Form.Group controlId="multiplier" >
+                            <Form.Group controlId="multiplier" style={{marginLeft:'12px'}}>
                                     <Form.Label>Language Multiplier</Form.Label>
                                     <Form.Control type="number" ref={(input)=>{this.multiplier=input}} placeholder="Enter multiplier"/>
                             </Form.Group>
@@ -107,7 +123,10 @@ class LanguageScaleTable extends Component{
                     </Modal>
                 </div>
 
-                <div>
+                <div style={{  margin: 'auto',
+                                width: '50%',
+                                padding: '10px'
+                                }}>
                     <Table striped bordered hover 
                         style={{
                             marginLeft:'auto',
