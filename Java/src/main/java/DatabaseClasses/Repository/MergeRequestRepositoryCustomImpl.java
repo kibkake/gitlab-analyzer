@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.Repository;
 
 import main.java.DatabaseClasses.Model.CommitDateScore;
+import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.Model.Commit;
 import main.java.Model.MergeRequest;
@@ -101,5 +102,42 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
         final MergeRequest mergeRequests = mongoTemplate.findOne(query, MergeRequest.class);
         return mergeRequests;
     }
+
+    @Override
+    public List<DateScore> getUserDateScores(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+        // if there is a commit with that devs username then they contributed as well so only need to check commits
+        final Criteria nameMatchCriteria = Criteria.where("contributors.authorName").is(devUserName);
+        final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
+        final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);
+        Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);
+
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.unwind("commits"),
+                Aggregation.unwind("contributors"),
+                Aggregation.project("mrScore", "projectId")
+                        .and("contributors").as("mrUsername")
+                        .and("commits.authorName").as("commitUsername")
+                        .and("commits.commitScore").as("commitScore"),
+                Aggregation.match(criterias),
+                Aggregation.group("mrUsername").count().as("numMergeRequests")
+                        .sum("mrScore").as("mergeRequestScore")
+                        .sum("commitScore").as("commitScore")
+                        .sum("commitUsername").as("commitUsername")
+        );
+
+        AggregationResults<DateScore> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, DateScore.class);
+        List<DateScore> result = groupResults.getMappedResults();
+        return result;
+    }
+//    private LocalDate date;
+//    private double commitScore;
+//    private double mergeRequestScore;
+//    private String userName;
+//    private int numCommits;
+//    private int numMergeRequests;
+//    private List<Integer> mergeRequestId;
+//    private List<String> commitIds;
+//    private List<Integer> mergeRequestIds;
+
 
 }
