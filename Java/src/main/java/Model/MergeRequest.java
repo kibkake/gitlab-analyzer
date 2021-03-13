@@ -25,7 +25,7 @@ public class MergeRequest {
     private String authorUsername;
     private Developer author;
     private List<Developer> contributors;
-    private List<Commit> commits;
+    List<Commit> commits;
     private String sha;
     double mrScore;
     private Date mergedDate;

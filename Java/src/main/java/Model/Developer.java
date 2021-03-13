@@ -3,7 +3,6 @@ package main.java.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import main.java.DatabaseClasses.Model.AllScores;
 import main.java.DatabaseClasses.Model.CommitDateScore;
-import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -32,7 +31,6 @@ public class Developer {
     private List<CommitDateScore> commitArray;
     private List<MergeRequestDateScore> mergeRequestDateScores;
     private List<MergeRequest> mergeRequestsAndCommits;
-    private List<DateScore> dateScores;
     private AllScores allScores;
 
     public Developer() {
@@ -129,14 +127,6 @@ public class Developer {
 
     public void setAllScores(AllScores allScores) {
         this.allScores = allScores;
-    }
-
-    public List<DateScore> getDateScores() {
-        return dateScores;
-    }
-
-    public void setDateScores(List<DateScore> dateScores) {
-        this.dateScores = dateScores;
     }
 
     @Override

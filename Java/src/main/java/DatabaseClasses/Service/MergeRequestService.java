@@ -1,17 +1,23 @@
 package main.java.DatabaseClasses.Service;
 
 import main.java.ConnectToGitlab.MergeRequestConnection;
-import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.DatabaseClasses.Repository.MergeRequestRepository;
+import main.java.Model.Commit;
 import main.java.Model.MergeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class MergeRequestService {
@@ -46,8 +52,8 @@ public class MergeRequestService {
                 startLocalTime, endLocalTime);
     }
 
-    public Double getTotalMergeRequestScore(int projectId, String authorName, LocalDate startLocalTime,
-                                            LocalDate endLocalTime) {
+    public Object getTotalMergeRequestScore(int projectId, String authorName, LocalDate startLocalTime,
+                                                  LocalDate endLocalTime) {
         return mergeRequestRepository.getUserTotalMergeRequestScore(projectId, authorName,
                 startLocalTime, endLocalTime);
     }
@@ -58,7 +64,4 @@ public class MergeRequestService {
 
     }
 
-    public List<DateScore> getUserDateScores(int projectId, String userName, LocalDate startLocalTime, LocalDate endLocalTime) {
-       return mergeRequestRepository.getUserDateScores(projectId, userName, startLocalTime, endLocalTime);
-    }
 }
