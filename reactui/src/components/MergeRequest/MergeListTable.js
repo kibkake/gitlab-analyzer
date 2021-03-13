@@ -92,9 +92,8 @@ export default class MergeListTable  extends PureComponent {
         console.log(output);
 
         return (
-            <Flexbox flexDirection="column">
-                <Flexbox element="header">
-                <TableContainer component={Paper}>
+
+                <TableContainer component={Paper} display="flex" flexDirection="row" p={1} m={1} justifyContent="flex-start">
                     <Table aria-label="collapsible table" >
                         <TableHead className="tableCell">
                             <TableRow>
@@ -105,7 +104,6 @@ export default class MergeListTable  extends PureComponent {
                                 <TableCell align="right">Full Diff</TableCell>
                             </TableRow>
                         </TableHead>
-
                         <TableBody>
                             {output.map((merge) => (
                                 <Row key={merge.date} row={merge}/>
@@ -114,13 +112,6 @@ export default class MergeListTable  extends PureComponent {
 
                     </Table>
                 </TableContainer>
-                    {/*<Flexbox element="footer">*/}
-                    {/*    {output.map((merge) => (*/}
-                    {/*        <PopOver Diffs={merge.diffs}/>*/}
-                    {/*    ))}*/}
-                    {/*</Flexbox>*/}
-                </Flexbox>
-            </Flexbox>
         );
     }
 }
