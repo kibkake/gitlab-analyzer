@@ -5,8 +5,6 @@ import React from "react";
 function Commits2(){
 
     return(
-
-
         <header classname='Rest'>
             <Navbar_Developers/>
             <CommitsPerDay/>
