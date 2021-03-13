@@ -24,8 +24,7 @@ class LanguageScaleTable extends Component{
         }]
         console.log("mouting");
         const tempScale =JSON.parse(sessionStorage.getItem('languageScale'));
-        console.log(Object.keys(tempScale).length);
-        if(Object.keys(tempScale).length==0){
+        if(tempScale===null||Object.keys(tempScale).length===0){
             console.log("null");
             this.setState({
                 LanguageScale:baseScale,
@@ -113,10 +112,10 @@ class LanguageScaleTable extends Component{
                                     <Form.Label>Language Multiplier</Form.Label>
                                     <Form.Control type="number" ref={(input)=>{this.multiplier=input}} placeholder="Enter multiplier"/>
                             </Form.Group>
-                            <Button variant="primary" type="submit" onClick={this.handleSubmit} style={{marginLeft:'12px'}}>
+                            <Button variant="primary" type="submit" onClick={this.handleSubmit} style={{marginLeft:'12px',marginBottom:'10px'}}>
                                 Submit
                             </Button>
-                            <Button variant="secondary" onClick={this.closeModal} style={{float:'right',marginRight:'12px'}}>
+                            <Button variant="secondary" onClick={this.closeModal} style={{float:'right',marginRight:'12px',marginBottom:'10px'}}>
                                     Cancel
                             </Button>
                         </Form>
