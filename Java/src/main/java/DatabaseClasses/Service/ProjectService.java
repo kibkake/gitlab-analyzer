@@ -130,12 +130,26 @@ public class ProjectService {
 
     private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
         for (Developer dev: projectDevs) {
-            List<MergeRequest> devMergeRequests = mergeRequestRepository.getMergeRequests(projectId, projectSettings, dev);
-            List<MergeRequestDateScore> devMergeRequestDateScores = getMergeRequestsDateScores(projectId, projectSettings, dev);
-            List<CommitDateScore> devCommitScores = getCommitDateScores(projectId, projectSettings, dev);
-            List<CommitDateScore> devCommitScoresWithEveryDay = getCommitsWithEveryDateBetweenRange(projectId, projectSettings, dev);
-            Double devTotalCommitScore = getDevTotalCommitScore(projectId, projectSettings, dev);
-            Double devTotalMergeRequestScore = getDevTotalMergeRequestScore(projectId, projectSettings, dev);
+            List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            System.out.println(dev.getUsername());
+            System.out.println(devMergeRequests);
+            List<MergeRequestDateScore> devMergeRequestDateScores = mergeRequestRepository.getDevsMrsScoreADay(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            List<CommitDateScore> devCommitScores = commitRepository.getDevCommitDateScore(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            List<CommitDateScore> devCommitScoresWithEveryDay = commitRepository.getCommitsWithEveryDateBetweenRange(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
             AllScores devAllScores = new AllScores(projectSettings.getStartDate(), projectSettings.getEndDate(), devTotalCommitScore,
                     devTotalMergeRequestScore);
 
