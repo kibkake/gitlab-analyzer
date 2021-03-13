@@ -136,8 +136,6 @@ public class ProjectService {
             List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
                     dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
 
-            System.out.println(dev.getUsername());
-            System.out.println(devMergeRequests);
             List<MergeRequestDateScore> devMergeRequestDateScores = mergeRequestRepository.getDevsMrsScoreADay(projectId,
                     dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
 
