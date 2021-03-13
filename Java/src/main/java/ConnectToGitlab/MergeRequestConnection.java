@@ -11,6 +11,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -46,14 +47,33 @@ public class MergeRequestConnection {
         return mergeRequests;
     }
 
+    public static Instant getMostRecentMergeRequestUpdateDate(int projectId) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        List<MergeRequest> mergeRequests = new ArrayList<>();
+
+        String myUrl = user.getServerUrl() +"projects/" + projectId
+                + "/merge_requests?state=merged&order_by=updated_at&all=true&per_page=1&page=1&access_token="
+                + user.getToken();
+
+        ResponseEntity<List<MergeRequest>> mergeRequestsResponse = restTemplate.exchange(myUrl,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<MergeRequest>>() {
+                });
+        mergeRequests.addAll(Objects.requireNonNull(mergeRequestsResponse.getBody()));
+        MergeRequest mergeRequest = mergeRequests.get(0);
+        String dateString = mergeRequest.getUpdatedAt();
+
+        return Instant.parse(dateString);
+    }
+
     public static List<Developer> getMergeRequestContributors(int projectId, int mergeRequestIdForASpecificProject) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String url = user.getServerUrl() +"projects/" + projectId + "/merge_requests/" + mergeRequestIdForASpecificProject
                 + "/participants?access_token=" + user.getToken();
-
         ResponseEntity<List<Developer>> commitsResponse = restTemplate.exchange(url,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {});
+
         return commitsResponse.getBody();
     }
 

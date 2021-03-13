@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
-import Button from "react-bootstrap/Button";
-import axios from "axios";
+import CommitsPerDay from "./CommitsPerDay";
+import SingleCommitDiff from "./SingleCommitDiffs"
+import "./HBox.css"
+import CommitMergeRequest from "./CommitMergeRequest";
+
 
 class CommitChart extends Component {
 
@@ -11,13 +14,31 @@ class CommitChart extends Component {
             data: [],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
-            endTime: this.props.endTime
+            endTime: this.props.endTime,
+            y_Axis : "1970-12-12",
+            childVal : "non",
+            diff: false,
         };
+        this.handler = this.handler.bind(this)
+        this.handler2 = this.handler2.bind(this)
+    }
+
+    async handler(hash) {
+        await this.setState({
+            childVal: hash,
+            diff : true
+        })
+    }
+
+    async handler2() {
+        await this.setState({
+            diff: false
+        })
     }
 
     async componentDidMount() {
         const {parentdata} = this.state;
-        this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
+        await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 
     async getDataFromBackend (username, startTm, endTm) {
@@ -41,22 +62,14 @@ class CommitChart extends Component {
         await DataArray.map(item => {
             arr.push(item)
         })
-        this.setState({data: arr})
+        await this.setState({data: arr})
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.devName !== prevProps.devName){
-            this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
-        }
-        if(this.props.startTime !== prevProps.startTime){
-            this.setState({startTime: this.props.startTime});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
-
-        }
-        if(this.props.endTime !== prevProps.endTime){
-            this.setState({endTime: this.props.endTime});
-            this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime)
+    async componentDidUpdate(prevProps){
+        if(this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime ||
+            this.props.endTime !== prevProps.endTime){
+            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }
 
@@ -93,10 +106,11 @@ class CommitChart extends Component {
 
         var comarr = this.state.data;
         const daylist = getDaysArray(new Date(this.props.startTime + "T12:00:00"),new Date(this.props.endTime+ "T12:00:00"));
-        var location = window.location.pathname.split("/")
+        console.log(this.state.childVal)
 
         return (
-            <div>
+            <div className="box-container" >
+                <div className="horizontalBar" style={{ overflow: "scroll", height: "1050px", width: "1000px"}}>
                 <HorizontalBar
 
                     data={{labels: daylist,
@@ -117,12 +131,7 @@ class CommitChart extends Component {
                                     const chart = Event[0]._chart;
                                     const element = chart.getElementAtEvent(e)[0];
                                     const yAxis = chart.data.labels[element._index];
-                                    var month = yAxis.toString().split(" ")[1]
-                                    var day = yAxis.toString().split(" ")[2]
-                                    var year = yAxis.toString().split(" ")[3]
-                                    window.location.href =  '/' + location[1] +'/' + location[2] +
-                                        '/' + location[3] + '/' + this.props.devName + '/commits/' +
-                                        yAxis
+                                    this.setState({y_Axis:yAxis, diff : false})
                                 }
 
                             } , maintainAspectRatio:true,
@@ -138,6 +147,9 @@ class CommitChart extends Component {
                             }
                         }}
                 />
+                </div>
+                {(this.state.diff !== false) ? <SingleCommitDiff  handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
+                {(this.state.diff !== false) ? <CommitMergeRequest hash = {this.state.childVal}/>: <div> </div>}
             </div>
         )
     }

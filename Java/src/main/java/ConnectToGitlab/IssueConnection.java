@@ -12,6 +12,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +41,22 @@ public class IssueConnection {
             issue.setNotes(getIssueNotes(issue.getProjectId(), issue.getIssueIdForASpecificProject()));
         }
         return issues;
+    }
+
+    public static Instant getMostRecentIssueUpdateDate(int projectId) {
+        User user = User.getInstance();
+        RestTemplate restTemplate = new RestTemplate();
+        List<Issue> issues = new ArrayList<>();
+        String url =user.getServerUrl() + "projects/" + projectId + "/issues"
+                + "?per_page=1&order_by=updated_at&page=1&access_token=" + user.getToken();
+        ResponseEntity<List<Issue>> issueResponse = restTemplate.exchange(url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Issue>>() {
+                });
+        issues.addAll(Objects.requireNonNull(issueResponse.getBody()));
+        Issue issue = issues.get(0);
+        String dateString = issue.getUpdatedAt();
+
+        return Instant.parse(dateString);
     }
 
     private static List<Note> getIssueNotes(int projectId , int issueIForProject) {

@@ -1,7 +1,7 @@
 import React,{ Component } from "react";
 import ProjectService from "../Service/ProjectService";
 import Grid from "@material-ui/core/Grid";
-import {DateTimePicker, MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
+import {MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import SummaryScoreTable from "./Summary/SummaryScoreTable";
 import SummaryChartRadios from "./Summary/RadioButtonSummaryChart";
@@ -105,7 +105,7 @@ function DateRangeSummary({devName}){
             </Grid>
             <br>
             </br>
-            <h4 style={{textAlign:'center'}}>Total Scores (add copy button)</h4>
+            <h4 style={{textAlign:'center'}}>Total Scores</h4>
             <SummaryScoreTable devName = {devName}
                                startTime = {changeDateFormat(selectedStartDate)}
                                endTime = {changeDateFormat(selectedEndDate)}

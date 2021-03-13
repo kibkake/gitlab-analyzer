@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.Config;
+package main.java.DatabaseClasses.config;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;

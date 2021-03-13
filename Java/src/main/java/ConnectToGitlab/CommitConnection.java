@@ -12,6 +12,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -44,6 +45,21 @@ public class CommitConnection {
             singleCommit.calculateAndSetCommitScore(); // done after getting commits
         }
         return commits;
+    }
+
+    public static Instant getMostRecentCommitDate(int projectId) {
+        User user = User.getInstance();
+        List<Commit> commits = new ArrayList<>();
+        String myUrl = user.getServerUrl() + "projects/" + projectId +
+                "/repository/commits?ref_name=master&per_page=1&page=1&access_token=" + user.getToken();
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<Commit>> commitJSON = restTemplate.exchange(myUrl,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {
+                });
+        commits.addAll(Objects.requireNonNull(commitJSON.getBody()));
+        Commit commit = commits.get(0);
+
+        return commit.getDate().toInstant();
     }
 
     public static List<Diff> getSingleCommitDiffs(Integer projectId, String commitHash) {

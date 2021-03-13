@@ -262,21 +262,21 @@ public class ProjectController {
                 whichDevFieldIsString(whichDevField));
     }
 
-    @PostMapping("/setStartDate")
+    @PostMapping("/setstartdate")
     public void setStartDate(@RequestBody Map<String, String> requestBody) {
         if(requestBody.get("starttime") != null) {
             startDate = requestBody.get("starttime");
         }
     }
 
-    @PostMapping("/setEndDate")
+    @PostMapping("/setenddate")
     public void setEndDate(@RequestBody Map<String, String> requestBody) {
         if(requestBody.get("endtime") != null) {
             endDate = requestBody.get("endtime");
         }
     }
 
-    @GetMapping("/getStartDate")
+    @GetMapping("/getstartdate")
     public List<String> getStartDate() throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
@@ -300,7 +300,7 @@ public class ProjectController {
         return date;
     }
 
-    @GetMapping("/getEndDate")
+    @GetMapping("/getenddate")
     public List<String> getEndDate() throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         df1.setTimeZone(TimeZone.getTimeZone("PT"));
@@ -323,6 +323,7 @@ public class ProjectController {
         date.add(cal.get(Calendar.YEAR) + "-" + month+ "-" + day);
         return date;
     }
+
     @PostMapping("/testnames")
     public void setEndDate(@RequestBody List<String> requestBody) {
         System.out.println(requestBody);

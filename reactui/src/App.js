@@ -1,10 +1,9 @@
 import './App.css';
 import Navbar from './components/NavBars_Menu/Navbar';
 import {BrowserRouter as Router, Switch, Route, Redirect, Link} from 'react-router-dom';
-import React from 'react';
+import React, {useState} from 'react';
 import Repo from './Pages/Repo';
 import Home from './Pages/Home';
-import Developers from './Pages/Developers';
 import Developers2 from './Pages/Developers2';
 import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
@@ -19,9 +18,10 @@ import LoginState from "./components/LoginState";
 import Chart from "./Pages/Chart";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useToken from "./useToken";
-import {SiGnuprivacyguard} from "react-icons/all";
+import {SiGnuprivacyguard, SiJsonwebtokens} from "react-icons/all";
 import {AiOutlineHome} from "react-icons/ai";
 import SignupComponent from "./components/SignupComponent";
+import LoginToken from "./components/LoginToken.js";
 
 function signupHandler(){
     sessionStorage.setItem('new','true');
@@ -31,7 +31,14 @@ function signupHandler(){
 
 function App() {
   const { user, setUser } = useToken();
-    // requires a authentication token to proceed
+  const [token_toggle, setTokenToggle] = useState(false);
+
+  const toggleTokenSubmit = event => {
+      setTokenToggle(!token_toggle);
+      event.preventDefault();
+  }
+
+  // requires a authentication token to proceed
   if(!sessionStorage.getItem('user')) {
     return (
         <>
@@ -42,17 +49,27 @@ function App() {
                 </switch>
             </Router>
             <div className="loginwrapper">
-                <h2> Please Login or Sign Up to Continue</h2>
+                <h2 className="login-h2"> Please Login or Sign Up to Continue</h2>
                 <br/>
-                <LoginState setUser={setUser} />
+                {!token_toggle &&
+                    <>
+                        <LoginState setUser={setUser}/>
+                        <br/>
+                        <button className="login" onClick={toggleTokenSubmit}><SiJsonwebtokens/> Login with Token </button>
+                    </>
+                }
+                {token_toggle &&
+                    <LoginToken/>
+                }
                 <br/>
-                <p>Don't have an account?<button className="login" onClick={signupHandler}><SiGnuprivacyguard/>Sign Up</button></p>
+                <br/>
+                <p className="signuptext">Don't have an account?<button className="login" onClick={signupHandler}><SiGnuprivacyguard/>Sign Up</button></p>
             </div>
 
         </>
     );
-  }else if(sessionStorage.getItem('new')){ // signup
-      return(
+  }else if(sessionStorage.getItem('new')) { // signup
+      return (
           <Router>
 
               <Navbar/>
@@ -80,8 +97,7 @@ function App() {
           <Route path='/Repo/*/Developers/*/codeContribution' exact component={Commits}/>
           <Route path='/Repo/*/Developers/*/codediff' exact component={MergeRequest}/>
           <Route path='/Repo/*/Developers/*/comments' exact component={Comments}/>
-          <Route path='/Repo/*/Developers/*/commits/*/*' exact component={SingleCommit}/>
-          <Route path='/Repo/*/Developers/*/commits/*' exact component={Commits2}/>
+          <Route path='/Repo/*/Developers/*/commits/*' exact component={SingleCommit}/>
 
                 <Route path='/Settings' exact component={Setting}/>
               <Route path='/Profile' exact component={Profile}/>

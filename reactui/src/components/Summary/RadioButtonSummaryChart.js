@@ -10,12 +10,13 @@ import CommitMRNumChart from "./CommitMRNumChart";
 import CommentChart from "./CommentChart2";
 import "./RadioButtonSummaryCharts.css"
 //[https://material-ui.com/components/radio-buttons/]
+import "./RadioButtonSummaryCharts.css"
 
 function Chart(props){
 
     if (props.value === "score") {
         return (<div>
-            <h4 style={{textAlign:'center'}}>Score of Commits/Merge Per Day</h4>
+            <h4 className="title" >Score of Commits/Merge Per Day</h4>
             <CommitMRScoreChart devName = {props.devName}
                                 startTime = {props.startTime}
                                 endTime = {props.endTime}/>
@@ -23,15 +24,15 @@ function Chart(props){
     }
     else if (props.value === "number") {
         return (<div>
-            <h4 style={{textAlign: 'center'}}>Number of Commits/Merge Per Day</h4>
+            <h4 className="title">Number of Commits/Merge Per Day</h4>
             <CommitMRNumChart devName={props.devName}
                               startTime = {props.startTime}
                               endTime = {props.endTime}/>
         </div>);
     }
-    if (props.value === "words") {
+    else {
         return (<div>
-            <h4 style={{textAlign: 'center'}}>Number of Words Per Day</h4>
+            <h4 style={{textAlign: 'center' }}>Number of Words Per Day</h4>
             <CommentChart devName={props.devName}
                           startTime = {props.startTime}
                           endTime = {props.endTime}/>
@@ -39,7 +40,7 @@ function Chart(props){
     }
 }
 
-export default class SummaryChartRadios extends Component {
+export default class RadioButtonSummaryChart extends Component {
     constructor(props) {
         super(props);
         this.state = {value: "score",
@@ -76,7 +77,6 @@ export default class SummaryChartRadios extends Component {
                 <Chart value = {this.state.value}  devName = {this.props.devName}
                        startTime = {this.props.startTime}  endTime = {this.props.endTime}/>
             </div>
-
     );
     }
 }

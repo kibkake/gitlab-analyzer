@@ -20,6 +20,7 @@ public class MergeRequest {
     private String description;
     private String state;
     private String mergedAt;
+    private String updatedAt;
     private int authorId;
     private String authorUsername;
     private Developer author;
@@ -28,9 +29,23 @@ public class MergeRequest {
     private String sha;
     double mrScore;
     private Date mergedDate;
+    private Date updatedDate;
     List<Note> allNotes;
     List<Note> codeReviewNotes;
     List<Diff> diffs;
+    private String mrUrl;
+
+    @JsonProperty("web_url")
+    public String getMrUrl() {
+        return mrUrl;
+    }
+
+    @JsonProperty("web_url")
+    public void setMrUrl(String mrUrl) {
+        this.mrUrl = mrUrl;
+    }
+
+
 
     public MergeRequest() {
         contributors = new ArrayList<>();
@@ -102,6 +117,33 @@ public class MergeRequest {
         }
     }
 
+    @JsonProperty("updated_at")
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(updatedAt);
+        setUpdatedDate(Date.from(dateWithOffSet.toInstant()));
+    }
+
+    public Date getMergedDate() {
+        return mergedDate;
+    }
+
+    public void setMergedDate(Date mergedDate) {
+        this.mergedDate = mergedDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
     @JsonProperty("author_id")
     public int getAuthorId() {
         return authorId;
@@ -136,14 +178,6 @@ public class MergeRequest {
 
     public void setSha(String sha) {
         this.sha = sha;
-    }
-
-    public Date getMergedDate() {
-        return mergedDate;
-    }
-
-    public void setMergedDate(Date mergedDate) {
-        this.mergedDate = mergedDate;
     }
 
     public Developer getAuthor() {

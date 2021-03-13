@@ -19,10 +19,10 @@ function DateRangeSettings(){
 
     function getEndDate(){
         if(sessionStorage.getItem("enddate") == null){
-            sessionStorage.setItem("enddate", "2021-02-22")
+            sessionStorage.setItem("enddate", "2021-03-10")
         }
         if(localStorage.getItem("enddate") == null){
-            localStorage.setItem("enddate", "2021-02-22")
+            localStorage.setItem("enddate", "2021-03-10")
         }
         return new Date(sessionStorage.getItem("enddate") + "T12:00:00")
     }
