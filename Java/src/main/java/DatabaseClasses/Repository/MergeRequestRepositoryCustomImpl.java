@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.DateOperators;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -71,16 +72,16 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
     @Override
     public Double getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
-        final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
+        final Criteria nameMatchCriteria = Criteria.where("username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);
         Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.unwind("contributors"),
+                Aggregation.project("mrScore").and("contributors.username").as("username"),
                 Aggregation.match(criterias),
-                Aggregation.project("mrScore", "contributors.username"),
-                Aggregation.group("username").sum("mrScore").as("mergeRequestTotalScore")
+                Aggregation.group("username").sum("mrScore").as("mergeRequestScore")
         );
 
         AggregationResults<Double> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, Double.class);
