@@ -84,13 +84,13 @@ class LanguageScaleTable extends Component{
                         </Modal.Header>
                         <Form className="addForm" onSubmit={(e)=> {this.handleSubmit(e)}}>
                             <Form.Row>
-                                <Form.Group controlId="name" style={{marginLeft:'12px', marginRight:'12px'}}>
+                                <Form.Group controlId="name" style={{marginLeft:'12px'}}>
                                     <Form.Label>Language Name</Form.Label>
                                     <Form.Control type="text" ref={(input)=>{this.name=input}} placeholder="Enter name"/>
                                 </Form.Group>
                                 <Form.Group controlId="extention">
                                     <Form.Label>Extention Name</Form.Label>
-                                    <Form.Control type="text" ref={(input)=>{this.extention=input}} placeholder='(eg. ".js")'/>
+                                    <Form.Control type="text" ref={(input)=>{this.extention=input}} placeholder='(eg. "js" do not include the . )'/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group controlId="multiplier" >
