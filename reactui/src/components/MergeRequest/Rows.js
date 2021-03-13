@@ -15,6 +15,8 @@ import {OverlayTrigger, Popover} from 'react-bootstrap'
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
+import SplitToLinesToHighlight from "../SplitToLinesToHighlight";
+// import SplitToLinesToHighlight from "./SplitToLinesToHighlight"
 
 //[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
 const PopOver = ({Diffs}) => {
@@ -25,7 +27,7 @@ const PopOver = ({Diffs}) => {
                      return(
                          <ul>
                              <Popover.Title as="h3">{item.path}</Popover.Title>
-                             <Popover.Content><Highlight className="highlighted-text"> {item.diff} </Highlight>
+                             <Popover.Content><Highlight className="highlighted-text"> {SplitToLinesToHighlight(item.diff)} </Highlight>
                              </Popover.Content>
                          </ul>
                      )
@@ -35,20 +37,26 @@ const PopOver = ({Diffs}) => {
     )
 }
 
+function highlight (props) {
+    // const {diffs} = props;
+    var diffs = props;
+    return diffs.split("+");
+}
+
 // Table structure is based on the library from [https://material-ui.com/components/tables/]
 export default function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
-
+    var diffs = "sdfsdf  +sdf sdf+ afdsfdsf";
+    console.log(diffs.split("+"));
 
     return (
-
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
-                    {moment(row.date).format('LLL')}
+                    {moment(row.date).format('lll')}
                 </TableCell>
                 <TableCell>#{row.id} <a href= {row.mrUrl}> {row.title}</a> </TableCell>
                 <TableCell align="right">{row.score.toFixed(1)}</TableCell>

@@ -44,7 +44,7 @@ class CommentTable extends Component{
     render() {
         var Data = this.state.comments.map(function (item) {
             return {
-                date: item.formattedDate,
+                date: moment(item.created_at).format('ll'),
                 wordCount: item.wordCount,
                 comments: item.body,
                 onIssue: item.issueNote

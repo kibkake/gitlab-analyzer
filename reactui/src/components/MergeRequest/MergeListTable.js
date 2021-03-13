@@ -88,10 +88,10 @@ export default class MergeListTable  extends PureComponent {
         console.log(output);
 
         return (
-
             <div class="d-flex justify-content-start">
                 <TableContainer component={Paper} class="p-2">
                     <Table aria-label="collapsible table">
+
                         <TableHead className="tableCell">
                             <TableRow>
                                 <TableCell align="left" className="tableCell"> Date </TableCell>
@@ -107,6 +107,7 @@ export default class MergeListTable  extends PureComponent {
                                 <Row key={merge.date} row={merge}/>
                             ))}
                         </TableBody>
+
                     </Table>
                 </TableContainer>
 
@@ -133,28 +134,3 @@ const useRowStyles = makeStyles({
         },
     }
 });
-
-//({devName}) {
-
-// const [merges, getMerges] = useState([]);
-// // const nameRef = useRef();
-// const mounted = useRef();
-//
-// useEffect(() => {
-//     if (!mounted.current) {
-//         mounted.current = true;
-//     }
-//     getDataFromBackend(devName);
-// }, [merges]);
-//
-//
-// function getDataFromBackend (username) {
-//     var pathArray = window.location.pathname.split('/');
-//     var id = pathArray[2];
-//
-//     axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
-//     .then(res => {
-//         getMerges(res.data);
-//     }).catch((error) => {
-//     console.error(error);
-// });}
