@@ -79,7 +79,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.unwind("contributors"),
-                Aggregation.project("mrScore").and("contributors.username").as("username"),
+                Aggregation.project("mrScore", "projectId", "mergedDate").and("contributors.username").as("username"),
                 Aggregation.match(criterias),
                 Aggregation.group("username").sum("mrScore").as("mergeRequestScore")
         );
