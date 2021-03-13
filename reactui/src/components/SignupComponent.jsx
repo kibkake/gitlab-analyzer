@@ -96,16 +96,14 @@ export default class SignupComponent extends Component {
         if (this.state.registered) {
             return (
                 <>
-                    <Redirect to='/Home'/>
-                    {window.location.reload()}
+                    {window.location.href="/Home"}
                 </>
             )
         }
         if (this.state.cancelled) {
             return (
                 <>
-                    <Redirect to='/Home'/>
-                    {window.location.reload()}
+                    {window.location.href="/"}
                 </>
             )
         }
@@ -132,11 +130,12 @@ export default class SignupComponent extends Component {
                         </label>
                         <br/>
                         <br/>
-                        <button className="cancel" onClick={this.cancelHandler}>Cancel <ImCancelCircle/></button>
-                        <button className="signup" onClick={this.signupHandler} onMouseOver={this.checkUser}>Confirm <ImClipboard/></button>
+                        <button className="signup" onClick={this.signupHandler} onMouseOver={this.checkUser}><ImClipboard/> Confirm</button>
+                        <div className="spacer"/>
+                        <button className="cancel" onClick={this.cancelHandler}><ImCancelCircle/> Cancel </button>
                     </form>
                     <br/>
-                    <p>Before clicking on Confirm, please take a look at our <button className="signup" onClick={this.termHandler}><BsInfoCircle/> Terms and Conditions</button></p>
+                    <p className="terms">Before clicking on Confirm, please take a look at our <button className="signup terms-button" onClick={this.termHandler}><BsInfoCircle/> Terms and Conditions</button></p>
                 </div>
             </>
         )
