@@ -1,6 +1,5 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.DatabaseClasses.Service.MergeRequestService;
 import main.java.Model.Commit;
@@ -33,14 +32,6 @@ public class MergeRequestController {
         mergeRequestService.saveProjectMergeRequests(projectId);
     }
 
-    @GetMapping("projects/{projectId}/DateScores/{userName}/{startDate}/{endDate}")
-    public List<DateScore> getUserDateScores(@PathVariable int projectId, @PathVariable String userName,
-                                       @PathVariable String startDate, @PathVariable String endDate) {
-        LocalDate StartLocalTime = LocalDate.parse(startDate);
-        LocalDate endLocalTime = LocalDate.parse(endDate);
-        return mergeRequestService.getUserDateScores(projectId, userName, StartLocalTime, endLocalTime);
-    }
-
     @GetMapping("projects/{projectId}/MergeRequest/scores/{userName}/{startDate}/{endDate}")
     public List<MergeRequestDateScore> getScores(@PathVariable int projectId, @PathVariable String userName,
                                                  @PathVariable String startDate, @PathVariable String endDate) {
@@ -50,13 +41,12 @@ public class MergeRequestController {
     }
 
     @GetMapping("projects/{projectId}/MergeRequest/scores/total/{userName}/{startDate}/{endDate}")
-    public Double getTotalMergeRequestScores(@PathVariable int projectId, @PathVariable String userName,
+    public Object getTotalMergeRequestScores(@PathVariable int projectId, @PathVariable String userName,
                                            @PathVariable String startDate, @PathVariable String endDate) {
         LocalDate StartLocalTime = LocalDate.parse(startDate);
         LocalDate endLocalTime = LocalDate.parse(endDate);
         return mergeRequestService.getTotalMergeRequestScore(projectId, userName, StartLocalTime, endLocalTime);
     }
-
 
     @GetMapping("projects/{projectId}/MergeRequest/{committerName}/{start}/{end}")
     public List<MergeRequest> getUserMergeRequests(@PathVariable("projectId") int projectId,
@@ -85,6 +75,4 @@ public class MergeRequestController {
 
         return mergeRequestService.getMrByCommitHash(projectId, commitHash);
     }
-
-
 }
