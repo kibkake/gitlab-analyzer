@@ -10,7 +10,7 @@ export default class CommitMRScoreChart extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0}],
+            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0,commitIds:[],mergeRequestIds:[]}],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime
@@ -39,10 +39,41 @@ export default class CommitMRScoreChart extends PureComponent {
             endTm + "/either")
 
         const score = await response.data
+        console.log("scores")
+        console.log(score)
         await this.setState({codeScore : score, parentdata: username,startTime: startTm,
             endTime: endTm})
+        // this.applyMultipliers();
         await console.log(this.state.codeScore)
     }
+
+    applyMultipliers(){
+        var scale = JSON.parse(sessionStorage.getItem('languageScale'));
+        var newMerges = [...this.state.merges];
+        for(const k in newMerges){
+            var newMRScore=0;
+            for(var i in newMerges[k].diffs){
+                var fileExtension = newMerges[k].diffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                if(extensionIndex!==-1){
+                    var newScore = scale[extensionIndex].multiplier * newMerges[k].diffs[i].diffScore;
+                    newMerges[k].diffs[i] = {...newMerges[k].diffs[i], diffScore:newScore};
+                    newMRScore = newMRScore+newScore;
+                }else{
+                    newMRScore = newMRScore+newMerges[k].diffs[i].diffScore;
+                }
+            }
+            newMerges[k].mrScore=newMRScore;
+        }
+        const totalMRScore = newMerges.map(item => item.mrScore).reduce((prev, next) => prev + next);
+        var newscoreSummary ={...this.state.scoreSummary};
+        newscoreSummary={...newscoreSummary,totalMergeRequestScore:totalMRScore};
+        this.setState({
+            merges:newMerges,
+            scoreSummary:newscoreSummary,
+        })
+    }
+    
 
     async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName ||

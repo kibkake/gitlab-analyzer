@@ -2,10 +2,11 @@ package main.java.DatabaseClasses.Model;
 
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+import main.java.Model.*;
 /**
  *  This is a simple class that stores two attributes: a date, the commit score on that date, and
  *  the name of the user this is for.
@@ -17,38 +18,38 @@ public class DateScore {
     private String userName;
     private int numCommits;
     private int numMergeRequests;
-    private List<Integer> mergeRequestId;
-    private List<String> commitIds;
-    private List<Integer> mergeRequestIds;
+    private List<MergeRequest> mergeRequestId;
+    private List<Commit> commitIds;
+    private ArrayList<MergeRequest> mergeRequestIds;
 
 
-    public DateScore(LocalDate date, double commitScore, String userName, String id) {
+    public DateScore(LocalDate date, double commitScore, String userName, Commit id) {
         this.date = date;
         this.commitScore = commitScore;
         this.userName = userName;
         this.numCommits = 1;
         this.commitIds = new ArrayList<>();
-        this.mergeRequestIds = new ArrayList<Integer>();
+        this.mergeRequestIds = new ArrayList<MergeRequest>();
         commitIds.add(id);
     }
 
-    public DateScore(LocalDate date, double score, String userName, Integer numMergeRequests, Integer mergeRequestId) {
+    public DateScore(LocalDate date, double score, String userName, Integer numMergeRequests, MergeRequest mergeRequestId) {
         this.date = date;
         this.mergeRequestScore = score;
         this.userName = userName;
         this.numMergeRequests = numMergeRequests;
-        this.mergeRequestIds = new ArrayList<Integer>();
+        this.mergeRequestIds = new ArrayList<MergeRequest>();
         this.commitIds = new ArrayList<>();
         this.mergeRequestIds.add(mergeRequestId);
     }
 
-    public DateScore(LocalDate date, String userName, String id) {
+    public DateScore(LocalDate date, String userName, Commit id) {
         this.date = date;
         this.commitScore = commitScore;
         this.userName = userName;
         this.numCommits = 1;
         this.commitIds = new ArrayList<>();
-        this.mergeRequestIds = new ArrayList<Integer>();
+        this.mergeRequestIds = new ArrayList<MergeRequest>();
         commitIds.add(id);
     }
 
@@ -92,15 +93,15 @@ public class DateScore {
         this.numCommits = this.numCommits + 1;
     }
 
-    public List<String> getCommitIds() {
+    public List<Commit> getCommitIds() {
         return commitIds;
     }
 
-    public void setCommitIds(List<String> commitIds) {
+    public void setCommitIds(List<Commit> commitIds) {
         this.commitIds = commitIds;
     }
 
-    public void addCommitIds(String id) {
+    public void addCommitIds(Commit id) {
         this.commitIds.add(id);
     }
 
@@ -120,19 +121,19 @@ public class DateScore {
         this.numMergeRequests = numMergeRequests;
     }
 
-    public List<Integer> getMergeRequestId() {
+    public List<MergeRequest> getMergeRequestId() {
         return mergeRequestId;
     }
 
-    public void setMergeRequestId(List<Integer> mergeRequestId) {
+    public void setMergeRequestId(List<MergeRequest> mergeRequestId) {
         this.mergeRequestId = mergeRequestId;
     }
 
-    public List<Integer> getMergeRequestIds() {
+    public List<MergeRequest> getMergeRequestIds() {
         return mergeRequestIds;
     }
 
-    public void setMergeRequestIds(List<Integer> mergeRequestIds) {
+    public void setMergeRequestIds(ArrayList<MergeRequest> mergeRequestIds) {
         this.mergeRequestIds = mergeRequestIds;
     }
 
@@ -149,8 +150,8 @@ public class DateScore {
         this.numMergeRequests = this.numMergeRequests + 1;
     }
 
-    public void addMergeRequestIds(int id) {
-        this.mergeRequestIds.add(id);
+    public void addMergeRequestIds(MergeRequest mergeRequest) {
+        this.mergeRequestIds.add(mergeRequest);
     }
 
     @Override

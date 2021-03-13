@@ -63,11 +63,6 @@ class SummaryScoreTable extends Component{
             this.applyMultipliersCommits();
         }).catch((error) => {
             console.error(error);})
-
-            console.log("merges");
-            console.log(this.state.merges);
-            console.log("commits");
-            console.log(this.state.commits);
                 
     }
 
