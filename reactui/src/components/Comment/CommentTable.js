@@ -55,7 +55,6 @@ class CommentTable extends Component{
             ({date, wordCount, comments, issueOrReview: issueBoolean[onIssue]}));
         console.log(comments);
 
-
         return (
             <Table striped bordered hover>
                     <tr>

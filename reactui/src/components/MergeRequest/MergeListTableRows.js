@@ -15,42 +15,32 @@ import {OverlayTrigger, Popover} from 'react-bootstrap'
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
-import SplitToLinesToHighlight from "../SplitToLinesToHighlight";
-// import SplitToLinesToHighlight from "./SplitToLinesToHighlight"
+import HighlightCodeDiffs from "../HighlightCodeDiffs";
+import Flexbox from "flexbox-react";
 
 //[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
 const PopOver = ({Diffs}) => {
     return (
-         <div>
-             <Popover id="popover-basic" placement='right' class="justify-content-end" >
+            <Popover id="popover-basic" placement='right' class="justify-content-end" >
                  {Diffs.map((item => {
                      return(
                          <ul>
                              <Popover.Title as="h3">{item.path}</Popover.Title>
-                             <Popover.Content><Highlight className="highlighted-text"> {SplitToLinesToHighlight(item.diff)} </Highlight>
+                             <Popover.Content><Highlight className="highlighted-text"> {HighlightCodeDiffs(item.diff)} </Highlight>
                              </Popover.Content>
                          </ul>
                      )
                 }))}
              </Popover>
-         </div>
     )
 }
 
-function highlight (props) {
-    // const {diffs} = props;
-    var diffs = props;
-    return diffs.split("+");
-}
 
 // Table structure is based on the library from [https://material-ui.com/components/tables/]
 export default function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
-
-    var diffs = "sdfsdf  +sdf sdf+ afdsfdsf";
-    console.log(diffs.split("+"));
 
     return (
         <React.Fragment>

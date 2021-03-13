@@ -5,8 +5,6 @@ import React from "react";
 function SingleCommit(){
 
     return(
-
-
         <header classname='Rest'>
             <Navbar_Developers/>
             <SingleCommitDiffs/>

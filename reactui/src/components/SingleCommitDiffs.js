@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import "./Projects/ProjectList.css";
 import {Table} from "react-bootstrap";
-import SplitToLinesToHighlight from "./SplitToLinesToHighlight"
+import HighlightCodeDiffs from "./HighlightCodeDiffs"
 
 class SingleCommitDiff extends Component{
     constructor(props){
@@ -52,7 +52,7 @@ class SingleCommitDiff extends Component{
                         item.diffs.map((item2, index) =>
                             <tr key ={index}>
                                 <td>{item2.new_path}</td>
-                                <td>{SplitToLinesToHighlight(item2.diff)}</td>
+                                <td>{HighlightCodeDiffs(item2.diff)}</td>
                             </tr>
                         ))}
                     </tbody>
