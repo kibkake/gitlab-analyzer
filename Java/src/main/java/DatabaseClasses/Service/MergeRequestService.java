@@ -31,11 +31,11 @@ public class MergeRequestService {
 
     @Transactional
     public void saveProjectMergeRequests(int projectId) {
-        mergeRequestRepository.saveAll(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
+        mergeRequestRepository.saveAll(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
     }
 
     public List<MergeRequestDateScore> getMrScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate) {
-        return mergeRequestRepository.devsMrsScoreADay(projectId, userName, startDate, endDate);
+        return mergeRequestRepository.getDevsMrsScoreADay(projectId, userName, startDate, endDate);
     }
 
     public MergeRequest getMergeRequest(int projectId, int mrId) {
@@ -46,15 +46,15 @@ public class MergeRequestService {
         return mergeRequestRepository.findByProjectId(projectId);
     }
 
-    public List<MergeRequest> getUserMergeRequests(int projectId, String authorName, Date startLocalTime,
-                                                      Date endLocalTime) {
-        return mergeRequestRepository.findByProjectIdAndAuthorUsernameAndMergedDateBetween(projectId, authorName,
+    public List<MergeRequest> getUserMergeRequests(int projectId, String authorName, LocalDate startLocalTime,
+                                                   LocalDate endLocalTime) {
+        return mergeRequestRepository.getDevMergeRequests(projectId, authorName,
                 startLocalTime, endLocalTime);
     }
 
     public Object getTotalMergeRequestScore(int projectId, String authorName, LocalDate startLocalTime,
                                                   LocalDate endLocalTime) {
-        return mergeRequestRepository.userTotalMergeRequestScore(projectId, authorName,
+        return mergeRequestRepository.getUserTotalMergeRequestScore(projectId, authorName,
                 startLocalTime, endLocalTime);
     }
 

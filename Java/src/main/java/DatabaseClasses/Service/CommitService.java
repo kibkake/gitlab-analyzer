@@ -2,10 +2,7 @@ package main.java.DatabaseClasses.Service;
 
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.DatabaseClasses.Model.CommitDateScore;
-import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Repository.CommitRepository;
-import main.java.DatabaseClasses.Repository.CommitRepositoryCustom;
-import main.java.Functions.LocalDateFunctions;
 import main.java.Model.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,23 +19,8 @@ public class CommitService {
         this.commitRepository = commitRepository;
     }
 
-    public List<CommitDateScore> getAllUserCommitsArray(int projectId, String authorName, LocalDate startLocalTime, LocalDate endLocalTime) {
-        List<CommitDateScore> userCommitScores = new ArrayList<>(
-                commitRepository.getDevDateScore(projectId, authorName, startLocalTime, endLocalTime));
-
-        ArrayList<LocalDate> dates = LocalDateFunctions.generateRangeOfDates(startLocalTime, endLocalTime);
-        for(LocalDate date: dates){
-            if(!containsDate(userCommitScores, date)) {
-                CommitDateScore scoreForDate = new CommitDateScore(date, 0, 0,authorName);
-                userCommitScores.add(scoreForDate);
-            }
-        }
-        System.out.println(userCommitScores);
-        userCommitScores.sort(Comparator.comparing(CommitDateScore::getDate));
-        return userCommitScores;
-    }
-    public boolean containsDate(final List<CommitDateScore> UserScores, final LocalDate date){
-        return UserScores.stream().anyMatch(scores -> scores.getDate().compareTo(date) == 0);
+    public List<CommitDateScore> getUserCommitsArray(int projectId, String authorName, LocalDate startLocalTime, LocalDate endLocalTime) {
+        return commitRepository.getCommitsWithEveryDateBetweenRange(projectId, authorName, startLocalTime, endLocalTime);
     }
 
     public List<Commit> getUserCommits(int projectId, Date start, Date end, String author_name) {
@@ -46,7 +28,7 @@ public class CommitService {
     }
 
     public void saveProjectCommits(int projectId){
-        commitRepository.saveAll(CommitConnection.getProjectCommitsFromGitLab(projectId));
+        commitRepository.saveAll(new CommitConnection().getProjectCommitsFromGitLab(projectId));
     }
 
     public Commit getCommit(int projectId, String commitHash) {
@@ -54,7 +36,7 @@ public class CommitService {
     }
 
     public List<CommitDateScore> getScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate){
-        return commitRepository.getDevDateScore(projectId, userName, startDate, endDate);
+        return commitRepository.getDevCommitDateScore(projectId, userName, startDate, endDate);
     }
 
     public Object getTotalCommitScore(int projectId, String userName, LocalDate startDate, LocalDate endDate) {
