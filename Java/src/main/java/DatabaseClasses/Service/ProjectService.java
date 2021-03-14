@@ -100,7 +100,7 @@ public class ProjectService {
 
                 dateScore.addToCommitScore(currentCommit.getCommitScore());
                 dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit);
+                dateScore.addCommitDiffs(currentCommit);
             }
         }
         List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
@@ -134,7 +134,7 @@ public class ProjectService {
                 DateScore dateScore = dateMap.get(mergedDate.toString());
                 dateScore.addToMergeRequestScore(mergeRequest.getMrScore());
                 dateScore.incrementNumMergeRequests();
-                dateScore.addMergeRequestIds(mergeRequest);
+                dateScore.addMergeRequestDiffs(mergeRequest);
             }
         }
         System.out.println(dateMap);
@@ -150,7 +150,7 @@ public class ProjectService {
 
                 dateScore.addToCommitScore(currentCommit.getCommitScore());
                 dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit);
+                dateScore.addCommitDiffs(currentCommit);
             }
         }
         List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());

@@ -10,7 +10,7 @@ export default class CommitMRScoreChart extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0,commitIds:[],mergeRequestIds:[]}],
+            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0,commitIds:[],mergeRequestDiffs:[]}],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime
@@ -63,14 +63,14 @@ export default class CommitMRScoreChart extends PureComponent {
                     newCommitScore = newCommitScore+newCodeScore[k].commitIds[i].diffScore;
                 }
             }
-            for(const i in newCodeScore[k].mergeRequestIds){
+            for(const i in newCodeScore[k].mergeRequestDiffs){
                 var fileExtension = newCodeScore[k].mergeRequestIds[i].new_path.split(".").pop();
                 const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
                 if(extensionIndex!==-1){
-                    var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].mergeRequestIds[i].diffScore;
+                    var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].mergeRequestDiffs[i].diffScore;
                     newMergeScore = newMergeScore+tempCommitScore;
                 }else{
-                    newMergeScore = newMergeScore+newCodeScore[k].mergeRequestIds[i].diffScore;
+                    newMergeScore = newMergeScore+newCodeScore[k].mergeRequestDiffs[i].diffScore;
                 }
             }
             newCodeScore[k].mergeRequestScore=newMergeScore;

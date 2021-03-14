@@ -19,44 +19,44 @@ public class DateScore {
     private int numCommits;
     private int numMergeRequests;
     private List<Integer> mergeRequestId;
-    private List<DateScoreDiff> commitIds;
-    private ArrayList<DateScoreDiff> mergeRequestIds;
+    private List<DateScoreDiff> commitDiffs;
+    private ArrayList<DateScoreDiff> mergeRequestDiffs;
 
 
-    public DateScore(LocalDate date, double commitScore, String userName, List<Diff> id) {
+    public DateScore(LocalDate date, double commitScore, String userName, List<Diff> commit) {
         this.date = date;
         this.commitScore = commitScore;
         this.userName = userName;
         this.numCommits = 1;
-        this.commitIds = new ArrayList<>();
-        this.mergeRequestIds = new ArrayList<DateScoreDiff>();
-        for(Diff d :id){
+        this.commitDiffs = new ArrayList<>();
+        this.mergeRequestDiffs = new ArrayList<DateScoreDiff>();
+        for(Diff d :commit){
             DateScoreDiff diff = new DateScoreDiff(d);
-            this.commitIds.add(diff);
+            this.commitDiffs.add(diff);
         }
     }
 
-    public DateScore(LocalDate date, double score, String userName, Integer numMergeRequests, List<Diff> mergeRequestId) {
+    public DateScore(LocalDate date, double score, String userName, Integer numMergeRequests, List<Diff> mergeRequest) {
         this.date = date;
         this.mergeRequestScore = score;
         this.userName = userName;
         this.numMergeRequests = numMergeRequests;
-        this.mergeRequestIds = new ArrayList<DateScoreDiff>();
-        this.commitIds = new ArrayList<>();
-        for(Diff d :mergeRequestId){
+        this.mergeRequestDiffs = new ArrayList<DateScoreDiff>();
+        this.commitDiffs = new ArrayList<>();
+        for(Diff d :mergeRequest){
             DateScoreDiff diff = new DateScoreDiff(d);
-            this.mergeRequestIds.add(diff);
+            this.mergeRequestDiffs.add(diff);
         }
     }
 
-    public DateScore(LocalDate date, String userName, DateScoreDiff id) {
+    public DateScore(LocalDate date, String userName, DateScoreDiff commitDiffScore) {
         this.date = date;
         this.commitScore = commitScore;
         this.userName = userName;
         this.numCommits = 1;
-        this.commitIds = new ArrayList<>();
-        this.mergeRequestIds = new ArrayList<DateScoreDiff>();
-        commitIds.add(id);
+        this.commitDiffs = new ArrayList<>();
+        this.mergeRequestDiffs = new ArrayList<DateScoreDiff>();
+        commitDiffs.add(commitDiffScore);
     }
 
     public LocalDate getDate() {
@@ -99,18 +99,18 @@ public class DateScore {
         this.numCommits = this.numCommits + 1;
     }
 
-    public List<DateScoreDiff> getCommitIds() {
-        return commitIds;
+    public List<DateScoreDiff> getCommitDiffs() {
+        return commitDiffs;
     }
 
-    public void setCommitIds(List<DateScoreDiff> commitIds) {
-        this.commitIds = commitIds;
+    public void setCommitDiffs(List<DateScoreDiff> commitDiffs) {
+        this.commitDiffs = commitDiffs;
     }
 
-    public void addCommitIds(Commit id) {
-        for(Diff d :id.getDiffs()){
+    public void addCommitDiffs(Commit commit) {
+        for(Diff d :commit.getDiffs()){
             DateScoreDiff diff = new DateScoreDiff(d);
-            this.commitIds.add(diff);
+            this.commitDiffs.add(diff);
         }
     }
 
@@ -138,12 +138,12 @@ public class DateScore {
         this.mergeRequestId = mergeRequestId;
     }
 
-    public List<DateScoreDiff> getMergeRequestIds() {
-        return mergeRequestIds;
+    public List<DateScoreDiff> getMergeRequestDiffs() {
+        return mergeRequestDiffs;
     }
 
-    public void setMergeRequestIds(ArrayList<DateScoreDiff> mergeRequestIds) {
-        this.mergeRequestIds = mergeRequestIds;
+    public void setMergeRequestDiffs(ArrayList<DateScoreDiff> mergeRequestDiff) {
+        this.mergeRequestDiffs = mergeRequestDiff;
     }
 
     public void addToCommitScore(Double score) {
@@ -159,10 +159,10 @@ public class DateScore {
         this.numMergeRequests = this.numMergeRequests + 1;
     }
 
-    public void addMergeRequestIds(MergeRequest mergeRequest) {
+    public void addMergeRequestDiffs(MergeRequest mergeRequest) {
         for(Diff d :mergeRequest.getDiffs()){
             DateScoreDiff diff = new DateScoreDiff(d);
-            this.mergeRequestIds.add(diff);
+            this.mergeRequestDiffs.add(diff);
         }
     }
 
