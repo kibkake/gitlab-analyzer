@@ -99,11 +99,6 @@ public class ProjectController {
         return projectService.getDevIssues(projectId, userName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/description")
-    public String getProjectDescription(@PathVariable("projectId") int projectId) {
-        return projectService.getProjectDescription(projectId);
-    }
-
     @GetMapping("projects/{projectId}/mergeRequests")
     public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
         return projectService.getProjectMRs(projectId);
