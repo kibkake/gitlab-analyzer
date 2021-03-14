@@ -5,21 +5,16 @@ import "./ProjectList.css";
 import moment from "moment";
 import ProjectService from "../../Service/ProjectService";
 
-// import { DataGrid } from '@material-ui/data-grid';
-import Checkbox from '@material-ui/core/Checkbox';
-import {Book} from "@material-ui/icons";
-// import { Checkbox, Table } from 'semantic-ui-react';
-// import {CheckBox} from "@material-ui/icons";
-
 class ProjectList extends Component {
 
     constructor() {
         super();
         this.state = {
             projects: [],
-            selectAll: false
+            selectAll: false,
+            checked: []
         }
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
         this.handleSingleCheckboxChange = this.handleSingleCheckboxChange.bind(this);
     }
 
@@ -27,43 +22,57 @@ class ProjectList extends Component {
         axios.get('/api/v1/projects')
             .then(response => {
                 const projects = response.data
-                this.setState({ projects})
+                this.setState({projects: projects})
+            })
+            .catch((error) => {
+                console.error(error);
             })
     }
 
-    //Handles checkbox behaviour
-    handleChange = () => {
+    //Handles checkbox behaviour [https://stackoverflow.com/questions/50495130/react-table-select-all-select-box]
+    handleSelectAllChange = () => {
         var selectAll = !this.state.selectAll;
-        this.setState({ projects: {checked:selectAll}, selectAll: selectAll });
+        this.setState({ selectAll: selectAll });
+        var checkedCopy = [];
+        this.state.projects.forEach(function(item, index) {
+            checkedCopy.push(selectAll);
+        });
+        this.setState({checked: checkedCopy});
     };
 
     handleSingleCheckboxChange = id => {
         console.log(id);
-        // (this.state.project.id = id
-        var checkedCopy = this.state.checked;
-        checkedCopy[id] = !this.state.checked[id];
-        if (checkedCopy[id] === false) {
-            this.setState({ selectAll: false });
-        }
+
+        const change = this.state.projects.map(function(item)  {
+            return {}
+            if (item.id === id) {
+                if (!item.checked) {
+                    this.setState({ selectAll: false });
+                }
+                item.checked = !item.checked;
+
+            }
+        })
+        this.setState({projects: change});
     };
 
-    findProjectById = (projects, id)=>{
-        this.state.projects.find(el => el.id === id);
-        this.setState()
+    // Handles Update button onclick behavior
+    updateRepos() {
+        // this.state.projects.map(item => {
+        //     if (item.checked) {
+        //         ProjectService.sendUpdateDecision(item.id);
+        //     }
+        // })
     }
-
-    // updateRepos = {
-    //     this.state.project.map(function () forEach(checked: true) =>
-    //     ProjectService.sendUpdateDecision(projects.id);
-    // }
 
     render() {
         console.log(this.state.projects);
 
-
         return (
             <div>
-            <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Project</button>
+                <div align="end">
+                     <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
+                </div>
                 <Table striped borded hover>
                     <thead>
                     <tr>
@@ -73,7 +82,7 @@ class ProjectList extends Component {
                         <th>Last Updated</th>
                         <th>Sync Data
                             <input type="checkbox"
-                            onChange={this.handleChange}/>
+                            onChange={this.handleSelectAllChange}/>
                         </th>
                         <th>Created</th>
                     </tr>
@@ -93,9 +102,9 @@ class ProjectList extends Component {
                                 <td>{projects.description}</td>
                                 <td>{moment(projects.last_sync_at).format('lll')}</td>
                                 <td>
-                                    <input type="checkbox" defaultChecked={!this.state.projects.checked}
-                                    checked={this.state.projects.checked}
-                                    onChange={() => this.handleSingleCheckboxChange(this.states.projects.id)}/>
+                                    <input type="checkbox" defaultChecked={!projects.checked}
+                                    checked={projects.checked}
+                                    onChange={() => this.handleSingleCheckboxChange(projects.id)}/>
                                 </td>
                                 <td>{moment(projects.created_at).format('ll')}</td>
 

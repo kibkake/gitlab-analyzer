@@ -33,7 +33,7 @@ class ProjectService {
     }
 
     sendUpdateDecision(projectId) {
-        return axios.post(PROJECT_URL + "updateRepo")
+        return axios.post(PROJECT_URL + "updateRepo").then()
     }
 
     getCommentInfo(projectId, committerName, start, end) {
