@@ -9,6 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 
 import java.time.Clock;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
@@ -20,12 +23,14 @@ public class Project {
     private String description;
     private String name;
     private String createdAt;
+    private String lastActivityAt;
     private List<MergeRequest> mergedRequests;
     private List<Issue> issues;
     private List<Commit> commits;
     private List<Developer> developers;
     private boolean infoSet;
     private Instant infoSetDate;
+
 
     public Project() {
         mergedRequests = new ArrayList<>();
@@ -70,6 +75,21 @@ public class Project {
         this.createdAt = createdAt;
     }
 
+
+    //Note this is different from the data from the GitLab API field
+    @JsonProperty("last_activity_at")
+    public String getLastActivityAt() {
+        return lastActivityAt;
+    }
+
+    @JsonProperty("last_activity_at")
+    public void setLastActivityAt(String lastActivityAt) {
+
+        this.lastActivityAt = lastActivityAt;
+//        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
+//        this.lastActivityAt = formatter.format(this.infoSetDate);
+    }
+
     public List<MergeRequest> getMergedRequests() {
         return mergedRequests;
     }
@@ -108,7 +128,7 @@ public class Project {
 
     public void setSyncInfo() {
         this.infoSet = true;
-        this.infoSetDate = Clock.systemUTC().instant();;
+        this.infoSetDate = Clock.systemUTC().instant();
     }
 
     public boolean projectHasBeenUpdated() {
@@ -122,14 +142,23 @@ public class Project {
         Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
 
         Instant mostRecentUpdateDate = mostRecentMergeRequestUpdateDate;
+
         if (mostRecentIssueUpdateDate.compareTo(mostRecentUpdateDate) > 0) {
             mostRecentUpdateDate = mostRecentIssueUpdateDate;
         }
         if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
             mostRecentUpdateDate = mostRecentCommitDate;
         }
-
         return mostRecentUpdateDate;
+    }
+
+
+    public Instant getInfoSetDate() {
+        return infoSetDate;
+    }
+
+    public void setInfoSetDate(Instant infoSetDate) {
+        this.infoSetDate = infoSetDate;
     }
 
     @Override

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import "./ProjectList.css";
+import {Table} from 'react-bootstrap'
+import moment from "moment";
 
 class ProjectList extends Component {
 
@@ -18,14 +20,14 @@ class ProjectList extends Component {
 
     render() {
         return (
-            <div className="container">
-                <h3>All Projects</h3>
-                <table>
+                <Table striped borded hover>
                     <thead>
-                        <th>Project ID</th>
-                        <th>Project Name</th>
-                        <th>Project Description</th>
-                        <th>Date Created</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Last Activity</th>
+                        <th>Data Synched</th>
+                        <th>Created</th>
                     </thead>
                     <tbody>
                         { this.state.projects.map(projects =>
@@ -40,12 +42,14 @@ class ProjectList extends Component {
 
                                 <td>{projects.name}</td>
                                 <td>{projects.description}</td>
-                                <td>{projects.created_at}</td>
+                                <td>{moment(projects.created_at).format('lll')}</td>
+                                <td>No</td>
+                                <td>{moment(projects.created_at).format('ll')}</td>
+
                             </tr>
                             )}
                     </tbody>
-                </table>
-            </div>
+                </Table>
         )
     }
 }

@@ -40,8 +40,8 @@ public class ProjectController {
     */
 
     private final ProjectService projectService;
-    private String startDate = "2021-01-11T20:59:00.000Z";
-    private String endDate = "2021-02-22T20:59:00.000Z";
+    private String startDate = "2021-02-22T13:59:00.000Z";
+    private String endDate = "2021-03-15T13:59:00.000Z";
 
     @Autowired
     public ProjectController(ProjectService projectService) {
@@ -49,12 +49,15 @@ public class ProjectController {
     }
 
 
-
+    // Let user get all data of repositories of interest at once in the Repository list page
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
             List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
             projectService.saveNewProjects(projects);
+            for (Project p : projects) {
+                setProjectInfo(p.getId());
+            }
             return projects;
         } else {
             return projectService.getAllProjects();

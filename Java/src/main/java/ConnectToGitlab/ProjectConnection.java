@@ -21,16 +21,15 @@ import java.util.Objects;
 @RestController
 public class ProjectConnection {
 
-
     public List<Project> getAllProjectsFromGitLab() {
         User user = User.getInstance();
         String pageNumber = "1";
         List<Project> projects = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
         do {
-            String url = user.getServerUrl() + "projects?simple=true"
+            String url = user.getServerUrl() + "projects?"
                      + "&per_page=100&page=" + pageNumber +"&membership=true"
-                    + "&access_token=" + user.getToken();
+                    + "&access_token=" + user.getToken(); //?simple=true
             ResponseEntity<List<Project>> projectResponse = restTemplate.exchange(url,
                     HttpMethod.GET, null, new ParameterizedTypeReference<List<Project>>() {
                     });

@@ -3,7 +3,7 @@ import ProjectComponent from '../components/Projects/ProjectComponent'
 function Projects(){
     return(
         <div className="container">
-            <h1>Projects</h1>
+            <h2 style={{textAlign:'center'}}>Projects</h2>
             <ProjectComponent />
         </div>
     )
