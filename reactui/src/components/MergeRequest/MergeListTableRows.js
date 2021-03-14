@@ -53,6 +53,7 @@ export default function Row(props) {
                 </TableCell>
                 <TableCell>#{row.id} <a href= {row.mrUrl}> {row.title}</a> </TableCell>
                 <TableCell align="right">{row.score.toFixed(1)}</TableCell>
+                <TableCell align="right">{row.diffs.diffScore}</TableCell>
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
