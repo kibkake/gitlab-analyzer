@@ -89,10 +89,12 @@ public class Commit {
         this.diffs = diffs;
     }
 
+    @JsonProperty("committed_date")
     public Date getDate() {
         return date;
     }
 
+    @JsonProperty("committed_date")
     public void setDate(Date date) {
         this.date = date;
     }
