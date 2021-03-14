@@ -87,7 +87,7 @@ class LanguageScaleTable extends Component{
                 }}>
                     <div>
                         <Button className='AddNewScale' variant='primary' onClick={this.showModal} style={{marginRight:'10px'}}>
-                            Add new Language Multiplier
+                            Add new language multiplier
                         </Button>
                         <Button className='saveScale' variant='info' onClick={this.saveTable}>
                             Submit modifiers
