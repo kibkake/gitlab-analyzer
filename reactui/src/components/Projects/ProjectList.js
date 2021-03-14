@@ -77,7 +77,7 @@ class ProjectList extends Component {
         return (
             <div>
                 <div align="center" style={{padding: '20px'}}>
-                     <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
+                    <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
                 </div>
                 <Table striped borded hover style={{margin: 'auto', width: '85%'}}>
                     <thead>
@@ -88,36 +88,36 @@ class ProjectList extends Component {
                         <th>Last Updated</th>
                         <th><FormCheck class="form-check-inline">
                             <FormCheck.Label>
-                            <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
-                             Sync Data</FormCheck.Label>
-                            </FormCheck>
+                                <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
+                                Sync Data</FormCheck.Label>
+                        </FormCheck>
                         </th>
                         <th>Created</th>
                     </tr>
                     </thead>
                     <tbody>
-                        { this.state.projects.map(projects =>
-                            <tr>
-                                <button className="Button" to={projects.url}
-                                        type="button"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            window.location.href= window.location.pathname + "/" + projects.id + "/Developers";
+                    { this.state.projects.map(projects =>
+                        <tr>
+                            <button className="Button" to={projects.url}
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        window.location.href= window.location.pathname + "/" + projects.id + "/Developers";
 
-                                        }}>{projects.id}</button>
+                                    }}>{projects.id}</button>
 
-                                <td>{projects.name}</td>
-                                <td>{projects.description}</td>
-                                <td>{(projects.last_sync_at === "never") ? "Not Available" : moment(projects.last_sync_at).format('lll')}</td>
-                                <td>
-                                    <input type="checkbox" defaultChecked={!projects.checked}
-                                    checked={projects.checked}
-                                    onChange={() => this.handleSingleCheckboxChange(projects.id)}/>
-                                </td>
-                                <td>{moment(projects.created_at).format('ll')}</td>
+                            <td>{projects.name}</td>
+                            <td>{projects.description}</td>
+                            <td>{(projects.last_sync_at === "never") ? "Not Available" : moment(projects.last_sync_at).format('lll')}</td>
+                            <td>
+                                <input type="checkbox" defaultChecked={!projects.checked}
+                                       checked={projects.checked}
+                                       onChange={() => this.handleSingleCheckboxChange(projects.id)}/>
+                            </td>
+                            <td>{moment(projects.created_at).format('ll')}</td>
 
-                            </tr>
-                            )}
+                        </tr>
+                    )}
                     </tbody>
                 </Table>
             </div>

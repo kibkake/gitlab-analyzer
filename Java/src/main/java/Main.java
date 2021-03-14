@@ -1,22 +1,20 @@
 package main.java;
 
-import main.java.ConnectToGitlab.CommitConnection;
-import main.java.ConnectToGitlab.IssueConnection;
-import main.java.ConnectToGitlab.MergeRequestConnection;
-import main.java.ConnectToGitlab.ProjectConnection;
-import main.java.DatabaseClasses.Repository.ProjectRepository;
+import main.java.ConnectToGitlab.*;
 import main.java.Model.Commit;
 import main.java.Model.Issue;
 import main.java.Model.MergeRequest;
 import main.java.Model.User;
 
 import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
+import org.hamcrest.core.Is;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.*;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.io.PrintWriter;
@@ -30,7 +28,6 @@ public class Main {
 
     @Autowired
     private WrapperProjectRepository projectRepository;
-    private ProjectRepository projectRepo;
     /**
      * This is the main method for running Spring Boot
      *
@@ -41,12 +38,12 @@ public class Main {
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
-//        projectRepo.saveAll(connect.getAllProjectsFromGitLab());
-
-        System.out.println( new ProjectConnection().getAllProjectsFromGitLab());
-
-//        System.out.println( new CommitConnection().getProjectCommitsFromGitLab(6));
         SpringApplication.run(Main.class,args);
+    }
+
+    @Bean
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
     }
 
     /**

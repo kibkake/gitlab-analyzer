@@ -56,17 +56,12 @@ public class ProjectController {
         projectService.setProjectInfo(projectId);
     }
 
-    @GetMapping("setProjectMrs/{projectId}")
-    public void setProjectMRs(@PathVariable int projectId) {
-        projectService.setProjectMrs(projectId);
-    }
-
-
     @RequestMapping("setProjectInfoWithSettings/{projectId}")
     public void setProjectInfoWithSettings(@PathVariable int projectId, ProjectSettings projectSettings) {
         projectSettings.setProjectId(projectId);
         projectService.setProjectInfoWithSettings(projectId, projectSettings);
     }
+
     //TODO: how to update if the current db is not empty,
     //and a new project is added? Because the new project isn't getting updated by setProjectInfo() call
     @GetMapping("projects")
@@ -104,7 +99,6 @@ public class ProjectController {
 
     @GetMapping("projects/{projectId}/developers")
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
-        Project project = projectService.getProject(projectId);
         return projectService.getProjectDevelopers(projectId);
     }
 
@@ -246,6 +240,11 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/commit/{commitId}")
     public Commit getCommit(@PathVariable String commitId, @PathVariable int projectId) {
         return projectService.getCommit(projectId, commitId);
+    }
+
+    @GetMapping("setProjectMrs/{projectId}")
+    public void setProjectMRs(@PathVariable int projectId) {
+        projectService.setProjectMrs(projectId);
     }
 
     @GetMapping("projects/{projectId}/mergeRequest/{mrId}")

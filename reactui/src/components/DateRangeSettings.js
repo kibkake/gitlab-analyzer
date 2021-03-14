@@ -80,7 +80,7 @@ function DateRangeSettings(){
     }
     return(   
         <>
-        <h2 style={{marginTop:'40px',marginLeft:'39%',paddingBottom:'10px'}}>Snapshot Date Range</h2>
+        <h2 style={{textAlign:'center'}}>Snapshot Date Range</h2>
         <Grid container justify="center">
             <span className="startDate">   
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>   
