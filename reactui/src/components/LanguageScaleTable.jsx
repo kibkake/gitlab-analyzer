@@ -23,12 +23,13 @@ class LanguageScaleTable extends Component{
             multiplier:1,
         }]
         console.log("mouting");
-        const tempScale =JSON.parse(sessionStorage.getItem('languageScale'));
+        var tempScale =JSON.parse(sessionStorage.getItem('languageScale'));
         if(tempScale===null||Object.keys(tempScale).length===0){
-            console.log("null");
+            tempScale=baseScale
             this.setState({
                 LanguageScale:baseScale,
             })
+
         }else{
             console.log('in');
             console.log(tempScale);
@@ -36,21 +37,24 @@ class LanguageScaleTable extends Component{
                 LanguageScale:tempScale
             })
         }
+        sessionStorage.setItem('languageScale',JSON.stringify(tempScale));
     }
     handleSubmit(e) {
         e.preventDefault();
-        const{LanguageScale}=this.state.LanguageScale;
+        let tempScale=[...this.state.LanguageScale];
         const newScale={
             name:this.name.value,
             extention:this.extention.value,
             multiplier:this.multiplier.value,
         }
+        tempScale=[...this.state.LanguageScale,newScale]
         this.setState({
-            LanguageScale:[...this.state.LanguageScale,newScale],
+            LanguageScale:tempScale,
             newScaleIsShown:false,
         })
-
-        this.saveTable();
+        console.log("submite state");
+        console.log(this.state.LanguageScale)
+        sessionStorage.setItem('languageScale',JSON.stringify(tempScale));
     };
     showModal = () => {
         this.setState({ 
@@ -63,6 +67,9 @@ class LanguageScaleTable extends Component{
         });
     };
     saveTable=()=>{
+
+        console.log("submite state");
+        console.log(this.state.LanguageScale)
         sessionStorage.setItem('languageScale',JSON.stringify(this.state.LanguageScale));
     };
     deleteModifier(index){
