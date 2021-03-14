@@ -8,7 +8,7 @@ Used this tutorial to set up Mockito JUnit tests for Controller functions.
 For adding mockito as a dependency.
  */
 
-package test.DatabaseClasses.Controller;
+package test.java.DatabaseClasses.Controller;
 
 import main.java.DatabaseClasses.Controller.*;
 import main.java.DatabaseClasses.Service.*;

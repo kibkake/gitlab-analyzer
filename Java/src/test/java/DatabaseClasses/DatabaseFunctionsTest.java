@@ -1,4 +1,4 @@
-package test.DatabaseClasses;
+package test.java.DatabaseClasses;
 
 import main.java.DatabaseClasses.DatabaseFunctions;
 import main.java.Model.User;
