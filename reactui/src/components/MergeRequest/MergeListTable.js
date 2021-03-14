@@ -1,6 +1,4 @@
 import React, {PureComponent} from 'react';
-import Flexbox from 'flexbox-react';
-import { flexbox } from '@material-ui/system';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';

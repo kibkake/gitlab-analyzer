@@ -56,7 +56,7 @@ class CommentTable extends Component{
         console.log(comments);
 
         return (
-            <Table striped bordered hover>
+            <Table striped bordered hover style ={{margin:'auto', width:'90%'}}>
                     <tr>
                         <th>Date</th>
                         <th>Word Count</th>
