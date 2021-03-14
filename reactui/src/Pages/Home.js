@@ -3,6 +3,8 @@ import React,{ Component } from "react";
 import ProfileComponent from "../components/ProfileComponent";
 import HomeInfo from "../components/HomeInfo";
 import DateRangeSettingComponent from "../components/DateRangeSettings";
+import LanguageScaleTable from "../components/LanguageScaleTable";
+
 
 function Home(){
 
@@ -14,6 +16,10 @@ function Home(){
 
             <div className='dateRangeSetting'>
                 <DateRangeSettingComponent/>
+            </div>
+
+            <div>
+                <LanguageScaleTable/>
             </div>
 
         </>

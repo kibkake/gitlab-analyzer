@@ -36,10 +36,13 @@
     "react-highlight-words": "^0.17.0",
     "react-icons": "^4.1.0",
     "react-minimal-side-navigation": "^1.6.0",
+    "react-modal": "^3.12.1",
+    "react-popup": "^0.10.0",
     "react-responsive-container": "0.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "react-select": "^4.1.0",
+    "reactjs-popup": "^2.0.4",
     "recharts": "^2.0.7",
     "web-vitals": "^1.1.0"
   },

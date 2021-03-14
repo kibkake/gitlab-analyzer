@@ -1,6 +1,7 @@
 package main.java.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -14,10 +15,13 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @Document("Project")
 public class Project {
+
+    @Id
     private int id;
     private String description;
     private String name;
@@ -30,7 +34,6 @@ public class Project {
     private boolean infoSet;
     private Instant infoSetDate;
     private Instant lastProjectUpdateAt;
-    private boolean checkedToUpdate;
 
     public Project() {
         mergedRequests = new ArrayList<>();
@@ -90,14 +93,12 @@ public class Project {
         }
     }
 
-    @JsonProperty("checked")
-    public boolean isCheckedToUpdate() {
-        return checkedToUpdate;
+    public Instant getInfoSetDate() {
+        return infoSetDate;
     }
 
-    @JsonProperty("checked")
-    public void setCheckedToUpdate(boolean checkedToUpdate) {
-        this.checkedToUpdate = checkedToUpdate;
+    public void setInfoSetDate(Instant infoSetDate) {
+        this.infoSetDate = infoSetDate;
     }
 
     public Instant getLastProjectUpdateAt() {
@@ -107,50 +108,6 @@ public class Project {
     public void setLastProjectUpdateAt(Instant lastProjectUpdateAt) {
         this.lastProjectUpdateAt = lastProjectUpdateAt;
     }
-
-    public boolean isInfoSet() {
-        return infoSet;
-    }
-
-    public void setSyncInfo() {
-        this.infoSet = true;
-        this.infoSetDate = Clock.systemUTC().instant();
-    }
-
-    public boolean projectHasBeenUpdated() {
-        setLastProjectUpdateAt(lastProjectUpdateDate());
-        if (infoSetDate != null) {
-            return lastProjectUpdateAt.compareTo(infoSetDate) > 0;
-        }
-        return true;
-    }
-
-    private Instant lastProjectUpdateDate() {
-        Instant mostRecentMergeRequestUpdateDate = new main.java.ConnectToGitlab.MergeRequestConnection().getMostRecentMergeRequestUpdateDate(id);
-        Instant mostRecentIssueUpdateDate = new main.java.ConnectToGitlab.IssueConnection().getMostRecentIssueUpdateDate(id);
-        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
-
-        Instant mostRecentUpdateDate = mostRecentMergeRequestUpdateDate;
-
-        if (mostRecentIssueUpdateDate.compareTo(mostRecentUpdateDate) > 0) {
-            mostRecentUpdateDate = mostRecentIssueUpdateDate;
-        }
-        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
-            mostRecentUpdateDate = mostRecentCommitDate;
-        }
-
-        return mostRecentUpdateDate;
-    }
-
-
-    public Instant getInfoSetDate() {
-        return infoSetDate;
-    }
-
-    public void setInfoSetDate(Instant infoSetDate) {
-        this.infoSetDate = infoSetDate;
-    }
-
 
     public List<MergeRequest> getMergedRequests() {
         return mergedRequests;
@@ -184,6 +141,40 @@ public class Project {
         this.developers = developers;
     }
 
+    public boolean isInfoSet() {
+        return infoSet;
+    }
+
+
+    public void setSyncInfo() {
+        this.infoSet = true;
+        this.infoSetDate = Clock.systemUTC().instant();
+    }
+
+    public boolean projectHasBeenUpdated() {
+        setLastProjectUpdateAt(lastProjectUpdateDate());
+        if(infoSetDate == null) {
+            return true;
+        } else {
+            return lastProjectUpdateAt.compareTo(infoSetDate) > 0;
+        }
+    }
+
+    private Instant lastProjectUpdateDate() {
+        Instant mostRecentMergeRequestUpdateDate = new main.java.ConnectToGitlab.MergeRequestConnection().getMostRecentMergeRequestUpdateDate(id);
+        Instant mostRecentIssueUpdateDate = new main.java.ConnectToGitlab.IssueConnection().getMostRecentIssueUpdateDate(id);
+        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
+
+        Instant mostRecentUpdateDate = mostRecentMergeRequestUpdateDate;
+        if (mostRecentIssueUpdateDate.compareTo(mostRecentUpdateDate) > 0) {
+            mostRecentUpdateDate = mostRecentIssueUpdateDate;
+        }
+        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
+            mostRecentUpdateDate = mostRecentCommitDate;
+        }
+
+        return mostRecentUpdateDate;
+    }
 
     @Override
     public String toString() {

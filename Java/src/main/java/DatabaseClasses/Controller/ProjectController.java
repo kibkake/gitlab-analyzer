@@ -1,22 +1,23 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.Model.DateScore;
-import main.java.DatabaseClasses.Model.AllScores;
-import main.java.Model.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.ConnectToGitlab.ProjectConnection;
+import main.java.DatabaseClasses.Model.AllScores;
+import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Service.ProjectService;
+import main.java.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * This class manages API mapping for functions to be called from frontend.
@@ -49,11 +50,29 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    // can only be used on very small projects
+    @GetMapping("setProjectInfo/{projectId}")
+    public void setProjectInfo(@PathVariable int projectId) {
+        projectService.setProjectInfo(projectId);
+    }
+
+    @GetMapping("setProjectMrs/{projectId}")
+    public void setProjectMRs(@PathVariable int projectId) {
+        projectService.setProjectMrs(projectId);
+    }
+
+
+    @RequestMapping("setProjectInfoWithSettings/{projectId}")
+    public void setProjectInfoWithSettings(@PathVariable int projectId, ProjectSettings projectSettings) {
+        projectSettings.setProjectId(projectId);
+        projectService.setProjectInfoWithSettings(projectId, projectSettings);
+    }
 
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
-            projectService.saveNewProjects(new ProjectConnection().getAllProjectsFromGitLab());
+            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
+            projectService.saveNewProjects(projects);
         }
 
         return projectService.getAllProjects();
@@ -91,12 +110,6 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/issues")
     public List<Issue> getProjectIssues(@PathVariable("projectId") int projectId) {
         return projectService.getProjectIssues(projectId);
-    }
-
-    // can only be used on very small projects
-    @GetMapping("setProjectInfo/{projectId}")
-    public void setProjectInfo(@PathVariable int projectId) {
-        projectService.setProjectInfo(projectId);
     }
 
     @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")

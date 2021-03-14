@@ -73,7 +73,7 @@ public class CommitController {
                                            @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return commitService.getAllUserCommitsArray(projectId, committerName, StartLocalTime, endLocalTime);
+        return commitService.getUserCommitsArray(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
 
