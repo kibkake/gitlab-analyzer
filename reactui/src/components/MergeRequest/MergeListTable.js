@@ -58,19 +58,26 @@ export default class MergeListTable  extends PureComponent {
         }
     }
 
+    getFullDiffScore (id) {
+        this.state.merges.item(function(item) {
+
+        })
+    }
 
     render () {
+
         const output = this.state.merges.map(function(item) {
             return {
                 id: item.id,
                 date: item.merged_at,
                 title: item.title,
                 score: item.mrScore,
+                diffScore: 0,
                 mrUrl: item.web_url,
                 diffs: item.diffs.map(function (diffs) {
                     return {
                         path: diffs.new_path,
-                        diff: diffs.diff
+                        diff: diffs.diff,
                     };
                 }),
                 commits: item.commits.map(function (commit) {
@@ -99,7 +106,9 @@ export default class MergeListTable  extends PureComponent {
                             <TableRow>
                                 <TableCell align="left" className="tableCell"> Date </TableCell>
                                 <TableCell>Merge Title</TableCell>
-                                <TableCell align="right">Score</TableCell>
+                                <TableCell align="right">Merge Score</TableCell>
+                                <TableCell align="right">Full Diff Score</TableCell>
+                                <TableCell align="right">Commits' Diff Score</TableCell>
                                 <TableCell align="right">Commits </TableCell>
                                 <TableCell align="right">Full Diff</TableCell>
                             </TableRow>
