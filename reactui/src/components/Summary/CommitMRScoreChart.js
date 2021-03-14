@@ -37,10 +37,10 @@ export default class CommitMRScoreChart extends PureComponent {
         const response = await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
             endTm + "/either")
-
+        console.log(response);
         const score = await response.data
-        console.log("scores")
-        console.log(score)
+        console.log("scores");
+        console.log(score);
         await this.setState({codeScore : score, parentdata: username,startTime: startTm,
             endTime: endTm})
         this.applyMultipliers();
@@ -54,31 +54,28 @@ export default class CommitMRScoreChart extends PureComponent {
             var newCommitScore=0;
             var newMergeScore=0;
             for(const i in newCodeScore[k].commitIds){
-                for(const p in newCodeScore[k].commitIds[i].diffs){
-                    var fileExtension = newCodeScore[k].commitIds[i].diffs[p].new_path.split(".").pop();
-                    const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
-                    if(extensionIndex!==-1){
-                        var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].commitIds[i].diffs[p].diffScore;
-                        newCommitScore = newCommitScore+tempCommitScore;
-                    }else{
-                        newCommitScore = newCommitScore+newCodeScore[k].commitIds[i].diffs[p].diffScore;
-                    }
+                var fileExtension = newCodeScore[k].commitIds[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                if(extensionIndex!==-1){
+                    var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].commitIds[i].diffScore;
+                    newCommitScore = newCommitScore+tempCommitScore;
+                }else{
+                    newCommitScore = newCommitScore+newCodeScore[k].commitIds[i].diffScore;
                 }
             }
             for(const i in newCodeScore[k].mergeRequestIds){
-                for(const p in newCodeScore[k].mergeRequestIds[i].diffs){
-                    var fileExtension = newCodeScore[k].mergeRequestIds[i].diffs[p].new_path.split(".").pop();
-                    const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
-                    if(extensionIndex!==-1){
-                        var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].mergeRequestIds[i].diffs[p].diffScore;
-                        newMergeScore = newMergeScore+tempCommitScore;
-                    }else{
-                        newMergeScore = newMergeScore+newCodeScore[k].mergeRequestIds[i].diffs[p].diffScore;
-                    }
+                var fileExtension = newCodeScore[k].mergeRequestIds[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                if(extensionIndex!==-1){
+                    var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].mergeRequestIds[i].diffScore;
+                    newMergeScore = newMergeScore+tempCommitScore;
+                }else{
+                    newMergeScore = newMergeScore+newCodeScore[k].mergeRequestIds[i].diffScore;
                 }
             }
             newCodeScore[k].mergeRequestScore=newMergeScore;
             newCodeScore[k].commitScore=newCommitScore;
+            console.log(newCommitScore);
         }
         this.setState({
             codeScore:newCodeScore,

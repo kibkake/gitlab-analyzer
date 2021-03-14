@@ -33,7 +33,7 @@ public class CommitDateScore implements Comparable<CommitDateScore>{
         this.numCommits = numCommits;
         this.authorName = authorName;
     }
-
+    
     public LocalDate getDate() {
         return date;
     }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -92,7 +93,7 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        username, currentCommit);
+                        username, currentCommit.getDiffs());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
@@ -127,7 +128,7 @@ public class ProjectService {
 
             if (!dateMap.containsKey(mergedDate.toString())) {
                 DateScore dateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
-                        username, 1, mergeRequest);
+                        username, 1, mergeRequest.getDiffs());
                 dateMap.put(mergedDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(mergedDate.toString());
@@ -142,7 +143,7 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        username, currentCommit);
+                        username, currentCommit.getDiffs());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
