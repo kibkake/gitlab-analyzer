@@ -111,25 +111,23 @@ public class Project {
         this.infoSetDate = Clock.systemUTC().instant();;
     }
 
-    public boolean projectHasBeenUpdated() {
-        Instant lastUpdateDate = lastProjectUpdateDate();
-        return lastUpdateDate.compareTo(infoSetDate) > 0;
+    public boolean commitsHaveBeenUpdated() {
+        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
+        return (mostRecentCommitDate.compareTo(infoSetDate) > 0);
     }
 
-    private Instant lastProjectUpdateDate() {
+    public boolean mergeRequestsHaveBeenUpdated() {
         Instant mostRecentMergeRequestUpdateDate = new main.java.ConnectToGitlab.MergeRequestConnection().getMostRecentMergeRequestUpdateDate(id);
+        return (mostRecentMergeRequestUpdateDate.compareTo(infoSetDate) > 0);
+    }
+
+    public boolean issuesHaveBeenUpdated() {
         Instant mostRecentIssueUpdateDate = new main.java.ConnectToGitlab.IssueConnection().getMostRecentIssueUpdateDate(id);
-        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
+        return (mostRecentIssueUpdateDate.compareTo(infoSetDate) > 0);
+    }
 
-        Instant mostRecentUpdateDate = mostRecentMergeRequestUpdateDate;
-        if (mostRecentIssueUpdateDate.compareTo(mostRecentUpdateDate) > 0) {
-            mostRecentUpdateDate = mostRecentIssueUpdateDate;
-        }
-        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
-            mostRecentUpdateDate = mostRecentCommitDate;
-        }
-
-        return mostRecentUpdateDate;
+    public boolean projectHasBeenUpdated() {
+        return (commitsHaveBeenUpdated() || mergeRequestsHaveBeenUpdated() || issuesHaveBeenUpdated());
     }
 
     @Override
