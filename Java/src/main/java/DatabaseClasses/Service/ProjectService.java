@@ -68,17 +68,20 @@ public class ProjectService {
         return devMRs.size();
     }
 
+
     @Transactional
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
 
         if (project.projectHasBeenUpdated()) {
+
             project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
             project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
             project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
             project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
             project.setSyncInfo();
+            project.setLastSyncAt();
             projectRepository.save(project);
         }
     }

@@ -6,6 +6,7 @@ import main.java.Model.*;
 import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -49,19 +50,23 @@ public class ProjectController {
     }
 
 
-    // Let user get all data of repositories of interest at once in the Repository list page
+    // Let user sync all data of repositories of interest at once in the Repository list page
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
-            projectService.saveNewProjects(projects);
-            for (Project p : projects) {
-                setProjectInfo(p.getId());
-            }
-            return projects;
-        } else {
-            return projectService.getAllProjects();
+            projectService.saveNewProjects(new ProjectConnection().getAllProjectsFromGitLab());
         }
+
+        List<Project> simpleProject = projectService.getAllProjects();
+
+
+        return simpleProject;
+    }
+
+    @PostMapping("/updateRepo")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateProjectDB(@RequestBody int projectId) {
+        projectService.setProjectInfo(projectId);
     }
 
     @GetMapping("projects/{projectId}")

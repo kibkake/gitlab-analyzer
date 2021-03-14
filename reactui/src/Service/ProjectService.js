@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const PROJECT_URL = "/api/v1/";
 
 /*
@@ -33,12 +32,8 @@ class ProjectService {
         return axios.get(PROJECT_URL+ "projects/commitScoresPerDay/${projectId}/${committerName}")
     }
 
-    getCommentScore(){
-
-    }
-
-    getCodeDiff() {
-
+    sendUpdateDecision(projectId) {
+        return axios.post(PROJECT_URL + "updateRepo")
     }
 
     getCommentInfo(projectId, committerName, start, end) {
