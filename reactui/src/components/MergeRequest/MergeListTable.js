@@ -66,6 +66,7 @@ export default class MergeListTable  extends PureComponent {
                 date: item.merged_at,
                 title: item.title,
                 score: item.mrScore,
+                sum: item.sumOfCommits,
                 mrUrl: item.web_url,
                 diffs: item.diffs.map(function (diffs) {
                     return {
@@ -84,6 +85,7 @@ export default class MergeListTable  extends PureComponent {
                                 path: diffs.new_path,
                                 diff: diffs.diff
                             };
+
                         })
                     };
                 })
@@ -99,8 +101,9 @@ export default class MergeListTable  extends PureComponent {
                             <TableRow>
                                 <TableCell align="left" className="tableCell"> Date </TableCell>
                                 <TableCell>Merge Title</TableCell>
-                                <TableCell align="right">Score</TableCell>
+                                <TableCell align="right">MR Score</TableCell>
                                 <TableCell align="right">Commits </TableCell>
+                                <TableCell align="right">Commit Sum</TableCell>
                                 <TableCell align="right">Full Diff</TableCell>
                             </TableRow>
                         </TableHead>

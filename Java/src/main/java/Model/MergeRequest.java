@@ -30,6 +30,18 @@ public class MergeRequest {
     List<Note> codeReviewNotes;
     List<Diff> diffs;
     private String mrUrl;
+    private double sumOfCommits;
+
+
+    public double getSumOfCommits() {
+        return sumOfCommits;
+    }
+
+    public void setSumOfCommits(double sumOfCommits) {
+        this.sumOfCommits = sumOfCommits;
+    }
+
+
 
     @JsonProperty("web_url")
     public String getMrUrl() {
