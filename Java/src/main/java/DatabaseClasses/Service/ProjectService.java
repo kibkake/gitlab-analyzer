@@ -114,7 +114,6 @@ public class ProjectService {
         List<Commit> projectCommits = new CommitConnection().getProjectCommitsFromGitLab(projectId);
         List<MergeRequest> projectMergeRequests = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
         project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
-        project.setInfoSet(true);
         projectRepository.save(project);
         commitRepository.saveAll(projectCommits);
         mergeRequestRepository.saveAll(projectMergeRequests);

@@ -257,8 +257,6 @@ public class ProjectController {
                 whichDevFieldIsString(whichDevField));
     }
 
-    @PostMapping("/setstartdate")
-
     @PostMapping("/setStartDate")
     public void setStartDate(@RequestBody Map<String, String> requestBody) {
         if(requestBody.get("starttime") != null) {
