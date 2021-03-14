@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import axios from "axios";
 import Row from "./Rows";
 import './MergeListTable.css'
+// import { merge } from 'jquery';
 
 export default class MergeListTable  extends PureComponent {
     constructor(props) {
@@ -40,10 +41,50 @@ export default class MergeListTable  extends PureComponent {
         const response = axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
             .then(res => {
                         this.setState({merges : res.data, parentData: username});
+                        this.applyMultipliers();
                     }).catch((error) => {
                     console.error(error);})
 
-        console.log(this.state.merges)
+
+    }
+
+    applyMultipliers(){
+        var scale = JSON.parse(sessionStorage.getItem('languageScale'));
+        var newMerges = [...this.state.merges];
+        for(const k in newMerges){
+            var newMRScore=0;
+            for(var i in newMerges[k].diffs){
+                var fileExtension = newMerges[k].diffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                if(extensionIndex!==-1){
+                    var newScore = scale[extensionIndex].multiplier * newMerges[k].diffs[i].diffScore;
+                    newMerges[k].diffs[i] = {...newMerges[k].diffs[i], diffScore:newScore};
+                    newMRScore = newMRScore+newScore;
+                }else{
+                    newMRScore = newMRScore+newMerges[k].diffs[i].diffScore;
+                }
+            }
+            for(var p in newMerges[k].commits){
+                var newCommitScore=0;
+                for(var i in newMerges[k].commits[p].diffs){
+                    var fileExtension = newMerges[k].commits[p].diffs[i].new_path.split(".").pop();
+                    const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                    if(extensionIndex!==-1){
+                        var newScore = scale[extensionIndex].multiplier * newMerges[k].commits[p].diffs[i].diffScore;
+                        newMerges[k].commits[p].diffs[i] = {...newMerges[k].commits[p].diffs[i], diffScore:newScore};
+                        newCommitScore = newCommitScore+newScore;
+                    }else{
+                        newCommitScore = newCommitScore+newMerges[k].commits[p].diffs[i].diffScore;
+                    }
+                    
+                }
+                newMerges[k].commits[p].commitScore=newCommitScore;
+            }
+            newMerges[k].mrScore=newMRScore;
+        }
+        this.setState({
+            merges:newMerges,
+        })
     }
 
     async componentDidUpdate(prevProps){
@@ -52,6 +93,7 @@ export default class MergeListTable  extends PureComponent {
             this.props.endTime !== prevProps.endTime){
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
+        console.log("update");
     }
 
 

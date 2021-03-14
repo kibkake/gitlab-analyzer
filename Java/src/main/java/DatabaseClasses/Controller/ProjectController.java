@@ -2,23 +2,20 @@ package main.java.DatabaseClasses.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import main.java.DatabaseClasses.Model.DateScore;
-import main.java.DatabaseClasses.Model.AllScores;
-import main.java.Model.*;
 import main.java.ConnectToGitlab.ProjectConnection;
+import main.java.DatabaseClasses.Model.AllScores;
+import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Service.ProjectService;
+import main.java.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class manages API mapping for functions to be called from frontend.

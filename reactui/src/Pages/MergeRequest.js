@@ -31,7 +31,6 @@ class MergeRequest extends Component{
         return(
             <div>
                 <DropDownMenuMerge listOfDevelopers = {developersArray}/>
-
             </div>
         )
     }
