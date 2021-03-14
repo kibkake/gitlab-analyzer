@@ -39,7 +39,6 @@ public class Project {
         developers = new ArrayList<>();
         lastSyncAt = "never";
         infoSet = false;
-        checkedToUpdate = false;
         // The point of initializing them to empty arraylists is that, if they're not ever
         // given values, they will be empty lists instead of equaling null.
     }
@@ -139,8 +138,7 @@ public class Project {
         if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
             mostRecentUpdateDate = mostRecentCommitDate;
         }
-//        setLastProjectUpdateAt(mostRecentUpdateDate);
-////        this.lastProjectUpdateAt = ;
+
         return mostRecentUpdateDate;
     }
 

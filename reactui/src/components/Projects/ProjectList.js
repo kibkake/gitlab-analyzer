@@ -3,6 +3,7 @@ import axios from "axios";
 import {Table} from 'react-bootstrap'
 import "./ProjectList.css";
 import moment from "moment";
+import FormCheck from 'react-bootstrap/FormCheck'
 import ProjectService from "../../Service/ProjectService";
 
 class ProjectList extends Component {
@@ -12,7 +13,6 @@ class ProjectList extends Component {
         this.state = {
             projects: [],
             selectAll: false,
-            checked: []
         }
         this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
         this.handleSingleCheckboxChange = this.handleSingleCheckboxChange.bind(this);
@@ -29,34 +29,41 @@ class ProjectList extends Component {
             })
     }
 
-    //Handles checkbox behaviour [https://stackoverflow.com/questions/50495130/react-table-select-all-select-box]
+    //Handles checkbox behaviour
     handleSelectAllChange = () => {
         var selectAll = !this.state.selectAll;
         this.setState({ selectAll: selectAll });
-        var checkedCopy = [];
-        this.state.projects.forEach(function(item, index) {
-            checkedCopy.push(selectAll);
+
+        const changed = this.state.projects.map(function(item) {
+            return {
+                id: item.id,
+                name: item.name,
+                description: item.description,
+                last_sync_at: item.last_sync_at,
+                created_at: item.created_at,
+                checked: selectAll,
+            }
         });
-        this.setState({checked: checkedCopy});
+        this.setState({projects: changed})
+        console.log(this.state.projects);
     };
 
     handleSingleCheckboxChange = id => {
-        console.log(id);
-
-        const change = this.state.projects.map(function(item)  {
-            return {}
-            if (item.id === id) {
-                if (!item.checked) {
-                    this.setState({ selectAll: false });
-                }
-                item.checked = !item.checked;
-
+        const changed = this.state.projects.map(function(item)  {
+            return {
+                id: item.id,
+                name: item.name,
+                description: item.description,
+                last_sync_at: item.last_sync_at,
+                created_at: item.created_at,
+                checked: (item.id === id) ? !item.checked : item.checked
             }
         })
-        this.setState({projects: change});
+
+        this.setState({projects: changed});
     };
 
-    // Handles Update button onclick behavior
+    // Handles Update button onclick behavior, but the update function in the backend isn't working yet so commented out.
     updateRepos() {
         // this.state.projects.map(item => {
         //     if (item.checked) {
@@ -66,23 +73,24 @@ class ProjectList extends Component {
     }
 
     render() {
-        console.log(this.state.projects);
 
         return (
             <div>
-                <div align="end">
+                <div align="center" style={{padding: '20px'}}>
                      <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
                 </div>
-                <Table striped borded hover>
+                <Table striped borded hover style={{margin: 'auto', width: '85%'}}>
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Description</th>
                         <th>Last Updated</th>
-                        <th>Sync Data
-                            <input type="checkbox"
-                            onChange={this.handleSelectAllChange}/>
+                        <th><FormCheck class="form-check-inline">
+                            <FormCheck.Label>
+                            <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
+                             Sync Data</FormCheck.Label>
+                            </FormCheck>
                         </th>
                         <th>Created</th>
                     </tr>
@@ -100,7 +108,7 @@ class ProjectList extends Component {
 
                                 <td>{projects.name}</td>
                                 <td>{projects.description}</td>
-                                <td>{moment(projects.last_sync_at).format('lll')}</td>
+                                <td>{(projects.last_sync_at === "never") ? "Not Available" : moment(projects.last_sync_at).format('lll')}</td>
                                 <td>
                                     <input type="checkbox" defaultChecked={!projects.checked}
                                     checked={projects.checked}

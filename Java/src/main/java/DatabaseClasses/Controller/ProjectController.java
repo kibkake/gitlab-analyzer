@@ -50,19 +50,18 @@ public class ProjectController {
     }
 
 
-    // Let user sync all data of repositories of interest at once in the Repository list page
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
             projectService.saveNewProjects(new ProjectConnection().getAllProjectsFromGitLab());
         }
 
-        List<Project> simpleProject = projectService.getAllProjects();
-
-
-        return simpleProject;
+        return projectService.getAllProjects();
     }
 
+    // Let user sync the data of repositories of interest at once in the Repository list page
+    //  by the request from the UI
+    //TODO: setProjectInfo testing
     @PostMapping("/updateRepo")
     @ResponseStatus(value = HttpStatus.OK)
     public void updateProjectDB(@RequestBody int projectId) {
@@ -72,19 +71,20 @@ public class ProjectController {
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {
         Project project = projectService.getProject(projectId);
-        if (!project.isInfoSet()) {
-            projectService.setProjectInfo(projectId);
-            project = projectService.getProject(projectId); // get project now that it has been modified
-        }
+        // The update should be done once in the repo list page by user's request
+        // rather than done as everytime the user access each project page
+        // The setProjectInfo function is not working for now from my testing,
+        // so commenting this out doesn't affect the current app
+//        if (!project.isInfoSet()) {
+//            projectService.setProjectInfo(projectId);
+//            project = projectService.getProject(projectId); // get project now that it has been modified
+//        }
         return project;
     }
 
     @GetMapping("projects/{projectId}/developers")
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
         Project project = projectService.getProject(projectId);
-        if (!project.isInfoSet()) {
-            projectService.setProjectInfo(projectId);
-        }
         return projectService.getProjectDevelopers(projectId);
     }
 
