@@ -67,7 +67,8 @@ public class ProjectController {
         projectSettings.setProjectId(projectId);
         projectService.setProjectInfoWithSettings(projectId, projectSettings);
     }
-
+    //TODO: how to update if the current db is not empty,
+    //and a new project is added? Because the new project isn't getting updated by setProjectInfo() call
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
@@ -92,8 +93,8 @@ public class ProjectController {
         Project project = projectService.getProject(projectId);
         // The update should be done once in the repo list page by user's request
         // rather than done as everytime the user access each project page
-        // The setProjectInfo function is not working for now from my testing,
-        // so commenting this out doesn't affect the current app
+        // commenting this out doesn't affect the current app
+
 //        if (!project.isInfoSet()) {
 //            projectService.setProjectInfo(projectId);
 //            project = projectService.getProject(projectId); // get project now that it has been modified
