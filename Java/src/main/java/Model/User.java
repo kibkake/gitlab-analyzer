@@ -3,6 +3,9 @@ package main.java.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Holds the user and login information
  */
@@ -19,6 +22,7 @@ public class User {
     private String email;
     private String password;
     private boolean isLoggedIn;
+    private List<ProjectSettings> projectSettings;
 
 
     private static User singleton = new User( );
@@ -31,6 +35,7 @@ public class User {
     }
 
     public User() {
+        projectSettings = new ArrayList<>();
     }
 
     private User(String serverUrl, String token, String name, String email) {
@@ -115,5 +120,21 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public List<ProjectSettings> getProjectSettings() {
+        return projectSettings;
+    }
+
+    public void setProjectSettings(List<ProjectSettings> projectSettings) {
+        this.projectSettings = projectSettings;
+    }
+
+    public static User getSingleton() {
+        return singleton;
+    }
+
+    public static void setSingleton(User singleton) {
+        User.singleton = singleton;
     }
 }

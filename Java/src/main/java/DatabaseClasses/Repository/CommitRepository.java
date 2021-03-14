@@ -8,6 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Implements basic CRUD and adds use for custom mongoDB functions for use with spring.
+ * The MongoRepository implements the basic CRUD and is connected to spring through the config file using the mongo
+ * template bean. CommitRepositoryCustom follows the spring naming conventions to implement custom database function with
+ * the custom interface and its implementation
+ */
+
 @Repository
 public interface CommitRepository extends MongoRepository<Commit, String>, CommitRepositoryCustom {
 
@@ -15,6 +22,5 @@ public interface CommitRepository extends MongoRepository<Commit, String>, Commi
     List<Commit> findByProjectIdAndDateBetweenAndAuthorName(int projectId, Date start, Date end, String author_name);
 
     Commit findByProjectIdAndId(int projectId, String commitHash);
-
 
 }

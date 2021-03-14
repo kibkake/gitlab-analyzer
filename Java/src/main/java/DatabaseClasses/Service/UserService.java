@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses.Service;
 
+import main.java.Model.ProjectSettings;
 import main.java.Model.User;
 import main.java.DatabaseClasses.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,4 +48,14 @@ public class UserService {
     public boolean retrieveUserIsLoggedIn(String username) {
         return userRepository.retrieveUserInfo(username).isLoggedIn();
     }
+
+    public void addSetting(String username, ProjectSettings setting) {
+        userRepository.addSetting(username, setting);
+    }
+
+    public List<ProjectSettings> getUserSettings(String username) {
+        User user = userRepository.findUserByUsername(username);
+        return user.getProjectSettings();
+    }
+
 }

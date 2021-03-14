@@ -8,9 +8,9 @@ import java.time.LocalDate;
 public class AllScores {
     private LocalDate startDate;
     private LocalDate endDate;
-    private double totalCommitScore;
+    private Double totalCommitScore;
     private int totalCommentWordCount;
-    private double totalMergeRequestScore;
+    private Double totalMergeRequestScore;
 
     public AllScores() {
 
@@ -22,6 +22,13 @@ public class AllScores {
         this.endDate = endDate;
         this.totalCommitScore = totalCommitScore;
         this.totalCommentWordCount = totalCommentWordCount;
+        this.totalMergeRequestScore = totalMergeRequestScore;
+    }
+
+    public AllScores(LocalDate startDate, LocalDate endDate, Double totalCommitScore, Double totalMergeRequestScore) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.totalCommitScore = totalCommitScore;
         this.totalMergeRequestScore = totalMergeRequestScore;
     }
 

@@ -1,12 +1,11 @@
 package main.java.DatabaseClasses.Model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MergeRequestDateScore {
 
-    private LocalDate date;
+    private LocalDate mergedDate;
     private double mergeRequestScore;
     private String authorName;
     private int numMergeRequests;
@@ -16,8 +15,8 @@ public class MergeRequestDateScore {
     }
 
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getMergedDate() {
+        return mergedDate;
     }
 
 
@@ -25,8 +24,8 @@ public class MergeRequestDateScore {
         return authorName;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setMergedDate(LocalDate mergedDate) {
+        this.mergedDate = mergedDate;
     }
 
 
@@ -70,7 +69,7 @@ public class MergeRequestDateScore {
     @Override
     public String toString() {
         return "DateScore{" +
-                "date=" + date +
+                "date=" + mergedDate +
                 ", userName='" + authorName + '\'' +
                 '}';
     }

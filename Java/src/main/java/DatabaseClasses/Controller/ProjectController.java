@@ -1,5 +1,7 @@
 package main.java.DatabaseClasses.Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Model.AllScores;
 import main.java.Model.*;
@@ -13,6 +15,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +51,23 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    // can only be used on very small projects
+    @GetMapping("setProjectInfo/{projectId}")
+    public void setProjectInfo(@PathVariable int projectId) {
+        projectService.setProjectInfo(projectId);
+    }
 
+    @GetMapping("setProjectMrs/{projectId}")
+    public void setProjectMRs(@PathVariable int projectId) {
+        projectService.setProjectMrs(projectId);
+    }
+
+
+    @RequestMapping("setProjectInfoWithSettings/{projectId}")
+    public void setProjectInfoWithSettings(@PathVariable int projectId, ProjectSettings projectSettings) {
+        projectSettings.setProjectId(projectId);
+        projectService.setProjectInfoWithSettings(projectId, projectSettings);
+    }
 
     @GetMapping("projects")
     public List<Project> getAllProjects() {
@@ -83,12 +102,6 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/issues")
     public List<Issue> getProjectIssues(@PathVariable("projectId") int projectId) {
         return projectService.getProjectIssues(projectId);
-    }
-
-    // can only be used on very small projects
-    @GetMapping("setProjectInfo/{projectId}")
-    public void setProjectInfo(@PathVariable int projectId) {
-        projectService.setProjectInfo(projectId);
     }
 
     @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")

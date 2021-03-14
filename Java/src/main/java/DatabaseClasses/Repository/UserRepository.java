@@ -12,12 +12,17 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String>, main.java.DatabaseClasses.Repository.UserRepositoryCustom {
+public interface UserRepository extends MongoRepository<User, String>, UserRepositoryCustom {
 
     void createUserAccount(User user);
     void changePassword(User user);
     void changeToken(User user);
     void setToken(User user);
 
+    User findUserByUsername(String username);
+
     User retrieveUserInfo(String username);
+
+
+
 }

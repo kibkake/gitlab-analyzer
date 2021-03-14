@@ -1,6 +1,8 @@
 package main.java.DatabaseClasses.Repository;
 
 import main.java.Model.User;
+import main.java.Model.ProjectSettings;
+import org.springframework.data.mongodb.repository.Query;
 
 /**
  * Is used to help integrate the custom functions that are already written working with UserRepository,
@@ -15,5 +17,11 @@ public interface UserRepositoryCustom {
     void setToken(User user);
 
     User retrieveUserInfo(String username);
+
+    ProjectSettings retrieveUserSettings(String username, String settingName, int projectId);
+
+    void addSetting(String userName, ProjectSettings settings);
+
+
 }
 
