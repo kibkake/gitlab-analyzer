@@ -116,7 +116,11 @@ public class Project {
 
     public boolean projectHasBeenUpdated() {
         Instant lastUpdateDate = lastProjectUpdateDate();
-        return lastUpdateDate.compareTo(infoSetDate) > 0;
+        if(infoSetDate == null) {
+            return true;
+        } else {
+            return lastUpdateDate.compareTo(infoSetDate) > 0;
+        }
     }
 
     private Instant lastProjectUpdateDate() {

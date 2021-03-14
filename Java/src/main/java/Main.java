@@ -38,9 +38,7 @@ public class Main {
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
-        List<Issue> is = new IssueConnection().getProjectIssuesFromGitLab(6);
-        System.out.println(is);
-//        SpringApplication.run(Main.class,args);
+        SpringApplication.run(Main.class,args);
     }
 
     @Bean

@@ -1,4 +1,4 @@
-package main.java.DatabaseClasses.config;
+package main.java.DatabaseClasses.Config;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @EnableAutoConfiguration
 @Configuration
 public class appConfig {
-    private static String database = "nateTest";
+    private static String database = "gitlab";
     private final static String mongoDBConnectionAddress = "mongodb+srv://Kae:mongopass@plutocluster.nop8i.mongodb.net/"
         + database + "?retryWrites=true&w=majority";
 

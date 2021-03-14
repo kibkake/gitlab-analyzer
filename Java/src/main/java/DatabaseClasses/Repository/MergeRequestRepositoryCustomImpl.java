@@ -10,14 +10,20 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.DateOperators;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.mongodb.core.aggregation.Fields.fields;
 
+
+/** Queries merge Request db to aggregate and get user scores
+ *
+ */
 public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryCustom {
 
     private final MongoTemplate mongoTemplate;
@@ -44,7 +50,6 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
                         .and(DateOperators.DateToString.dateOf("mergedDate").toString("%Y-%m-%d")).as("groupByDate"),
                 Aggregation.group("groupByDate").count().as("numMergeRequests")
                         .sum("mrScore").as("mergeRequestScore")
-//                        .addToSet("contributors.username").as("authorName")
                         .addToSet("mergedDate").as("date")
         );
 
@@ -55,7 +60,6 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
     @Override
     public List<MergeRequest> getDevMergeRequests(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
-
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);
@@ -75,16 +79,15 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.unwind("contributors"),
+                Aggregation.project("mrScore", "projectId", "mergedDate").and("contributors.username").as("username"),
                 Aggregation.match(criterias),
-                Aggregation.project("mrScore", "contributors.username"),
-                Aggregation.group("username").sum("mrScore").as("mergeRequestTotalScore")
+                Aggregation.group("username").sum("mrScore").as("mergeRequestScore")
         );
 
         AggregationResults<Double> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, Double.class);
-        List<Double> result = groupResults.getMappedResults();
-        return result.get(0);
+        Optional<Double> result = Optional.ofNullable(groupResults.getUniqueMappedResult());
+        return result.orElse(0.0);
     }
-
 
     @Override
     public MergeRequest getMrByCommitHash(int projectId, String hash){
@@ -98,4 +101,5 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
         final MergeRequest mergeRequests = mongoTemplate.findOne(query, MergeRequest.class);
         return mergeRequests;
     }
+
 }
