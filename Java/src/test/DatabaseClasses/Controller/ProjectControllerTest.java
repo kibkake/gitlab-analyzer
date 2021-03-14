@@ -24,7 +24,8 @@ import ch.qos.logback.classic.Logger;
 
 import java.time.LocalDate;
 
-import static org.mockito.Mockito.*;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -43,6 +44,7 @@ public class ProjectControllerTest {
         ProjectService projectSerivce = new ProjectService(null);
         AllScores data = projectSerivce.getAllScores(6, "user2", LocalDate.parse("2021-01-01"),
                 LocalDate.parse("2021-03-13"), ProjectService.UseWhichDevField.EITHER);
+
     }
 
     @Test
