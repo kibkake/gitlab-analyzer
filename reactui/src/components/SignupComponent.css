@@ -75,3 +75,15 @@ input{
     margin-left:5px;
     margin-top:10px;
 }
+
+.signup {
+    margin-left:20px;
+}
+
+.terms{
+    margin-left: 20px;
+}
+
+.terms-button{
+    margin-left: 5px !important;
+}
