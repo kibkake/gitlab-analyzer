@@ -41,10 +41,6 @@ public class Main {
         user.setServerUrl("https://cmpt373-1211-10.cmpt.sfu.ca/api/v4/");
         user.setToken("cFzzy7QFRvHzfHGpgrr1");
 
-//        projectRepo.saveAll(connect.getAllProjectsFromGitLab());
-
-        System.out.println( new ProjectConnection().getAllProjectsFromGitLab());
-
 //        System.out.println( new CommitConnection().getProjectCommitsFromGitLab(6));
         SpringApplication.run(Main.class,args);
     }
