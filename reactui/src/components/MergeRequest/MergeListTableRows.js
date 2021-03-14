@@ -15,25 +15,28 @@ import {OverlayTrigger, Popover} from 'react-bootstrap'
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
+import HighlightCodeDiffs from "../HighlightCodeDiffs";
+import Flexbox from "flexbox-react";
+import DiffTable from "./DiffTable";
+import TableContainer from "@material-ui/core/TableContainer";
 
 //[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
 const PopOver = ({Diffs}) => {
     return (
-         <div>
-             <Popover id="popover-basic" placement='right' class="justify-content-end" >
+            <Popover id="popover-basic" placement='right' class="justify-content-end" >
                  {Diffs.map((item => {
                      return(
                          <ul>
                              <Popover.Title as="h3">{item.path}</Popover.Title>
-                             <Popover.Content><Highlight className="highlighted-text"> {item.diff} </Highlight>
+                             <Popover.Content><Highlight className="highlighted-text"> {HighlightCodeDiffs(item.diff)} </Highlight>
                              </Popover.Content>
                          </ul>
                      )
                 }))}
-             </Popover>
-         </div>
+            </Popover>
     )
 }
+
 
 // Table structure is based on the library from [https://material-ui.com/components/tables/]
 export default function Row(props) {
@@ -41,14 +44,11 @@ export default function Row(props) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
-
-
     return (
-
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
-                    {moment(row.date).format('LLL')}
+                    {moment(row.date).format('lll')}
                 </TableCell>
                 <TableCell>#{row.id} <a href= {row.mrUrl}> {row.title}</a> </TableCell>
                 <TableCell align="right">{row.score.toFixed(1)}</TableCell>
@@ -58,8 +58,10 @@ export default function Row(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell align ="right">
-                    <OverlayTrigger trigger="focus" placement="right" class = "justify-content-end" overlay={<PopOver Diffs={row.diffs} />}>
-                        <button type="button" className="btn btn-secondary">View</button>
+                    <OverlayTrigger trigger="focus" placement="right" justifyContent="flex-start"
+                                    display="flex" flexDirection="row" p={1} m={1}
+                                    overlay={<PopOver order={3} Diffs={row.diffs} />}>
+                        <button type="button" order={1} className="btn btn-secondary">View</button>
                     </OverlayTrigger>
                 </TableCell>
             </TableRow>
@@ -103,7 +105,6 @@ export default function Row(props) {
                     </Collapse>
                 </TableCell>
             </TableRow>
-
         </React.Fragment>
     );
 }
