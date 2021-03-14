@@ -4,6 +4,7 @@ import main.java.DatabaseClasses.Model.CommitDateScore;
 import main.java.DatabaseClasses.Model.MergeRequestDateScore;
 import main.java.Model.Commit;
 import main.java.Model.MergeRequest;
+import main.java.Model.ProjectSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -28,7 +29,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
 
 
     @Override
-    public List<MergeRequestDateScore> devsMrsScoreADay(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public List<MergeRequestDateScore> getDevsMrsScoreADay(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
         //https://stackoverflow.com/questions/62340986/aggregation-with-multiple-criteria
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
@@ -40,7 +41,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
                 // how to group by date in mongo, our time includes minutes and this complicates a group by
                 //https://stackoverflow.com/questions/34577877/mongotemplate-aggregate-group-by-date
                 Aggregation.project("mergedDate", "mrScore")
-                        .and(DateOperators.DateToString.dateOf("date").toString("%Y-%m-%d")).as("groupByDate"),
+                        .and(DateOperators.DateToString.dateOf("mergedDate").toString("%Y-%m-%d")).as("groupByDate"),
                 Aggregation.group("groupByDate").count().as("numMergeRequests")
                         .sum("mrScore").as("mergeRequestScore")
 //                        .addToSet("contributors.username").as("authorName")
@@ -53,7 +54,20 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
     }
 
     @Override
-    public Object userTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public List<MergeRequest> getDevMergeRequests(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+
+        final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
+        final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
+        final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);
+        Criteria criterias = new Criteria().andOperator(nameMatchCriteria, projectMatchCriteria, dateMatchCriteria);
+
+        Query query = new Query();
+        query.addCriteria(criterias);
+        return mongoTemplate.find(query, MergeRequest.class);
+    }
+
+    @Override
+    public Double getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
         final Criteria nameMatchCriteria = Criteria.where("contributors.username").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("mergedDate").gte(startDate).lte(endDate);
@@ -66,10 +80,11 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
                 Aggregation.group("username").sum("mrScore").as("mergeRequestTotalScore")
         );
 
-        AggregationResults<Object> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, Object.class);
-        List<Object> result = groupResults.getMappedResults();
-        return result;
+        AggregationResults<Double> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, Double.class);
+        List<Double> result = groupResults.getMappedResults();
+        return result.get(0);
     }
+
 
     @Override
     public MergeRequest getMrByCommitHash(int projectId, String hash){

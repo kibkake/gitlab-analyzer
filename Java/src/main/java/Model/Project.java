@@ -1,6 +1,7 @@
 package main.java.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -16,6 +17,8 @@ import java.util.List;
 
 @Document("Project")
 public class Project {
+
+    @Id
     private int id;
     private String description;
     private String name;

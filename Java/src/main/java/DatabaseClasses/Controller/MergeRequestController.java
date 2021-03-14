@@ -51,14 +51,12 @@ public class MergeRequestController {
     @GetMapping("projects/{projectId}/MergeRequest/{committerName}/{start}/{end}")
     public List<MergeRequest> getUserMergeRequests(@PathVariable("projectId") int projectId,
                                                               @PathVariable("committerName") String committerName,
-                                                              @PathVariable("start") String start,
-                                                              @PathVariable("end")String end) {
+                                                              @PathVariable("start") String startDate,
+                                                              @PathVariable("end")String endDate) {
 
-        OffsetDateTime startDateWithOffSet = OffsetDateTime.parse(start + isoEnding);
-        OffsetDateTime endDateWithOffSet = OffsetDateTime.parse(end + isoEnding);
-        Date startDate = Date.from(startDateWithOffSet.toInstant());
-        Date endDate = Date.from(endDateWithOffSet.toInstant());
-        return mergeRequestService.getUserMergeRequests(projectId, committerName, startDate, endDate);
+        LocalDate StartLocalTime = LocalDate.parse(startDate);
+        LocalDate endLocalTime = LocalDate.parse(endDate);
+        return mergeRequestService.getUserMergeRequests(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
