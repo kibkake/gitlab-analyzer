@@ -23,7 +23,7 @@ export default function Terms(){
                             <li>The administrators have the right to termination of service of any users.</li>
                             <li>No warranty is given for using the system and it is the user’s own risk when using the system.</li>
                             <li>We will only store information at sign up regarding personal information such as passwords, tokens,
-                                and username. The password will be encrypted at storage. We will not share these information with 3rd parties</li>
+                                and username. The password will be encrypted at storage. We will not share this information with 3rd parties</li>
                             <li>Other statistics we store may include GitLab repository data which serves only for optimization
                                 or user saving purposes.</li>
                             <li>The developers do not claim responsibility in the case of damage or expenses incurred from data
