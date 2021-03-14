@@ -108,7 +108,7 @@ export default class MergeListTable  extends PureComponent {
                                 <TableCell align="left" className="tableCell"> Date </TableCell>
                                 <TableCell>Merge Title</TableCell>
                                 <TableCell align="right">Merge Score</TableCell>
-                                <TableCell align="right">Commit sum</TableCell>
+                                <TableCell align="right">Sum of Commit Score</TableCell>
                                 <TableCell align="right">Commits </TableCell>
                                 <TableCell align="right">Full Diff</TableCell>
                             </TableRow>

@@ -46,7 +46,6 @@ public class MergeRequestConnection {
             double score=0;
             for(Commit commit :mergeRequest.getCommits()){
                 score += commit.getCommitScore();
-                System.out.println(score);
             }
             mergeRequest.setSumOfCommits(score);
         }
