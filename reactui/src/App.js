@@ -22,10 +22,11 @@ import {SiGnuprivacyguard, SiJsonwebtokens} from "react-icons/all";
 import {AiOutlineHome} from "react-icons/ai";
 import SignupComponent from "./components/SignupComponent";
 import LoginToken from "./components/LoginToken.js";
+import Terms from "./Pages/Terms";
 
 function signupHandler(){
-    sessionStorage.setItem('new','true');
-    sessionStorage.setItem('user','temp');
+    sessionStorage.setItem('terms','view');
+    sessionStorage.setItem('user','signup');
     window.location.reload();
 }
 
@@ -40,34 +41,38 @@ function App() {
 
   // requires a authentication token to proceed
   if(!sessionStorage.getItem('user')) {
-    return (
-        <>
-            <Router>
-                <Navbar/>
-                <switch>
-                    <Route path='/Signup' exact component={Signup}/>
-                </switch>
-            </Router>
-            <div className="loginwrapper">
-                <h2 className="login-h2"> Please Login or Sign Up to Continue</h2>
-                <br/>
-                {!token_toggle &&
-                    <>
-                        <LoginState setUser={setUser}/>
-                        <br/>
-                        <button className="login" onClick={toggleTokenSubmit}><SiJsonwebtokens/> Login with Token </button>
-                    </>
-                }
-                {token_toggle &&
-                    <LoginToken/>
-                }
-                <br/>
-                <br/>
-                <p className="signuptext">Don't have an account?<button className="login" onClick={signupHandler}><SiGnuprivacyguard/>Sign Up</button></p>
-            </div>
+      return (
+          <>
+              <Router>
+                  <Navbar/>
+                  <switch>
+                      <Route path='/Signup' exact component={Signup}/>
+                      <Route path='/Terms' exact component={Terms}/>
+                  </switch>
+              </Router>
+              <div className="loginwrapper">
+                  <h2 className="login-h2"> Please Login or Sign Up to Continue</h2>
+                  <br/>
+                  {!token_toggle &&
+                  <>
+                      <LoginState setUser={setUser}/>
+                      <br/>
+                      <button className="login" onClick={toggleTokenSubmit}><SiJsonwebtokens/> Login with Token</button>
+                      <br/>
+                      <br/>
+                      <p className="signuptext">Don't have an account?
+                          <button className="login" onClick={signupHandler}><SiGnuprivacyguard/>Sign Up</button>
+                      </p>
+                  </>
+                  }
+                  {token_toggle &&
+                  <LoginToken/>
+                  }
+                  <br/>
+              </div>
 
-        </>
-    );
+          </>
+      );
   }else if(sessionStorage.getItem('new')) { // signup
       return (
           <Router>
@@ -75,6 +80,19 @@ function App() {
               <Navbar/>
               <Redirect to='/Signup'/>
               <SignupComponent/>
+              <switch>
+                  <Route path='/Terms' exact component={Terms}/>
+              </switch>
+          </Router>
+      );
+  }else if(sessionStorage.getItem('terms')) { // terms
+      return (
+          <Router>
+              <Navbar/>
+              <Redirect to='/Terms'/>
+              <switch>
+                  <Route path='/Terms' exact component={Terms}/>
+              </switch>
           </Router>
       );
   }
