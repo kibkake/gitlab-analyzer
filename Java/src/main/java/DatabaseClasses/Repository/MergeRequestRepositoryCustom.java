@@ -19,8 +19,6 @@ public interface MergeRequestRepositoryCustom {
     // when creating a custom function
     List<MergeRequestDateScore> getDevsMrsScoreADay(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 
-    Object userTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
-
     MergeRequest getMrByCommitHash(int projectId, String hash);
 
     List<MergeRequest> getDevMergeRequests(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
