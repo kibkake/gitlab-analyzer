@@ -1,4 +1,4 @@
-import Developers2Button from "../components/Developers2Button";
+import Developers2Button from "../components/Developers/Developers2Button";
 
 function Developer2(){
     return(

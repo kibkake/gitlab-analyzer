@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
 import Button from "react-bootstrap/Button";
-import CommitChart from "./CommitChart";
-import DateRangeSettings from "./DateRangeSettings";
+import CommitChart from "../Commits/CommitChart";
+import DateRangeSettings from "../DateSetting/DateRangeSettings";
 
 function SettingsDate (){
 

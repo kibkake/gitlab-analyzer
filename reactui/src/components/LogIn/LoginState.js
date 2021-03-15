@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import LoginService from "../Service/LoginService";
+import LoginService from "../../Service/LoginService";
 import {RiLoginBoxLine} from "react-icons/all";
 
 /*

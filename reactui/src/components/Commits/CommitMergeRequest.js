@@ -2,7 +2,7 @@ import React, {PureComponent} from "react";
 import "./HBox.css"
 import axios from "axios";
 import {Table} from "react-bootstrap";
-import "./Projects/ProjectList.css";
+import "../Projects/ProjectList.css";
 
 class CommitMergeRequest extends PureComponent {
 

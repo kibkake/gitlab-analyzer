@@ -10,7 +10,7 @@ import {
     SiGnuprivacyguard
 } from "react-icons/all";
 import './SignupComponent.css';
-import LoginService from "../Service/LoginService";
+import LoginService from "../../Service/LoginService";
 
 export default class SignupComponent extends Component {
 

@@ -15,7 +15,7 @@ import {OverlayTrigger, Popover} from 'react-bootstrap'
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
-import HighlightCodeDiffs from "../HighlightCodeDiffs";
+import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import Flexbox from "flexbox-react";
 import DiffTable from "./DiffTable";
 import TableContainer from "@material-ui/core/TableContainer";

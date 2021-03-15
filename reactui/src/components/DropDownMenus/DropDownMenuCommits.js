@@ -1,11 +1,12 @@
-import React, {Component} from 'react'
+import React, {Component, useEffect, useRef} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
-import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
+import Navbar_Developers from "../NavBars_Menu/Navbar_Developers";
+import CommitChart from "../Commits/CommitChart";
 import './DropDownMenu.css';
-import MergeListTable from "./MergeRequest/MergeListTable";
 
-function DropDownMenuMerge ({listOfDevelopers}) {
+
+function DropDownMenuCommit ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
@@ -25,8 +26,8 @@ function DropDownMenuMerge ({listOfDevelopers}) {
 
     return (
 
-        <div classname='CodeDiff'>
-            <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
+        <div  style={{ overflow: "scroll"}}>
+            <Navbar_Developers devName = {selectedValue}/>
             <br>
             </br>
             <div className="DropDownMenu">
@@ -36,14 +37,20 @@ function DropDownMenuMerge ({listOfDevelopers}) {
                 defaultValue={{ label: selectedValue, value: selectedValue }}
                 onChange={handleChange}/>
             </div>
+            <CommitChart devName = {selectedValue}
+                         startTime = {sessionStorage.getItem("startdate")}
+                         endTime = {sessionStorage.getItem("enddate")}/>
             <br>
             </br>
-            <h2> Merge Requests</h2>
-            <MergeListTable  devName = {selectedValue}/>
         </div>
     )
 
 
 }
 
-export default DropDownMenuMerge;
+export default DropDownMenuCommit;
+
+/*    <div className='dateRangeSetting'>
+                <DateRangeCommits/>
+            </div>
+*/

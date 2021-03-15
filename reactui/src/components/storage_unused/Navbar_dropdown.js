@@ -8,9 +8,8 @@ import * as HiIcons from "react-icons/hi";
 import * as AIIcons from "react-icons/ai";
 import {IoSettingsOutline} from "react-icons/io5";
 import {CgProfile} from "react-icons/cg";
-import Dropdown from "./Dropdown";
 import * as GoIcons from "react-icons/go";
-import Developers from "../../Pages/Developers";
+import Developers from "../../Pages/unused/Developers";
 
 function Navbar_dropdown() {
     const [click, setClick] = useState(false);

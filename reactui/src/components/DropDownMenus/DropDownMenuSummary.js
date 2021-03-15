@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
-import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
+import Navbar_Developers from "../NavBars_Menu/Navbar_Developers";
 import './DropDownMenu.css';
-import DateRangeSummary from './DateRangeSummary'
+import DateRangeSummary from '../DateSetting/DateRangeSummary'
 
 
 function DropDownMenuSummary ({listOfDevelopers}) {
