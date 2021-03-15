@@ -16,16 +16,19 @@
     "@testing-library/user-event": "^12.6.3",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "bootstrap-table": "^1.18.2",
     "chart.js": "^2.9.4",
     "d3": "^6.5.0",
     "d3-array": "^2.11.0",
     "date-fns": "^2.0.0-beta.5",
+    "flexbox-react": "^4.4.0",
     "jquery": "^1.9.1",
     "moment": "^2.29.1",
     "popper.js": "^1.16.1",
     "react": "^17.0.1",
     "react-bar-chart": "^0.1.2",
     "react-bootstrap": "^1.4.3",
+    "react-bootstrap-table-next": "^4.0.3",
     "react-chartjs-2": "^2.11.1",
     "react-datetime": "^3.0.4",
     "react-dom": "^17.0.1",
@@ -75,6 +78,7 @@
     "d3-scale": "^3.2.3",
     "d3-time": "^2.0.0",
     "prop-types": "^15.7.2",
-    "react-charts": "^2.0.0-beta.7"
+    "react-charts": "^2.0.0-beta.7",
+    "semantic-ui-react": "^2.0.3"
   }
 }

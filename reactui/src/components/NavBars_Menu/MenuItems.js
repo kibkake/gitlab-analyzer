@@ -11,23 +11,22 @@ export const MenuItems=[
         cName: 'nav-links',
         icon: <GoIcons.GoRepo/>
     },
-    {
-        title: 'Export',
-        url: '/Export',
-        cName: 'nav-links',
-        icon: <AIIcons.AiOutlineExport/>
-    },
+    // {
+    //     title: 'Export',
+    //     url: '/Export',
+    //     cName: 'nav-links',
+    //     icon: <AIIcons.AiOutlineExport/>
+    // },
     {
         title: 'Settings',
         url: '/Settings',
         cName: 'nav-links',
         icon: <IoSettingsOutline/>
     },
-
     {
         title: 'Profile',
         url: '/Profile',
         cName: 'nav-links-signin',
-        icon:<CgProfile/>
+        icon: <CgProfile/>
     }
 ]

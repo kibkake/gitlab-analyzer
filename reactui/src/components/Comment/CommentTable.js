@@ -44,7 +44,7 @@ class CommentTable extends Component{
     render() {
         var Data = this.state.comments.map(function (item) {
             return {
-                date: item.formattedDate,
+                date: moment(item.created_at).format('ll'),
                 wordCount: item.wordCount,
                 comments: item.body,
                 onIssue: item.issueNote
@@ -55,9 +55,8 @@ class CommentTable extends Component{
             ({date, wordCount, comments, issueOrReview: issueBoolean[onIssue]}));
         console.log(comments);
 
-
         return (
-            <Table striped bordered hover>
+            <Table striped bordered hover style ={{margin:'auto', width:'90%'}}>
                     <tr>
                         <th>Date</th>
                         <th>Word Count</th>

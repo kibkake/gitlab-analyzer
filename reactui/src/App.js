@@ -113,11 +113,11 @@ function App() {
           <Route path='/Repo/*/Developers/*/summary' exact component={Summary}/>
 
           <Route path='/Repo/*/Developers/*/codeContribution' exact component={Commits}/>
-          <Route path='/Repo/*/Developers/*/codediff' exact component={MergeRequest}/>
+          <Route path='/Repo/*/Developers/*/merges' exact component={MergeRequest}/>
           <Route path='/Repo/*/Developers/*/comments' exact component={Comments}/>
           <Route path='/Repo/*/Developers/*/commits/*' exact component={SingleCommit}/>
 
-                <Route path='/Settings' exact component={Setting}/>
+                <Route path='/Settings' exact component={Home}/>
               <Route path='/Profile' exact component={Profile}/>
             </Switch>
           </Router>

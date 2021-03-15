@@ -1,10 +1,14 @@
-import ProjectComponent from "../components/Projects/ProjectComponent";
+import ProjectList from "../components/Projects/ProjectList";
 
 function Repo(){
     return(
         <>
             <div className='projects'>
-                <ProjectComponent/>
+                <br></br>
+                <h1 style={{textAlign:'center'}}>Project List</h1>
+                <br></br>
+
+                <ProjectList/>
             </div>
         </>
     )

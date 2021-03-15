@@ -91,6 +91,7 @@ public class ProjectService {
             project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
             project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
             project.setSyncInfo();
+            project.setLastSyncAt();
             projectRepository.save(project);
         }
     }
@@ -499,6 +500,8 @@ public class ProjectService {
 
         return allScores;
     }
+
+
 
     public List<Developer> getMembers(int ProjectId){
         Project project = projectRepository.findProjectById(ProjectId);

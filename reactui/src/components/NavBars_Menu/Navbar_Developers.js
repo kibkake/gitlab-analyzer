@@ -25,7 +25,7 @@ export class Navbar_Developers extends Component{
                 },
                 {
                     title: 'Merge Requests',
-                    url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' + window.location.pathname.split("/")[4] + '/codediff',
+                    url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' + window.location.pathname.split("/")[4] + '/merges',
                     cName: 'nav-links'
                 },
                 {
