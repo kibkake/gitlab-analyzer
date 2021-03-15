@@ -45,7 +45,7 @@ class CommitsPerDay extends Component{
         var output = this.state.data.map(function(item) {
             return {
                 id: item.id,
-                date: item.date
+                date: item.committed_date
             };
         });
         //console.log(output)
@@ -62,7 +62,7 @@ class CommitsPerDay extends Component{
                                     {this.props.handler(item.id)}
 
                                 }}>
-                            <span >{item.id}          commited at:      {item.date.substring(11,19)}</span>
+                            <span >{item.id}          commited at:      {item.committed_date.substring(11,19)}</span>
                         </Button>
                     </a>
                 </li>;
