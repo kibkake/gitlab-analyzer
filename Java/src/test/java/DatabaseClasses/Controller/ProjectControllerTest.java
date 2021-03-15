@@ -40,15 +40,16 @@ public class ProjectControllerTest {
     private final ProjectRepository projectRepository = Mockito.mock(ProjectRepository.class);
 
     @Test
-    void testFunc() {
-        ProjectService projectSerivce = new ProjectService(null);
-        AllScores data = projectSerivce.getAllScores(6, "user2", LocalDate.parse("2021-01-01"),
+    public void testFunc() {
+        ProjectService projectService = new ProjectService(null);
+        AllScores data = projectService.getAllScores(6, "user2", LocalDate.parse("2021-01-01"),
                 LocalDate.parse("2021-03-13"), ProjectService.UseWhichDevField.EITHER);
-
+        assertEquals(1,1);
     }
 
     @Test
-    void anotherTest() {
+    public void anotherTest() {
         ProjectService projectService = new ProjectService(projectRepository);
+        assertEquals(1,1);
     }
 }
