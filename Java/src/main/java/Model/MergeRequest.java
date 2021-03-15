@@ -30,6 +30,15 @@ public class MergeRequest {
     List<Note> codeReviewNotes;
     List<Diff> diffs;
     private String mrUrl;
+    private double sumOfCommits;
+
+    public double getSumOfCommits() {
+        return sumOfCommits;
+    }
+
+    public void setSumOfCommits(double sumOfCommits) {
+        this.sumOfCommits = sumOfCommits;
+    }
 
     @JsonProperty("web_url")
     public String getMrUrl() {
@@ -40,8 +49,6 @@ public class MergeRequest {
     public void setMrUrl(String mrUrl) {
         this.mrUrl = mrUrl;
     }
-
-
 
     public MergeRequest() {
         contributors = new ArrayList<>();

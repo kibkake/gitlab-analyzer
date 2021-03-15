@@ -43,6 +43,11 @@ public class MergeRequestConnection {
             mergeRequest.setMrScore(calcMergeRequestScore(mergeRequest.getDiffs())); // must be done after diffs
             mergeRequest.setMergeRequestNotes(getMergeRequestNotes(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
             mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
+            double score=0;
+            for(Commit commit :mergeRequest.getCommits()){
+                score += commit.getCommitScore();
+            }
+            mergeRequest.setSumOfCommits(score);
         }
         return mergeRequests;
     }
