@@ -2,23 +2,22 @@ package main.java.DatabaseClasses.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import main.java.DatabaseClasses.Model.DateScore;
-import main.java.DatabaseClasses.Model.AllScores;
-import main.java.Model.*;
 import main.java.ConnectToGitlab.ProjectConnection;
+import main.java.DatabaseClasses.Model.AllScores;
+import main.java.DatabaseClasses.Model.DateScore;
 import main.java.DatabaseClasses.Service.ProjectService;
+import main.java.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * This class manages API mapping for functions to be called from frontend.
@@ -43,8 +42,8 @@ public class ProjectController {
     */
 
     private final ProjectService projectService;
-    private String startDate = "2021-01-11T20:59:00.000Z";
-    private String endDate = "2021-02-22T20:59:00.000Z";
+    private String startDate = "2021-02-22T13:59:00.000Z";
+    private String endDate = "2021-03-15T13:59:00.000Z";
 
     @Autowired
     public ProjectController(ProjectService projectService) {
@@ -57,45 +56,49 @@ public class ProjectController {
         projectService.setProjectInfo(projectId);
     }
 
-    @GetMapping("setProjectMrs/{projectId}")
-    public void setProjectMRs(@PathVariable int projectId) {
-        projectService.setProjectMrs(projectId);
-    }
-
-
     @RequestMapping("setProjectInfoWithSettings/{projectId}")
     public void setProjectInfoWithSettings(@PathVariable int projectId, ProjectSettings projectSettings) {
         projectSettings.setProjectId(projectId);
         projectService.setProjectInfoWithSettings(projectId, projectSettings);
     }
 
+    //TODO: how to update if the current db is not empty,
+    //and a new project is added? Because the new project isn't getting updated by setProjectInfo() call
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
             List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
             projectService.saveNewProjects(projects);
-            return projects;
-        } else {
-            return projectService.getAllProjects();
         }
+
+        return projectService.getAllProjects();
+    }
+
+    // Let user sync the data of repositories of interest at once in the Repository list page
+    //  by the request from the UI
+    //TODO: setProjectInfo testing
+    @PostMapping("/updateRepo")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateProjectDB(@RequestBody int projectId) {
+        projectService.setProjectInfo(projectId);
     }
 
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {
         Project project = projectService.getProject(projectId);
-        if (!project.isInfoSet()) {
-            projectService.setProjectInfo(projectId);
-            project = projectService.getProject(projectId); // get project now that it has been modified
-        }
+        // The update should be done once in the repo list page by user's request
+        // rather than done as everytime the user access each project page
+        // commenting this out doesn't affect the current app
+
+//        if (!project.isInfoSet()) {
+//            projectService.setProjectInfo(projectId);
+//            project = projectService.getProject(projectId); // get project now that it has been modified
+//        }
         return project;
     }
 
     @GetMapping("projects/{projectId}/developers")
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
-        Project project = projectService.getProject(projectId);
-        if (!project.isInfoSet()) {
-            projectService.setProjectInfo(projectId);
-        }
         return projectService.getProjectDevelopers(projectId);
     }
 
@@ -237,6 +240,11 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/commit/{commitId}")
     public Commit getCommit(@PathVariable String commitId, @PathVariable int projectId) {
         return projectService.getCommit(projectId, commitId);
+    }
+
+    @GetMapping("setProjectMrs/{projectId}")
+    public void setProjectMRs(@PathVariable int projectId) {
+        projectService.setProjectMrs(projectId);
     }
 
     @GetMapping("projects/{projectId}/mergeRequest/{mrId}")

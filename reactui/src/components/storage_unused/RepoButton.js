@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button';
-import {RepoItems} from '../Pages/sampleRepo';
+import {RepoItems} from './sampleRepo';
 import "./RepoButton.css"
 
 class RepoButton extends Component{

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -90,6 +91,7 @@ public class ProjectService {
             project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
             project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
             project.setSyncInfo();
+            project.setLastSyncAt();
             projectRepository.save(project);
         }
     }
@@ -170,14 +172,14 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        username, currentCommit.getId());
+                        username, currentCommit.getDiffs());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
 
                 dateScore.addToCommitScore(currentCommit.getCommitScore());
                 dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit.getId());
+                dateScore.addCommitDiffs(currentCommit);
             }
         }
         List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
@@ -205,13 +207,13 @@ public class ProjectService {
 
             if (!dateMap.containsKey(mergedDate.toString())) {
                 DateScore dateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
-                        username, 1, mergeRequest.getId());
+                        username, 1, mergeRequest.getDiffs());
                 dateMap.put(mergedDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(mergedDate.toString());
                 dateScore.addToMergeRequestScore(mergeRequest.getMrScore());
                 dateScore.incrementNumMergeRequests();
-                dateScore.addMergeRequestIds(mergeRequest.getId());
+                dateScore.addMergeRequestDiffs(mergeRequest);
             }
         }
         List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devFieldForGettingCommits);
@@ -219,14 +221,14 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        username, currentCommit.getId());
+                        username, currentCommit.getDiffs());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
 
                 dateScore.addToCommitScore(currentCommit.getCommitScore());
                 dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit.getId());
+                dateScore.addCommitDiffs(currentCommit);
             }
         }
         List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
@@ -498,6 +500,8 @@ public class ProjectService {
 
         return allScores;
     }
+
+
 
     public List<Developer> getMembers(int ProjectId){
         Project project = projectRepository.findProjectById(ProjectId);

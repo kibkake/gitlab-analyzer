@@ -10,7 +10,7 @@ export default class CommitMRScoreChart extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0}],
+            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0,commitIds:[],mergeRequestDiffs:[]}],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime
@@ -37,12 +37,51 @@ export default class CommitMRScoreChart extends PureComponent {
         const response = await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
             endTm + "/either")
-
+        console.log(response);
         const score = await response.data
+        console.log("scores");
+        console.log(score);
         await this.setState({codeScore : score, parentdata: username,startTime: startTm,
             endTime: endTm})
+        this.applyMultipliers();
         await console.log(this.state.codeScore)
     }
+
+    applyMultipliers(){
+        var scale = JSON.parse(sessionStorage.getItem('languageScale'));
+        var newCodeScore = [...this.state.codeScore];
+        for(const k in newCodeScore){
+            var newCommitScore=0;
+            var newMergeScore=0;
+            for(const i in newCodeScore[k].commitDiffs){
+                var fileExtension = newCodeScore[k].commitDiffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                if(extensionIndex!==-1){
+                    var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].commitDiffs[i].diffScore;
+                    newCommitScore = newCommitScore+tempCommitScore;
+                }else{
+                    newCommitScore = newCommitScore+newCodeScore[k].commitDiffs[i].diffScore;
+                }
+            }
+            for(const i in newCodeScore[k].mergeRequestDiffs){
+                var fileExtension = newCodeScore[k].mergeRequestDiffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                if(extensionIndex!==-1){
+                    var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].mergeRequestDiffs[i].diffScore;
+                    newMergeScore = newMergeScore+tempCommitScore;
+                }else{
+                    newMergeScore = newMergeScore+newCodeScore[k].mergeRequestDiffs[i].diffScore;
+                }
+            }
+            newCodeScore[k].mergeRequestScore=newMergeScore;
+            newCodeScore[k].commitScore=newCommitScore;
+            console.log(newCommitScore);
+        }
+        this.setState({
+            codeScore:newCodeScore,
+        })
+    }
+    
 
     async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName ||
