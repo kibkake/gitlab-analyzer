@@ -1,7 +1,6 @@
 .box-container {
     display: flex;
     flex-direction: row;
-
 }
 
 .horizontalBar {
@@ -22,3 +21,4 @@
 .DevMenu{
     flex-direction:row;
 }
+

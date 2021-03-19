@@ -1,14 +1,10 @@
 .DropDownMenu {
-    margin-Right: 1500px;
     color: black;
-    border-Color: green;
     padding: 2px 2px;
-    border: 5px solid transparent;
-    border-Top-Color: blue;
-    border-Right-Color: blue;
-    border-Left-Color: blue;
-    border-Bottom-Color: blue;
-    font-size:18px;
-    font-weight:600;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    width: 50px;
+    margin-left: 10px;
 }
 

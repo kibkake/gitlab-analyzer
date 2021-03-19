@@ -6,6 +6,9 @@ import './DropDownMenu.css';
 import DateRangeSummary from './DateRangeSummary'
 import "./HBox.css"
 import ProjectService from "../Service/ProjectService";
+import SummaryScoreTable from "./Summary/SummaryScoreTable";
+import SummaryChartRadios from "./Summary/RadioButtonSummaryChart";
+
 
 
 
@@ -62,8 +65,6 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     function changeDateFormat(time) {
 
-        console.log("changing format", time)
-
         var startDateArr = (time.toDateString()).split(" ");
 
         var monthLetter = startDateArr[1];
@@ -75,32 +76,33 @@ function DropDownMenuSummary ({listOfDevelopers}) {
     }
 
     return (
+
         <div>
             <Navbar_Developers devName = {selectedValue}/>
 
-            <div>
-                <div className="DropDownMenu">
-                <Select
-                    options={devArray}
-                    defaultValue={{label: selectedValue, value: selectedValue}}
-                    onChange={handleChange}
+            <div className="box-container">
+                <h3>Developer: </h3>
+            <div className="DropDownMenu">
+                    <Select
+                        options={devArray}
+                        defaultValue={{label: selectedValue, value: selectedValue}}
+                        onChange={handleChange}
+                    />
+            </div>
+            </div>
+                <h4 style={{textAlign:'center'}}>Total Scores</h4>
+                <SummaryScoreTable devName = {selectedValue}
+                                   startTime = {changeDateFormat(getInitialStartDate())}
+                                   endTime = {changeDateFormat(getInitialEndDate())}
                 />
-                </div>
-
-                <h1 style={{textAlign: 'center'}}>{selectedValue} Summary</h1>
-
-            </div>
-
-            <br>
-            </br>
-            <div>
-                <DateRangeSummary devName = {selectedValue}/>
+                <div>
+                <SummaryChartRadios devName = {selectedValue}
+                                    startTime = {changeDateFormat(getInitialStartDate())}
+                                    endTime = {changeDateFormat(getInitialEndDate())}/>
 
             </div>
-
         </div>
     )
 }
 
 export default DropDownMenuSummary;
-
