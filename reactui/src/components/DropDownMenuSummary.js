@@ -90,7 +90,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                     />
             </div>
             </div>
-                <h4 style={{textAlign:'center'}}>Total Scores</h4>
+                <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
                 <SummaryScoreTable devName = {selectedValue}
                                    startTime = {changeDateFormat(getInitialStartDate())}
                                    endTime = {changeDateFormat(getInitialEndDate())}
