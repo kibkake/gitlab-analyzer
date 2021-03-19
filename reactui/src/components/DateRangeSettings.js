@@ -9,20 +9,20 @@ function DateRangeSettings(){
 
     function getStartDate(){
         if(sessionStorage.getItem("startdate") == null){
-            sessionStorage.setItem("startdate", "2021-01-11")
+            sessionStorage.setItem("startdate", "2021-01-20")
         }
         if(localStorage.getItem("startdate") == null){
-            localStorage.setItem("startdate", "2021-01-11")
+            localStorage.setItem("startdate", "2021-01-20")
         }
         return new Date(sessionStorage.getItem("startdate") + "T12:00:00")
     }
 
     function getEndDate(){
         if(sessionStorage.getItem("enddate") == null){
-            sessionStorage.setItem("enddate", "2021-03-10")
+            sessionStorage.setItem("enddate", "2021-03-01")
         }
         if(localStorage.getItem("enddate") == null){
-            localStorage.setItem("enddate", "2021-03-10")
+            localStorage.setItem("enddate", "2021-03-01")
         }
         return new Date(sessionStorage.getItem("enddate") + "T12:00:00")
     }

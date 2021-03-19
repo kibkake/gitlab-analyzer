@@ -121,8 +121,14 @@ export default class CommitMRScoreChart extends PureComponent {
         return null;
     };
 
+    getTickCount(to, from){
+        return (Math.round(((to-from)/1000000000)*10)/10)*6
+    }
+
     render() {
+        var tickArr = [];
         var output = this.state.codeScore.map(function(item) {
+            tickArr.push((new Date(item.date)).getTime())
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
                 commitScore: -item.commitScore,
@@ -134,6 +140,7 @@ export default class CommitMRScoreChart extends PureComponent {
         const from = Number(new Date(this.props.startTime));
         const to = Number(new Date(this.props.endTime));
 //ceil
+
         return (
             <div>
                 <ResponsiveContainer width = '94%' height = {680} >
@@ -152,12 +159,16 @@ export default class CommitMRScoreChart extends PureComponent {
                             tickFormatter = {this.formatDate}
                             name = 'date'
                             dataKey= "date"
-                            type ="number"
+                            type = "number"
+                            allowDataOverflow={false}
+                            tickSize={10}
                             tickCount={20}
+                            hide={false}
                         />
                         <ReferenceLine
                             y={0}
                             stroke="#000000"
+                            type='category'
                         />
 
                         <YAxis
