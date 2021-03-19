@@ -49,6 +49,9 @@ test{
     testLogging.showStandardStreams = true
     jvmArgs = ["-Djdk.tls.client.protocols=TLSv1.2"]
     failFast = true
+    testLogging {
+        events "standardOut", "started", "passed", "skipped", "failed"
+    }
 }
 
 bootRun {
