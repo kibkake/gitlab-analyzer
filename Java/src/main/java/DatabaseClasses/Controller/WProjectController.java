@@ -30,19 +30,6 @@ public class WProjectController {
     @Autowired
     private WrapperCommitRepository wrapperCommitRepository;
 
-    @GetMapping("addproject")
-    private void saveProject() throws IOException, ParseException {
-        WrapperProject project = new WrapperProject ("cFzzy7QFRvHzfHGpgrr1", 6);
-        List<WrapperMergedMergeRequest> mergedMergeRequests = project.getMergedMergeRequestsFromServer("cFzzy7QFRvHzfHGpgrr1", 6);
-        List<WrapperCommit> commits = new ArrayList<>();
-        projectRepository.save(project);
-        for(int i = 0; i < mergedMergeRequests.size(); i++){
-            commits.addAll(mergedMergeRequests.get(i).getSingleMergedMergeRequestCommits("cFzzy7QFRvHzfHGpgrr1"));
-        }
-        wrapperMergedMergeRequestRepository.saveAll(mergedMergeRequests);
-        wrapperCommitRepository.saveAll(commits);
-    }
-
     @CrossOrigin
     @GetMapping("getuserstats/{pId}/{usrname}")
     public WrapperUser getProject(@PathVariable String pId, @PathVariable String usrname)

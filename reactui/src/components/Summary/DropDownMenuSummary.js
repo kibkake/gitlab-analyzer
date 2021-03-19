@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
-import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
-import './DropDownMenu.css';
-import DateRangeSummary from './DateRangeSummary'
-import "./HBox.css"
-import ProjectService from "../Service/ProjectService";
-import SummaryScoreTable from "./Summary/SummaryScoreTable";
-import SummaryChartRadios from "./Summary/RadioButtonSummaryChart";
+import Navbar_Developers from "../NavBars_Menu/Navbar_Developers";
+import '../DropDownMenu.css';
+import "../HBox.css"
+import ProjectService from "../../Service/ProjectService";
+import SummaryScoreTable from "./SummaryScoreTable";
+import SummaryChartRadios from "./RadioButtonSummaryChart";
 
 
 
