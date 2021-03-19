@@ -122,7 +122,13 @@ export default class CommitMRScoreChart extends PureComponent {
     };
 
     getTickCount(to, from){
-        return (Math.round(((to-from)/1000000000)*10)/10)*6
+        const diff = (to-from)/1000000000
+        if((Math.round((diff*10)/10))*12 < 5){
+            return (Math.round((diff*10)/10))*12+5
+        }
+        else {
+            return (Math.round((diff * 10) / 10)) * 12
+        }
     }
 
     render() {
@@ -143,6 +149,7 @@ export default class CommitMRScoreChart extends PureComponent {
 
         return (
             <div>
+                <div>{this.getTickCount(to, from)}</div>
                 <ResponsiveContainer width = '94%' height = {680} >
                     <BarChart
                         data={output}
@@ -162,7 +169,7 @@ export default class CommitMRScoreChart extends PureComponent {
                             type = "number"
                             allowDataOverflow={false}
                             tickSize={10}
-                            tickCount={20}
+                            tickCount={this.getTickCount(to, from)}
                             hide={false}
                         />
                         <ReferenceLine

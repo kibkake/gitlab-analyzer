@@ -32,7 +32,6 @@ class CommentChart extends PureComponent {
         await this.setState({commentScore: commentInfo})
     }
 
-
     async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName ||
             this.props.startTime !== prevProps.startTime ||
@@ -54,7 +53,7 @@ class CommentChart extends PureComponent {
 
         return (
             <div>
-                <ResponsiveContainer width = '100%' height = {500} >
+                <ResponsiveContainer width = '94%' height = {680} >
                     <BarChart
                         data={output}
                         margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
