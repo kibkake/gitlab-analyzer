@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine} from 'recharts';
 import axios from "axios";
 import * as d3 from "d3-time";
 import moment from 'moment'
+import './ToolTip.css'
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class CommitMRScoreChart extends PureComponent {
@@ -95,45 +96,81 @@ export default class CommitMRScoreChart extends PureComponent {
 //            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
 //        });
 
+    formatDate = (unixTime) =>{
+
+        if(moment(unixTime).format('YYYY') === '2021'){
+            return moment(unixTime).format('MM-DD')
+        }
+        else {
+            return moment(unixTime).format('YYYY-MM-DD')
+        }
+    }
+
+    CustomToolTip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            const commitVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
+            const mrVal = Math.abs(Math.round(payload[1].value * 10)/10.0);
+            return (
+                <div className="tooltipBox">
+                    <p>{moment(label).format('YYYY-MM-DD')}</p>
+                    <p className="label1">{`${'MR Score:'}: ${mrVal}`}</p>
+                    <p className="label2">{`${'Commit Score:'} : ${commitVal}`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
     render() {
         var output = this.state.codeScore.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
-                commitScore: item.commitScore,
-                mergeScore: item.mergeRequestScore
+                commitScore: -item.commitScore,
+                mergeScore: +item.mergeRequestScore
             };
         });
         console.log(output);
-
-
+        console.log("starttime", this.props.startTime)
         const from = Number(new Date(this.props.startTime));
         const to = Number(new Date(this.props.endTime));
 //ceil
         return (
             <div>
-                <ResponsiveContainer width = '100%' height = {500} >
+                <ResponsiveContainer width = '94%' height = {680} >
                     <BarChart
                         data={output}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
+                        stackOffset="sign"
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5}}
                     >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey= "date"
-                               type ="number"
-                               name = 'date'
-                               domain={[
-                                   d3.timeDay.ceil(from).getTime(),
-                                   d3.timeDay.ceil(to).getTime()
-                               ]}
-                               tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
+                        <CartesianGrid
+                            vertical={false}
+                            strokeDasharray="3 1" />
+                        <XAxis
+                            domain={[
+                                d3.timeDay.ceil(from).getTime(),
+                                d3.timeDay.ceil(to).getTime()]}
+                            tickFormatter = {this.formatDate}
+                            name = 'date'
+                            dataKey= "date"
                         />
-                        <YAxis />
-                        <Tooltip />
+                        <ReferenceLine
+                            y={0}
+                            stroke="#000000"
+                        />
+
+                        <YAxis
+                            tickFormatter = {(value) =>  Math.abs(value)}
+                        />
+                        <Tooltip
+                            cursor={false}
+                            content={this.CustomToolTip}/>
                         <Legend />
-                        <Bar dataKey="commitScore" stackId="a" fill="orange" />
-                        <Bar dataKey="mergeScore" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="commitScore" stackId="a" fill="red" />
+                        <Bar dataKey="mergeScore" stackId="a" fill="blue" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
         );
     }
 }
+
