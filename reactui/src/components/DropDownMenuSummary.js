@@ -4,6 +4,8 @@ import Select from 'react-select'
 import Navbar_Developers from "./NavBars_Menu/Navbar_Developers";
 import './DropDownMenu.css';
 import DateRangeSummary from './DateRangeSummary'
+import "./HBox.css"
+
 
 
 function DropDownMenuSummary ({listOfDevelopers}) {
@@ -29,12 +31,9 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     return (
         <div>
-            <div>
-                <Navbar_Developers devName = {selectedValue}/>
-                <h1 style={{textAlign: 'center'}}>{selectedValue} Summary</h1>
+            <Navbar_Developers devName = {selectedValue}/>
 
-                <br>
-                </br>
+            <div style="DevMenu">
                 <div className="DropDownMenu">
                 <Select
                     options={devArray}
@@ -42,7 +41,13 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                     onChange={handleChange}
                 />
                 </div>
+
+                <h1 style={{textAlign: 'center'}}>{selectedValue} Summary</h1>
+
             </div>
+
+            <br>
+            </br>
             <div>
                 <DateRangeSummary devName = {selectedValue}/>
 
