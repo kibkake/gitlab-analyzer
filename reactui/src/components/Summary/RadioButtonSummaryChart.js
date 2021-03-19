@@ -16,7 +16,6 @@ function Chart(props){
 
     if (props.value === "score") {
         return (<div>
-            <h4 className="title" >Score of Commits/Merge Per Day</h4>
             <CommitMRScoreChart devName = {props.devName}
                                 startTime = {props.startTime}
                                 endTime = {props.endTime}/>
@@ -24,7 +23,6 @@ function Chart(props){
     }
     else if (props.value === "number") {
         return (<div>
-            <h4 className="title">Number of Commits/Merge Per Day</h4>
             <CommitMRNumChart devName={props.devName}
                               startTime = {props.startTime}
                               endTime = {props.endTime}/>
@@ -32,7 +30,6 @@ function Chart(props){
     }
     else {
         return (<div>
-            <h4 style={{textAlign: 'center' }}>Number of Words Per Day</h4>
             <CommentChart devName={props.devName}
                           startTime = {props.startTime}
                           endTime = {props.endTime}/>
@@ -72,8 +69,6 @@ export default class RadioButtonSummaryChart extends Component {
                                                                            onChange={this.handleRadioChange}/>} label="Number of Words of Comments"/>
                 </RadioGroup>
             </FormControl>
-                <br>
-                </br>
                 <Chart value = {this.state.value}  devName = {this.props.devName}
                        startTime = {this.props.startTime}  endTime = {this.props.endTime}/>
             </div>

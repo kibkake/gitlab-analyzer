@@ -152,6 +152,8 @@ export default class CommitMRScoreChart extends PureComponent {
                             tickFormatter = {this.formatDate}
                             name = 'date'
                             dataKey= "date"
+                            type ="number"
+                            tickCount={20}
                         />
                         <ReferenceLine
                             y={0}
