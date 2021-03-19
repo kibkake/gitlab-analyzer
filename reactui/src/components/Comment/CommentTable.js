@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
 import moment from "moment";
+import "./CommentTable.css";
 
 class CommentTable extends Component{
     constructor(props) {
@@ -17,13 +18,13 @@ class CommentTable extends Component{
         this.getDataFromBackend(parentdata)
     }
 
-    getDataFromBackend (username) {
+    async getDataFromBackend (username) {
         const pathArray = window.location.pathname.split('/');
         const id = pathArray[2];
         const developer = pathArray[4];
 
         //request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-05-09
-        axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/2021-01-01/2021-05-09")
+        await axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments = response.data
                 this.setState({comments: comments})
@@ -56,25 +57,33 @@ class CommentTable extends Component{
         console.log(comments);
 
         return (
-            <Table striped bordered hover style ={{margin:'auto', width:'90%'}}>
-                    <tr>
-                        <th>Date</th>
-                        <th>Word Count</th>
-                        <th>Comments</th>
-                        <th>On Issue/Code Review</th>
-                    </tr>
-                <tbody>
-                    {comments.map(comments =>//(item, index) =>
+            <>
+                <h4 className="comments-filter">   Filters</h4>
+                <div className="comments-filter">
+                    <button className="filter"> All </button>
+                    <button className="filter"> Issue </button>
+                    <button className="filter"> Code Review </button>
+                </div>
+                <br/>
+                <Table striped bordered hover className="comments-table">
                         <tr>
-                            <td>{moment(comments.date).format('LLL')}</td>
-                            <td>{comments.wordCount}</td>
-                            <td>{comments.comments}</td>
-                            <td>{comments.issueOrReview}</td>
+                            <th>Date</th>
+                            <th>Word Count</th>
+                            <th>Comments</th>
+                            <th>On Issue/Code Review</th>
                         </tr>
-                    )}
-                </tbody>
-            </Table>
-
+                    <tbody>
+                        {comments.map(comments =>//(item, index) =>
+                            <tr>
+                                <td>{moment(comments.date).format('LLL')}</td>
+                                <td>&emsp;&emsp;&ensp;{comments.wordCount}</td>
+                                <td>{comments.comments}</td>
+                                <td>{comments.issueOrReview}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+            </>
         );
     }
 }
