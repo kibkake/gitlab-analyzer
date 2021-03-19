@@ -9,8 +9,13 @@ class CommentTable extends Component{
         super(props);
         this.state = {
             comments:[],
+            issue:true,
+            code_rev:true,
             parentdata: this.props.devName
         }
+        this.enableAll=this.enableAll.bind(this);
+        this.enableIssue=this.enableIssue.bind(this);
+        this.enableCodeRev=this.enableCodeRev.bind(this);
     }
 
     componentDidMount() {
@@ -41,6 +46,20 @@ class CommentTable extends Component{
         }
     }
 
+    async enableAll(e){
+        e.preventDefault();
+        await this.setState({issue:true,code_rev:true});
+    }
+
+    async enableIssue(e){
+        e.preventDefault();
+        await this.setState({issue:true,code_rev:false});
+    }
+
+    async enableCodeRev(e){
+        e.preventDefault();
+        await this.setState({issue:false,code_rev:true});
+    }
 
     render() {
         var Data = this.state.comments.map(function (item) {
@@ -53,16 +72,17 @@ class CommentTable extends Component{
 
         let issueBoolean = {true: "Issue", false: "Code Review"};
         let comments = Data.map(({date, wordCount, comments, onIssue})=>
-            ({date, wordCount, comments, issueOrReview: issueBoolean[onIssue]}));
+            ({date, wordCount, comments, issueOrReview: issueBoolean[onIssue],onIssue}));
         console.log(comments);
+        console.log(this.state.issue);
 
         return (
             <>
                 <h4 className="comments-filter">   Filters</h4>
                 <div className="comments-filter">
-                    <button className="filter"> All </button>
-                    <button className="filter"> Issue </button>
-                    <button className="filter"> Code Review </button>
+                    <button className="filter" onClick={this.enableAll}> All </button>
+                    <button className="filter" onClick={this.enableIssue}> Issue </button>
+                    <button className="filter" onClick={this.enableCodeRev}> Code Review </button>
                 </div>
                 <br/>
                 <Table striped bordered hover className="comments-table">
@@ -70,17 +90,34 @@ class CommentTable extends Component{
                             <th>Date</th>
                             <th>Word Count</th>
                             <th>Comments</th>
-                            <th>On Issue/Code Review</th>
+                            <th>on Issue/Code Review</th>
                         </tr>
                     <tbody>
-                        {comments.map(comments =>//(item, index) =>
-                            <tr>
-                                <td>{moment(comments.date).format('LLL')}</td>
-                                <td>&emsp;&emsp;&ensp;{comments.wordCount}</td>
-                                <td>{comments.comments}</td>
-                                <td>{comments.issueOrReview}</td>
-                            </tr>
-                        )}
+                        {this.state.issue===true &&
+                            comments.map(comments => {  //(item, index) =>
+                                    return comments.onIssue ?
+                                        <tr>
+                                            <td>{moment(comments.date).format('LLL')}</td>
+                                            <td>&emsp;&emsp;&ensp;{comments.wordCount}</td>
+                                            <td>{comments.comments}</td>
+                                            <td>{comments.issueOrReview}</td>
+                                        </tr>
+                                        : <div/>
+                                }
+                            )
+                        }
+                        {this.state.code_rev===true &&
+                            comments.map(comments => {  //(item, index) =>
+                                    return comments.onIssue?<div/>:
+                                        <tr>
+                                            <td>{moment(comments.date).format('LLL')}</td>
+                                            <td>&emsp;&emsp;&ensp;{comments.wordCount}</td>
+                                            <td>{comments.comments}</td>
+                                            <td>{comments.issueOrReview}</td>
+                                        </tr>
+                                }
+                            )
+                        }
                     </tbody>
                 </Table>
             </>
