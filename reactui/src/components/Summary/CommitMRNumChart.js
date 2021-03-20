@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine} from 'recharts';
 import axios from "axios";
 import * as d3 from "d3-time";
 import moment from 'moment'
@@ -53,12 +53,23 @@ export default class CommitMRNumChart extends PureComponent {
 //            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
 //        });
 
+
+    formatDate = (unixTime) =>{
+
+        if(moment(unixTime).format('YYYY') === '2021'){
+            return moment(unixTime).format('MM-DD')
+        }
+        else {
+            return moment(unixTime).format('YYYY-MM-DD')
+        }
+    }
+
     render() {
         var output = this.state.frequency.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
-                commitNum: item.numCommits,
-                mergeNum: item.numMergeRequests
+                commitNum: -item.numCommits,
+                mergeNum: +item.numMergeRequests
             };
         });
         console.log(output);
@@ -67,26 +78,28 @@ export default class CommitMRNumChart extends PureComponent {
 
         return (
             <div>
-                <ResponsiveContainer width = '100%' height = {500} >
+                <ResponsiveContainer width = '94%' height = {680} >
                     <BarChart
                         data={output}
+                        stackOffset="sign"
                         margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey= "date"
-                               type ="number"
-                               name = 'date'
-                               domain={[
-                                   d3.timeDay.ceil(from).getTime(),
-                                   d3.timeDay.ceil(to).getTime()
-                               ]}
-                               tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
+                        <XAxis
+                            domain={[
+                            d3.timeDay.ceil(from).getTime(),
+                            d3.timeDay.ceil(to).getTime()]}
+                              tickFormatter = {this.formatDate}
+                              name = 'date'
+                              dataKey= "date"
                         />
-                        <YAxis />
-                        <Tooltip />
+                        <ReferenceLine y={0} stroke="#000000"
+                        />
+                        <YAxis tickFormatter = {(value) =>  Math.abs(value)}/>
+                        <Tooltip/>
                         <Legend />
-                        <Bar dataKey="commitNum" stackId="a" fill="orange" />
-                        <Bar dataKey="mergeNum" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="commitNum" stackId="a" fill="red" />
+                        <Bar dataKey="mergeNum" stackId="a" fill="blue" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
