@@ -112,7 +112,7 @@ export default class CommitMRScoreChart extends PureComponent {
             const mrVal = Math.abs(Math.round(payload[1].value * 10)/10.0);
             return (
                 <div className="tooltipBox">
-                    <p>{moment(label).format('YYYY-MM-DD')}</p>
+                    <p className="label">Date: {moment(label).format('YYYY-MM-DD')}</p>
                     <p className="label1">{`${'MR Score:'}: ${mrVal}`}</p>
                     <p className="label2">{`${'Commit Score:'} : ${commitVal}`}</p>
                 </div>
@@ -123,11 +123,24 @@ export default class CommitMRScoreChart extends PureComponent {
 
     getTickCount(to, from){
         const diff = (to-from)/1000000000
-        if((Math.round((diff*10)/10))*12 < 5){
-            return (Math.round((diff*10)/10))*12+5
+        if((Math.round((diff*10)/10)) < 1){
+            return 3
+        }
+        else if((Math.round((diff*10)/10)) < 10){
+            return 15
         }
         else {
-            return (Math.round((diff * 10) / 10)) * 12
+            return 20
+        }
+    }
+
+    getInterval(to, from){
+        const diff = (to-from)/1000000000
+        if((Math.round((diff*10)/10))*2 < 5){
+            return 1
+        }
+        else {
+            return ((Math.round((diff * 10) / 10))*5)
         }
     }
 
@@ -154,7 +167,7 @@ export default class CommitMRScoreChart extends PureComponent {
                     <BarChart
                         data={output}
                         stackOffset="sign"
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5}}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
                     >
                         <CartesianGrid
                             vertical={false}
@@ -171,6 +184,8 @@ export default class CommitMRScoreChart extends PureComponent {
                             tickSize={10}
                             tickCount={this.getTickCount(to, from)}
                             hide={false}
+                            angle={0}
+                            interval={"preserveStartEnd"}
                         />
                         <ReferenceLine
                             y={0}
