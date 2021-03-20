@@ -92,10 +92,6 @@ export default class CommitMRScoreChart extends PureComponent {
         }
     }
 
-//        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
-//            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
-//        });
-
     formatDate = (unixTime) =>{
 
         if(moment(unixTime).format('YYYY') === '2021'){
@@ -162,7 +158,6 @@ export default class CommitMRScoreChart extends PureComponent {
 
         return (
             <div>
-                <div>{this.getTickCount(to, from)}</div>
                 <ResponsiveContainer width = '94%' height = {680} >
                     <BarChart
                         data={output}
@@ -195,6 +190,8 @@ export default class CommitMRScoreChart extends PureComponent {
 
                         <YAxis
                             tickFormatter = {(value) =>  Math.abs(value)}
+                            interval={0}
+
                         />
                         <Tooltip
                             cursor={false}

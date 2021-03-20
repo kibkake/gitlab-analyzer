@@ -3,7 +3,6 @@ import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Respo
 import axios from "axios";
 import * as d3 from "d3-time";
 import moment from 'moment'
-import ProjectService from "../../Service/ProjectService";
 import './ToolTip.css'
 
 
@@ -51,10 +50,6 @@ export default class CommitMRNumChart extends PureComponent {
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }
-//        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
-//            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
-//        });
-
 
     formatDate = (unixTime) =>{
 
