@@ -40,6 +40,19 @@ class CommentChart extends PureComponent {
         }
     }
 
+    getTickCount(to, from){
+        const diff = (to-from)/1000000000
+        if((Math.round((diff*10)/10)) < 1){
+            return 3
+        }
+        else if((Math.round((diff*10)/10)) < 10){
+            return 15
+        }
+        else {
+            return 20
+        }
+    }
+
     render() {
         var output = this.state.commentScore.map(function(item) {
             return {
@@ -67,6 +80,8 @@ class CommentChart extends PureComponent {
                                    d3.timeDay.ceil(to).getTime()
                                ]}
                                tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
+                               tickCount={this.getTickCount(to, from)}
+
                         />
                         <YAxis />
                         <Tooltip />
