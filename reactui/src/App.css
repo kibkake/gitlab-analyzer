@@ -34,15 +34,11 @@
 }
 
 .login:hover{
-    border-style: groove;
-    border-width: 3px;
     color:darkcyan;
     font-weight: bold;
 }
 
 .login:active{
-    border-style: ridge;
-    border-width: 3px;
     background-color: darkcyan;
     color:white;
 }
