@@ -106,7 +106,7 @@ class CommentTable extends Component{
                                     return comments.onIssue ?
                                         <tr>
                                             <td>{moment(comments.date).format('LLL')}</td>
-                                            <td>&emsp;&emsp;&ensp;{comments.wordCount}</td>
+                                            <td>&emsp;{comments.wordCount}</td>
                                             <td>{comments.comments}</td>
                                             <td>{comments.issueOrReview}</td>
                                         </tr>
@@ -119,7 +119,7 @@ class CommentTable extends Component{
                                     return comments.onIssue?<div/>:
                                         <tr>
                                             <td>{moment(comments.date).format('LLL')}</td>
-                                            <td>&emsp;&emsp;&ensp;{comments.wordCount}</td>
+                                            <td>&emsp;{comments.wordCount}</td>
                                             <td>{comments.comments}</td>
                                             <td>{comments.issueOrReview}</td>
                                         </tr>
