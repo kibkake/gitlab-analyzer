@@ -16,9 +16,7 @@ import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
-import Flexbox from "flexbox-react";
-import DiffTable from "./DiffTable";
-import TableContainer from "@material-ui/core/TableContainer";
+
 
 //[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
 const PopOver = ({Diffs}) => {

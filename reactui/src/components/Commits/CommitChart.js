@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
 import CommitsPerDay from "./CommitsPerDay";
-import SingleCommitDiff from "../Developers/SingleCommitDiffs"
+import SingleCommitDiff from "./SingleCommitDiffs"
 import "./HBox.css"
 import CommitMergeRequest from "./CommitMergeRequest";
 
@@ -74,7 +74,6 @@ class CommitChart extends Component {
     }
 
     render() {
-
         var greenArr = [];
         var blackArr = [];
         var getDaysArray = function(start, end) {
