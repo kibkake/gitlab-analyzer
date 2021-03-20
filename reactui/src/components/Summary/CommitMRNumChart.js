@@ -91,8 +91,8 @@ export default class CommitMRNumChart extends PureComponent {
             return (
                 <div className="tooltipBox">
                     <p className="label">Date: {moment(label).format('YYYY-MM-DD')}</p>
-                    <p className="label1">{`${'MR Score:'}: ${mrVal}`}</p>
-                    <p className="label2">{`${'Commit Score:'} : ${commitVal}`}</p>
+                    <p className="label1">{`${'number of MRs:'}: ${mrVal}`}</p>
+                    <p className="label2">{`${'number of commits:'} : ${commitVal}`}</p>
                 </div>
             );
         }
