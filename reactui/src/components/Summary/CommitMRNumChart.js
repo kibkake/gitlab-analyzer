@@ -64,6 +64,29 @@ export default class CommitMRNumChart extends PureComponent {
         }
     }
 
+    getTickCount(to, from){
+        const diff = (to-from)/1000000000
+        if((Math.round((diff*10)/10)) < 1){
+            return 3
+        }
+        else if((Math.round((diff*10)/10)) < 10){
+            return 15
+        }
+        else {
+            return 20
+        }
+    }
+
+    getInterval(to, from){
+        const diff = (to-from)/1000000000
+        if((Math.round((diff*10)/10))*2 < 5){
+            return 1
+        }
+        else {
+            return ((Math.round((diff * 10) / 10))*5)
+        }
+    }
+
     render() {
         var output = this.state.frequency.map(function(item) {
             return {
@@ -84,7 +107,10 @@ export default class CommitMRNumChart extends PureComponent {
                         stackOffset="sign"
                         margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
                     >
-                        <CartesianGrid strokeDasharray="3 3" />
+                        <CartesianGrid
+                            strokeDasharray="3 3"
+                            vertical={false}
+                        />
                         <XAxis
                             domain={[
                             d3.timeDay.ceil(from).getTime(),
@@ -92,11 +118,25 @@ export default class CommitMRNumChart extends PureComponent {
                               tickFormatter = {this.formatDate}
                               name = 'date'
                               dataKey= "date"
+                            type = "number"
+                            allowDataOverflow={false}
+                            tickSize={10}
+                            hide={false}
+                            angle={0}
+                            interval={"preserveStartEnd"}
+                            tickCount={this.getTickCount(to, from)}
                         />
-                        <ReferenceLine y={0} stroke="#000000"
+                        <ReferenceLine
+                            y={0}
+                            stroke="#000000"
+                            type='category'
                         />
-                        <YAxis tickFormatter = {(value) =>  Math.abs(value)}/>
-                        <Tooltip/>
+                        <YAxis
+                            tickFormatter = {(value) =>  Math.abs(value)}
+                            />
+                        <Tooltip
+                            cursor={false}
+                        />
                         <Legend />
                         <Bar dataKey="commitNum" stackId="a" fill="red" />
                         <Bar dataKey="mergeNum" stackId="a" fill="blue" />
