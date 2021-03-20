@@ -1,6 +1,6 @@
 import {SiJsonwebtokens, TiCancel} from "react-icons/all";
 import React, {useState} from "react";
-import ProfileService from "../Service/ProfileService";
+import ProfileService from "../../Service/ProfileService";
 
 export default function LoginToken(){
 

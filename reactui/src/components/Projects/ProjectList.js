@@ -12,7 +12,7 @@ class ProjectList extends Component {
         super();
         this.state = {
             projects: [],
-            selectAll: false,
+            selectAll: true,
         }
         this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
         this.handleSingleCheckboxChange = this.handleSingleCheckboxChange.bind(this);

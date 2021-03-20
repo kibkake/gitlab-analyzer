@@ -1,8 +1,8 @@
 import "../App.css"
 import React,{ Component } from "react";
 import HomeInfo from "../components/HomeInfo";
-import DateRangeSettingComponent from "../components/DateRangeSettings";
-import LanguageScaleTable from "../components/LanguageScaleTable";
+import DateRangeSettingComponent from "../components/DateSetting/DateRangeSettings";
+import LanguageScaleTable from "../components/LanguageScaler/LanguageScaleTable";
 
 
 function Home(){

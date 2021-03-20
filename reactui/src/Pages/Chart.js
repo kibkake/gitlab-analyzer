@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import DropDownMenuCommit from "../components/DropDownMenuCommits";
+import DropDownMenuCommit from "../components/DropDownMenus/DropDownMenuCommits";
 import ProjectService from "../Service/ProjectService";
 
 class Chart extends Component{

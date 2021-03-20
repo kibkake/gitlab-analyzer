@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ProfileService from "../Service/ProfileService";
-import {Redirect} from "react-router-dom";
 
 export default class HomeInfo extends Component {
 

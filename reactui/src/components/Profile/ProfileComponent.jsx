@@ -5,10 +5,10 @@ import {
     RiLockPasswordLine,
     RiLogoutBoxRLine,
 } from "react-icons/all";
-import ProfileService from "../Service/ProfileService";
+import ProfileService from "../../Service/ProfileService";
 import {Redirect} from "react-router-dom";
 import './ProfileComponent.css';
-import LoginService from "../Service/LoginService";
+import LoginService from "../../Service/LoginService";
 
 export default class ProfileComponent extends Component {
 

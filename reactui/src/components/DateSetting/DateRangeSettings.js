@@ -1,9 +1,9 @@
-import "../App.css"
+import "../../App.css"
 import { MuiPickersUtilsProvider,DateTimePicker, DatePicker } from '@material-ui/pickers';
 import React,{ Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
-import ProjectService from '../Service/ProjectService'
+import ProjectService from '../../Service/ProjectService'
 
 function DateRangeSettings(){
 
