@@ -4,6 +4,8 @@ import axios from "axios";
 import * as d3 from "d3-time";
 import moment from 'moment'
 import ProjectService from "../../Service/ProjectService";
+import './ToolTip.css'
+
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class CommitMRNumChart extends PureComponent {
@@ -87,6 +89,21 @@ export default class CommitMRNumChart extends PureComponent {
         }
     }
 
+    CustomToolTip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            const commitVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
+            const mrVal = Math.abs(Math.round(payload[1].value * 10)/10.0);
+            return (
+                <div className="tooltipBox">
+                    <p className="label">Date: {moment(label).format('YYYY-MM-DD')}</p>
+                    <p className="label1">{`${'MR Score:'}: ${mrVal}`}</p>
+                    <p className="label2">{`${'Commit Score:'} : ${commitVal}`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
     render() {
         var output = this.state.frequency.map(function(item) {
             return {
@@ -108,7 +125,7 @@ export default class CommitMRNumChart extends PureComponent {
                         margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
                     >
                         <CartesianGrid
-                            strokeDasharray="3 3"
+                            strokeDasharray="3 1"
                             vertical={false}
                         />
                         <XAxis
@@ -133,9 +150,12 @@ export default class CommitMRNumChart extends PureComponent {
                         />
                         <YAxis
                             tickFormatter = {(value) =>  Math.abs(value)}
-                            />
+                            tickSize={10}
+                            interval={0}
+                        />
                         <Tooltip
                             cursor={false}
+                            content={this.CustomToolTip}
                         />
                         <Legend />
                         <Bar dataKey="commitNum" stackId="a" fill="red" />
