@@ -90,7 +90,15 @@ class CommentTable extends Component{
                             <th>Date</th>
                             <th>Word Count</th>
                             <th>Comments</th>
-                            <th>on Issue/Code Review</th>
+                            {this.state.issue === true && this.state.code_rev === true &&
+                                <th>On Issue/Code Review</th>
+                            }
+                            {this.state.issue === true && this.state.code_rev === false &&
+                                <th>On Issue</th>
+                            }
+                            {this.state.issue === false && this.state.code_rev === true &&
+                                <th>On Code Review</th>
+                            }
                         </tr>
                     <tbody>
                         {this.state.issue===true &&
