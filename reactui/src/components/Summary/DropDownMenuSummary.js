@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "../NavBars_Menu/Navbar_Developers";
-import '../DropDownMenu.css';
-import "../HBox.css"
+import '../DropDownMenus/DropDownMenu.css';
+import "../Commits/HBox.css"
 import ProjectService from "../../Service/ProjectService";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
