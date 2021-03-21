@@ -128,6 +128,7 @@ class CommentTable extends Component{
                         }
                     </tbody>
                 </Table>
+                <div className="vspace"/>
             </>
         );
     }
