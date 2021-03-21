@@ -4,6 +4,7 @@ import axios from "axios";
 import * as d3 from "d3-time";
 import moment from 'moment'
 import './ToolTip.css'
+import SummaryChartFunctions from "./SummaryChartFunctions";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class CommitMRScoreChart extends PureComponent {
@@ -92,53 +93,23 @@ export default class CommitMRScoreChart extends PureComponent {
         }
     }
 
-    formatDate = (unixTime) =>{
-
-        if(moment(unixTime).format('YYYY') === '2021'){
-            return moment(unixTime).format('MM-DD')
-        }
-        else {
-            return moment(unixTime).format('YYYY-MM-DD')
-        }
-    }
-
     CustomToolTip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             const commitVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
+            console.log(commitVal)
             const mrVal = Math.abs(Math.round(payload[1].value * 10)/10.0);
+            console.log(mrVal)
+
             return (
                 <div className="tooltipBox">
                     <p className="label">Date: {moment(label).format('YYYY-MM-DD')}</p>
-                    <p className="label1">{`${'MR Score:'}: ${mrVal}`}</p>
-                    <p className="label2">{`${'Commit Score:'} : ${commitVal}`}</p>
+                    <p className="label1">{`${'MR Score'}: ${mrVal}`}</p>
+                    <p className="label2">{`${'Commit Score'}: ${commitVal}`}</p>
                 </div>
             );
         }
         return null;
     };
-
-    getTickCount(to, from){
-        const diff = (to-from)/1000000000
-        if((Math.round((diff*10)/10)) < 1){
-            return 3
-        }
-        else if((Math.round((diff*10)/10)) < 10){
-            return 15
-        }
-        else {
-            return 20
-        }
-    }
-
-    getIntervalNumber(to, from){
-        const diff = (to-from)/1000000000
-        if((Math.round((diff*10)/10))*2 < 5){
-            return 1
-        }
-        else {
-            return ((Math.round((diff * 10) / 10))*5)
-        }
-    }
 
     render() {
         var tickArr = [];
@@ -163,7 +134,7 @@ export default class CommitMRScoreChart extends PureComponent {
                         data={output}
                         stackOffset="sign"
                         margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
-                    >
+                        >
                         <CartesianGrid
                             vertical={false}
                             strokeDasharray="3 1" />
@@ -171,28 +142,29 @@ export default class CommitMRScoreChart extends PureComponent {
                             domain={[
                                 d3.timeDay.ceil(from).getTime(),
                                 d3.timeDay.ceil(to).getTime()]}
-                            tickFormatter = {this.formatDate}
+                            tickFormatter = {SummaryChartFunctions.formatDate}
                             name = 'date'
                             dataKey= "date"
                             type = "number"
                             allowDataOverflow={false}
                             tickSize={10}
-                            tickCount={this.getTickCount(to, from)}
+                            tickCount={SummaryChartFunctions.getTickCount(to, from)}
                             hide={false}
                             angle={0}
                             interval={"preserveStartEnd"}
+                            mirror={false}
                         />
                         <ReferenceLine
                             y={0}
                             stroke="#000000"
                             type='category'
                         />
-
                         <YAxis
                             tickFormatter = {(value) =>  Math.abs(value)}
                             interval={0}
                             tickSize={10}
                             angle={0}
+                            allowDecimal={false}
                         />
                         <Tooltip
                             cursor={false}

@@ -1,8 +1,9 @@
 import React, {PureComponent} from "react";
 import axios from "axios";
-import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine} from 'recharts';
 import * as d3 from "d3-time";
 import moment from "moment";
+import SummaryChartFunctions from "./SummaryChartFunctions";
 
 
 class CommentChart extends PureComponent {
@@ -40,36 +41,15 @@ class CommentChart extends PureComponent {
         }
     }
 
-    getTickCount(to, from){
-        const diff = (to-from)/1000000000
-        if((Math.round((diff*10)/10)) < 1){
-            return 3
-        }
-        else if((Math.round((diff*10)/10)) < 10){
-            return 15
-        }
-        else {
-            return 20
-        }
-    }
-
-    formatDate = (unixTime) =>{
-
-        if(moment(unixTime).format('YYYY') === '2021'){
-            return moment(unixTime).format('MM-DD')
-        }
-        else {
-            return moment(unixTime).format('YYYY-MM-DD')
-        }
-    }
-
     CustomToolTip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             const commentVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
+            console.log(commentVal)
+
             return (
                 <div className="tooltipBox">
                     <p className="label">Date: {moment(label).format('YYYY-MM-DD')}</p>
-                    <p className="label1">{`${'number of Comments:'}: ${commentVal}`}</p>
+                    <p className="label1">{`${'number of Comments'}: ${commentVal}`}</p>
                 </div>
             );
         }
@@ -80,7 +60,7 @@ class CommentChart extends PureComponent {
         var output = this.state.commentScore.map(function(item) {
             return {
                 date: (new Date(item.formattedDate)).getTime(),
-                wordCount: item.wordCount
+                wordCount: +item.wordCount
             };
         });
         console.log(output);
@@ -93,7 +73,7 @@ class CommentChart extends PureComponent {
                     <BarChart
                         data={output}
                         margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
-                    >
+                        >
                         <CartesianGrid
                             strokeDasharray="3 1"
                             vertical={false}
@@ -110,15 +90,21 @@ class CommentChart extends PureComponent {
                                    d3.timeDay.ceil(from).getTime(),
                                    d3.timeDay.ceil(to).getTime()
                                ]}
-                               tickFormatter = {this.formatDate}
-                               tickCount={this.getTickCount(to, from)}
-
+                               tickFormatter = {SummaryChartFunctions.formatDate}
+                               tickCount={SummaryChartFunctions.getTickCount(to, from)}
+                               mirror={false}
+                        />
+                        <ReferenceLine
+                            y={0}
+                            stroke="#000000"
+                            type='category'
                         />
                         <YAxis
+                            tickFormatter = {(value) =>  Math.abs(value)}
                             tickSize={10}
                             interval={0}
                             angle={0}
-
+                            allowDecimal={false}
                         />
                         <Tooltip
                             cursor={false}
