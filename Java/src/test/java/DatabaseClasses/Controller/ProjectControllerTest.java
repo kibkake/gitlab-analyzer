@@ -13,6 +13,9 @@ Clarification on @Mock, @InjectMock, and annotation(s) to use for the class.
 - https://www.youtube.com/watch?v=3UpK2m94nHk
 Useful tutorial on mock objects.
 
+- https://stackoverflow.com/questions/28177370/how-to-format-localdate-to-string
+For seeing how to convert a LocalDate to a String.
+
  */
 package test.java.DatabaseClasses.Controller;
 
@@ -41,6 +44,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.mockito.Mockito;
@@ -72,11 +76,21 @@ public class ProjectControllerTest {
     private ProjectService projectService;
 
     //private Project project;
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Before
     public void setUp()/* throws Exception */{
         MockitoAnnotations.initMocks(this);
         //project = new Project();
+    }
+
+    @Test
+    public void testScoresPerDay() {
+        LocalDate start = LocalDate.parse("2021-01-01");
+        LocalDate end = LocalDate.parse("2021-03-19");
+        List<DateScore> user2Scores = projectService.getScoresPerDayForMRsAndCommits(
+                6, "user2", start, end, ProjectService.UseWhichDevField.USERNAME);
+        assertEquals("2021-01-24", user2Scores.get(0).getDate().format(dateFormatter));
     }
 
     //@Test
