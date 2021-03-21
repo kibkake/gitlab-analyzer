@@ -147,6 +147,7 @@ export default class CommitMRNumChart extends PureComponent {
                             tickFormatter = {(value) =>  Math.abs(value)}
                             tickSize={10}
                             interval={0}
+                            angle={0}
                         />
                         <Tooltip
                             cursor={false}

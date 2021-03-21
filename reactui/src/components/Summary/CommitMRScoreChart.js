@@ -130,7 +130,7 @@ export default class CommitMRScoreChart extends PureComponent {
         }
     }
 
-    getInterval(to, from){
+    getIntervalNumber(to, from){
         const diff = (to-from)/1000000000
         if((Math.round((diff*10)/10))*2 < 5){
             return 1
@@ -191,7 +191,8 @@ export default class CommitMRScoreChart extends PureComponent {
                         <YAxis
                             tickFormatter = {(value) =>  Math.abs(value)}
                             interval={0}
-
+                            tickSize={10}
+                            angle={0}
                         />
                         <Tooltip
                             cursor={false}

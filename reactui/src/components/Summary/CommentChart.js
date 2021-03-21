@@ -53,6 +53,29 @@ class CommentChart extends PureComponent {
         }
     }
 
+    formatDate = (unixTime) =>{
+
+        if(moment(unixTime).format('YYYY') === '2021'){
+            return moment(unixTime).format('MM-DD')
+        }
+        else {
+            return moment(unixTime).format('YYYY-MM-DD')
+        }
+    }
+
+    CustomToolTip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            const commentVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
+            return (
+                <div className="tooltipBox">
+                    <p className="label">Date: {moment(label).format('YYYY-MM-DD')}</p>
+                    <p className="label1">{`${'number of Comments:'}: ${commentVal}`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
     render() {
         var output = this.state.commentScore.map(function(item) {
             return {
@@ -71,20 +94,36 @@ class CommentChart extends PureComponent {
                         data={output}
                         margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
                     >
-                        <CartesianGrid strokeDasharray="3 3" />
+                        <CartesianGrid
+                            strokeDasharray="3 1"
+                            vertical={false}
+                        />
                         <XAxis dataKey= "date"
                                type = "number"
                                name = 'date'
+                               allowDataOverflow={false}
+                               tickSize={10}
+                               hide={false}
+                               angle={0}
+                               interval={"preserveStartEnd"}
                                domain={[
                                    d3.timeDay.ceil(from).getTime(),
                                    d3.timeDay.ceil(to).getTime()
                                ]}
-                               tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
+                               tickFormatter = {this.formatDate}
                                tickCount={this.getTickCount(to, from)}
 
                         />
-                        <YAxis />
-                        <Tooltip />
+                        <YAxis
+                            tickSize={10}
+                            interval={0}
+                            angle={0}
+
+                        />
+                        <Tooltip
+                            cursor={false}
+                            content={this.CustomToolTip}
+                            />
                         <Legend />
                         <Bar dataKey="wordCount" stackId="a" fill="#8884d8" />
                     </BarChart>
