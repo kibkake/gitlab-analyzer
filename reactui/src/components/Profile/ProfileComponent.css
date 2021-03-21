@@ -16,29 +16,21 @@
 }
 
 .logout:hover{
-    border-style: groove;
-    border-width: 3px;
     color:red;
     font-weight: bold;
 }
 
 .logout:active{
-    border-style: ridge;
-    border-width: 3px;
     background-color: red;
     color:white;
 }
 
 .passChange:hover, .tokenChange:hover{
-    border-style: groove;
-    border-width: 3px;
     color:darkcyan;
     font-weight: bold;
 }
 
 .passChange:active, .tokenChange:active{
-    border-style: ridge;
-    border-width: 3px;
     background-color: darkcyan;
     color:white;
 }
