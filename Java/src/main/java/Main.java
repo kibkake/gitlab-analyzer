@@ -1,14 +1,7 @@
 package main.java;
 
-import main.java.ConnectToGitlab.*;
-import main.java.Model.Commit;
-import main.java.Model.Issue;
-import main.java.Model.MergeRequest;
 import main.java.Model.User;
 
-import main.java.DatabaseClasses.Repository.WrapperProjectRepository;
-import org.hamcrest.core.Is;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.*;
@@ -18,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.io.PrintWriter;
-import java.util.List;
 
 /**
  * The main application that invokes SpringBoot's bootRun
@@ -26,8 +18,7 @@ import java.util.List;
 @SpringBootApplication
 public class Main {
 
-    @Autowired
-    private WrapperProjectRepository projectRepository;
+
     /**
      * This is the main method for running Spring Boot
      *

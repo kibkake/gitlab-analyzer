@@ -2,11 +2,6 @@ import {Table} from "react-bootstrap";
 import React, {Component} from "react";
 import axios from "axios";
 
-const scoreSummary = [
-    {commitScore:3, scoreMR: 204, wordCountComment: 100},
-    {commitScore:2, scoreMR: 12, wordCountComment: 200},
-];
-
 class SummaryScoreTable extends Component{
 
      constructor(props) {
@@ -25,7 +20,6 @@ class SummaryScoreTable extends Component{
         const {parentdata} = this.state;
         await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime)
      }
-
 
      async getDataFromBackend (username, startTm, endTm) {
 
