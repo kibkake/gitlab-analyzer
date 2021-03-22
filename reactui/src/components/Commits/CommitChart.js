@@ -72,6 +72,21 @@ class CommitChart extends Component {
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }
+/*
+<div>
+            {(this.state.diff !== false) ? <SingleCommitDiff  handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
+           </div>
+ */
+    showComponents() {
+
+            return (
+                <div>
+
+                    <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} commits = {this.state.allCommits} handler = {this.handler} />
+                </div>
+            )
+
+    }
 
     render() {
 
@@ -147,9 +162,11 @@ class CommitChart extends Component {
                             }
                         }}
                 />
+                    </div>
                 </div>
-                {(this.state.diff !== false) ? <SingleCommitDiff  handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
-                {(this.state.diff !== false) ? <CommitMergeRequest hash = {this.state.childVal}/>: <div> </div>}
+                {this.showComponents()}
+                {(this.state.diff !== false) ? <SingleCommitDiff handler2 = {this.handler2} hash = {this.state.childVal}/>: <div> </div>}
+
             </div>
         )
     }
