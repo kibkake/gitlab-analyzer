@@ -48,8 +48,6 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-
-
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         if(projectService.getAllProjects().isEmpty()) {
