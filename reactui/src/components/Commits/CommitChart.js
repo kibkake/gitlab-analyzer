@@ -72,20 +72,23 @@ class CommitChart extends Component {
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }
-/*
-<div>
-            {(this.state.diff !== false) ? <SingleCommitDiff  handler2 = {this.handler2} hash = {this.state.childVal}/> : <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} handler = {this.handler} />}
-           </div>
- */
-    showComponents() {
 
+    showComponents() {
+        if(this.state.showAllCommit === true){
+            return (
+                <div>
+                    <AllCommits devName = {this.props.devName} startTime = {this.props.startTime} endTime = {this.props.endTime} handler = {this.handler} handler3 = {this.handler3} />
+                </div>
+            )
+        }
+        else {
             return (
                 <div>
 
                     <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} commits = {this.state.allCommits} handler = {this.handler} />
                 </div>
             )
-
+        }
     }
 
     render() {
