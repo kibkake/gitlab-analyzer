@@ -5,7 +5,6 @@ import SingleCommitDiff from "../Developers/SingleCommitDiffs"
 import "./HBox.css"
 import CommitMergeRequest from "./CommitMergeRequest";
 
-
 class CommitChart extends Component {
 
     constructor(props) {
@@ -18,21 +17,30 @@ class CommitChart extends Component {
             y_Axis : "1970-12-12",
             childVal : "non",
             diff: false,
+            showAllCommit:true,
+            allCommits: []
         };
         this.handler = this.handler.bind(this)
         this.handler2 = this.handler2.bind(this)
+        this.handler3 = this.handler3.bind(this)
     }
 
     async handler(hash) {
         await this.setState({
             childVal: hash,
-            diff : true
+            diff : true,
         })
     }
 
     async handler2() {
         await this.setState({
             diff: false
+        })
+    }
+
+    async handler3(commits) {
+        await this.setState({
+            allCommits: commits
         })
     }
 
@@ -128,7 +136,14 @@ class CommitChart extends Component {
 
         return (
             <div className="box-container" >
-                <div className="horizontalBar" style={{ overflow: "scroll", height: "1050px", width: "1000px"}}>
+                <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
+                    <Button className="button"
+                            onClick={(e) => {
+                                this.setState({showAllCommit: true, diff:false})
+                            }}>
+                        <span >show all commits</span>
+                    </Button>
+                <div className="horizontalBar">
                 <HorizontalBar
 
                     data={{labels: daylist,
@@ -149,7 +164,7 @@ class CommitChart extends Component {
                                     const chart = Event[0]._chart;
                                     const element = chart.getElementAtEvent(e)[0];
                                     const yAxis = chart.data.labels[element._index];
-                                    this.setState({y_Axis:yAxis, diff : false})
+                                    this.setState({y_Axis:yAxis, diff : false, showAllCommit: false})
                                 }
 
                             } , maintainAspectRatio:true,
