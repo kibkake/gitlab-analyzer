@@ -1,6 +1,6 @@
 package main.java;
 
-import main.java.Model.User;
+import main.java.Collections.User;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
