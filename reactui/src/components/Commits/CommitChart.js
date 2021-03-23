@@ -12,6 +12,7 @@ class CommitChart extends Component {
         super(props);
         this.state = {
             data: [],
+            commits: [],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime,
@@ -72,21 +73,26 @@ class CommitChart extends Component {
             arr.push(item)
         })
         await this.setState({data: arr})
-    }
 
-    async componentDidUpdate(prevProps){
-        if(this.props.devName !== prevProps.devName ||
-            this.props.startTime !== prevProps.startTime ||
-            this.props.endTime !== prevProps.endTime){
-            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
-        }
+
+
+        let url2 = '/api/v1/projects/' + projNum + '/Commits/' + username + '/' + startTm + "/" + endTm  + "/either"
+        const result2 = await fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        const resp = await result2.json();
+        await this.setState({commits:resp})
     }
 
     showComponents() {
         if(this.state.showAllCommit === true){
             return (
                 <div>
-                    <AllCommits devName = {this.props.devName} startTime = {this.props.startTime} endTime = {this.props.endTime} handler = {this.handler} handler3 = {this.handler3} />
+                    <AllCommits devName = {this.props.devName} startTime = {this.props.startTime} endTime = {this.props.endTime} handler = {this.handler} handler3 = {this.handler3} commits={this.state.commits} />
                 </div>
             )
         }
@@ -94,7 +100,7 @@ class CommitChart extends Component {
             return (
                 <div>
 
-                    <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} commits = {this.state.allCommits} handler = {this.handler} />
+                    <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} commits = {this.state.allCommits} handler = {this.handler} commits={this.state.commits} />
                 </div>
             )
         }
