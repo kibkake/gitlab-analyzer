@@ -1,7 +1,7 @@
 package test.DatabaseClasses;
 
 import main.java.DatabaseClasses.DatabaseFunctions;
-import main.java.Model.User;
+import main.java.Collections.User;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
