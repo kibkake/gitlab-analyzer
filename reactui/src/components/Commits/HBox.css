@@ -22,3 +22,10 @@
     flex-direction:row;
 }
 
+
+.button{
+    margin-left: 10px;
+    margin-right: 50px;
+    width:40%;
+    height:4%;
+}

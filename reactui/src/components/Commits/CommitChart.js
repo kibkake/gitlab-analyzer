@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {HorizontalBar} from 'react-chartjs-2'
 import CommitsPerDay from "./CommitsPerDay";
-import SingleCommitDiff from "../Developers/SingleCommitDiffs"
+import SingleCommitDiff from "./CommitDiff"
 import "./HBox.css"
-import CommitMergeRequest from "./CommitMergeRequest";
+import AllCommits from "./AllCommits";
+import Button from "react-bootstrap/Button";
 
 class CommitChart extends Component {
 
