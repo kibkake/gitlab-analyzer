@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
-import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import {BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine} from 'recharts';
 import axios from "axios";
 import * as d3 from "d3-time";
 import moment from 'moment'
-import ProjectService from "../../Service/ProjectService";
+import './ToolTip.css'
+import SummaryChartFunctions from "./SummaryChartFunctions";
 
 //'https://jsfiddle.net/alidingling/90v76x08/']
 export default class CommitMRNumChart extends PureComponent {
@@ -49,16 +50,31 @@ export default class CommitMRNumChart extends PureComponent {
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }
-//        ProjectService.getCodeScore(this.id, this.developer).then((response) => {
-//            this.setState({date: response.data.date, code: response.data.commitScore, comment: 0
-//        });
+
+    CustomToolTip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            const commitVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
+            console.log(commitVal)
+            const mrVal = Math.abs(Math.round(payload[1].value * 10)/10.0);
+            console.log(mrVal)
+
+            return (
+                <div className="tooltipBox">
+                    <p className="label">Date: {moment(label).format('YYYY-MM-DD')}</p>
+                    <p className="label1">{`${'number of MRs'}: ${mrVal}`}</p>
+                    <p className="label2">{`${'number of commits'}: ${commitVal}`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
 
     render() {
         var output = this.state.frequency.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
-                commitNum: item.numCommits,
-                mergeNum: item.numMergeRequests
+                commitNum: -item.numCommits,
+                mergeNum: +item.numMergeRequests
             };
         });
         console.log(output);
@@ -67,26 +83,51 @@ export default class CommitMRNumChart extends PureComponent {
 
         return (
             <div>
-                <ResponsiveContainer width = '100%' height = {500} >
+                <ResponsiveContainer width = '94%' height = {680} >
                     <BarChart
                         data={output}
+                        stackOffset="sign"
                         margin={{ top: 20, right: 30, left: 20, bottom: 5,}}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey= "date"
-                               type ="number"
-                               name = 'date'
-                               domain={[
-                                   d3.timeDay.ceil(from).getTime(),
-                                   d3.timeDay.ceil(to).getTime()
-                               ]}
-                               tickFormatter = {(unixTime) => moment(unixTime).format('YYYY-MM-DD')}
+                        >
+                        <CartesianGrid
+                            strokeDasharray="3 1"
+                            vertical={false}
                         />
-                        <YAxis />
-                        <Tooltip />
+                        <XAxis
+                            domain={[
+                            d3.timeDay.ceil(from).getTime(),
+                            d3.timeDay.ceil(to).getTime()]}
+                              tickFormatter = {SummaryChartFunctions.formatDate}
+                              name = 'date'
+                              dataKey= "date"
+                            type = "number"
+                            allowDataOverflow={false}
+                            tickSize={10}
+                            hide={false}
+                            angle={0}
+                            interval={"preserveStartEnd"}
+                            tickCount={SummaryChartFunctions.getTickCount(to, from)}
+                            mirror={false}
+                        />
+                        <ReferenceLine
+                            y={0}
+                            stroke="#000000"
+                            type='category'
+                        />
+                        <YAxis
+                            tickFormatter = {(value) =>  Math.abs(value)}
+                            tickSize={10}
+                            interval={0}
+                            angle={0}
+                            allowDecimal={false}
+                        />
+                        <Tooltip
+                            cursor={false}
+                            content={this.CustomToolTip}
+                        />
                         <Legend />
-                        <Bar dataKey="commitNum" stackId="a" fill="orange" />
-                        <Bar dataKey="mergeNum" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="commitNum" stackId="a" fill="red" />
+                        <Bar dataKey="mergeNum" stackId="a" fill="blue" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

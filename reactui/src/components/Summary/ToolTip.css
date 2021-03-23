@@ -1,0 +1,19 @@
+.label{
+    background-color: #b5d592;
+    font-weight: bold;
+
+}
+
+.label1{
+    color: blue;
+}
+
+.label2{
+    color: red;
+}
+
+.tooltipBox{
+    border-style: solid;
+    border-top-color: black;
+    background-color: white;
+}

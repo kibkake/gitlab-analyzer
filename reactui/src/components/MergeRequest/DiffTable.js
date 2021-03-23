@@ -1,6 +1,6 @@
 import {Popover, Table} from "react-bootstrap";
 import Highlight from "react-highlight";
-import HighlightCodeDiffs from "../HighlightCodeDiffs";
+import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import React from "react";
 
 export default function DiffTable ({Diffs})  {

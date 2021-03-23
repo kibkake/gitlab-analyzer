@@ -1,13 +1,10 @@
 package main.java.ConnectToGitlab;//package main.java.ConnectToGitlab.MergeRequests;
 
-import main.java.Model.*;
+import main.java.Collections.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -43,6 +40,11 @@ public class MergeRequestConnection {
             mergeRequest.setMrScore(calcMergeRequestScore(mergeRequest.getDiffs())); // must be done after diffs
             mergeRequest.setMergeRequestNotes(getMergeRequestNotes(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
             mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
+            double score=0;
+            for(Commit commit :mergeRequest.getCommits()){
+                score += commit.getCommitScore();
+            }
+            mergeRequest.setSumOfCommits(score);
         }
         return mergeRequests;
     }

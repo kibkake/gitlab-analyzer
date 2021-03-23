@@ -1,10 +1,10 @@
 package main.java.DatabaseClasses.Service;
 
-import main.java.DatabaseClasses.Model.CommitDateScore;
-import main.java.DatabaseClasses.Model.MergeRequestDateScore;
-import main.java.DatabaseClasses.Repository.DeveloperRepository;
-import main.java.Model.Developer;
-import main.java.Model.MergeRequest;
+import main.java.DatabaseClasses.Scores.CommitDateScore;
+import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
+import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
+import main.java.Collections.Developer;
+import main.java.Collections.MergeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

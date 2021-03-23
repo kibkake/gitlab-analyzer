@@ -1,0 +1,77 @@
+.signupform{
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.cancel{
+    padding: 5px;
+    margin-right:50px;
+}
+
+.cancel:hover{
+    color:red;
+    font-weight: bold;
+}
+
+.cancel:active{
+    background-color: red;
+    color:white;
+}
+
+.signup, .checkAvail{
+    padding: 5px;
+}
+
+.signup:hover, .checkAvail:hover{
+    color:darkcyan;
+    font-weight: bold;
+}
+
+.signup:active, .checkAvail:active{
+    background-color: darkcyan;
+    color:white;
+}
+
+input{
+    padding-top:5px;
+    padding-bottom:5px;
+    width:225px;
+}
+
+.checkAvail{
+    margin-left:10px;
+}
+
+.checkAvail:hover{
+    color:black;
+    font-weight: bold;
+}
+
+.checkAvail:active{
+    background-color: black;
+    color:white;
+}
+
+.success{
+    color:darkcyan;
+    margin-left:5px;
+    margin-top:10px;
+}
+
+.fail{
+    color:red;
+    margin-left:5px;
+    margin-top:10px;
+}
+
+.signup {
+    margin-left:20px;
+}
+
+.terms{
+    margin-left: 20px;
+}
+
+.terms-button{
+    margin-left: 5px !important;
+}

@@ -7,21 +7,18 @@ import Home from './Pages/Home';
 import Developers2 from './Pages/Developers2';
 import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
-import Commits2 from "./Pages/Commits2";
 import SingleCommit from "./Pages/SingleCommit";
 import Comments from "./Pages/Comments";
 import MergeRequest from "./Pages/MergeRequest";
 import Profile from "./Pages/Profile";
 import Signup from "./Pages/Signup";
-import Setting from "./Pages/Settings"
-import LoginState from "./components/LoginState";
+import LoginState from "./components/LogIn/LoginState";
 import Chart from "./Pages/Chart";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useToken from "./useToken";
 import {SiGnuprivacyguard, SiJsonwebtokens} from "react-icons/all";
-import {AiOutlineHome} from "react-icons/ai";
-import SignupComponent from "./components/SignupComponent";
-import LoginToken from "./components/LoginToken.js";
+import SignupComponent from "./components/LogIn/SignupComponent";
+import LoginToken from "./components/LogIn/LoginToken.js";
 import Terms from "./Pages/Terms";
 
 function signupHandler(){

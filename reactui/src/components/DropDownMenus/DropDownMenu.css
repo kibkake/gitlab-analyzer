@@ -1,0 +1,10 @@
+.DropDownMenu {
+    color: black;
+    padding: 2px 2px;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    width: 50px;
+    margin-left: 10px;
+}
+

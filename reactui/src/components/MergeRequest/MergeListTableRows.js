@@ -15,7 +15,7 @@ import {OverlayTrigger, Popover} from 'react-bootstrap'
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
-import HighlightCodeDiffs from "../HighlightCodeDiffs";
+import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import Flexbox from "flexbox-react";
 import DiffTable from "./DiffTable";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -44,6 +44,7 @@ export default function Row(props) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
+
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
@@ -52,11 +53,14 @@ export default function Row(props) {
                 </TableCell>
                 <TableCell>#{row.id} <a href= {row.mrUrl}> {row.title}</a> </TableCell>
                 <TableCell align="right">{row.score.toFixed(1)}</TableCell>
+                <TableCell align="right"> {row.sum}</TableCell>
+
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
+
                 <TableCell align ="right">
                     <OverlayTrigger trigger="focus" placement="right" justifyContent="flex-start"
                                     display="flex" flexDirection="row" p={1} m={1}
@@ -89,6 +93,7 @@ export default function Row(props) {
                                                 {moment(commitsRow.commitDate).format('LLL')}
 
                                             </TableCell>
+
                                             <TableCell>{commitsRow.message}</TableCell>
                                             <TableCell align="right">{commitsRow.author}</TableCell>
                                             <TableCell align="right">{commitsRow.score.toFixed(1)}</TableCell>
@@ -106,6 +111,7 @@ export default function Row(props) {
                 </TableCell>
             </TableRow>
         </React.Fragment>
+
     );
 }
 

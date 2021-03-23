@@ -1,9 +1,8 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.Model.MergeRequestDateScore;
+import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
 import main.java.DatabaseClasses.Service.MergeRequestService;
-import main.java.Model.Commit;
-import main.java.Model.MergeRequest;
+import main.java.Collections.MergeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.List;
 
 @RestController
