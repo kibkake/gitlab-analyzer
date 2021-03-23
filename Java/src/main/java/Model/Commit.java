@@ -19,15 +19,11 @@ public class Commit {
     private String message; // other lines of commit message
     private String authorName;
     private String committerName;
-    private String authorEmail;
-    private String authorDate;
     private List<Diff> diffs;
     private Date date;
     private String sha;
     private int projectId;
     private double commitScore;
-
-
 
     public Commit() {
     }
@@ -77,28 +73,6 @@ public class Commit {
         this.authorName = authorName;
     }
 
-    @JsonProperty("author_email")
-    public String getAuthorEmail() {
-        return authorEmail;
-    }
-
-    @JsonProperty("author_email")
-    public void setAuthorEmail(String authorEmail) {
-        this.authorEmail = authorEmail;
-    }
-
-    @JsonProperty("authored_date")
-    public String getAuthorDate() {
-        return authorDate;
-    }
-
-    @JsonProperty("authored_date")
-    public void setAuthorDate(String authorDate) {
-        this.authorDate = authorDate;
-        OffsetDateTime dateWithOffSet = OffsetDateTime.parse(authorDate);
-        setDate(Date.from(dateWithOffSet.toInstant()));
-    }
-
     public String getSha() {
         return sha;
     }
@@ -115,10 +89,12 @@ public class Commit {
         this.diffs = diffs;
     }
 
+    @JsonProperty("committed_date")
     public Date getDate() {
         return date;
     }
 
+    @JsonProperty("committed_date")
     public void setDate(Date date) {
         this.date = date;
     }
@@ -138,8 +114,6 @@ public class Commit {
                 ", title='" + title + '\'' +
                 ", message='" + message + '\'' +
                 ", author_name='" + authorName + '\'' +
-                ", author_email='" + authorEmail + '\'' +
-                ", authored_date=" + authorDate +
                 '}';
     }
 

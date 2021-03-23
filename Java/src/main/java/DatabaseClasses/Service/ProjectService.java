@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -64,11 +65,6 @@ public class ProjectService {
         return project.getIssues();
     }
 
-    public String getProjectDescription(int projectId) {
-        Project project = projectRepository.findProjectById(projectId);
-        return project.getDescription();
-    }
-
     public List<MergeRequest> getProjectMRs(int projectId) {
         Project project = projectRepository.findProjectById(projectId);
         return project.getMergedRequests();
@@ -89,18 +85,13 @@ public class ProjectService {
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
-
-        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
-        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
-        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
-        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
-        projectRepository.save(project);
         if (project.projectHasBeenUpdated()) {
             project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
             project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
             project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
             project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
             project.setSyncInfo();
+            project.setLastSyncAt();
             projectRepository.save(project);
         }
     }
@@ -136,8 +127,6 @@ public class ProjectService {
             List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
                     dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
 
-            System.out.println(dev.getUsername());
-            System.out.println(devMergeRequests);
             List<MergeRequestDateScore> devMergeRequestDateScores = mergeRequestRepository.getDevsMrsScoreADay(projectId,
                     dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
 
@@ -159,7 +148,7 @@ public class ProjectService {
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
                constructor because of spring
              */
-            dev.setDbKey(String.valueOf(dev.getProjectId()) +  String.valueOf(dev.getDevId()));
+            dev.setDbKey(Integer.toString(projectId) +  String.valueOf(dev.getDevId()));
             dev.setProjectId(projectId);
             dev.setMergeRequestsAndCommits(devMergeRequests);
             dev.setMergeRequestDateScores(devMergeRequestDateScores);
@@ -183,14 +172,14 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        username, currentCommit.getId());
+                        username, currentCommit.getDiffs());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
 
                 dateScore.addToCommitScore(currentCommit.getCommitScore());
                 dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit.getId());
+                dateScore.addCommitDiffs(currentCommit);
             }
         }
         List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
@@ -218,13 +207,13 @@ public class ProjectService {
 
             if (!dateMap.containsKey(mergedDate.toString())) {
                 DateScore dateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
-                        username, 1, mergeRequest.getId());
+                        username, 1, mergeRequest.getDiffs());
                 dateMap.put(mergedDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(mergedDate.toString());
                 dateScore.addToMergeRequestScore(mergeRequest.getMrScore());
                 dateScore.incrementNumMergeRequests();
-                dateScore.addMergeRequestIds(mergeRequest.getId());
+                dateScore.addMergeRequestDiffs(mergeRequest);
             }
         }
         List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devFieldForGettingCommits);
@@ -232,14 +221,14 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        username, currentCommit.getId());
+                        username, currentCommit.getDiffs());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
 
                 dateScore.addToCommitScore(currentCommit.getCommitScore());
                 dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit.getId());
+                dateScore.addCommitDiffs(currentCommit);
             }
         }
         List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
@@ -511,6 +500,8 @@ public class ProjectService {
 
         return allScores;
     }
+
+
 
     public List<Developer> getMembers(int ProjectId){
         Project project = projectRepository.findProjectById(ProjectId);

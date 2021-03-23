@@ -10,6 +10,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 
 import java.time.Clock;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
@@ -23,18 +26,22 @@ public class Project {
     private String description;
     private String name;
     private String createdAt;
+    private String lastSyncAt;
     private List<MergeRequest> mergedRequests;
     private List<Issue> issues;
     private List<Commit> commits;
     private List<Developer> developers;
     private boolean infoSet;
     private Instant infoSetDate;
+    private Instant lastProjectUpdateAt;
 
     public Project() {
         mergedRequests = new ArrayList<>();
         issues = new ArrayList<>();
         commits = new ArrayList<>();
         developers = new ArrayList<>();
+        lastSyncAt = "never";
+        infoSet = false;
         // The point of initializing them to empty arraylists is that, if they're not ever
         // given values, they will be empty lists instead of equaling null.
     }
@@ -73,6 +80,35 @@ public class Project {
         this.createdAt = createdAt;
     }
 
+    @JsonProperty("last_sync_at")
+    public String getLastSyncAt() {
+        return this.lastSyncAt;
+    }
+
+    @JsonProperty("last_sync_at")
+    public void setLastSyncAt() {
+        if (infoSetDate != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
+            this.lastSyncAt = formatter.format(this.infoSetDate);
+        }
+    }
+
+    public Instant getInfoSetDate() {
+        return infoSetDate;
+    }
+
+    public void setInfoSetDate(Instant infoSetDate) {
+        this.infoSetDate = infoSetDate;
+    }
+
+    public Instant getLastProjectUpdateAt() {
+        return lastProjectUpdateAt;
+    }
+
+    public void setLastProjectUpdateAt(Instant lastProjectUpdateAt) {
+        this.lastProjectUpdateAt = lastProjectUpdateAt;
+    }
+
     public List<MergeRequest> getMergedRequests() {
         return mergedRequests;
     }
@@ -109,14 +145,19 @@ public class Project {
         return infoSet;
     }
 
+
     public void setSyncInfo() {
         this.infoSet = true;
-        this.infoSetDate = Clock.systemUTC().instant();;
+        this.infoSetDate = Clock.systemUTC().instant();
     }
 
     public boolean projectHasBeenUpdated() {
-        Instant lastUpdateDate = lastProjectUpdateDate();
-        return lastUpdateDate.compareTo(infoSetDate) > 0;
+        setLastProjectUpdateAt(lastProjectUpdateDate());
+        if(infoSetDate == null) {
+            return true;
+        } else {
+            return lastProjectUpdateAt.compareTo(infoSetDate) > 0;
+        }
     }
 
     private Instant lastProjectUpdateDate() {
