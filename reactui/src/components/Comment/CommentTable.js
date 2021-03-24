@@ -28,7 +28,6 @@ class CommentTable extends Component{
         const id = pathArray[2];
         const developer = pathArray[4];
 
-        //request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-05-09
         await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments = response.data
@@ -63,8 +62,18 @@ class CommentTable extends Component{
 
     render() {
         var Data = this.state.comments.map(function (item) {
+            let currentYear = " "+ (new Date().getFullYear());
+            let dateString= moment(item.created_at).format('lll').replace(currentYear,"")
+            // let dateFinal = "";
+            // if(dateString[2]==="2021"){
+            //     dateFinal= dateString[0]+" "+
+            //         dateString[1]+" "+
+            //         dateString[3]+" "+
+            //         dateString[4]+" ";
+            // }
+            // moment(item.created_at).format('lll')
             return {
-                date: moment(item.created_at).format('ll'),
+                date: dateString,
                 wordCount: item.wordCount,
                 comments: item.body,
                 onIssue: item.issueNote
@@ -105,7 +114,7 @@ class CommentTable extends Component{
                             comments.map(comments => {  //(item, index) =>
                                     return comments.onIssue ?
                                         <tr>
-                                            <td>{moment(comments.date).format('LLL')}</td>
+                                            <td>{comments.date}</td>
                                             <td>&emsp;{comments.wordCount}</td>
                                             <td>{comments.comments}</td>
                                             <td>{comments.issueOrReview}</td>
@@ -118,7 +127,7 @@ class CommentTable extends Component{
                             comments.map(comments => {  //(item, index) =>
                                     return comments.onIssue?<div/>:
                                         <tr>
-                                            <td>{moment(comments.date).format('LLL')}</td>
+                                            <td>{comments.date}</td>
                                             <td>&emsp;{comments.wordCount}</td>
                                             <td>{comments.comments}</td>
                                             <td>{comments.issueOrReview}</td>
