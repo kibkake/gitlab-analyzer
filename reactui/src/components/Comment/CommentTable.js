@@ -29,7 +29,7 @@ class CommentTable extends Component{
         const developer = pathArray[4];
 
         //request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-05-09
-        await axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/2021-01-01/2021-05-09")
+        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments = response.data
                 this.setState({comments: comments})
