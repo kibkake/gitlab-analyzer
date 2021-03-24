@@ -2,8 +2,7 @@ import React from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Collapse from "@material-ui/core/Collapse";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
@@ -18,41 +17,55 @@ import moment from "moment";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import Flexbox from "flexbox-react";
 import TableContainer from "@material-ui/core/TableContainer";
+import './TableStyle.css'
 
+function CommitInfo(props) {
 
-
-// Table structure is based on the library from [https://material-ui.com/components/tables/]
-export default function Row(props) {
-
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-    const classes = useRowStyles();
-
+    const [open, setOpen] = React.useState(
+        false
+    );
 
     return (
         <React.Fragment>
-            <TableRow className={classes.root}>
+            <TableRow className="commitTable">
                 <TableCell component="th" scope="row">
-                    {moment(row.committed_date).format('lll')}
+                    {moment(props.commit.committed_date).format('lll')}
 
                 </TableCell>
-                <TableCell><a href= {row.mrUrl}> {row.title.substring(0,10)} {row.title.length > 10 ? <div>...</div> : <div></div>}</a> </TableCell>
-                <TableCell align="right">{row.commitScore.toFixed(1)}</TableCell>
+                <TableCell><a href= {props.commit.mrUrl}>
+                    {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
+                        props.commit.title.substring(0,10)}</a> </TableCell>
+                <TableCell align="right">{props.commit.commitScore.toFixed(1)}</TableCell>
 
-                <TableCell align="right">
+                <TableCell align="top">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        {<MoreHorizIcon />}
                     </IconButton>
                 </TableCell>
 
                 <TableCell align ="right">
 
+                    <button
+                        style={{
+                            backgroundColor: 'lightblue',
+                            color: 'black',
+                            borderRadius: '0%'
+                        }}
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            {props.handler(props.commit.id)}
+                        }}>
+                        DIFF
+                    </button>
                 </TableCell>
             </TableRow>
+
+//Commit info goes here
 
 
         </React.Fragment>
 
     );
 }
-
+export default CommitInfo;

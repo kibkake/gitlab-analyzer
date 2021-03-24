@@ -1,0 +1,6 @@
+.commitTable {
+   border-bottom: unset;
+   font-size: 15pt;
+   background-color: white;
+   background: linear-gradient(rgb(3, 222, 167), transparent);
+}
