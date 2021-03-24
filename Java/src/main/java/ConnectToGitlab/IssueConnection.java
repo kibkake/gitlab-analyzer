@@ -1,12 +1,13 @@
 package main.java.ConnectToGitlab;
 
-import main.java.Model.Issue;
-import main.java.Model.Note;
-import main.java.Model.User;
+import main.java.Collections.Issue;
+import main.java.Collections.Note;
+import main.java.Collections.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@RestController
 public class IssueConnection {
 
     public List<Issue> getProjectIssuesFromGitLab(int projectId) {

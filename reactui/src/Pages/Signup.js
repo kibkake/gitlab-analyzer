@@ -1,4 +1,4 @@
-import SignupComponent from "../components/SignupComponent";
+import SignupComponent from "../components/LogIn/SignupComponent";
 
 export default function Signup(){
     if(sessionStorage.getItem('new')) {

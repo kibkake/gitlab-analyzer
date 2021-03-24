@@ -1,8 +1,9 @@
 import "../App.css"
 import React,{ Component } from "react";
-import ProfileComponent from "../components/ProfileComponent";
 import HomeInfo from "../components/HomeInfo";
-import DateRangeSettingComponent from "../components/DateRangeSettings";
+import DateRangeSettingComponent from "../components/DateSetting/DateRangeSettings";
+import LanguageScaleTable from "../components/LanguageScaler/LanguageScaleTable";
+
 
 function Home(){
 
@@ -14,6 +15,14 @@ function Home(){
 
             <div className='dateRangeSetting'>
                 <DateRangeSettingComponent/>
+            </div>
+
+            <br></br>
+            <br></br>
+            <br></br>
+            <div>
+                <br></br>
+                <LanguageScaleTable/>
             </div>
 
         </>

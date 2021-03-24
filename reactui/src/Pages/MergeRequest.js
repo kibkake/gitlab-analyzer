@@ -1,6 +1,6 @@
 import "../App.css"
 import React,{ Component } from "react";
-import DropDownMenuMerge from "../components/DropDownMenuMerges";
+import DropDownMenuMerge from "../components/DropDownMenus/DropDownMenuMerges";
 import ProjectService from "../Service/ProjectService";
 
 
@@ -31,7 +31,6 @@ class MergeRequest extends Component{
         return(
             <div>
                 <DropDownMenuMerge listOfDevelopers = {developersArray}/>
-
             </div>
         )
     }

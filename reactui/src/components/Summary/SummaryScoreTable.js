@@ -2,17 +2,14 @@ import {Table} from "react-bootstrap";
 import React, {Component} from "react";
 import axios from "axios";
 
-const scoreSummary = [
-    {commitScore:3, scoreMR: 204, wordCountComment: 100},
-    {commitScore:2, scoreMR: 12, wordCountComment: 200},
-];
-
 class SummaryScoreTable extends Component{
 
      constructor(props) {
          super(props);
          this.state = {
              scoreSummary:[],
+             merges:[],
+             commits:[],
              parentdata: this.props.devName,
              startTime: this.props.startTime,
              endTime: this.props.endTime
@@ -23,7 +20,6 @@ class SummaryScoreTable extends Component{
         const {parentdata} = this.state;
         await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime)
      }
-
 
      async getDataFromBackend (username, startTm, endTm) {
 
@@ -47,8 +43,76 @@ class SummaryScoreTable extends Component{
         const scores = await response.data
         await this.setState({scoreSummary: scores, parentdata: username,startTime: startTm,
             endTime: endTm})
-     }
 
+        const MRresponse = await axios.get("/api/v1/projects/" + id + "/mergeRequests/"+ username +"/" +startTm + "/" + endTm)
+        .then(MRres => {
+            this.setState({merges : MRres.data});
+            this.applyMultipliersMR();
+        }).catch((error) => {
+            console.error(error);})
+        
+        const commitResponse = await axios.get("/api/v1/projects/" + id + "/Commits/"+ username +"/" +startTm + "/"+ endTm + "/either")
+        .then(res=>{
+            this.setState({commits : res.data});
+            this.applyMultipliersCommits();
+        }).catch((error) => {
+            console.error(error);})
+                
+    }
+
+    applyMultipliersMR(){
+        var scale = JSON.parse(sessionStorage.getItem('languageScale'));
+        var newMerges = [...this.state.merges];
+        for(const k in newMerges){
+            var newMRScore=0;
+            for(var i in newMerges[k].diffs){
+                var fileExtension = newMerges[k].diffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                if(extensionIndex!==-1){
+                    var newScore = scale[extensionIndex].multiplier * newMerges[k].diffs[i].diffScore;
+                    newMerges[k].diffs[i] = {...newMerges[k].diffs[i], diffScore:newScore};
+                    newMRScore = newMRScore+newScore;
+                }else{
+                    newMRScore = newMRScore+newMerges[k].diffs[i].diffScore;
+                }
+            }
+            newMerges[k].mrScore=newMRScore;
+        }
+        const totalMRScore = newMerges.map(item => item.mrScore).reduce((prev, next) => prev + next);
+        var newscoreSummary ={...this.state.scoreSummary};
+        newscoreSummary={...newscoreSummary,totalMergeRequestScore:totalMRScore};
+        this.setState({
+            merges:newMerges,
+            scoreSummary:newscoreSummary,
+        })
+    }
+    
+    applyMultipliersCommits(){
+        var scale = JSON.parse(sessionStorage.getItem('languageScale'));
+        var newCommits = [...this.state.commits];
+        for(const k in newCommits){
+            var newCommitsScore=0;
+            for(var i in newCommits[k].diffs){
+                var fileExtension = newCommits[k].diffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                if(extensionIndex!==-1){
+                    var newScore = scale[extensionIndex].multiplier * newCommits[k].diffs[i].diffScore;
+                    newCommits[k].diffs[i] = {...newCommits[k].diffs[i], diffScore:newScore};
+                    newCommitsScore = newCommitsScore+newScore;
+                }else{
+                    newCommitsScore = newCommitsScore+newCommits[k].diffs[i].diffScore;
+                }
+            }
+            newCommits[k].commitScore=newCommitsScore;
+        }
+        const totalComScore = newCommits.map(item => item.commitScore).reduce((prev, next) => prev + next);
+        var newscoreSummary ={...this.state.scoreSummary};
+        newscoreSummary={...newscoreSummary,totalCommitScore:totalComScore};
+        this.setState({
+            commits:newCommits,
+            scoreSummary:newscoreSummary,
+        })
+    }
 
 
     async componentDidUpdate(prevProps){

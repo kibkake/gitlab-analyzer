@@ -1,23 +1,16 @@
 package main.java.DatabaseClasses.Service;
 
 import main.java.ConnectToGitlab.MergeRequestConnection;
-import main.java.DatabaseClasses.Model.MergeRequestDateScore;
-import main.java.DatabaseClasses.Repository.MergeRequestRepository;
-import main.java.Model.Commit;
-import main.java.Model.MergeRequest;
+import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
+import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
+import main.java.Collections.MergeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class MergeRequestService {
@@ -31,11 +24,11 @@ public class MergeRequestService {
 
     @Transactional
     public void saveProjectMergeRequests(int projectId) {
-        mergeRequestRepository.saveAll(MergeRequestConnection.getProjectMergeRequestsFromGitLab(projectId));
+        mergeRequestRepository.saveAll(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
     }
 
     public List<MergeRequestDateScore> getMrScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate) {
-        return mergeRequestRepository.devsMrsScoreADay(projectId, userName, startDate, endDate);
+        return mergeRequestRepository.getDevsMrsScoreADay(projectId, userName, startDate, endDate);
     }
 
     public MergeRequest getMergeRequest(int projectId, int mrId) {
@@ -46,15 +39,15 @@ public class MergeRequestService {
         return mergeRequestRepository.findByProjectId(projectId);
     }
 
-    public List<MergeRequest> getUserMergeRequests(int projectId, String authorName, Date startLocalTime,
-                                                      Date endLocalTime) {
-        return mergeRequestRepository.findByProjectIdAndAuthorUsernameAndMergedDateBetween(projectId, authorName,
+    public List<MergeRequest> getUserMergeRequests(int projectId, String authorName, LocalDate startLocalTime,
+                                                   LocalDate endLocalTime) {
+        return mergeRequestRepository.getDevMergeRequests(projectId, authorName,
                 startLocalTime, endLocalTime);
     }
 
     public Object getTotalMergeRequestScore(int projectId, String authorName, LocalDate startLocalTime,
                                                   LocalDate endLocalTime) {
-        return mergeRequestRepository.userTotalMergeRequestScore(projectId, authorName,
+        return mergeRequestRepository.getUserTotalMergeRequestScore(projectId, authorName,
                 startLocalTime, endLocalTime);
     }
 

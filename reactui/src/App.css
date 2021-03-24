@@ -34,15 +34,11 @@
 }
 
 .login:hover{
-    border-style: groove;
-    border-width: 3px;
     color:darkcyan;
     font-weight: bold;
 }
 
 .login:active{
-    border-style: ridge;
-    border-width: 3px;
     background-color: darkcyan;
     color:white;
 }
@@ -69,4 +65,15 @@ input{
 .login-h2{
     margin-left: 10px !important;
     padding-top:20px;
+}
+
+.terms-tablet{
+    width:50%;
+    margin-left: 35px;
+}
+
+.terms-items>li{
+    padding-top:5px;
+    padding-bottom:5px;
+    font-size: 16px;
 }

@@ -7,25 +7,23 @@ import Home from './Pages/Home';
 import Developers2 from './Pages/Developers2';
 import Summary from "./Pages/Summary";
 import Commits from "./Pages/Commits";
-import Commits2 from "./Pages/Commits2";
 import SingleCommit from "./Pages/SingleCommit";
 import Comments from "./Pages/Comments";
 import MergeRequest from "./Pages/MergeRequest";
 import Profile from "./Pages/Profile";
 import Signup from "./Pages/Signup";
-import Setting from "./Pages/Settings"
-import LoginState from "./components/LoginState";
+import LoginState from "./components/LogIn/LoginState";
 import Chart from "./Pages/Chart";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useToken from "./useToken";
 import {SiGnuprivacyguard, SiJsonwebtokens} from "react-icons/all";
-import {AiOutlineHome} from "react-icons/ai";
-import SignupComponent from "./components/SignupComponent";
-import LoginToken from "./components/LoginToken.js";
+import SignupComponent from "./components/LogIn/SignupComponent";
+import LoginToken from "./components/LogIn/LoginToken.js";
+import Terms from "./Pages/Terms";
 
 function signupHandler(){
-    sessionStorage.setItem('new','true');
-    sessionStorage.setItem('user','temp');
+    sessionStorage.setItem('terms','view');
+    sessionStorage.setItem('user','signup');
     window.location.reload();
 }
 
@@ -40,34 +38,38 @@ function App() {
 
   // requires a authentication token to proceed
   if(!sessionStorage.getItem('user')) {
-    return (
-        <>
-            <Router>
-                <Navbar/>
-                <switch>
-                    <Route path='/Signup' exact component={Signup}/>
-                </switch>
-            </Router>
-            <div className="loginwrapper">
-                <h2 className="login-h2"> Please Login or Sign Up to Continue</h2>
-                <br/>
-                {!token_toggle &&
-                    <>
-                        <LoginState setUser={setUser}/>
-                        <br/>
-                        <button className="login" onClick={toggleTokenSubmit}><SiJsonwebtokens/> Login with Token </button>
-                    </>
-                }
-                {token_toggle &&
-                    <LoginToken/>
-                }
-                <br/>
-                <br/>
-                <p className="signuptext">Don't have an account?<button className="login" onClick={signupHandler}><SiGnuprivacyguard/>Sign Up</button></p>
-            </div>
+      return (
+          <>
+              <Router>
+                  <Navbar/>
+                  <switch>
+                      <Route path='/Signup' exact component={Signup}/>
+                      <Route path='/Terms' exact component={Terms}/>
+                  </switch>
+              </Router>
+              <div className="loginwrapper">
+                  <h2 className="login-h2"> Please Login or Sign Up to Continue</h2>
+                  <br/>
+                  {!token_toggle &&
+                  <>
+                      <LoginState setUser={setUser}/>
+                      <br/>
+                      <button className="login" onClick={toggleTokenSubmit}><SiJsonwebtokens/> Login with Token</button>
+                      <br/>
+                      <br/>
+                      <p className="signuptext">Don't have an account?
+                          <button className="login" onClick={signupHandler}><SiGnuprivacyguard/>Sign Up</button>
+                      </p>
+                  </>
+                  }
+                  {token_toggle &&
+                  <LoginToken/>
+                  }
+                  <br/>
+              </div>
 
-        </>
-    );
+          </>
+      );
   }else if(sessionStorage.getItem('new')) { // signup
       return (
           <Router>
@@ -75,6 +77,19 @@ function App() {
               <Navbar/>
               <Redirect to='/Signup'/>
               <SignupComponent/>
+              <switch>
+                  <Route path='/Terms' exact component={Terms}/>
+              </switch>
+          </Router>
+      );
+  }else if(sessionStorage.getItem('terms')) { // terms
+      return (
+          <Router>
+              <Navbar/>
+              <Redirect to='/Terms'/>
+              <switch>
+                  <Route path='/Terms' exact component={Terms}/>
+              </switch>
           </Router>
       );
   }
@@ -95,11 +110,11 @@ function App() {
           <Route path='/Repo/*/Developers/*/summary' exact component={Summary}/>
 
           <Route path='/Repo/*/Developers/*/codeContribution' exact component={Commits}/>
-          <Route path='/Repo/*/Developers/*/codediff' exact component={MergeRequest}/>
+          <Route path='/Repo/*/Developers/*/merges' exact component={MergeRequest}/>
           <Route path='/Repo/*/Developers/*/comments' exact component={Comments}/>
           <Route path='/Repo/*/Developers/*/commits/*' exact component={SingleCommit}/>
 
-                <Route path='/Settings' exact component={Setting}/>
+                <Route path='/Settings' exact component={Home}/>
               <Route path='/Profile' exact component={Profile}/>
             </Switch>
           </Router>

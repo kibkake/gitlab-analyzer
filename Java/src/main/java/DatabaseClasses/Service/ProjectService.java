@@ -1,13 +1,18 @@
 package main.java.DatabaseClasses.Service;
 
-import main.java.DatabaseClasses.Model.DateScore;
-import main.java.DatabaseClasses.Model.AllScores;
-import main.java.Model.*;
+import main.java.DatabaseClasses.Scores.CommitDateScore;
+import main.java.DatabaseClasses.Scores.DateScore;
+import main.java.DatabaseClasses.Scores.AllScores;
+import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
+import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
+import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
+import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
+import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
+import main.java.Collections.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
 import main.java.ConnectToGitlab.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequestConnection;
-import main.java.DatabaseClasses.Repository.ProjectRepository;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +26,22 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
-    private final ProjectRepository projectRepository;
 
-    public enum UseWhichDevField {EITHER, NAME, USERNAME};
+    private final ProjectRepository projectRepository;
+    private final MergeRequestRepository mergeRequestRepository;
+    private final CommitRepository commitRepository;
+    private final DeveloperRepository developerRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, MergeRequestRepository mergeRequestRepository,
+                          CommitRepository commitRepository, DeveloperRepository developerRepository) {
         this.projectRepository = projectRepository;
+        this.mergeRequestRepository = mergeRequestRepository;
+        this.commitRepository = commitRepository;
+        this.developerRepository = developerRepository;
     }
+
+    public enum UseWhichDevField {EITHER, NAME, USERNAME};
 
     public List<Project> getAllProjects() {
         return projectRepository.getAllBy();
@@ -68,20 +81,87 @@ public class ProjectService {
         return devMRs.size();
     }
 
-    @Transactional
+    @Transactional(timeout = 1200) // 20 min
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
-
         if (project.projectHasBeenUpdated()) {
             project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
             project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
             project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
             project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
             project.setSyncInfo();
+            project.setLastSyncAt();
             projectRepository.save(project);
         }
     }
+
+    public void setProjectMrs(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+        List<MergeRequest> projectMrs = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
+        project.setMergedRequests(projectMrs);
+        projectRepository.save(project);
+    }
+
+    @Transactional(timeout = 1200) // 20 min
+    public void setProjectInfoWithSettings(int projectId, ProjectSettings projectSettings) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+
+        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        List<Commit> projectCommits = new CommitConnection().getProjectCommitsFromGitLab(projectId);
+        List<MergeRequest> projectMergeRequests = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
+        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
+        projectRepository.save(project);
+        commitRepository.saveAll(projectCommits);
+        mergeRequestRepository.saveAll(projectMergeRequests);
+
+        //after all info has been collected we can now query the database to build each developers info
+        List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
+        setDeveloperInfo(projectId, projectSettings, projectDevs);
+    }
+
+    private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
+        for (Developer dev: projectDevs) {
+            List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            List<MergeRequestDateScore> devMergeRequestDateScores = mergeRequestRepository.getDevsMrsScoreADay(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            List<CommitDateScore> devCommitScores = commitRepository.getDevCommitDateScore(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            List<CommitDateScore> devCommitScoresWithEveryDay = commitRepository.getCommitsWithEveryDateBetweenRange(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            AllScores devAllScores = new AllScores(projectSettings.getStartDate(), projectSettings.getEndDate(), devTotalCommitScore,
+                    devTotalMergeRequestScore);
+
+            /* Because spring generates the user object we have to make our own custom key and it cant be done in a
+               constructor because of spring
+             */
+            dev.setDbKey(Integer.toString(projectId) +  String.valueOf(dev.getDevId()));
+            dev.setProjectId(projectId);
+            dev.setMergeRequestsAndCommits(devMergeRequests);
+            dev.setMergeRequestDateScores(devMergeRequestDateScores);
+            dev.setCommitDateScores(devCommitScores);
+            dev.setCommitArray(devCommitScoresWithEveryDay);
+            dev.setAllScores(devAllScores);
+            developerRepository.saveDev(dev);
+        }
+        /* TODO I should be able to call developerRepository.saveAll(projectDevs)
+            but I get an error saying that this method (.saveAll) does not exist
+         */
+    }
+
 
     public List<DateScore> getDevCommitScoresPerDay(int projectId, String username, LocalDate start,
                                                     LocalDate end, UseWhichDevField devField) {
@@ -92,14 +172,14 @@ public class ProjectService {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        username, currentCommit.getId());
+                        username, currentCommit.getDiffs());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
 
                 dateScore.addToCommitScore(currentCommit.getCommitScore());
                 dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit.getId());
+                dateScore.addCommitDiffs(currentCommit);
             }
         }
         List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
@@ -127,33 +207,31 @@ public class ProjectService {
 
             if (!dateMap.containsKey(mergedDate.toString())) {
                 DateScore dateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
-                        username, 1, mergeRequest.getId());
+                        username, 1, mergeRequest.getDiffs());
                 dateMap.put(mergedDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(mergedDate.toString());
                 dateScore.addToMergeRequestScore(mergeRequest.getMrScore());
                 dateScore.incrementNumMergeRequests();
-                dateScore.addMergeRequestIds(mergeRequest.getId());
+                dateScore.addMergeRequestDiffs(mergeRequest);
             }
         }
-        System.out.println(dateMap);
         List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devFieldForGettingCommits);
         for (Commit currentCommit: allDevCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
-                        username, currentCommit.getId());
+                        username, currentCommit.getDiffs());
                 dateMap.put(commitDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(commitDate.toString());
 
                 dateScore.addToCommitScore(currentCommit.getCommitScore());
                 dateScore.incrementNumberOfCommitsBy1();
-                dateScore.addCommitIds(currentCommit.getId());
+                dateScore.addCommitDiffs(currentCommit);
             }
         }
         List<DateScore> dateScores = new ArrayList<DateScore>(dateMap.values());
-        System.out.println(dateScores);
         return dateScores;
     }
 

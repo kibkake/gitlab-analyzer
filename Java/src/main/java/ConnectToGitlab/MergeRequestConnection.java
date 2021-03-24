@@ -1,11 +1,11 @@
 package main.java.ConnectToGitlab;//package main.java.ConnectToGitlab.MergeRequests;
 
-import main.java.Model.*;
+import main.java.Collections.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
@@ -13,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@RestController
 public class MergeRequestConnection {
 
-    public static List<MergeRequest> getProjectMergeRequestsFromGitLab(int projectId) {
-        User user = User.getInstance();
+    public List<MergeRequest> getProjectMergeRequestsFromGitLab(int projectId) {
         RestTemplate restTemplate = new RestTemplate();
+        User user = User.getInstance();
         String pageNumber = "1";
         List<MergeRequest> mergeRequests = new ArrayList<>();
         do {
@@ -39,6 +40,11 @@ public class MergeRequestConnection {
             mergeRequest.setMrScore(calcMergeRequestScore(mergeRequest.getDiffs())); // must be done after diffs
             mergeRequest.setMergeRequestNotes(getMergeRequestNotes(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
             mergeRequest.setCommits(getMergeRequestCommits(projectId, mergeRequest.getMergeRequestIdForASpecificProject()));
+            double score=0;
+            for(Commit commit :mergeRequest.getCommits()){
+                score += commit.getCommitScore();
+            }
+            mergeRequest.setSumOfCommits(score);
         }
         return mergeRequests;
     }
@@ -99,7 +105,7 @@ public class MergeRequestConnection {
         return score;
     }
 
-    public static List<Note> getMergeRequestNotes(int projectId, int mergeRequestIdForASpecificProject) {
+    public List<Note> getMergeRequestNotes(int projectId, int mergeRequestIdForASpecificProject) {
         User user = User.getInstance();
         RestTemplate restTemplate = new RestTemplate();
         String pageNumber = "1";

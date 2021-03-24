@@ -1,11 +1,14 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.Model.User;
+import main.java.Collections.ProjectSettings;
+import main.java.Collections.User;
 import main.java.DatabaseClasses.Service.UserService;
 import main.java.DatabaseClasses.DatabaseFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
+import java.util.*;
+
 /**
  * Sets up REST endpoints for getting and adding user info.
  */
@@ -33,13 +36,19 @@ public class UserController {
     }
 
     @PostMapping(path = "changePass")
-    public void changePassword(@RequestBody User user){userService.changePassword(user);}
+    public void changePassword(@RequestBody User user){
+        userService.changePassword(user);
+    }
 
     @PostMapping(path = "changeToken")
-    public void changeToken(@RequestBody User user){userService.changeToken(user);}
+    public void changeToken(@RequestBody User user){
+        userService.changeToken(user);
+    }
 
     @PostMapping(path = "setToken")
-    public void setToken(@RequestBody User user){userService.setToken(user);}
+    public void setToken(@RequestBody User user){
+        userService.setToken(user);
+    }
 
     @GetMapping(path = "{username}")
     public User getUser(@PathVariable("username") String username) {
@@ -67,6 +76,16 @@ public class UserController {
     public void setUserLoggedInStatus(@PathVariable("username") String username,
                                       @PathVariable("isLoggedIn") boolean isLoggedIn) {
         DatabaseFunctions.setUserLoggedInStatus(username, isLoggedIn);
+    }
+
+    @PostMapping(path = "user/{username}/addSettings")
+    public void addProjectSettings(@PathVariable("username") String username, @RequestBody ProjectSettings setting){
+        userService.addSetting(username, setting);
+    }
+
+    @GetMapping("user/{username}/settings")
+    public List<ProjectSettings> getUserSettings(@PathVariable("username") String username) {
+        return userService.getUserSettings(username);
     }
 
 }

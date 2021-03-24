@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import DropDownMenuSummary from "../components/DropDownMenuSummary";
+import DropDownMenuSummary from "../components/Summary/DropDownMenuSummary";
 import ProjectService from "../Service/ProjectService"
 
 class Summary extends Component {

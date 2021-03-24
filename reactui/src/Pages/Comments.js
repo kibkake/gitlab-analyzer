@@ -1,6 +1,6 @@
 import '../App.css';
 import React, {Component} from "react";
-import DropDownMenuComments from "../components/DropDownMenuComments";
+import DropDownMenuComments from "../components/DropDownMenus/DropDownMenuComments";
 import ProjectService from "../Service/ProjectService";
 
 
