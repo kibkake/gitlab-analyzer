@@ -18,8 +18,8 @@ Used the accepted answer to review how to overload equals().
 import java.time.Clock;
 import java.util.ArrayList;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Document("Project")
 public class Project {
@@ -157,14 +157,20 @@ public class Project {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
         if (o == null || o.getClass() != this.getClass()) {
             return false;
         }
         Project other = (Project) o;
-        return (id == other.id && description.equals(other.description)
-                && name.equals(other.name) && createdAt.equals(other.createdAt)
-                && infoSet == other.infoSet && infoSetDate.equals(other.infoSetDate)
-                && mergedRequests.equals(other.mergedRequests) && issues.equals(other.issues)
-                && commits.equals(other.commits) && developers.equals(other.developers));
+        return (id == other.id && Objects.equals(description, other.description)
+                && Objects.equals(name, other.name)
+                && Objects.equals(createdAt, other.createdAt)
+                && infoSet == other.infoSet && Objects.equals(infoSetDate, other.infoSetDate)
+                && Objects.equals(mergedRequests, other.mergedRequests)
+                && Objects.equals(issues, other.issues)
+                && Objects.equals(commits, other.commits)
+                && Objects.equals(developers, other.developers));
     }
 }

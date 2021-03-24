@@ -3,6 +3,7 @@ package main.java.Model;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  *  Class hold information about the different users on gitlab used to convert JSON to an object with spring
@@ -62,5 +63,19 @@ public class Developer {
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Developer developer = (Developer) o;
+        return (id == developer.id && Objects.equals(name, developer.name)
+                && Objects.equals(username, developer.username)
+                && Objects.equals(emails, developer.emails));
     }
 }

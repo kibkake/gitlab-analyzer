@@ -3,6 +3,8 @@ package main.java.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
 /**
  * Holds the user and login information
  */
@@ -115,5 +117,23 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return (isLoggedIn == user.isLoggedIn && Objects.equals(id, user.id)
+                && Objects.equals(username, user.username)
+                && Objects.equals(serverUrl, user.serverUrl)
+                && Objects.equals(token, user.token)
+                && Objects.equals(name, user.name)
+                && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password));
     }
 }

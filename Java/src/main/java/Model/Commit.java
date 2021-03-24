@@ -130,4 +130,22 @@ public class Commit {
         }
         commitScore = Math.round(commitScore * 100.0) / 100.0;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Commit commit = (Commit) o;
+        return (projectId == commit.projectId && Double.compare(commit.commitScore, commitScore) == 0
+                && Objects.equals(id, commit.id) && Objects.equals(title, commit.title)
+                && Objects.equals(message, commit.message)
+                && Objects.equals(authorName, commit.authorName)
+                && Objects.equals(committerName, commit.committerName)
+                && Objects.equals(diffs, commit.diffs) && Objects.equals(date, commit.date)
+                && Objects.equals(sha, commit.sha));
+    }
 }

@@ -85,7 +85,7 @@ public class ProjectFunctionsTest {
         ProjectService projectService = new ProjectService(projectRepository);
         Project testProjFromService = projectService.getProject(6);
         assertEquals(6, testProjFromService.getId());
-        // assertEquals(testProjFromRepo, testProjFromService);
+        assertEquals(testProjFromRepo, testProjFromService);
     }
 
     @Test
