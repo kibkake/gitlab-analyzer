@@ -1,32 +1,36 @@
 import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button';
 import '../NavBars_Menu/Navbar.css';
+import axios from "axios";
 
 class Developers2Button extends Component{
     constructor(props){
         super(props);
         this.state={
             data: [],
-            developerNames: []
+            users: []
         };
     }
+
+
 
     async componentDidMount() {
        await this.getDataFromBackend();
     }
 
+
+
+
     async getDataFromBackend(){
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        let url2 = '/api/v1/getusernames/' + repNum
-        const result = await fetch(url2, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        const resp = await result.json();
+        let url2 = '/api/v1/projects/' + repNum + '/developers'
+        axios.get(url2).then(response => response.data)
+            .then((data) => {
+                this.setState({ users: data })
+                console.log(this.state.users)
+            })
+        // const resp = await result.json();
         await this.setState({data:resp , developerNames:JSON.parse(JSON.stringify(resp))})
         await sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.data))
     }
@@ -62,25 +66,25 @@ class Developers2Button extends Component{
 
         return(
             <ul>
-                {DataArray.map(item => {
+                {this.state.users.map((user) => {
                     return <li>
-                        <a href= {"Developers/" + item }target= "_blank">
-                            <Button className="Footer" to={item.url}
+                        <a href= {"Developers/" + user.username }target= "_blank">
+                            <Button className="Footer" to={user.username.url}
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        sessionStorage.setItem("CurrentDeveloper", item)
+                                        sessionStorage.setItem("CurrentDeveloper", user.username)
                                         this.storeNames()
 
-                                        window.location.href=  window.location.pathname + '/' + item + "/summary";
+                                        window.location.href=  window.location.pathname + '/' + user.username + "/summary";
                                     }}>
-                                <span >{item}</span>
+                                <span >{user.username}</span>
                             </Button>
                         </a>
                         <input className="TextBox"
                                type="text"
-                               placeholder= {item + '\'s author name'}
-                               onChange={this.handleChange(item)}  />
+                               placeholder= {user.username + '\'s author name'}
+                               onChange={this.handleChange(user.username)}  />
                     </li>;
                 })}
             </ul>
