@@ -30,23 +30,24 @@ class Developers2Button extends Component{
                 this.setState({ users: data })
                 console.log(this.state.users)
             })
-        // const resp = await result.json();
-        await this.setState({data:resp , developerNames:JSON.parse(JSON.stringify(resp))})
-        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.data))
+
+        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.users))
+        await sessionStorage.setItem("DeveloperIds" + repNum, JSON.stringify(this.state.users.id))
+
     }
 
     async storeNames() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        await sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(this.state.developerNames))
+        await sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(this.state.users.username))
         console.log("Developer",sessionStorage.getItem('Developers' + repNum))
         console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
     }
 
     handleChange = (item) => (event)=> {
         event.preventDefault();
-        var tempDevNames = this.state.developerNames;
-        var tempDevUsernames = JSON.parse(JSON.stringify(this.state.data));
+        var tempDevNames = this.state.users.username;
+        var tempDevUsernames = JSON.parse(JSON.stringify(this.state.users.username));
 
         for(var i = 0; i < tempDevUsernames.length; i++){
             if(tempDevUsernames[i] === item){

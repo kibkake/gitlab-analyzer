@@ -21,6 +21,7 @@ function DropDownMenuMerge ({listOfDevelopers}) {
     const handleChange = obj => {
         setSelectedValue(obj.label);
         sessionStorage.setItem("CurrentDeveloper", obj.label);
+
     }
 
     return (

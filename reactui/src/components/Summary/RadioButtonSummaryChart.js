@@ -43,7 +43,7 @@ export default class RadioButtonSummaryChart extends Component {
         this.state = {value: "score",
             parentData: this.props.devName,
             startTime: this.props.startTime,
-            endTime: this.props.endTime
+            endTime: this.props.endTime,
         };
         this.handleRadioChange = this.handleRadioChange.bind(this);
     }
