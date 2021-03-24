@@ -62,22 +62,16 @@ class CommentTable extends Component{
 
     render() {
         var Data = this.state.comments.map(function (item) {
-            let currentYear = " "+ (new Date().getFullYear());
+            let currentYear = new Date().getFullYear();
             let dateString= moment(item.created_at).format('lll').replace(currentYear,"")
-            // let dateFinal = "";
-            // if(dateString[2]==="2021"){
-            //     dateFinal= dateString[0]+" "+
-            //         dateString[1]+" "+
-            //         dateString[3]+" "+
-            //         dateString[4]+" ";
-            // }
-            // moment(item.created_at).format('lll')
+
             return {
                 date: dateString,
                 wordCount: item.wordCount,
                 comments: item.body,
                 onIssue: item.issueNote
-            };})
+            };
+        })
 
         let issueBoolean = {true: "Issue", false: "Code Review"};
         let comments = Data.map(({date, wordCount, comments, onIssue})=>
@@ -95,9 +89,10 @@ class CommentTable extends Component{
                 </div>
                 <br/>
                 <Table striped bordered hover className="comments-table">
+                    <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Word Count</th>
+                            <th className="comments-table-date">Date</th>
+                            <th className="comments-table-wc">Word Count</th>
                             <th>Comments</th>
                             {this.state.issue === true && this.state.code_rev === true &&
                                 <th>On Issue/Code Review</th>
@@ -109,13 +104,14 @@ class CommentTable extends Component{
                                 <th>On Code Review</th>
                             }
                         </tr>
+                    </thead>
                     <tbody>
                         {this.state.issue===true &&
                             comments.map(comments => {  //(item, index) =>
                                     return comments.onIssue ?
                                         <tr>
                                             <td>{comments.date}</td>
-                                            <td>&emsp;{comments.wordCount}</td>
+                                            <td className="comments-table-wc">{comments.wordCount}</td>
                                             <td>{comments.comments}</td>
                                             <td>{comments.issueOrReview}</td>
                                         </tr>
@@ -128,7 +124,7 @@ class CommentTable extends Component{
                                     return comments.onIssue?<div/>:
                                         <tr>
                                             <td>{comments.date}</td>
-                                            <td>&emsp;{comments.wordCount}</td>
+                                            <td className="comments-table-wc">{comments.wordCount}</td>
                                             <td>{comments.comments}</td>
                                             <td>{comments.issueOrReview}</td>
                                         </tr>
