@@ -12,6 +12,7 @@ import Row from "./MergeListTableRows";
 import PopOver from "./MergeListTableRows";
 
 import './MergeListTable.css'
+import moment from "moment";
 // import { merge } from 'jquery';
 
 export default class MergeListTable  extends PureComponent {
@@ -107,9 +108,11 @@ export default class MergeListTable  extends PureComponent {
     render () {
 
         const output = this.state.merges.map(function(item) {
+            let currentYear = new Date().getFullYear();
+            let dateString= moment(item.merged_at).format('lll').replace(currentYear,"")
             return {
                 id: item.id,
-                date: item.merged_at,
+                date: dateString,
                 title: item.title,
                 score: item.mrScore,
                 diffScore: 0,
@@ -148,7 +151,7 @@ export default class MergeListTable  extends PureComponent {
                                 <TableCell align="left" className="tableCell"> Date </TableCell>
                                 <TableCell>Merge Title</TableCell>
                                 <TableCell align="right">Merge Score</TableCell>
-                                <TableCell align="right">Sum of Commit Score</TableCell>
+                                <TableCell align="right">&Sigma; Commit Score</TableCell>
                                 <TableCell align="right">Commits </TableCell>
                                 <TableCell align="right">Full Diff</TableCell>
                             </TableRow>
