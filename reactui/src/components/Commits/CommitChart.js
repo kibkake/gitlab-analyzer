@@ -5,6 +5,7 @@ import SingleCommitDiff from "./CommitDiff"
 import "./HBox.css"
 import AllCommits from "./AllCommits";
 import Button from "react-bootstrap/Button";
+import Spinner from 'react-bootstrap/Spinner'
 
 class CommitChart extends Component {
 
@@ -90,6 +91,20 @@ class CommitChart extends Component {
 
     showComponents() {
         if(this.state.showAllCommit === true){
+
+            if(this.state.commits.length === 0){
+                return (
+                    <div>
+                    <br></br>
+
+                <text style={{fontWeight: 'bold', fontSize: '20px', color: 'blue'}}>
+                    Loading all commits....</text>
+                        <Spinner
+                            animation="border" variant="primary"
+                        size="la"/>
+                        </div>
+                )
+            }
             return (
                 <div>
                     <AllCommits devName = {this.props.devName} startTime = {this.props.startTime} endTime = {this.props.endTime} handler = {this.handler} handler3 = {this.handler3} commits={this.state.commits} />
@@ -137,6 +152,25 @@ class CommitChart extends Component {
             return arr;
         };
 
+        if(this.state.data.length === 0){
+            return (
+                <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
+                    <br></br>
+                    <div>
+                        {"      "}
+                    </div>
+
+                    <text style={{fontWeight: 'bold', fontSize: '20px', color: 'blue'}}>
+                        Loading commits chart....</text>
+                    <Spinner
+                        animation="border" variant="primary"
+                        size="la"/>
+
+
+                </div>
+            )
+        }
+
         var comarr = this.state.data;
         const daylist = getDaysArray(new Date(this.props.startTime + "T12:00:00"),new Date(this.props.endTime+ "T12:00:00"));
         console.log(this.state.childVal)
@@ -175,17 +209,35 @@ class CommitChart extends Component {
                                 }
 
                             } , maintainAspectRatio:true,
-                            scales: {
+
+                        scales: {
                                 xAxes:[
+
+
+
                                     {
                                         ticks:{
                                             beginAtZero: true,
-                                            stepSize: 1,
-                                        },
+                                            stepSize: 2,
+                                            fontColor: "blue",
+                                            fontStyle	: 'bold'
+                                        },  gridLines : {
+                                            zeroLineColor:"black",
+                                        }
                                     }
-                                ]
+                                ],
+
+                                yAxes: [{
+                                    ticks : {
+                                        fontColor: "blue",
+                                        fontStyle	: 'bold'
+                                    },gridLines : {
+                                    }
+                                }]
                             }
                         }}
+
+
                 />
                     </div>
                 </div>
