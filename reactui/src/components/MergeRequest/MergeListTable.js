@@ -28,21 +28,22 @@ export default class MergeListTable  extends PureComponent {
         this.getDataFromBackend(parentData)
     }
 
-    getDataFromBackend (devId, username, startTm, endTm) {
+    getDataFromBackend (username, startTm, endTm) {
         const pathArray = window.location.pathname.split('/');
         const repNum = pathArray[2];
         var name = username;
-        var tempDevId = devId;
         if(sessionStorage.getItem('DeveloperIds' + repNum) != null && sessionStorage.getItem('Developers' + repNum) != null
             && sessionStorage.getItem('DeveloperNames' + repNum) != null) {
             for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + repNum)).length; i++) {
                 if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + repNum))[i])) {
-                    tempDevId = JSON.parse(sessionStorage.getItem('DeveloperIds' + repNum))[i]//use name to retrieve data
+                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + repNum))[i]//use name to retrieve data
                 }
             }
         }
 
-        const response = axios.get("/api/v2/Project/" + repNum + "/Developers/" + 11 + "mergeRequestsAndCommits")
+        // const response = axios.get("/api/v1/projects/" + repNum + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
+
+        const response = axios.get("api/v2/Project/" + repNum +"/Developer/" + 11 + "/mergeRequestsAndCommits")
             .then(res => {
                         this.setState({merges : res.data, parentData: username});
                         this.applyMultipliers();

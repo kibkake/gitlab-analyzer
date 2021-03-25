@@ -44,7 +44,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
                         .and(DateOperators.DateToString.dateOf("mergedDate").toString("%Y-%m-%d")).as("groupByDate"),
                 Aggregation.group("groupByDate").count().as("numMergeRequests")
                         .sum("mrScore").as("mergeRequestScore")
-                        .addToSet("mergedDate").as("date")
+                        .addToSet("groupByDate").as("mergedDate")
         );
 
         AggregationResults<MergeRequestDateScore> groupResults = mongoTemplate.aggregate(aggregation, MergeRequest.class, MergeRequestDateScore.class);

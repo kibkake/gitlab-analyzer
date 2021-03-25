@@ -32,14 +32,14 @@ class Developers2Button extends Component{
             })
 
         await sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.users))
-        await sessionStorage.setItem("DeveloperIds" + repNum, JSON.stringify(this.state.users.id))
-
     }
 
     async storeNames() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
         await sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(this.state.users.username))
+        await sessionStorage.setItem("DeveloperIds" + repNum, JSON.stringify(this.state.users.id))
+
         console.log("Developer",sessionStorage.getItem('Developers' + repNum))
         console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
     }
