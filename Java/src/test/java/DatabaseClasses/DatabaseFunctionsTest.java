@@ -1,4 +1,4 @@
-package test.DatabaseClasses;
+package test.java.DatabaseClasses;
 
 import main.java.DatabaseClasses.DatabaseFunctions;
 import main.java.Collections.User;
@@ -66,8 +66,10 @@ public class DatabaseFunctionsTest{
         user.setPassword("uss");
         user.setToken("DDG-37");
         DatabaseFunctions.createUserAccount(user);
-        String correctAnswer= "Farragut\nVFUUwPHbmuEztQ1FQ6IzJfxyV+OT9vvZatMKLUrOpRtndZfb1k7CI1b1i40NMcs6s9KNrmHNE3MgrFcEVq3S1A==\nDDG-37";
-        assertEquals(correctAnswer, DatabaseFunctions.retrieveUserInfo("Farragut"));
+        User c_user = DatabaseFunctions.retrieveUserInfo("Farragut");
+        String expectedAnswer=c_user.getUsername()+c_user.getPassword()+c_user.getToken();
+        String correctAnswer= "FarragutVFUUwPHbmuEztQ1FQ6IzJfxyV+OT9vvZatMKLUrOpRtndZfb1k7CI1b1i40NMcs6s9KNrmHNE3MgrFcEVq3S1A==DDG-37";
+        assertEquals(correctAnswer, expectedAnswer);
     }
 
     /**

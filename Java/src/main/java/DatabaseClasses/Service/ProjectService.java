@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -32,8 +31,6 @@ public class ProjectService {
     private final MergeRequestRepository mergeRequestRepository;
     private final CommitRepository commitRepository;
     private final DeveloperRepository developerRepository;
-
-
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository, MergeRequestRepository mergeRequestRepository,
