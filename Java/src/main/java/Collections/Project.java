@@ -4,6 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/*
+References:
+
+- https://stackoverflow.com/questions/8180430/how-to-override-equals-method-in-java
+Used the accepted answer to review how to overload equals().
+ */
+
 /**
  * Holds the different info for a project when getting a list of projects and is used for turning JSON to object with
  * spring
@@ -16,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 @Document("Project")
 public class Project {
@@ -189,5 +197,24 @@ public class Project {
                 ", infoSet=" + infoSet +
                 ", infoSetDate=" + infoSetDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || o.getClass() != this.getClass()) {
+            return false;
+        }
+        Project other = (Project) o;
+        return (id == other.id && Objects.equals(description, other.description)
+                && Objects.equals(name, other.name)
+                && Objects.equals(createdAt, other.createdAt)
+                && infoSet == other.infoSet && Objects.equals(infoSetDate, other.infoSetDate)
+                && Objects.equals(mergedRequests, other.mergedRequests)
+                && Objects.equals(issues, other.issues)
+                && Objects.equals(commits, other.commits)
+                && Objects.equals(developers, other.developers));
     }
 }

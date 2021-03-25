@@ -128,4 +128,21 @@ public class Note {
     public void addWordCount(int wordCount) {
         this.wordCount += wordCount;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Note note = (Note) o;
+        return (id == note.id && score == note.score && wordCount == note.wordCount
+                && Objects.equals(body, note.body) && Objects.equals(author, note.author)
+                && Objects.equals(username, note.username)
+                && Objects.equals(createdAt, note.createdAt)
+                && Objects.equals(createdDate, note.createdDate)
+                && Objects.equals(isIssueNote, note.isIssueNote));
+    }
 }

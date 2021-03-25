@@ -24,6 +24,12 @@ dependencies {
     implementation 'junit:junit:4.12'
     testImplementation 'org.apache.httpcomponents:httpclient'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.mockito:mockito-core:2.24.0'
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    implementation 'org.mockito:mockito-junit-jupiter:3.3.3'
+    implementation 'org.mockito:mockito-all:1.10.19'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-core:2.24.0'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 
@@ -44,6 +50,9 @@ test{
     testLogging.showStandardStreams = true
     jvmArgs = ["-Djdk.tls.client.protocols=TLSv1.2"]
     failFast = true
+    testLogging {
+        events "standardOut", "started", "passed", "skipped", "failed"
+    }
 }
 
 bootRun {
