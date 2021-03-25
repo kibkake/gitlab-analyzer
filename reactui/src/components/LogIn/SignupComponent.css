@@ -9,15 +9,11 @@
 }
 
 .cancel:hover{
-    border-style: groove;
-    border-width: 3px;
     color:red;
     font-weight: bold;
 }
 
 .cancel:active{
-    border-style: ridge;
-    border-width: 3px;
     background-color: red;
     color:white;
 }
@@ -27,15 +23,11 @@
 }
 
 .signup:hover, .checkAvail:hover{
-    border-style: groove;
-    border-width: 3px;
     color:darkcyan;
     font-weight: bold;
 }
 
 .signup:active, .checkAvail:active{
-    border-style: ridge;
-    border-width: 3px;
     background-color: darkcyan;
     color:white;
 }
@@ -51,15 +43,11 @@ input{
 }
 
 .checkAvail:hover{
-    border-style: groove;
-    border-width: 3px;
     color:black;
     font-weight: bold;
 }
 
 .checkAvail:active{
-    border-style: ridge;
-    border-width: 3px;
     background-color: black;
     color:white;
 }

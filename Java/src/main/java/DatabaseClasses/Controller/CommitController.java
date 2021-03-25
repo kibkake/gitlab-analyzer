@@ -1,10 +1,8 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.Model.CommitDateScore;
-import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Scores.CommitDateScore;
 import main.java.DatabaseClasses.Service.CommitService;
-import main.java.DatabaseClasses.Service.ProjectService;
-import main.java.Model.Commit;
+import main.java.Collections.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

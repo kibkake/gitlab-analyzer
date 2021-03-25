@@ -1,9 +1,9 @@
 package main.java.DatabaseClasses.Service;
 
 import main.java.ConnectToGitlab.CommitConnection;
-import main.java.DatabaseClasses.Model.CommitDateScore;
-import main.java.DatabaseClasses.Repository.CommitRepository;
-import main.java.Model.Commit;
+import main.java.DatabaseClasses.Scores.CommitDateScore;
+import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
+import main.java.Collections.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,14 @@
 package main.java.DatabaseClasses.Service;
 
-import main.java.DatabaseClasses.Model.CommitDateScore;
-import main.java.DatabaseClasses.Model.DateScore;
-import main.java.DatabaseClasses.Model.AllScores;
-import main.java.DatabaseClasses.Model.MergeRequestDateScore;
-import main.java.DatabaseClasses.Repository.*;
-import main.java.Model.*;
+import main.java.DatabaseClasses.Scores.CommitDateScore;
+import main.java.DatabaseClasses.Scores.DateScore;
+import main.java.DatabaseClasses.Scores.AllScores;
+import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
+import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
+import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
+import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
+import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
+import main.java.Collections.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
 import main.java.ConnectToGitlab.IssueConnection;

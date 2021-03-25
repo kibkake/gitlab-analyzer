@@ -1,8 +1,8 @@
 package main.java.DatabaseClasses.Service;
 
-import main.java.Model.ProjectSettings;
-import main.java.Model.User;
-import main.java.DatabaseClasses.Repository.UserRepository;
+import main.java.Collections.ProjectSettings;
+import main.java.Collections.User;
+import main.java.DatabaseClasses.Repository.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

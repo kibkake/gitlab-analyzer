@@ -15,6 +15,7 @@ export default function LoginToken(){
             // need to change the temp user token in database before user can go home
             await ProfileService.changeUserToken("temp",usertoken);
             window.location.href="/Home";
+            window.location.reload();
         }
         event.preventDefault();
     }

@@ -1,0 +1,27 @@
+.comments-filter{
+    margin-left:78%;
+}
+
+.comments-table{
+    margin:auto !important;
+    width:90% !important;
+}
+
+.filter{
+    padding: 5px;
+    margin-left:15px;
+}
+
+.filter:hover{
+    color:darkcyan;
+    font-weight: bold;
+}
+
+.filter:active{
+    background-color: darkcyan;
+    color:white;
+}
+
+.vspace{
+    margin-bottom: 2cm;
+}
