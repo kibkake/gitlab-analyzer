@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface DeveloperRepository extends MongoRepository<Developer, Integer>, DeveloperRepositoryCustom {
 
-    @Query(fields="{ 'id' : 1, 'projectId' : 1, 'name' : 1, 'username' :1 }") // UI only wants these fields
+    @Query(fields="{ 'devId' : 1, 'projectId' : 1, 'name' : 1, 'username' :1 }") // UI only wants these fields
     List<Developer> findDevelopersByProjectId(int projectId);
 
     Developer findDeveloperByProjectIdAndDevId(int projectId, int devId);
