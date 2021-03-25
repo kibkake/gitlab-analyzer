@@ -44,6 +44,7 @@ export default function Row(props) {
 
 
     return (
+        <div className="box-container" >
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
@@ -109,6 +110,7 @@ export default function Row(props) {
                 </TableCell>
             </TableRow>
         </React.Fragment>
+        </div>
 
     );
 }
