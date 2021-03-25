@@ -5,12 +5,10 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Collapse from "@material-ui/core/Collapse";
 import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import {makeStyles} from "@material-ui/core/styles";
-import {OverlayTrigger} from 'react-bootstrap'
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
@@ -61,11 +59,31 @@ function CommitInfo(props) {
                 </TableCell>
             </TableRow>
 
-//Commit info goes here
-
-
+            <TableRow style={{backgroundColor:"rgb(242, 242, 242)"}}>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box>
+                            <Table size="small" aria-label="commits">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell >Title</TableCell>
+                                        <TableCell align="right">Full Message</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>{props.commit.title}</TableCell>
+                                        <TableCell align="right">{props.commit.message}</TableCell>
+                                        <TableCell align="right" >
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
         </React.Fragment>
-
     );
 }
 export default CommitInfo;
