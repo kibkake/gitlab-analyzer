@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Objects;
 
 @Document(value = "Issue")
 public class Issue {
@@ -101,5 +102,22 @@ public class Issue {
     @JsonProperty("iid")
     public void setInternalIssueIdForASpecificProject(int internalIssueIdForASpecificProject) {
         this.internalIssueIdForASpecificProject = internalIssueIdForASpecificProject;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Issue issue = (Issue) o;
+        return (issueIdForServer == issue.issueIdForServer
+                && internalIssueIdForASpecificProject == issue.internalIssueIdForASpecificProject
+                && projectId == issue.projectId && Objects.equals(author, issue.author)
+                && Objects.equals(createdAt, issue.createdAt) && Objects.equals(modifiedAt, issue.modifiedAt)
+                && Objects.equals(updatedAt, issue.updatedAt) && Objects.equals(username, issue.username)
+                && Objects.equals(notes, issue.notes));
     }
 }
