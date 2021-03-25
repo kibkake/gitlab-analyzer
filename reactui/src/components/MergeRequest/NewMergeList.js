@@ -24,6 +24,7 @@ import Highlight from "react-highlight";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import CommitMRNumChart from "../Summary/CommitMRNumChart";
 import styled from "styled-components";
+import CommitList from "./CommitList";
 // import { merge } from 'jquery';
 
 export default class NewMergeList  extends PureComponent {
@@ -71,9 +72,9 @@ export default class NewMergeList  extends PureComponent {
         super(props);
         this.state = {
             merges: [], //{commits:[{}], date: null, title: null, score:0, diffScore:0, mrUrl: null,
-           // sum: 0, diffs:[{path:null, diff:null}]}
+            // sum: 0, diffs:[{path:null, diff:null}]}
             parentData: this.props.devName,
-            diff: false,
+            diffShow: false,
         }
         this.handler = this.handler.bind(this)
         this.handler2 = this.handler2.bind(this)
@@ -171,10 +172,10 @@ export default class NewMergeList  extends PureComponent {
                 })
             };
         });
-        console.log(output.diffs)
+
         return (
-            <div className="box-container">
-                {/*{output.map((row) => (*/}
+            output.map((row) => (
+                <div className="box-container">
                     <TableContainer component={Paper} margin-right="300px">
                         <Table aria-label="collapsible table">
                             <TableHead className="tableCell">
@@ -183,46 +184,72 @@ export default class NewMergeList  extends PureComponent {
                                     <TableCell>Merge Title</TableCell>
                                     <TableCell align="right">Merge Score</TableCell>
                                     <TableCell align="right">Sum of Commit Score</TableCell>
-                                    <TableCell align="right">Commits </TableCell>
-                                    <TableCell align="right">Full Diff</TableCell>
+                                    <TableCell align="right">Commits & Full Diff</TableCell>
+                                    {/*<TableCell align="right">Full Diff</TableCell>*/}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {output.map((row) => (
-                                    <TableRow>
-                                        <TableCell component="th" scope="row">
-                                            {moment(row.date).format('ll')}
-                                        </TableCell>
-                                        <TableCell>#{row.id} <a href={row.mrUrl}> {row.title}</a> </TableCell>
-                                        <TableCell align="right">{row.score.toFixed(1)}</TableCell>
-                                        <TableCell align="right"> {row.sum}</TableCell>
+                                {/*{output.map((row) => (*/}
+                                <TableRow>
+                                    <TableCell component="th" scope="row">
+                                        {moment(row.date).format('ll')}
+                                    </TableCell>
+                                    <TableCell>#{row.id} <a href={row.mrUrl}> {row.title}</a> </TableCell>
+                                    <TableCell align="right">{row.score.toFixed(1)}</TableCell>
+                                    <TableCell align="right"> {row.sum}</TableCell>
 
-                                        <TableCell align="right">
-                                            {/*<IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>*/}
-                                            {/*    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}*/}
-                                            {/*</IconButton>*/}
-                                        </TableCell>
+                                    {/*<TableCell align="right">*/}
+                                    {/*    /!*<IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>*!/*/}
+                                    {/*    /!*    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}*!/*/}
+                                    {/*    /!*</IconButton>*!/*/}
+                                    {/*</TableCell>*/}
 
-                                        <TableCell align="right">
-                                            <OverlayTrigger trigger="focus" placement="right-start" justifyContent="flex-start"
-                                                            display="flex" flexDirection="row" p={1} m={1}
-                                                            overlay={<PopOver id="popover-positioned-top" placement="right-start" {...this.props} Diffs={row.diffs}/>}>
+                                    <TableCell align="right">
+                                        {/*<OverlayTrigger trigger="focus" placement="right-start"*/}
+                                        {/*                justifyContent="flex-start"*/}
+                                        {/*                display="flex" flexDirection="row" p={1} m={1}*/}
+                                        {/*                overlay={<PopOver id="popover-positioned-top"*/}
+                                        {/*                                  placement="right-start" {...this.props}*/}
+                                        {/*                                  Diffs={row.diffs}/>}>*/}
                                             <button type="button" className="btn btn-secondary"
-                                                    onClick={this.setState({diff: true})}>
+                                                    onClick={this.setState({diffShow: true})}>
                                                 View
                                             </button>
-                                            </OverlayTrigger>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                                        {/*</OverlayTrigger>*/}
+                                    </TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    {/*<PopOver Diffs={ }*/}
-                {/*))}*/}
-            </div>
+                    {(this.state.diffShow !== false) ? <CommitList row={row.commits}/> : <div> </div>}
+                    {(this.state.diffShow !== false) ? <DiffWindow Diffs={row.diffs}/> : <div> </div>}
+
+                </div>
+            ))
         );
     }
+}
+
+//
+function DiffWindow(props){
+    const {Diffs} = props;
+
+    return (
+        <div>
+        {/*// <Popover id="popover-basic" placement='right' class="justify-content-end" >*/}
+            {Diffs.map((item, index) => {
+                return(
+                    <ul key={index}>
+                        <h5 className="filename">{item.path}</h5>
+                        <li><Highlight className="highlighted-text">{HighlightCodeDiffs(item.diff)} </Highlight></li>
+                        {/*<Popover.Title as="h3">{item.new_path}</Popover.Title>*/}
+                        {/*<Popover.Content><Highlight className="highlighted-text">  </Highlight>*/}
+                        {/*</Popover.Content>*/}
+                    </ul>
+                )
+            })}
+        </div>
+    )
 }
 
 const PopOver = (props) => {
@@ -230,7 +257,7 @@ const PopOver = (props) => {
 
     //id="popover-positioned-top" placement='right' class="justify-content-end"
     return (
-        <StyledPopover style={{width:'1000px',height:'600px'}}>
+        <Popover style={{width:'1000px',height:'600px'}}>
             {Diffs.map((item => {
                 return(
                     <ul>
@@ -240,37 +267,18 @@ const PopOver = (props) => {
                     </ul>
                 )
             }))}
-        </StyledPopover>
+        </Popover>
     )
 }
 
-const StyledPopover = styled(Popover)`
-      min-width: 328px;
-     background-color: #2F3337;
-     && .arrow::after {
-       border-right-color: #2F3337;
-     }
-`
-//
-// function DiffWindow(Diffs){
-//     return (
-//         <div>
-//         {/*// <Popover id="popover-basic" placement='right' class="justify-content-end" >*/}
-//             {Diffs.map((item, index) => {
-//                 return(
-//                     <ul key={index}>
-//                         <h5 className="filename">{item.path}</h5>
-//                         <li><Highlight className="highlighted-text">{HighlightCodeDiffs(item.diff)} </Highlight></li>
-//
-//                         {/*<Popover.Title as="h3">{item.new_path}</Popover.Title>*/}
-//                         {/*<Popover.Content><Highlight className="highlighted-text">  </Highlight>*/}
-//                         {/*</Popover.Content>*/}
-//                     </ul>
-//                 )
-//             })}
-//         </div>
-//     )
-// }
+// const StyledPopover = styled(Popover)`
+//       min-width: 328px;
+//      background-color: #2F3337;
+//      && .arrow::after {
+//        border-right-color: #2F3337;
+//      }
+// `
+
 //
 // //
 // // 1. separate page here to show full/code diff

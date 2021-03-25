@@ -16,6 +16,8 @@ import TableBody from "@material-ui/core/TableBody";
 import {makeStyles} from "@material-ui/core/styles";
 import Highlight from "react-highlight";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
+import TableContainer from "@material-ui/core/TableContainer";
+import Paper from "@material-ui/core/Paper";
 
 //[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
 const PopOver = ({Diffs}) => {
@@ -34,56 +36,45 @@ const PopOver = ({Diffs}) => {
     )
 }
 
-export default function CommitRow(props) {
+export default function CommitList(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
     return (
-        <div className="box-container" >
-                <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                        <Collapse in={open} timeout="auto" unmountOnExit>
-                            <Box margin={1}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    Commits
-                                </Typography>
-                                <Table size="small" aria-label="commits">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Date</TableCell>
-                                            <TableCell>Commit Message</TableCell>
-                                            <TableCell align="right">Committer</TableCell>
-                                            <TableCell align="right">Score</TableCell>
-                                            <TableCell align="right">Code Diff</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {row.commits.map((commitsRow) => (
-                                            <TableRow key={commitsRow.commitDate}>
-                                                <TableCell component="th" scope="row">
-                                                    {moment(commitsRow.commitDate).format('LLL')}
+        <TableContainer component={Paper} margin-right="300px">
+            <Table aria-label="collapsible table" size="small" aria-label="commits">
+                <TableHead className="tableCell">
+                    <TableRow>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Commit Message</TableCell>
+                        <TableCell align="right">Committer</TableCell>
+                        <TableCell align="right">Score</TableCell>
+                        <TableCell align="right">Code Diff</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {row.map((commitsRow) => (
+                        // item.commits.map ((commitsRow) => (
+                        <TableRow key={commitsRow.commitDate}>
+                            <TableCell component="th" scope="row">
+                                {moment(commitsRow.commitDate).format('LLL')}
 
-                                                </TableCell>
+                            </TableCell>
 
-                                                <TableCell>{commitsRow.message}</TableCell>
-                                                <TableCell align="right">{commitsRow.author}</TableCell>
-                                                <TableCell align="right">{commitsRow.score.toFixed(1)}</TableCell>
-                                                <TableCell align="right" >
-                                                    <OverlayTrigger trigger="focus" placement="right" overlay={<PopOver Diffs={commitsRow.commitDiffs}/>}>
-                                                        <button type="button" className="btn btn-outline-secondary">View</button>
-                                                    </OverlayTrigger>
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </Box>
-                        </Collapse>
-                    </TableCell>
-                </TableRow>
-        </div>
-
+                            <TableCell>{commitsRow.message}</TableCell>
+                            <TableCell align="right">{commitsRow.author}</TableCell>
+                            <TableCell align="right">{commitsRow.score.toFixed(1)}</TableCell>
+                            <TableCell align="right" >
+                                <OverlayTrigger trigger="focus" placement="right" overlay={<PopOver Diffs={commitsRow.commitDiffs}/>}>
+                                    <button type="button" className="btn btn-outline-secondary">View</button>
+                                </OverlayTrigger>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 }
 

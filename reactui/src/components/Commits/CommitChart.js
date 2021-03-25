@@ -154,4 +154,18 @@ class CommitChart extends Component {
     }
 }
 
+// async handler(hash) {
+//     await this.setState({
+//         childVal: hash,
+//         diff : true
+//     })
+// }
+//
+// async handler2() {
+//     await this.setState({
+//         diff: false
+//     })
+// }
+
+
 export default CommitChart
