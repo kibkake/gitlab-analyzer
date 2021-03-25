@@ -34,7 +34,6 @@ const PopOver = ({Diffs}) => {
     )
 }
 
-
 export default function CommitRow(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
@@ -71,7 +70,7 @@ export default function CommitRow(props) {
                                                 <TableCell align="right">{commitsRow.author}</TableCell>
                                                 <TableCell align="right">{commitsRow.score.toFixed(1)}</TableCell>
                                                 <TableCell align="right" >
-                                                    <OverlayTrigger trigger="focus"  placement="right" overlay={<PopOver Diffs={commitsRow.commitDiffs}/>}>
+                                                    <OverlayTrigger trigger="focus" placement="right" overlay={<PopOver Diffs={commitsRow.commitDiffs}/>}>
                                                         <button type="button" className="btn btn-outline-secondary">View</button>
                                                     </OverlayTrigger>
                                                 </TableCell>
