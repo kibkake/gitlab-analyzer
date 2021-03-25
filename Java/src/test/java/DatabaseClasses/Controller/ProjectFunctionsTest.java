@@ -70,8 +70,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  * a test failing means either the code has changed or the DB's data has.
  */
 
-//@RunWith(MockitoJUnitRunner.class)
-//@ExtendWith(MockitoExtension.class)
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes=Main.class)
 public class ProjectFunctionsTest {
