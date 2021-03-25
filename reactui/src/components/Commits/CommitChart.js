@@ -184,7 +184,9 @@ class CommitChart extends Component {
                             }}>
                         <span >show all commits</span>
                     </Button>
-                <div className="horizontalBar">
+                <div className="horizontalBar" style={{backgroundImage: "url(https://i.ibb.co/3pV1zfj/Chart-Background.jpg)",
+                    backgroundSize: "cover"
+                }}>
                 <HorizontalBar
 
                     data={{labels: daylist,
