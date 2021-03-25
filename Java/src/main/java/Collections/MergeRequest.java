@@ -8,6 +8,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Document(value = "mergeRequest")
 public class MergeRequest {
@@ -221,5 +222,28 @@ public class MergeRequest {
 
     public void setDiffs(List<Diff> diffs) {
         this.diffs = diffs;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MergeRequest other = (MergeRequest) o;
+        return (mergeRequestIdForASpecificProject == other.mergeRequestIdForASpecificProject
+                && projectId == other.projectId && Double.compare(other.mrScore, mrScore) == 0
+                && Objects.equals(id, other.id) && Objects.equals(title, other.title)
+                && Objects.equals(mergedAt, other.mergedAt)
+                && Objects.equals(updatedAt, other.updatedAt) && Objects.equals(author, other.author)
+                && Objects.equals(contributors, other.contributors)
+                && Objects.equals(commits, other.commits) && Objects.equals(sha, other.sha)
+                && Objects.equals(mergedDate, other.mergedDate)
+                && Objects.equals(updatedDate, other.updatedDate)
+                && Objects.equals(allNotes, other.allNotes)
+                && Objects.equals(codeReviewNotes, other.codeReviewNotes)
+                && Objects.equals(diffs, other.diffs) && Objects.equals(mrUrl, other.mrUrl));
     }
 }

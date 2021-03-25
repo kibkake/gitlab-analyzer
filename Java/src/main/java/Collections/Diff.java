@@ -1,5 +1,7 @@
 package main.java.Collections;
 
+import java.util.Objects;
+
 public class Diff {
     private String new_path;
     private String old_path;
@@ -110,5 +112,20 @@ public class Diff {
 
     public void setDiffScore(double diffScore) {
         this.diffScore = diffScore;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Diff diff1 = (Diff) o;
+        return (new_file == diff1.new_file && renamed_file == diff1.renamed_file
+                && deleted_file == diff1.deleted_file && Double.compare(diff1.diffScore, diffScore) == 0
+                && Objects.equals(new_path, diff1.new_path) && Objects.equals(old_path, diff1.old_path)
+                && Objects.equals(diff, diff1.diff));
     }
 }
