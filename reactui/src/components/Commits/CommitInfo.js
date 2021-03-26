@@ -33,10 +33,14 @@ function CommitInfo(props) {
                 <TableCell><a href= {props.commit.mrUrl}>
                     {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
                         props.commit.title.substring(0,10)}</a> </TableCell>
-                <TableCell align="right">{props.commit.commitScore.toFixed(1)}</TableCell>
+                <TableCell align="right">
+                    {props.commit.commitScore.toFixed(1)}
+                </TableCell>
 
                 <TableCell align="top">
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                    <IconButton aria-label="expand row"
+                                size="small"
+                                onClick={() => setOpen(!open)}>
                         {<MoreHorizIcon />}
                     </IconButton>
                 </TableCell>
@@ -60,21 +64,26 @@ function CommitInfo(props) {
             </TableRow>
 
             <TableRow style={{backgroundColor:"rgb(242, 242, 242)"}}>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }}
+                    colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box>
                             <Table size="small" aria-label="commits">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell >Title</TableCell>
-                                        <TableCell align="right">Full Message</TableCell>
+                                        <TableCell>Full Message</TableCell>
                                     </TableRow>
                                 </TableHead>
-                                <TableBody>
+                                <TableBody >
                                     <TableRow>
-                                        <TableCell>{props.commit.title}</TableCell>
-                                        <TableCell align="right">{props.commit.message}</TableCell>
-                                        <TableCell align="right" >
+                                        <TableCell style={{wordWrap: "break-word",
+                                            maxWidth:"250px"}} >
+                                            {props.commit.title}
+                                        </TableCell>
+                                        <TableCell style={{wordWrap: "break-word",
+                                            maxWidth:"250px"}}>
+                                            {props.commit.message}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
