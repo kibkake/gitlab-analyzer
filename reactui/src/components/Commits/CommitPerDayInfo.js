@@ -23,9 +23,8 @@ import './TableStyle.css'
 
 
 
-function Row(props) {
+function CommitPerDayInfo(props) {
 
-    const { row } = props;
     const [open, setOpen] = React.useState(false);
 
     return (
@@ -35,10 +34,12 @@ function Row(props) {
                     {moment(props.commit.committed_date).format('lll').substring(12,21)}
                 </TableCell>
                 <TableCell>
-                    {props.commit.title.substring(0,10)}
-                {props.commit.title.length > 10 ? <div>...</div> : <div></div>}
+                {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
+                    props.commit.title.substring(0,10)}
                 </TableCell>
-                <TableCell align="right">{props.commit.commitScore.toFixed(1)}</TableCell>
+                <TableCell>
+                    {props.commit.commitScore.toFixed(1)}
+                </TableCell>
 
             </TableRow>
         </React.Fragment>
@@ -46,4 +47,4 @@ function Row(props) {
     );
 }
 
-export default Row;
+export default CommitPerDayInfo;
