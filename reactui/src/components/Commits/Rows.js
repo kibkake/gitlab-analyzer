@@ -19,18 +19,26 @@ import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import Flexbox from "flexbox-react";
 import TableContainer from "@material-ui/core/TableContainer";
 import CommitInfo from "./CommitInfo";
+import './TableStyle.css'
 
 
 
 function Row(props) {
 
-
-    const classes = useRowStyles();
-
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
 
     return (
         <React.Fragment>
-            <TableRow className={classes.root}>
+            <TableRow className="commitTable">
+                <TableCell component="th" scope="row">
+                    {moment(props.commit.committed_date).format('lll').substring(12,21)}
+                </TableCell>
+                <TableCell>
+                    {props.commit.title.substring(0,10)}
+                {props.commit.title.length > 10 ? <div>...</div> : <div></div>}
+                </TableCell>
+                <TableCell align="right">{props.commit.commitScore.toFixed(1)}</TableCell>
 
             </TableRow>
         </React.Fragment>
@@ -39,15 +47,3 @@ function Row(props) {
 }
 
 export default Row;
-
-const useRowStyles = makeStyles({
-    root: {
-        '& > *': {
-            borderBottom: 'unset',
-            fontSize: '15pt',
-            backgroundColor: 'white',
-            background:'linear-gradient(rgb(3, 222, 167),transparent)'
-
-        },
-    },
-});
