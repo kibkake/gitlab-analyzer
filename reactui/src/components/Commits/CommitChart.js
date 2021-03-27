@@ -6,6 +6,7 @@ import "./HBox.css"
 import AllCommits from "./AllCommits";
 import Button from "react-bootstrap/Button";
 import Spinner from 'react-bootstrap/Spinner'
+import moment from "moment";
 
 class CommitChart extends Component {
 
@@ -53,7 +54,6 @@ class CommitChart extends Component {
     }
 
     async getDataFromBackend (username, startTm, endTm) {
-
         var str = window.location.pathname;
         var projNum = str.split("/")[2];
         var arr=[];
@@ -76,7 +76,6 @@ class CommitChart extends Component {
         await this.setState({data: arr})
 
 
-
         let url2 = '/api/v1/projects/' + projNum + '/Commits/' + username + '/' + startTm + "/" + endTm  + "/either"
         const result2 = await fetch(url2, {
             method: 'GET',
@@ -91,7 +90,6 @@ class CommitChart extends Component {
 
     showComponents() {
         if(this.state.showAllCommit === true){
-
             if(this.state.commits.length === 0){
                 return (
                     <div>
@@ -107,15 +105,25 @@ class CommitChart extends Component {
             }
             return (
                 <div>
-                    <AllCommits devName = {this.props.devName} startTime = {this.props.startTime} endTime = {this.props.endTime} handler = {this.handler} handler3 = {this.handler3} commits={this.state.commits} />
+                    <AllCommits
+                        devName = {this.props.devName}
+                        startTime = {this.props.startTime}
+                        endTime = {this.props.endTime}
+                        handler = {this.handler}
+                        handler3 = {this.handler3}
+                        commits={this.state.commits} />
                 </div>
             )
         }
         else {
             return (
                 <div>
-
-                    <CommitsPerDay devName = {this.props.devName} startTime = {this.state.y_Axis} commits = {this.state.allCommits} handler = {this.handler} commits={this.state.commits} />
+                    <CommitsPerDay
+                        devName = {this.props.devName}
+                        startTime = {this.state.y_Axis}
+                        commits = {this.state.allCommits}
+                        handler = {this.handler}
+                        commits={this.state.commits} />
                 </div>
             )
         }
@@ -165,8 +173,6 @@ class CommitChart extends Component {
                     <Spinner
                         animation="border" variant="primary"
                         size="la"/>
-
-
                 </div>
             )
         }
@@ -178,13 +184,13 @@ class CommitChart extends Component {
         return (
             <div className="box-container" >
                 <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
-                    <Button className="button"
+                    <Button
                             onClick={(e) => {
                                 this.setState({showAllCommit: true, diff:false})
                             }}>
                         <span >show all commits</span>
                     </Button>
-                <div className="horizontalBar" style={{backgroundImage: "url(https://i.ibb.co/3pV1zfj/Chart-Background.jpg)",
+                <div className="horizontalBar" style={{backgroundImage: "url()",
                     backgroundSize: "cover"
                 }}>
                 <HorizontalBar
@@ -199,7 +205,6 @@ class CommitChart extends Component {
                     }}
                     width={500}
                     height={daylist.length*10}
-
                     options={
                         {onClick: (e, Event) => {
                                 if (Event[0] != null) {
@@ -211,12 +216,8 @@ class CommitChart extends Component {
                                 }
 
                             } , maintainAspectRatio:true,
-
                         scales: {
                                 xAxes:[
-
-
-
                                     {
                                         ticks:{
                                             beginAtZero: true,
@@ -228,7 +229,6 @@ class CommitChart extends Component {
                                         }
                                     }
                                 ],
-
                                 yAxes: [{
                                     ticks : {
                                         fontColor: "blue",
@@ -238,15 +238,15 @@ class CommitChart extends Component {
                                 }]
                             }
                         }}
-
-
                 />
                     </div>
                 </div>
-                {this.showComponents()}
-                {(this.state.diff !== false) ? <SingleCommitDiff handler2 = {this.handler2} hash = {this.state.childVal}/>: <div> </div>}
-
-            </div>
+                    {this.showComponents()}
+                    {(this.state.diff !== false) ? <SingleCommitDiff
+                        handler2 = {this.handler2}
+                        hash = {this.state.childVal}
+                        commits={this.state.commits}/> : <div> </div>}
+                </div>
         )
     }
 }
