@@ -20,12 +20,15 @@ import Flexbox from "flexbox-react";
 import TableContainer from "@material-ui/core/TableContainer";
 import CommitInfo from "./CommitInfo";
 import './TableStyle.css'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 
 
 function CommitPerDayInfo(props) {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(
+        false
+    );
 
     return (
         <React.Fragment>
@@ -37,8 +40,30 @@ function CommitPerDayInfo(props) {
                 {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
                     props.commit.title.substring(0,10)}
                 </TableCell>
-                <TableCell>
+                <TableCell align="right">
                     {props.commit.commitScore.toFixed(1)}
+                </TableCell>
+
+                <TableCell align="right">
+                    <IconButton aria-label="expand row" size="small"
+                                onClick={() => setOpen(!open)}>
+                                {<MoreHorizIcon />}
+                    </IconButton>
+                </TableCell>
+
+                <TableCell align ="right">
+                    <button style={{
+                            backgroundColor: 'lightblue',
+                            color: 'black',
+                            borderRadius: '0%'
+                            }}
+                            type="button"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                {props.handler(props.commit.id)}
+                            }}>
+                        DIFF
+                    </button>
                 </TableCell>
 
             </TableRow>
