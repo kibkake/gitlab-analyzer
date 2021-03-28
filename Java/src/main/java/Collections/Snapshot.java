@@ -11,18 +11,20 @@ public class Snapshot {
 
     @Id
     private String id;
-    private String name;
+    private String username;
     private String startDate;
     private String endDate;
     private int projectId;
+    private String dev;
 
     public Snapshot(){}
 
-    public Snapshot(String name, String startDate, String endDate, int projectId) {
-        this.name = name;
+    public Snapshot(String username, String startDate, String endDate, int projectId, String dev) {
+        this.username = username;
         this.startDate = startDate;
         this.endDate = endDate;
         this.projectId = projectId;
+        this.dev = dev;
     }
 
     public String getId() {
@@ -33,12 +35,12 @@ public class Snapshot {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getStartDate() {
@@ -65,13 +67,18 @@ public class Snapshot {
         this.projectId = projectId;
     }
 
+    public String getDev(){return dev;}
+
+    public void setDev(String dev){this.dev = dev;  }
+
     @Override
     public String toString() {
         return "Snapshot{" +
-                "name='" + name + '\'' +
+                "username=" + username +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", projectId=" + projectId +
+                ", dev="+dev+
                 '}';
     }
 }

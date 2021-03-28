@@ -6,11 +6,17 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
+/*
+ This interface connects Spring app to MongoDB.
 
+ By this interface you can use the default methods of mongoDB,
+ save(), findOne(), findById(), findAll(), count(), delete(), deleteById()…
+ without implementing these methods, in addition to our own defined methods
+ */
 @Repository
 public interface SnapshotRepository extends MongoRepository <Snapshot, String> {
-    public Snapshot findByName(String name);
+    public Snapshot findByUsername(String username);
 
-    @Query(fields="{ 'name' : 1, 'startDate' : 1, 'endDate' : 1, 'projectId' :1 }")
+    @Query(fields="{ 'username' : 1, 'startDate' : 1, 'endDate' : 1, 'projectId' :1 ,'dev' :1 }")
     List<Snapshot> getAllBy();
 }

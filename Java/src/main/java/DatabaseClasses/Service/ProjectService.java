@@ -130,6 +130,7 @@ public class ProjectService {
         snapshotRepository.save(snapshot);
     }
 
+
     private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
         for (Developer dev: projectDevs) {
             List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,

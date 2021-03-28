@@ -60,8 +60,9 @@ public class ProjectController {
     }
 
     @PostMapping(path = "saveSnapshot")
-    public void saveSnapshot(@RequestBody Snapshot snapshot){
+    public String saveSnapshot(@RequestBody Snapshot snapshot){
         projectService.saveSnapshot(snapshot);
+        return snapshot.getId();
     }
 
     //TODO: how to update if the current db is not empty,
