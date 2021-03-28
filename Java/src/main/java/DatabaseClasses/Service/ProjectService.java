@@ -127,7 +127,6 @@ public class ProjectService {
 
     @Transactional(timeout = 1200) // 20 min
     public void saveSnapshot(Snapshot snapshot){
-        System.out.println(snapshot.toString());
         snapshotRepository.save(snapshot);
     }
 
