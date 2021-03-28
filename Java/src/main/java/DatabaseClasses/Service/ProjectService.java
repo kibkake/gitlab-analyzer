@@ -393,9 +393,9 @@ public class ProjectService {
         return devIssues;
     }
 
-    public List<Note> getTopDevNotes(int projectID, String username, LocalDate start, LocalDate end,
-                                      int limit, boolean applyLimit) {
-        List<Note> devNotes = getDevNotes(projectID, username, start, end);
+    public List<Note> getTopDevNotes(int projectID, String username, boolean filterByDevsCode,
+                                     LocalDate start, LocalDate end, int limit, boolean applyLimit) {
+        List<Note> devNotes = getDevNotes(projectID, username, filterByDevsCode, start, end);
         devNotes.sort(Comparator.comparingInt(Note::getWordCount));
         Collections.reverse(devNotes);
         List<Note> topNotes;
@@ -408,7 +408,8 @@ public class ProjectService {
         return topNotes;
     }
 
-    public List<Note> getDevNotes(int projectId, String username, LocalDate start, LocalDate end) {
+    public List<Note> getDevNotes(int projectId, String username, boolean filterByDevsCode, LocalDate start, LocalDate end) {
+        // TODO - Modify function to use filterByDevsCode
         Project project = projectRepository.findProjectById(projectId);
         List<Issue> issues = project.getIssues();
         List<Note> devNotes = new ArrayList<>();
@@ -475,9 +476,9 @@ public class ProjectService {
         return totalMRScore;
     }
 
-    public int getTotalDevCommentWordCount(int projectId, String username,
+    public int getTotalDevCommentWordCount(int projectId, String username, boolean filterByDevsCode,
                                             LocalDate start, LocalDate end) {
-        List<Note> devNotes = this.getTopDevNotes(projectId, username, start, end, 100000, false);
+        List<Note> devNotes = this.getTopDevNotes(projectId, username, filterByDevsCode, start, end, 100000, false);
         int totalCommentWordCount = 0;
         for (Note currentNote: devNotes) {
             totalCommentWordCount += currentNote.getWordCount();
@@ -485,7 +486,7 @@ public class ProjectService {
         return totalCommentWordCount;
     }
 
-    public AllScores getAllScores(int projectId, String username, LocalDate startDate,
+    public AllScores getAllScores(int projectId, String username, boolean filterByDevsCodeForCountingComments, LocalDate startDate,
                                   LocalDate endDate, UseWhichDevField devFieldToUseForGettingCommits) {
         AllScores allScores = new AllScores(startDate, endDate, 0, 0, 0);
         double totalCommitScore = this.getTotalDevCommitScore(projectId, username, startDate,
@@ -494,8 +495,8 @@ public class ProjectService {
         double totalMergeRequestScore = this.getTotalDevMRScore(projectId, username,
                                                                  startDate, endDate);
         allScores.setTotalMergeRequestScore(totalMergeRequestScore);
-        int totalCommentWordCount = this.getTotalDevCommentWordCount(projectId, username, startDate,
-                                                                      endDate);
+        int totalCommentWordCount = this.getTotalDevCommentWordCount(projectId, username,
+                filterByDevsCodeForCountingComments, startDate, endDate);
         allScores.setTotalCommentWordCount(totalCommentWordCount);
 
         return allScores;

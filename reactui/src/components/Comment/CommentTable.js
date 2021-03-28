@@ -11,11 +11,13 @@ class CommentTable extends Component{
             comments:[],
             issue:true,
             code_rev:true,
-            parentdata: this.props.devName
+            parentdata: this.props.devName,
+            devs_code_btn_name:"Dev's Code"
         }
         this.enableAll=this.enableAll.bind(this);
         this.enableIssue=this.enableIssue.bind(this);
         this.enableCodeRev=this.enableCodeRev.bind(this);
+        this.filterByDevCode=this.filterByDevCode.bind(this);
     }
 
     componentDidMount() {
@@ -27,8 +29,12 @@ class CommentTable extends Component{
         const pathArray = window.location.pathname.split('/');
         const id = pathArray[2];
         const developer = pathArray[4];
+        let shouldFilter = "false";
+        if (this.state.devs_code_btn_name === "All Code") {
+            shouldFilter = "true";
+        }
 
-        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/2021-01-01/2021-05-09")
+        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/" + shouldFilter + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments = response.data
                 this.setState({comments: comments})
@@ -60,6 +66,16 @@ class CommentTable extends Component{
         await this.setState({issue:false,code_rev:true});
     }
 
+    async filterByDevCode(e) {
+        e.preventDefault();
+        if (this.state.devs_code_btn_name === "Dev's Code") {
+            await this.setState({devs_code_btn_name:"All Code"});
+        }
+        else {
+            await this.setState({devs_code_btn_name:"Dev's Code"});
+        }
+    }
+
     render() {
         var Data = this.state.comments.map(function (item) {
             let currentYear = new Date().getFullYear();
@@ -86,6 +102,7 @@ class CommentTable extends Component{
                     <button className="filter" onClick={this.enableAll}> All </button>
                     <button className="filter" onClick={this.enableIssue}> Issue </button>
                     <button className="filter" onClick={this.enableCodeRev}> Code Review </button>
+                    <button className="filter" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
                 </div>
                 <br/>
                 <Table striped bordered hover className="comments-table">
