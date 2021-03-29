@@ -38,13 +38,13 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(criterias),
-                Aggregation.project("authorName", "date", "commitScore", "id")
+                Aggregation.project("authorName", "date", "commitScore", "commitId")
                 .and(DateOperators.DateToString.dateOf("date").toString("%Y-%m-%d")).as("groupByDate"),
                 Aggregation.group("groupByDate")
                         .sum("commitScore").as("commitScore")
                         .addToSet("groupByDate").as("date")
                         .count().as("numCommits")
-                        .push("id").as("commitIds")
+                        .push("commitId").as("commitIds")
 
 
         );

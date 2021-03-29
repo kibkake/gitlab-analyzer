@@ -13,7 +13,7 @@ import java.util.*;
 public class Commit {
 
     @Id //check unique per project
-    private String id;
+    private String commitId;
     private String title; // 1st line of commit message
     private String message; // other lines of commit message
     private String authorName;
@@ -26,13 +26,13 @@ public class Commit {
 
     public Commit() {
     }
-
-    public String getId() {
-        return id;
+    @JsonProperty("committed_date")
+    public String getCommitId() {
+        return commitId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCommitId(String commitId) {
+        this.commitId = commitId;
     }
 
     public String getTitle() {
@@ -108,7 +108,7 @@ public class Commit {
     @Override
     public String toString() {
         return "Commit{" +
-                "id='" + id + '\'' +
+                "id='" + commitId + '\'' +
                 ", title='" + title + '\'' +
                 ", message='" + message + '\'' +
                 ", author_name='" + authorName + '\'' +
@@ -141,7 +141,7 @@ public class Commit {
         }
         Commit commit = (Commit) o;
         return (projectId == commit.projectId && Double.compare(commit.commitScore, commitScore) == 0
-                && Objects.equals(id, commit.id) && Objects.equals(title, commit.title)
+                && Objects.equals(commitId, commit.commitId) && Objects.equals(title, commit.title)
                 && Objects.equals(message, commit.message)
                 && Objects.equals(authorName, commit.authorName)
                 && Objects.equals(committerName, commit.committerName)
