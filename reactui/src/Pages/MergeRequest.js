@@ -20,7 +20,7 @@ class MergeRequest extends Component{
         if(sessionStorage.getItem("Developers" + repNum) == null) {
             await ProjectService.getListOfDevs(repNum)
         }
-        await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
+        await this.setState({developers:JSON.parse(sessionStorage.getItem("DeveloperNames" + repNum))})
     }
 
     render() {
@@ -30,7 +30,7 @@ class MergeRequest extends Component{
 
         return(
             <div>
-                <DropDownMenuMerge listOfDevelopers = {developersArray}/>
+                <DropDownMenuMerge listOfDevelopers={developersArray.map(dev => dev.username)}/>
             </div>
         )
     }

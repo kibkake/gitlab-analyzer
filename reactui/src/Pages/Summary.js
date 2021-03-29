@@ -16,10 +16,14 @@ class Summary extends Component {
         var repNum = str.split("/")[2];
 
         if(sessionStorage.getItem("Developers" + repNum) == null) {
+            console.log("no developer objects in session storage")
             await ProjectService.getListOfDevs(repNum)
         }
+        this.setState({ developers: sessionStorage.getItem("Developers" + repNum)})
+
         if(sessionStorage.getItem("DeveloperNames" + repNum) == null) {
-             sessionStorage.setItem("DeveloperNames" + repNum, sessionStorage.getItem("Developers" + repNum))
+            console.log("no developer usernames in session storage")
+           await sessionStorage.setItem("DeveloperNames" + repNum, sessionStorage.getItem("Developers" + repNum))
         }
 
         await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
@@ -30,7 +34,7 @@ class Summary extends Component {
     }
 
     static getDerivedStateFromProps() {
-        console.log("Running the component")
+        console.log("Running the Summary component")
         return null
     }
 

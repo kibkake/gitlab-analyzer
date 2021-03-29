@@ -33,7 +33,7 @@ class Developers2Button extends Component{
             })
             .then(d => {
                 this.setState({ users: d });
-                console.log(this.state.users);
+                console.log("developer state", this.state.users);
             })
         await this.setState({ data: await this.state.users.map(({username,id})=> ({username,id}))})
         console.log(this.state.data)
