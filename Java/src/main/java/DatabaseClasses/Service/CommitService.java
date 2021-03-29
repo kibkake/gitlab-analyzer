@@ -23,8 +23,8 @@ public class CommitService {
         return commitRepository.getCommitsWithEveryDateBetweenRange(projectId, authorName, startLocalTime, endLocalTime);
     }
 
-    public List<Commit> getUserCommits(int projectId, Date start, Date end, String author_name) {
-        return commitRepository.findByProjectIdAndDateBetweenAndAuthorName(projectId, start, end, author_name);
+    public List<Commit> getUserCommits(int projectId, String authorName, Date start, Date end) {
+        return commitRepository.findByProjectIdAndAndAuthorNameAndDateBetween(projectId, authorName, start, end);
     }
 
     public void saveProjectCommits(int projectId){
