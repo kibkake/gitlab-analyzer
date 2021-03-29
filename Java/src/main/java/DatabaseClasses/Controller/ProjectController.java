@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,7 +97,10 @@ public class ProjectController {
     }
 
     @GetMapping("projects/{projectId}/developers")
-    public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
+    public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId, HttpServletResponse response) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Credentials", String.valueOf(true));
+
         return projectService.getProjectDevelopers(projectId);
     }
 
