@@ -89,6 +89,7 @@ class CommentTable extends Component{
         else {
             await this.setState({devs_code_btn_name:"Dev's Code", comments:this.state.all_comments});
         }
+    }
 
     render() {
         var Data = this.state.comments.map(function (item) {

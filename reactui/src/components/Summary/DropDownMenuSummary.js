@@ -7,9 +7,7 @@ import "../Commits/HBox.css"
 import ProjectService from "../../Service/ProjectService";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
-
-
-
+import moment from 'moment'
 
 function DropDownMenuSummary ({listOfDevelopers}) {
 
@@ -57,8 +55,8 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             return new Date (localStorage.getItem("enddate") + "T12:00:00")
         }
         else {
-            // TODO - Set the enddate to be the current day.
-            sessionStorage.setItem("enddate", "2021-03-28")
+            let currentDate = moment().format("YYYY-MM-DD");
+            sessionStorage.setItem("enddate", currentDate)
             return new Date (sessionStorage.getItem("enddate") + "T12:00:00")
         }
     }

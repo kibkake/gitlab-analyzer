@@ -1,9 +1,16 @@
+/*
+References:
+- https://stackoverflow.com/questions/30888197/format-datetime-to-yyyy-mm-dd-hhmmss-in-moment-js
+Used this to figure out how to get the current date as a string.
+ */
+
 import "../../App.css"
 import { MuiPickersUtilsProvider,DateTimePicker, DatePicker } from '@material-ui/pickers';
 import React,{ Component } from "react";
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import ProjectService from '../../Service/ProjectService'
+import moment from 'moment'
 
 function DateRangeSettings(){
 
@@ -18,12 +25,12 @@ function DateRangeSettings(){
     }
 
     function getEndDate(){
-        // TODO - Set the enddate to be the current day.
+        let currentDate = moment().format("YYYY-MM-DD");
         if(sessionStorage.getItem("enddate") == null){
-            sessionStorage.setItem("enddate", "2021-03-28")
+            sessionStorage.setItem("enddate", currentDate)
         }
         if(localStorage.getItem("enddate") == null){
-            localStorage.setItem("enddate", "2021-03-28")
+            localStorage.setItem("enddate", currentDate)
         }
         return new Date(sessionStorage.getItem("enddate") + "T12:00:00")
     }
