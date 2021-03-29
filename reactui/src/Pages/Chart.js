@@ -15,7 +15,9 @@ class Chart extends Component{
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
 
-        if(sessionStorage.getItem("Developers" + repNum) == null) {
+        console.log(sessionStorage.getItem("DevelopersNames" + repNum))
+
+        if(sessionStorage.getItem("DevelopersNames" + repNum) == null) {
             await ProjectService.getListOfDevs(repNum)
         }
         await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
@@ -29,7 +31,9 @@ class Chart extends Component{
         return (
 
             <header classname='Rest'>
-                <DropDownMenuCommit listOfDevelopers = {developersArray}/>
+                {/*<DropDownMenuCommit listOfDevelopers ={developersArray.map(dev => <div>{dev.username}</div>)}/>*/}
+                <DropDownMenuCommit listOfDevelopers ={developersArray}/>
+
             </header>
 
         )

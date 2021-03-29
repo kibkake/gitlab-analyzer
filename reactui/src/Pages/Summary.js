@@ -40,11 +40,15 @@ class Summary extends Component {
 
     render() {
         var strDevelopers = JSON.stringify(this.state.developers);
+        console.log("str devs from state", strDevelopers)
         var developersArray = JSON.parse(strDevelopers);
+        console.log(" array devs from state", developersArray)
+
 
         return (
             <div >
-                <DropDownMenuSummary listOfDevelopers={developersArray}/>
+                <DropDownMenuSummary listOfDevelopers={developersArray.map(dev => <div>{dev.username}</div>)}
+                />
                 <br>
                 </br>
             </div>

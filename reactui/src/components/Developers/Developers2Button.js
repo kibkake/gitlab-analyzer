@@ -9,7 +9,8 @@ class Developers2Button extends Component{
         super(props);
         this.state={
             data: [],
-            users: []
+            users: [],
+            devNames: []
         };
     }
 
@@ -34,7 +35,7 @@ class Developers2Button extends Component{
                 this.setState({ users: d });
                 console.log(this.state.users);
             })
-        await this.setState({ data: await this.state.users.map(({name,id})=> ({name,id}))})
+        await this.setState({ data: await this.state.users.map(({username,id})=> ({username,id}))})
         console.log(this.state.data)
 
         await sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.data))
@@ -44,7 +45,7 @@ class Developers2Button extends Component{
     async storeNames() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        var names = await this.state.data.map(({name})=> ({name}))
+        var names = await this.state.data.map(({username})=> ({username}))
         var ids = await this.state.data.map(({id})=> ({id}))
         await sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(names))
         await sessionStorage.setItem("DeveloperIds" + repNum, JSON.stringify(ids))
@@ -55,8 +56,8 @@ class Developers2Button extends Component{
 
     handleChange = (item) => (event)=> {
         event.preventDefault();
-        var tempDevNames = this.state.data.name;
-        var tempDevUsernames = JSON.parse(JSON.stringify(this.state.data.name));
+        var tempDevNames = this.state.data.username;
+        var tempDevUsernames = JSON.parse(JSON.stringify(this.state.data.username));
 
         for(var i = 0; i < tempDevUsernames.length; i++){
             if(tempDevUsernames[i] === item){
@@ -67,7 +68,7 @@ class Developers2Button extends Component{
                 }
             }
         }
-        this.setState({davelopernames: tempDevNames})
+        this.setState({developerNames: tempDevNames})
     }
 
     render(){
