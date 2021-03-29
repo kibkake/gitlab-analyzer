@@ -19,7 +19,7 @@ class Chart extends Component{
     render() {
 
         return (
-            <div  style={{ overflow: "scroll"}}>
+            <div>
                 <Navbar_Developers devName = {window.location.pathname.split("/")[4]
                 }/>
                 <br>
