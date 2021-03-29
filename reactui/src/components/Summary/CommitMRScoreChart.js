@@ -89,6 +89,7 @@ export default class CommitMRScoreChart extends PureComponent {
         if(this.props.devName !== prevProps.devName ||
             this.props.startTime !== prevProps.startTime ||
             this.props.endTime !== prevProps.endTime){
+            console.log("dev name",this.props.devName)
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
     }

@@ -47,7 +47,7 @@ class Summary extends Component {
 
         return (
             <div >
-                <DropDownMenuSummary listOfDevelopers={developersArray.map(dev => <div>{dev.username}</div>)}
+                <DropDownMenuSummary listOfDevelopers={developersArray.map(dev => dev.username)}
                 />
                 <br>
                 </br>
