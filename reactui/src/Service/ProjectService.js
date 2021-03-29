@@ -59,7 +59,7 @@ class ProjectService {
         return monthNum < 10 ? '0'.concat(monthNum.toString()) : monthNum.toString();
     }
 
-    async getListOfDevs(repNum){
+    async storeDevelopers(repNum){
         console.log("getting list of users")
 
         let url2 = '/api/v2/Project/' + repNum + '/Developers/all'

@@ -18,7 +18,7 @@ class Comments extends Component{
         var repNum = str.split("/")[2];
 
         if(sessionStorage.getItem("Developers" + repNum) == null) {
-            await ProjectService.getListOfDevs(repNum)
+            await ProjectService.storeDevelopers(repNum)
         }
         await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
     }
@@ -31,7 +31,7 @@ class Comments extends Component{
         return (
 
             <header classname='Rest'>
-                <DropDownMenuComments listOfDevelopers = {developersArray}/>
+                <DropDownMenuComments listOfDevelopers = {developersArray.map(dev => dev.username)}/>
             </header>
 
         )

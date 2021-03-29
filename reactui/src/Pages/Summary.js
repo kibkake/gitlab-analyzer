@@ -17,7 +17,7 @@ class Summary extends Component {
 
         if(sessionStorage.getItem("Developers" + repNum) == null) {
             console.log("no developer objects in session storage")
-            await ProjectService.getListOfDevs(repNum)
+            await ProjectService.storeDevelopers(repNum)
         }
         this.setState({ developers: sessionStorage.getItem("Developers" + repNum)})
 
