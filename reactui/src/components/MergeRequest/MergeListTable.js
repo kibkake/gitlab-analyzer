@@ -15,6 +15,8 @@ import './MergeListTable.css'
 // import { merge } from 'jquery';
 
 export default class MergeListTable  extends PureComponent {
+
+
     constructor(props) {
         super(props);
         this.state = {
@@ -32,18 +34,22 @@ export default class MergeListTable  extends PureComponent {
         const pathArray = window.location.pathname.split('/');
         const repNum = pathArray[2];
         var name = username;
+        var devId ="";
+
+        if(sessionStorage.getItem("CurrentDeveloper") == null){
+            sessionStorage.setItem("CurrentDeveloper", pathArray[4])
+        }
         if(sessionStorage.getItem('DeveloperIds' + repNum) != null && sessionStorage.getItem('Developers' + repNum) != null
             && sessionStorage.getItem('DeveloperNames' + repNum) != null) {
             for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + repNum)).length; i++) {
-                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + repNum))[i])) {
-                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + repNum))[i]//use name to retrieve data
+                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + repNum))[i].username)) {
+                    devId= JSON.parse(sessionStorage.getItem('Developers' + repNum))[i].id//use id to retrieve data
+                    console.log("dev loop", devId)
                 }
             }
         }
 
-        // const response = axios.get("/api/v1/projects/" + repNum + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
-
-        const response = axios.get("api/v2/Project/" + repNum +"/Developers/" + 11 + "/mergeRequestsAndCommits")
+        const response = axios.get("/api/v2/Project/" + repNum +"/Developers/" + devId + "/mergeRequestsAndCommits")
             .then(res => {
                         this.setState({merges : res.data, parentData: username});
                         this.applyMultipliers();
