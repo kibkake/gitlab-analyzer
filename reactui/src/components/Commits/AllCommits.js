@@ -1,8 +1,14 @@
 import React, {Component} from 'react'
+import Button from 'react-bootstrap/Button';
 import  "./HBox.css"
 import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
 import {Table} from "react-bootstrap";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import CommitInfo from "./CommitInfo";
 import moment from "moment";
 
 class AllCommits extends Component{
@@ -23,7 +29,6 @@ class AllCommits extends Component{
     }
 
     async componentDidMount(){
-        await this.getDataFromBackend(this.props.devName, this.props.startTime, this.props.endTime)
     }
 
     async getDataFromBackend(userName, startDate, endDate) {
@@ -68,6 +73,26 @@ class AllCommits extends Component{
                     {moment(this.props.startTime).format('lll').substring(0,12)} -
                     {moment(this.props.endTime).format('lll').substring(0,12)}</div>
                 <Table >
+                    <TableHead className="tableCell">
+                        <TableRow>
+                            <TableCell align="left" className="tableCell" style={{fontWeight: 'bold', fontSize: '20px'}}>
+                                Date
+                            </TableCell>
+                            <TableCell style={{fontWeight: 'bold', fontSize: '20px'} }>
+                                Title
+                            </TableCell>
+                            <TableCell align="right" style={{fontWeight: 'bold', fontSize: '20px'}}>
+                                Score
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {this.props.commits.map((item) => (
+                            <CommitInfo key={item.committed_date}
+                                commit={item}
+                                handler = {this.handler}/>
+                        ))}
+                    </TableBody>
                 </Table>
             </TableContainer>
         );
