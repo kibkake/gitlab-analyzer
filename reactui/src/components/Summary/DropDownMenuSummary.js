@@ -57,7 +57,8 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             return new Date (localStorage.getItem("enddate") + "T12:00:00")
         }
         else {
-            sessionStorage.setItem("enddate", "2021-03-01")
+            // TODO - Set the enddate to be the current day.
+            sessionStorage.setItem("enddate", "2021-03-28")
             return new Date (sessionStorage.getItem("enddate") + "T12:00:00")
         }
     }

@@ -18,11 +18,12 @@ function DateRangeSettings(){
     }
 
     function getEndDate(){
+        // TODO - Set the enddate to be the current day.
         if(sessionStorage.getItem("enddate") == null){
-            sessionStorage.setItem("enddate", "2021-03-01")
+            sessionStorage.setItem("enddate", "2021-03-28")
         }
         if(localStorage.getItem("enddate") == null){
-            localStorage.setItem("enddate", "2021-03-01")
+            localStorage.setItem("enddate", "2021-03-28")
         }
         return new Date(sessionStorage.getItem("enddate") + "T12:00:00")
     }

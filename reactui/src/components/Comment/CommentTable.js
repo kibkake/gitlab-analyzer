@@ -8,7 +8,9 @@ class CommentTable extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            comments:[],
+            all_comments:[],
+            comments_on_devs_code:[],
+            comments:[], // Will equal either all_comments or comments_on_devs_code
             issue:true,
             code_rev:true,
             parentdata: this.props.devName,
@@ -30,18 +32,31 @@ class CommentTable extends Component{
         const id = pathArray[2];
         const developer = pathArray[4];
         let shouldFilter = "false";
-        if (this.state.devs_code_btn_name === "All Code") {
-            shouldFilter = "true";
-        }
 
-        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/" + shouldFilter + "/2021-01-01/2021-05-09")
+        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/false" + "/2021-01-01/2021-05-09")
             .then(response => {
-                const comments = response.data
-                this.setState({comments: comments})
-                console.log(this.state.comments);
+                const all_comments = response.data
+                this.setState({all_comments: all_comments})
+                console.log(this.state.all_comments);
             }).catch((error) => {
             console.error(error);
         });
+
+        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/true" + "/2021-01-01/2021-05-09")
+            .then(response => {
+                const comments_on_devs_code = response.data
+                this.setState({comments_on_devs_code: comments_on_devs_code})
+                console.log(this.state.comments_on_devs_code);
+            }).catch((error) => {
+            console.error(error);
+        });
+
+        if (this.state.devs_code_btn_name === "Dev's Code") {
+            this.setState({comments:this.state.all_comments});
+        }
+        else {
+            this.setState({comments:this.state.comments_on_devs_code});
+        }
     }
 
     componentDidUpdate(prevProps){
@@ -70,9 +85,11 @@ class CommentTable extends Component{
         e.preventDefault();
         if (this.state.devs_code_btn_name === "Dev's Code") {
             await this.setState({devs_code_btn_name:"All Code"});
+            await this.setState({comments:this.state.comments_on_devs_code})
         }
         else {
             await this.setState({devs_code_btn_name:"Dev's Code"});
+            await this.setState({comments:this.state.all_comments})
         }
     }
 
