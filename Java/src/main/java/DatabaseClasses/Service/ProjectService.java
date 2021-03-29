@@ -130,6 +130,18 @@ public class ProjectService {
         snapshotRepository.save(snapshot);
     }
 
+    public Snapshot getSnapshot(String id){
+        return snapshotRepository.findById(id).orElse(null);
+    }
+
+    public List<Snapshot> getSnapshots(String username){
+        return snapshotRepository.findByUsername(username);
+    }
+
+    @Transactional(timeout = 1200) // 20 min
+    public void deleteSnapshot(String id){
+        snapshotRepository.deleteById(id);
+    }
 
     private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
         for (Developer dev: projectDevs) {

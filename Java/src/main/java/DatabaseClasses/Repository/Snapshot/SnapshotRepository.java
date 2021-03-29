@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Repository
 public interface SnapshotRepository extends MongoRepository <Snapshot, String> {
-    public Snapshot findByUsername(String username);
+    public List<Snapshot> findByUsername(String username);
 
     @Query(fields="{ 'username' : 1, 'startDate' : 1, 'endDate' : 1, 'projectId' :1 ,'dev' :1 }")
     List<Snapshot> getAllBy();
