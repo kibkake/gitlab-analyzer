@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button';
 import '../NavBars_Menu/Navbar.css';
 import axios from "axios";
+import moment from "moment";
 
 class Developers2Button extends Component{
     constructor(props){
@@ -24,21 +25,29 @@ class Developers2Button extends Component{
     async getDataFromBackend(){
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        let url2 = '/api/v1/projects/' + repNum + '/developers'
-        axios.get(url2).then(response => response.data)
-            .then((data) => {
-                this.setState({ users: data })
-                console.log(this.state.users)
+        let url2 = '/api/v2/Project/' + repNum + '/Developers/all'
+        await fetch(url2)
+            .then(response => {
+                return response.json();
             })
+            .then(d => {
+                this.setState({ users: d });
+                console.log(this.state.users);
+            })
+        await this.setState({ data: await this.state.users.map(({name,id})=> ({name,id}))})
+        console.log(this.state.data)
 
-        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.users))
+        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(this.state.data))
+        this.storeNames()
     }
 
     async storeNames() {
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
-        await sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(this.state.users.username))
-        await sessionStorage.setItem("DeveloperIds" + repNum, JSON.stringify(this.state.users.id))
+        var names = await this.state.data.map(({name})=> ({name}))
+        var ids = await this.state.data.map(({id})=> ({id}))
+        await sessionStorage.setItem('DeveloperNames' + repNum, JSON.stringify(names))
+        await sessionStorage.setItem("DeveloperIds" + repNum, JSON.stringify(ids))
 
         console.log("Developer",sessionStorage.getItem('Developers' + repNum))
         console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
@@ -46,8 +55,8 @@ class Developers2Button extends Component{
 
     handleChange = (item) => (event)=> {
         event.preventDefault();
-        var tempDevNames = this.state.users.username;
-        var tempDevUsernames = JSON.parse(JSON.stringify(this.state.users.username));
+        var tempDevNames = this.state.data.name;
+        var tempDevUsernames = JSON.parse(JSON.stringify(this.state.data.name));
 
         for(var i = 0; i < tempDevUsernames.length; i++){
             if(tempDevUsernames[i] === item){
