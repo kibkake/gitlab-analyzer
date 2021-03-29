@@ -84,14 +84,11 @@ class CommentTable extends Component{
     async filterByDevCode(e) {
         e.preventDefault();
         if (this.state.devs_code_btn_name === "Dev's Code") {
-            await this.setState({devs_code_btn_name:"All Code"});
-            await this.setState({comments:this.state.comments_on_devs_code})
+            await this.setState({devs_code_btn_name:"All Code", comments:this.state.comments_on_devs_code});
         }
         else {
-            await this.setState({devs_code_btn_name:"Dev's Code"});
-            await this.setState({comments:this.state.all_comments})
+            await this.setState({devs_code_btn_name:"Dev's Code", comments:this.state.all_comments});
         }
-    }
 
     render() {
         var Data = this.state.comments.map(function (item) {
