@@ -37,7 +37,6 @@ public class CommitController {
                                           @PathVariable("start") String start,
                                           @PathVariable("end")String end) {
 
-
         OffsetDateTime startDateWithOffSet = OffsetDateTime.parse(start + isoEnding);
         OffsetDateTime endDateWithOffSet = OffsetDateTime.parse(end + isoEnding);
         Date startDate = Date.from(startDateWithOffSet.toInstant());
@@ -78,7 +77,6 @@ public class CommitController {
     @GetMapping("projects/{projectId}/Commits/{hash}")
     public Commit getCommit(@PathVariable("projectId") int projectId,
                             @PathVariable("hash") String hash) {
-
         return commitService.getCommit(projectId, hash);
     }
 }

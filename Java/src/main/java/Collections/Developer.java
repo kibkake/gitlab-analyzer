@@ -28,6 +28,7 @@ public class Developer {
     private String name;
     private String username;
     private List<String> emails;
+    private List<MRCommitsScorePerDay> mrCommitScores;
     private List<CommitDateScore> commitDateScores;
     private List<CommitDateScore> commitArray;
     private List<MergeRequestDateScore> mergeRequestDateScores;

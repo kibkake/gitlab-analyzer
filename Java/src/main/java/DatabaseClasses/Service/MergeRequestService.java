@@ -54,7 +54,8 @@ public class MergeRequestService {
     public MergeRequest getMrByCommitHash(int projectId, String hash) {
 
         return mergeRequestRepository.getMrByCommitHash(projectId, hash);
-
     }
+
+
 
 }

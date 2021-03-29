@@ -38,4 +38,6 @@ public class DeveloperService {
         Developer developer = developerRepository.findDeveloperByProjectIdAndDevId(projectId, devId);
         return developer.getCommitDateScores();
     }
+
+
 }

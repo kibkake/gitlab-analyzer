@@ -29,8 +29,9 @@ public class MergeRequestController {
         mergeRequestService.saveProjectMergeRequests(projectId);
     }
 
+    // this doesn't include date, only null. so not useful
     @GetMapping("projects/{projectId}/MergeRequest/scores/{userName}/{startDate}/{endDate}")
-    public List<MergeRequestDateScore> getScores(@PathVariable int projectId, @PathVariable String userName,
+    public List<MergeRequestDateScore> getMRScorePerDay(@PathVariable int projectId, @PathVariable String userName,
                                                  @PathVariable String startDate, @PathVariable String endDate) {
         LocalDate StartLocalTime = LocalDate.parse(startDate);
         LocalDate endLocalTime = LocalDate.parse(endDate);
