@@ -71,7 +71,7 @@ function CommitInfo(props) {
                             <Table size="small" aria-label="commits">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell >Title</TableCell>
+                                        <TableCell align ="left" >Title</TableCell>
                                         <TableCell>Full Message</TableCell>
                                     </TableRow>
                                 </TableHead>
