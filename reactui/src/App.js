@@ -20,6 +20,7 @@ import {SiGnuprivacyguard, SiJsonwebtokens} from "react-icons/all";
 import SignupComponent from "./components/LogIn/SignupComponent";
 import LoginToken from "./components/LogIn/LoginToken.js";
 import Terms from "./Pages/Terms";
+import Settings from "./Pages/Settings";
 
 function signupHandler(){
     sessionStorage.setItem('terms','view');
@@ -114,7 +115,7 @@ function App() {
           <Route path='/Repo/*/Developers/*/comments' exact component={Comments}/>
           <Route path='/Repo/*/Developers/*/commits/*' exact component={SingleCommit}/>
 
-                <Route path='/Settings' exact component={Home}/>
+                <Route path='/Settings' exact component={Settings}/>
               <Route path='/Profile' exact component={Profile}/>
             </Switch>
           </Router>
