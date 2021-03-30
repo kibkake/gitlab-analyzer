@@ -17,7 +17,6 @@
 
 .logout:hover{
     color:red;
-    font-weight: bold;
 }
 
 .logout:active{
@@ -27,7 +26,6 @@
 
 .passChange:hover, .tokenChange:hover{
     color:darkcyan;
-    font-weight: bold;
 }
 
 .passChange:active, .tokenChange:active{

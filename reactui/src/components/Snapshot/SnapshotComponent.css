@@ -9,3 +9,8 @@
 .snapshot-container{
     margin-bottom: 2cm;
 }
+
+.snapshots-table{
+    margin:auto;
+    width:80%;
+}
