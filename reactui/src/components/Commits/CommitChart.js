@@ -7,6 +7,8 @@ import AllCommits from "./AllCommits";
 import Button from "react-bootstrap/Button";
 import Spinner from 'react-bootstrap/Spinner'
 import moment from "moment";
+import img from './ChartBackground.jpg'
+import img2 from './LoadingBackground.jpg'
 
 class CommitChart extends Component {
 
@@ -162,7 +164,7 @@ class CommitChart extends Component {
 
         if(this.state.data.length === 0){
             return (
-                <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
+                <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px", backgroundImage: `url()`}}>
                     <br></br>
                     <div>
                         {"      "}
@@ -180,7 +182,7 @@ class CommitChart extends Component {
         var comarr = this.state.data;
         const daylist = getDaysArray(new Date(this.props.startTime + "T12:00:00"),new Date(this.props.endTime+ "T12:00:00"));
         console.log(this.state.childVal)
-
+        //height={daylist.length*(500/daylist.length)}
         return (
             <div className="box-container" >
                 <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
@@ -190,7 +192,7 @@ class CommitChart extends Component {
                             }}>
                         <span >show all commits</span>
                     </Button>
-                <div className="horizontalBar" style={{backgroundImage: "url()",
+                <div className="horizontalBar" style={{backgroundImage: `url(${img})`,
                     backgroundSize: "cover"
                 }}>
                 <HorizontalBar
