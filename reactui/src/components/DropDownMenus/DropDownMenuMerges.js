@@ -40,9 +40,9 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             <br>
             </br>
             <h2> Merge Requests</h2>
-            <NewMergeList  devName = {selectedValue}/>
+            {/*<NewMergeList  devName = {selectedValue}/>*/}
 
-            {/*<MergeListTable  devName = {selectedValue}/>*/}
+            <MergeListTable  devName = {selectedValue}/>
         </div>
     )
 

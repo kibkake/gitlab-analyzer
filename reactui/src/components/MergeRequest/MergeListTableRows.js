@@ -44,7 +44,6 @@ export default function Row(props) {
 
 
     return (
-        <div className="box-container" >
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
@@ -54,17 +53,18 @@ export default function Row(props) {
                 <TableCell align="right">{row.score.toFixed(1)}</TableCell>
                 <TableCell align="right"> {row.sum}</TableCell>
 
-                <TableCell align="right">
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </TableCell>
+                {/*<TableCell align="right">*/}
+                {/*    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>*/}
+                {/*        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}*/}
+                {/*    </IconButton>*/}
+                {/*</TableCell>*/}
 
                 <TableCell align ="right">
                     <OverlayTrigger trigger="focus" placement="right" justifyContent="flex-start"
                                     display="flex" flexDirection="row" p={1} m={1}
                                     overlay={<PopOver order={3} Diffs={row.diffs} />}>
-                        <button type="button" order={1} className="btn btn-secondary">View</button>
+                        <button aria-label="expand row" size="small" onClick={() => setOpen(!open)}
+                                type="button" order={1} className="btn btn-secondary">View</button>
                     </OverlayTrigger>
                 </TableCell>
             </TableRow>
@@ -110,7 +110,6 @@ export default function Row(props) {
                 </TableCell>
             </TableRow>
         </React.Fragment>
-        </div>
 
     );
 }
