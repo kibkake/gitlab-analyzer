@@ -6,6 +6,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import ExpandButton from "./ExpandButton";
 import Spinner from "react-bootstrap/Spinner";
 
 class SingleCommitDiff extends Component{
@@ -80,6 +81,11 @@ class SingleCommitDiff extends Component{
         }
         return (
             <div>
+                <ExpandButton
+                    ever = {this.state.data}
+                    handler = {this.handler}
+                    expanded = {this.state.expanded}>
+                </ExpandButton>
             </div>
         )
     }
