@@ -204,17 +204,6 @@ public class ProjectController {
         return projectService.getDevNotes(projectId, committerName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}/{whichDevField}")
-    public double totalCommitScore(@PathVariable("projectId") int projectId,
-                                   @PathVariable("committerName") String committerName,
-                                   @PathVariable("start") String start,
-                                   @PathVariable("end") String end,
-                                   @PathVariable("whichDevField") String whichDevField) {
-        LocalDate startLocalDate = LocalDate.parse(start);
-        LocalDate endLocalDate = LocalDate.parse(end);
-        return projectService.getTotalDevCommitScore(projectId, committerName, startLocalDate,
-                endLocalDate, whichDevFieldIsString(whichDevField));
-    }
 
     @GetMapping("projects/{projectId}/commit/{commitId}")
     public Commit getCommit(@PathVariable String commitId, @PathVariable int projectId) {
