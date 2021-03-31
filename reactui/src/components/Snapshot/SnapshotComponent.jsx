@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './SnapshotComponent.css';
 import {AiOutlineCopy, RiDeleteBinLine, RiFolderUploadLine} from "react-icons/all";
 import SnapshotService from "../../Service/SnapshotService";
-import ProfileService from "../../Service/ProfileService";
 
 export default class SnapshotComponent extends Component {
 
