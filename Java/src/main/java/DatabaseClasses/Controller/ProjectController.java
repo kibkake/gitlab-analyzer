@@ -96,13 +96,6 @@ public class ProjectController {
         return project;
     }
 
-    @GetMapping("projects/{projectId}/developers")
-    public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId, HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Credentials", String.valueOf(true));
-
-        return projectService.getProjectDevelopers(projectId);
-    }
 
     @GetMapping("projects/{projectId}/issues")
     public List<Issue> getProjectIssues(@PathVariable("projectId") int projectId) {
@@ -117,22 +110,6 @@ public class ProjectController {
         return projectService.getDevIssues(projectId, userName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/mergeRequests")
-    public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
-        return projectService.getProjectMRs(projectId);
-    }
-
-    // TODO: Change the mapping from userName to username, to make semantics clearer.
-    // It refers to the dev's username, not a user's name.
-    @GetMapping("projects/{projectId}/mergeRequests/{userName}/{start}/{end}")
-    public List<MergeRequest> getDevMergeRequests(@PathVariable("projectId") int projectId,
-                                                  @PathVariable("userName") String userName,
-                                                  @PathVariable("start") String start,
-                                                  @PathVariable("end") String end) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getDevMergeRequests(projectId, userName, StartLocalTime, endLocalTime);
-    }
 
     private ProjectService.UseWhichDevField whichDevFieldIsString(String whichDevField) {
         if (whichDevField.equalsIgnoreCase("username")) {
@@ -244,11 +221,6 @@ public class ProjectController {
         return projectService.getCommit(projectId, commitId);
     }
 
-    @GetMapping("setProjectMrs/{projectId}")
-    public void setProjectMRs(@PathVariable int projectId) {
-        projectService.setProjectMrs(projectId);
-    }
-
     @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
     public MergeRequest getMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
         return projectService.getMergeRequest(projectId, mrId);
@@ -332,24 +304,6 @@ public class ProjectController {
     @PostMapping("/testnames")
     public void setEndDate(@RequestBody List<String> requestBody) {
         System.out.println(requestBody);
-    }
-
-    @GetMapping("/getusernames/{projectId}")
-    public List<String> getMemberUsernames(@PathVariable("projectId") int projectId) {
-
-        Project project = projectService.getProject(projectId);
-        if (!project.isInfoSet()) {
-            projectService.setProjectInfo(projectId);
-        }
-
-        List<Developer> members = projectService.getProjectDevelopers(projectId);
-        List<String> memberUsernames = new ArrayList<>();
-
-        for (int i = 0; i < members.size(); i++){
-            memberUsernames.add(members.get(i).getUsername());
-        }
-        java.util.Collections.sort(memberUsernames);
-        return memberUsernames;
     }
 
     @GetMapping("projects/{projectId}/allUserNotesForChart/{committerName}/{start}/{end}")
