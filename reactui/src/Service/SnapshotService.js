@@ -8,6 +8,10 @@ export default class SnapshotService {
         return axios.get(REST_API+"getSnapshots/"+username);
     }
 
+    static deleteSnapshot(snapId){
+        return axios.get(REST_API+"deleteSnapshot/"+snapId);
+    }
+
     // static setUserToken(token){
     //     const tokenInfo = JSON.stringify({ 'token':token });
     //     return axios.post(REST_API+"/setToken", tokenInfo, {

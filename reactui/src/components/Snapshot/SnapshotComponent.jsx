@@ -54,8 +54,7 @@ export default class SnapshotComponent extends Component {
         }
 
         async function deleteSnapshot(snapId){
-            // nothing
-            window.alert("Deleted");
+            await SnapshotService.deleteSnapshot(snapId);
         }
 
         return(
