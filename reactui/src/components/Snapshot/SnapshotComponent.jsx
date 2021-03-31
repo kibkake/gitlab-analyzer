@@ -9,10 +9,12 @@ export default class SnapshotComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            snapshot:[],
             snapshots: [],
             snapshotId: ""
         };
         this.handleChange = this.handleChange.bind(this);
+        this.loadSnapshot = this.loadSnapshot.bind(this);
     }
 
     async componentDidMount() {
@@ -25,10 +27,22 @@ export default class SnapshotComponent extends Component {
         console.log(this.state.snapshots);
     }
 
-    handleChange(event) {
-        this.setState({
+    async handleChange(event) {
+        await this.setState({
             [event.target.name]: event.target.value
         });
+    }
+
+    async loadSnapshot(){
+        await SnapshotService.getSnapshot(this.state.snapshotId).then((response) => {
+            this.setState({snapshot: response.data});
+        }, (error) => {
+            console.log(error);
+        });
+        sessionStorage.setItem("CurrentDeveloper",this.state.snapshot.dev)
+        sessionStorage.setItem("startdate",this.state.snapshot.startDate)
+        sessionStorage.setItem("enddate",this.state.snapshot.endDate)
+        window.location.href="/Repo/"+this.state.snapshot.projectId + "/Developers/"+this.state.snapshot.dev+"/"+this.state.snapshot.page
     }
 
     render() {
@@ -68,7 +82,6 @@ export default class SnapshotComponent extends Component {
                         <tr>
                             <th>&nbsp;</th>
                             <th>ID</th>
-                            <th>Owner</th>
                             <th>Developer</th>
                             <th>Project ID</th>
                             <th>Start Date</th>
@@ -87,7 +100,6 @@ export default class SnapshotComponent extends Component {
                                         </button>
                                     </td>
                                     <td>{snaps.id}</td>
-                                    <td>{snaps.username}</td>
                                     <td>{snaps.dev}</td>
                                     <td>{snaps.projectId}</td>
                                     <td>{snaps.startDate}</td>
@@ -110,7 +122,7 @@ export default class SnapshotComponent extends Component {
                     <label>
                         <h5 className="snapshot-unformat">Snapshot ID:</h5>
                         <input className="snapshotId" name="snapshotId" type="text" onChange={this.handleChange}/>
-                        <button className="login"> Load <RiFolderUploadLine/></button>
+                        <button type="button" className="login" onClick={this.loadSnapshot}> Load <RiFolderUploadLine/></button>
                     </label>
                 </form>
             </>

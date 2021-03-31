@@ -4,6 +4,10 @@ const REST_API = "/api/v1/";
 
 export default class SnapshotService {
 
+    static getSnapshot(snapId){
+        return axios.get(REST_API+"getSnapshot/"+snapId);
+    }
+
     static getSnapshots(username){
         return axios.get(REST_API+"getSnapshots/"+username);
     }
