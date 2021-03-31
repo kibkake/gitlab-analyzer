@@ -58,19 +58,37 @@ function CommitPerDayInfo(props) {
                 </TableCell>
             </TableRow>
 
-            <TableRow style={{backgroundColor:"rgb(242, 242, 242)"}}>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+            <TableRow
+                style={{backgroundColor:"rgb(242, 242, 242)"}}>
+                <TableCell
+                    style={{ paddingBottom: 0, paddingTop: 0 }}
+                    colSpan={6}>
+                    <Collapse
+                        in={open}
+                        timeout="auto"
+                        unmountOnExit>
                         <Box>
                             <Table size="small" aria-label="commits">
-
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Title</TableCell>
-                                        <TableCell align="right">Full Message</TableCell>
+                                        <TableCell align="right">
+                                            Full Message
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
-
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell style={{wordWrap: "break-word",
+                                            maxWidth:"250px"}}>
+                                            {props.commit.title}
+                                        </TableCell>
+                                        <TableCell style={{wordWrap: "break-word",
+                                            maxWidth:"250px"}}>
+                                            {props.commit.message}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
                             </Table>
                         </Box>
                     </Collapse>
