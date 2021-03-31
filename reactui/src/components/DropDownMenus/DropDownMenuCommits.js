@@ -4,6 +4,7 @@ import Select from 'react-select'
 import Navbar_Developers from "../NavBars_Menu/Navbar_Developers";
 import CommitChart from "../Commits/CommitChart";
 import './DropDownMenu.css';
+import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
 
 
 function DropDownMenuCommit ({listOfDevelopers}) {
@@ -28,20 +29,19 @@ function DropDownMenuCommit ({listOfDevelopers}) {
 
         <div  style={{ overflow: "scroll"}}>
             <Navbar_Developers devName = {selectedValue}/>
-            <br>
-            </br>
+            <br/>
             <div className="DropDownMenu">
 
-            <Select
-                options={devArray}
-                defaultValue={{ label: selectedValue, value: selectedValue }}
-                onChange={handleChange}/>
+                <Select options={devArray}
+                        defaultValue={{ label: selectedValue, value: selectedValue }}
+                        onChange={handleChange}/>
+                <SnapshotWidgetComponent/>
             </div>
+            <br/>
             <CommitChart devName = {selectedValue}
                          startTime = {sessionStorage.getItem("startdate")}
                          endTime = {sessionStorage.getItem("enddate")}/>
-            <br>
-            </br>
+            <br/>
         </div>
     )
 
