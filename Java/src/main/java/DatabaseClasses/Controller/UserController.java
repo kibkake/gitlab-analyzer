@@ -1,17 +1,12 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.Model.Developer;
-import main.java.Model.Project;
-import main.java.Model.ProjectSettings;
-import main.java.Model.User;
+import main.java.Collections.ProjectSettings;
+import main.java.Collections.User;
 import main.java.DatabaseClasses.Service.UserService;
 import main.java.DatabaseClasses.DatabaseFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

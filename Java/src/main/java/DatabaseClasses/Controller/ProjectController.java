@@ -1,12 +1,10 @@
 package main.java.DatabaseClasses.Controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.ConnectToGitlab.ProjectConnection;
-import main.java.DatabaseClasses.Model.AllScores;
-import main.java.DatabaseClasses.Model.DateScore;
+import main.java.DatabaseClasses.Scores.AllScores;
+import main.java.DatabaseClasses.Scores.DateScore;
 import main.java.DatabaseClasses.Service.ProjectService;
-import main.java.Model.*;
+import main.java.Collections.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +13,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -211,18 +208,21 @@ public class ProjectController {
                                         @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getTopDevNotes(projectId, committerName, StartLocalTime, endLocalTime, 10, true);
+        // TODO - Add in a path variable for filterByDevsCode. Right now sending a default value of
+        // false to ProjectService.
+        return projectService.getTopDevNotes(projectId, committerName, false, StartLocalTime, endLocalTime, 10, true);
     }
 
     // TODO: Change "allUserNotes" to "allDevNotes".
-    @GetMapping("projects/{projectId}/allUserNotes/{committerName}/{start}/{end}")
+    @GetMapping("projects/{projectId}/allUserNotes/{committerName}/{shouldFilter}/{start}/{end}")
     public List<Note> getAllDevNotes(@PathVariable("projectId") int projectId,
                                      @PathVariable("committerName") String committerName,
+                                     @PathVariable("shouldFilter") String shouldFilter,
                                      @PathVariable("start") String start,
                                      @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getDevNotes(projectId, committerName, StartLocalTime, endLocalTime);
+        return projectService.getDevNotes(projectId, committerName, shouldFilter.equals("true"), StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}/{whichDevField}")
@@ -261,7 +261,9 @@ public class ProjectController {
 
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
-        return projectService.getAllScores(projectId, username, startDate, endDate,
+        // TODO - Add a path variable for the filterByDevsCodeForCountingComments argument
+        // that's sent to ProjectService.
+        return projectService.getAllScores(projectId, username, false, startDate, endDate,
                 whichDevFieldIsString(whichDevField));
     }
 

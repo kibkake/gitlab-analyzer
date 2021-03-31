@@ -1,15 +1,11 @@
 package main.java.ConnectToGitlab;
 
-import main.java.Model.Diff;
-import main.java.Model.Project;
-import main.java.Model.User;
+import main.java.Collections.Project;
+import main.java.Collections.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 

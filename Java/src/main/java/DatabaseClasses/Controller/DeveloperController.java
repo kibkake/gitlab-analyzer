@@ -1,10 +1,10 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.Model.CommitDateScore;
-import main.java.DatabaseClasses.Model.MergeRequestDateScore;
+import main.java.DatabaseClasses.Scores.CommitDateScore;
+import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
 import main.java.DatabaseClasses.Service.DeveloperService;
-import main.java.Model.Developer;
-import main.java.Model.MergeRequest;
+import main.java.Collections.Developer;
+import main.java.Collections.MergeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
