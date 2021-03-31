@@ -36,23 +36,6 @@ class CommitsPerDay extends Component{
     }
 
     async getData(userName, date) {
-        /*var str = window.location.pathname;
-        var repNum = str.split("/")[2];
-
-        let url2 = '/api/v1/projects/' + repNum + '/Commits/' + userName + '/' + date + "/" + date  + "/either"
-        const result = await fetch(url2, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        const resp = await result.json();
-        await this.setState({data:resp})*/
-
-       // console.log(date)//2021-02-06
-
-
         var listOfDates = [];
         var tempDate = "";
         this.props.commits.map(function(item) {
