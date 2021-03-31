@@ -9,16 +9,16 @@ export default class SnapshotComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            snapshots:[],
-            snapshotId:""
+            snapshots: [],
+            snapshotId: ""
         };
-        this.handleChange=this.handleChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     async componentDidMount() {
         const user = sessionStorage.getItem('user');
         await SnapshotService.getSnapshots(user).then((response) => {
-            this.setState({snapshots:response.data});
+            this.setState({snapshots: response.data});
         }, (error) => {
             console.log(error);
         });
@@ -31,7 +31,7 @@ export default class SnapshotComponent extends Component {
         });
     }
 
-    render(){
+    render() {
 
         // non-https copy method from Stack Overflow
         // https://stackoverflow.com/questions/51805395/navigator-clipboard-is-undefined
@@ -53,45 +53,55 @@ export default class SnapshotComponent extends Component {
             });
         }
 
-        async function deleteSnapshot(snapId){
+        async function deleteSnapshot(snapId) {
             await SnapshotService.deleteSnapshot(snapId);
             window.location.reload();
         }
 
-        return(
+        return (
             <>
                 <div className="snapshot-container">
                     <h2 className="snapshot-h">Saved Snapshots</h2>
                     <br/>
                     <table className="snapshots-table">
                         <thead>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>ID</th>
-                                <th>Owner</th>
-                                <th>Developer</th>
-                                <th>Project ID</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>&nbsp;</th>
-                            </tr>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>ID</th>
+                            <th>Owner</th>
+                            <th>Developer</th>
+                            <th>Project ID</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Page</th>
+                            <th>&nbsp;</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {   this.state.snapshots.map( function (snaps) {
-                                    return(
-                                      <tr>
-                                          <td><button className="login" onClick={()=>copyToClipboard(snaps.id)}> Copy <AiOutlineCopy/></button></td>
-                                          <td>{snaps.id}</td>
-                                          <td>{snaps.username}</td>
-                                          <td>{snaps.dev}</td>
-                                          <td>{snaps.projectId}</td>
-                                          <td>{snaps.startDate}</td>
-                                          <td>{snaps.endDate}</td>
-                                          <td><button className="cancel" onClick={()=>deleteSnapshot(snaps.id)}> Delete <RiDeleteBinLine/></button></td>
-                                      </tr>
-                                    );
-                                })
-                            }
+                        {this.state.snapshots.map(function (snaps) {
+                            return (
+                                <tr>
+                                    <td>
+                                        <button className="login"
+                                                onClick={() => copyToClipboard(snaps.id)}> Copy ID <AiOutlineCopy/>
+                                        </button>
+                                    </td>
+                                    <td>{snaps.id}</td>
+                                    <td>{snaps.username}</td>
+                                    <td>{snaps.dev}</td>
+                                    <td>{snaps.projectId}</td>
+                                    <td>{snaps.startDate}</td>
+                                    <td>{snaps.endDate}</td>
+                                    <td>{snaps.page}</td>
+                                    <td>
+                                        <button className="cancel"
+                                                onClick={() => deleteSnapshot(snaps.id)}> Delete <RiDeleteBinLine/>
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })
+                        }
                         </tbody>
                     </table>
                 </div>

@@ -16,15 +16,17 @@ public class Snapshot {
     private String endDate;
     private String projectId;
     private String dev;
+    private String page;
 
     public Snapshot(){}
 
-    public Snapshot(String username, String startDate, String endDate, String projectId, String dev) {
+    public Snapshot(String username, String startDate, String endDate, String projectId, String dev, String page) {
         this.username = username;
         this.startDate = startDate;
         this.endDate = endDate;
         this.projectId = projectId;
         this.dev = dev;
+        this.page = page;
     }
 
     public String getId() {
@@ -71,6 +73,10 @@ public class Snapshot {
 
     public void setDev(String dev){this.dev = dev;  }
 
+    public String getPage(){return page;}
+
+    public void setPage(String page){this.page = page;  }
+
     @Override
     public String toString() {
         return "Snapshot{" +
@@ -79,6 +85,7 @@ public class Snapshot {
                 ", endDate=" + endDate +
                 ", projectId=" + projectId +
                 ", dev="+dev+
+                ", page="+page+
                 '}';
     }
 }

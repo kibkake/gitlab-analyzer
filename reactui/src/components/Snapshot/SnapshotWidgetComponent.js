@@ -11,8 +11,9 @@ export default function SnapshotWidgetComponent(){
             sessionStorage.getItem('user'),                 // current user
             sessionStorage.getItem('startdate'),            // chosen snapshot date
             sessionStorage.getItem('enddate'),              // "                  "
-            sessionStorage.getItem('CurrentDeveloper'),     // current developer
-            window.location.pathname.split("/")[2]              // current repository
+            window.location.pathname.split("/")[2],             // current repository
+            sessionStorage.getItem('CurrentDeveloper'),    // current developer
+            window.location.pathname.split("/")[5]             // current page
         );
         await setSaved(true);
         await delay(2000);
