@@ -14,12 +14,12 @@ public class Snapshot {
     private String username;
     private String startDate;
     private String endDate;
-    private int projectId;
+    private String projectId;
     private String dev;
 
     public Snapshot(){}
 
-    public Snapshot(String username, String startDate, String endDate, int projectId, String dev) {
+    public Snapshot(String username, String startDate, String endDate, String projectId, String dev) {
         this.username = username;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -59,11 +59,11 @@ public class Snapshot {
         this.endDate = endDate;
     }
 
-    public int getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(int projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 

@@ -55,6 +55,7 @@ export default class SnapshotComponent extends Component {
 
         async function deleteSnapshot(snapId){
             await SnapshotService.deleteSnapshot(snapId);
+            window.location.reload();
         }
 
         return(

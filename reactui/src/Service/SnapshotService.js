@@ -12,13 +12,14 @@ export default class SnapshotService {
         return axios.get(REST_API+"deleteSnapshot/"+snapId);
     }
 
-    // static setUserToken(token){
-    //     const tokenInfo = JSON.stringify({ 'token':token });
-    //     return axios.post(REST_API+"/setToken", tokenInfo, {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     });
-    // }
+    static saveSnapshot(username,startDate,endDate,projectId,dev){
+        const snapInfo = JSON.stringify({ 'username':username, 'startDate':startDate,'endDate':endDate,'projectId':projectId,'dev':dev});
+        console.log(snapInfo);
+        return axios.post(REST_API+"saveSnapshot", snapInfo, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
 
 }

@@ -7,6 +7,7 @@ import "../Commits/HBox.css"
 import ProjectService from "../../Service/ProjectService";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
+import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
 
 
 
@@ -75,32 +76,32 @@ function DropDownMenuSummary ({listOfDevelopers}) {
     }
 
     return (
-
-        <div>
+        <>
             <Navbar_Developers devName = {selectedValue}/>
-
+            <br/>
             <div className="box-container">
-                <h3>Developer: </h3>
-            <div className="DropDownMenu">
-                    <Select
-                        options={devArray}
-                        defaultValue={{label: selectedValue, value: selectedValue}}
-                        onChange={handleChange}
-                    />
+                <h3 className="dev-label">Developer: </h3>
+                <div className="DropDownMenu">
+                        <Select
+                            options={devArray}
+                            defaultValue={{label: selectedValue, value: selectedValue}}
+                            onChange={handleChange}
+                        />
+                </div>
+                <SnapshotWidgetComponent/>
             </div>
-            </div>
-                <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
-                <SummaryScoreTable devName = {selectedValue}
-                                   startTime = {changeDateFormat(getInitialStartDate())}
-                                   endTime = {changeDateFormat(getInitialEndDate())}
-                />
-                <div>
+            <br/>
+
+            <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
+            <SummaryScoreTable devName = {selectedValue}
+                               startTime = {changeDateFormat(getInitialStartDate())}
+                               endTime = {changeDateFormat(getInitialEndDate())}/>
+            <div>
                 <SummaryChartRadios devName = {selectedValue}
                                     startTime = {changeDateFormat(getInitialStartDate())}
                                     endTime = {changeDateFormat(getInitialEndDate())}/>
-
             </div>
-        </div>
+        </>
     )
 }
 
