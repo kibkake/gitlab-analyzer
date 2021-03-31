@@ -87,7 +87,7 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
     public MergeRequest getMrByCommitHash(int projectId, String hash){
 
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
-        final Criteria hashMatchCriteria = Criteria.where("commits.Id").is(hash);
+        final Criteria hashMatchCriteria = Criteria.where("commits.id").is(hash);
 
         Criteria criterias = new Criteria().andOperator(projectMatchCriteria, hashMatchCriteria );
         Query query = new Query(criterias);

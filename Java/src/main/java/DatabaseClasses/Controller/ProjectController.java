@@ -221,10 +221,6 @@ public class ProjectController {
         return projectService.getCommit(projectId, commitId);
     }
 
-    @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
-    public MergeRequest getMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
-        return projectService.getMergeRequest(projectId, mrId);
-    }
 
     @GetMapping("projects/{projectId}/allTotalScores/{username}/{start}/{end}/{whichDevField}")
     public AllScores allTotalScores(@PathVariable ("projectId") int projectId,
