@@ -1,10 +1,17 @@
 import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button';
 import  "./HBox.css"
+import {Table} from "react-bootstrap";
+import FormCheck from "react-bootstrap/FormCheck";
 import "../Projects/ProjectList.css";
 import moment from "moment";
 import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import CommitPerDayInfo from "./CommitPerDayInfo";
 import '../MergeRequest/MergeListTable.css'
 
 
@@ -25,10 +32,10 @@ class CommitsPerDay extends Component{
     }
 
     async componentDidMount(){
-        await this.getDataFromBackend(this.props.devName, this.props.startTime)
+        await this.getData(this.props.devName, this.props.startTime)
     }
 
-    async getDataFromBackend(userName, date) {
+    async getData(userName, date) {
         /*var str = window.location.pathname;
         var repNum = str.split("/")[2];
 
@@ -65,7 +72,7 @@ class CommitsPerDay extends Component{
 
     async componentDidUpdate(prevProps){
         if(this.props.startTime !== prevProps.startTime){
-            await this.getDataFromBackend(this.props.devName, this.props.startTime)
+            await this.getData(this.props.devName, this.props.startTime)
         }
     }
 
@@ -88,7 +95,42 @@ class CommitsPerDay extends Component{
                 p={1}
                 m={1}
                 justifyContent="flex-start">
-
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'black',
+                    backgroundColor: 'lightgreen'}}>
+                    Commits on {this.state.date.substring(0,12)}
+                </div>
+                <Table
+                    aria-label="collapsible table" >
+                    <TableHead
+                        className="tableCell">
+                        <TableRow>
+                            <TableCell
+                                align="left" className="tableCell"
+                                style={{fontWeight: 'bold', fontSize: '20px'}}>
+                                    Date
+                            </TableCell>
+                            <TableCell
+                                style={{fontWeight: 'bold', fontSize: '20px'}}>
+                                    Title
+                            </TableCell>
+                            <TableCell
+                                align="right"
+                                style={{fontWeight: 'bold', fontSize: '20px'}}>
+                                    Score
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {this.state.data.map((item) => (
+                            <CommitPerDayInfo
+                                key={item.committed_date}
+                                commit={item}
+                                handler = {this.handler}/>
+                        ))}
+                    </TableBody>
+                </Table>
             </TableContainer>
         );
     }
