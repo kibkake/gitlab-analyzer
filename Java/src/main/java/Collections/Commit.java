@@ -26,11 +26,12 @@ public class Commit {
 
     public Commit() {
     }
-    @JsonProperty("committed_date")
+    @JsonProperty("id")
     public String getCommitId() {
         return commitId;
     }
 
+    @JsonProperty("id")
     public void setCommitId(String commitId) {
         this.commitId = commitId;
     }

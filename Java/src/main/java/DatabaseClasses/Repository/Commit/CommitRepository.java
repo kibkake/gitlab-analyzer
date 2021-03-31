@@ -20,6 +20,5 @@ public interface CommitRepository extends MongoRepository<Commit, String>, Commi
     //TODO update to Author_Email when that issue be solved
     List<Commit> findByProjectIdAndAndAuthorNameAndDateBetween(int projectId, String authorName, Date start, Date end);
 
-    Commit findByProjectIdAndId(int projectId, String commitHash);
-
+    Commit findByProjectIdAndCommitId(int projectId, String commitHash);
 }

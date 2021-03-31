@@ -32,7 +32,7 @@ public class CommitService {
     }
 
     public Commit getCommit(int projectId, String commitHash) {
-        return commitRepository.findByProjectIdAndId(projectId, commitHash);
+        return commitRepository.findByProjectIdAndCommitId(projectId, commitHash);
     }
 
     public List<CommitDateScore> getScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate){
