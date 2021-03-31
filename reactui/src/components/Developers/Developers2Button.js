@@ -84,10 +84,9 @@ class Developers2Button extends Component{
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        sessionStorage.setItem("CurrentDeveloper", user.username)
+                                        sessionStorage.setItem("CurrentDeveloper", user.id)
                                         this.storeNames()
-
-                                        window.location.href=  window.location.pathname + '/' + user.username + "/summary";
+                                        window.location.href=  window.location.pathname + '/' + user.id + "/summary";
                                     }}>
                                 <span >{user.username}</span>
                             </Button>

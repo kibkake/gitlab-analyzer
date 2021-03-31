@@ -7,6 +7,7 @@ import "../Commits/HBox.css"
 import ProjectService from "../../Service/ProjectService";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
+import async from "asynckit";
 
 
 
@@ -17,15 +18,34 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     const pathArray = window.location.pathname.split('/');
 
-    if(sessionStorage.getItem("CurrentDeveloper") == null){
+    if (sessionStorage.getItem("CurrentDeveloper") == null) {
         sessionStorage.setItem("CurrentDeveloper", pathArray[4])
+        console.log("curr dev", sessionStorage.getItem("CurrentDeveloper"))
     }
+
+    var devId = pathArray[4]
+    let currDevUsername;
+    if (sessionStorage.getItem("Developers") == null) {
+        setDevs()
+
+    }
+
+    function setDevs() {
+        return async () => {
+            ProjectService.storeDevelopers(pathArray[2]).then(r =>r.map((mapItem) => {
+                if (mapItem.id === devId) {
+                    console.log(mapItem)
+                    currDevUsername = mapItem.username;
+                }
+            }));
+        }
+    }
+
 
     listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
 
-    const[selectedValue, setSelectedValue] = useState(
-        pathArray[4]
-    );
+
+    const[selectedValue, setSelectedValue] = useState(currDevUsername)
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
