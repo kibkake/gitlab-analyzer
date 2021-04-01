@@ -153,13 +153,8 @@ class CommitChart extends Component {
                 }else{
                     month3 = month3temp;
                 }
-                var currentYear = moment().format("YYYY");
+
                 var completeDate = year3 + "-" + month3 + "-" + day3;
-                if(year3 === currentYear){
-                    completeDate = month3 + "-" + day3;
-                }else{
-                    completeDate = year3 + "-" + month3 + "-" + day3;
-                }
                 arr.push(completeDate);
                 greenArr.push('rgba(123, 239, 178, 1)')
                 blackArr.push('rgba(0, 0, 0, 0.5)')
