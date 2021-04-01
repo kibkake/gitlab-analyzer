@@ -12,6 +12,10 @@ import './TableStyle.css'
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import Flexbox from "flexbox-react";
 import TableContainer from "@material-ui/core/TableContainer";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Table from "@material-ui/core/Table";
+import Collapse from "@material-ui/core/Collapse";
 
 export default function Row(props) {
 
@@ -43,12 +47,12 @@ export default function Row(props) {
                 <TableCell
                     align="top"
                     style={{wordWrap: "break-word", maxWidth:"390px", fontSize:"15", fontWeight:"bold"}}>
-                    {row.renamed_file ? oldF + "\nRENAMED TO:\n" + newF :newF}
+                    {row.renamed_file ? oldF + "\nRENAMED TO:\n" + newF : newF}
                 </TableCell>
                 <TableCell
                     align="right"
-                    style={{color:"black"}}>
-                    {row.diffScore}
+                    style={{color:"blue", fontSize:"15", fontWeight:"bold"}}>
+                    {"+" + row.diffScore}
                 </TableCell>
 
                 <TableCell
@@ -75,6 +79,27 @@ export default function Row(props) {
 
             <TableRow
                 style={{backgroundColor: "rgb(242, 242, 242)"}}>
+                <TableCell
+                    style={{ paddingBottom: 0, paddingTop: 0 }}
+                    colSpan={6}>
+                    <Collapse
+                        in={open}
+                        timeout="auto"
+                        unmountOnExit>
+                        <Box>
+                            <Table size="small" aria-label="commits">
+                                <tbody>
+                                    <tr>
+                                        <td
+                                            style={{wordWrap: "break-word", maxWidth:"500px"}} >
+                                            {HighlightCodeDiffs(row.diff)}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
             </TableRow>
         </React.Fragment>
     );

@@ -72,7 +72,7 @@ function CommitPerDayInfo(props) {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Title</TableCell>
-                                        <TableCell align="right">
+                                        <TableCell align="left">
                                             Full Message
                                         </TableCell>
                                     </TableRow>
