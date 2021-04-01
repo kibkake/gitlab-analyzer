@@ -33,8 +33,8 @@ function CommitInfo(props) {
                 <TableCell><a href= {props.commit.mrUrl}>
                     {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
                         props.commit.title.substring(0,10)}</a> </TableCell>
-                <TableCell align="right">
-                    {props.commit.commitScore.toFixed(1)}
+                <TableCell align="right" style={{color:"blue", fontSize:"15", fontWeight:"bold"}}>
+                    {"+" + props.commit.commitScore.toFixed(1)}
                 </TableCell>
 
                 <TableCell align="top">
