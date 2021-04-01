@@ -9,25 +9,37 @@ import {OverlayTrigger} from 'react-bootstrap'
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './TableStyle.css'
-
+import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
+import Flexbox from "flexbox-react";
+import TableContainer from "@material-ui/core/TableContainer";
 
 export default function Row(props) {
 
     const { row } = props;
-    var  to  = props.expanded
+    var  expanded  = props.expanded
 
     const [open, setOpen] = React.useState(
         false
     );
 
-    const classes = useRowStyles();
+    React.useEffect(() => {
+
+        if(expanded) {
+            setOpen(true)
+        }
+        if(!expanded){
+            setOpen(false)
+        }
+
+    }, [expanded]);
+
     const oldF = row.old_path;
     const newF = row.new_path;
 
     return (
         <React.Fragment >
             <TableRow
-                className={classes.root}>
+                className="commitTable">
                 <TableCell
                     align="top"
                     style={{wordWrap: "break-word", maxWidth:"390px", fontSize:"15", fontWeight:"bold"}}>
@@ -67,14 +79,3 @@ export default function Row(props) {
         </React.Fragment>
     );
 }
-
-const useRowStyles = makeStyles({
-    root: {
-        '& > *': {
-            borderBottom: 'unset',
-            fontSize: '15pt',
-            backgroundColor: 'white',
-            background:'linear-gradient(rgb(3, 222, 167),transparent)'
-        },
-    },
-});
