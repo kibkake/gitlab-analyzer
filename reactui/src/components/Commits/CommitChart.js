@@ -153,8 +153,14 @@ class CommitChart extends Component {
                 }else{
                     month3 = month3temp;
                 }
+                let currentYear = moment().format("YYYY");
+                var completeDate;
 
-                var completeDate = year3 + "-" + month3 + "-" + day3;
+                if(year3 === currentYear){
+                    completeDate = month3 + "-" + day3;
+                }else{
+                    completeDate = year3 + "-" + month3 + "-" + day3;
+                }
                 arr.push(completeDate);
                 greenArr.push('rgba(123, 239, 178, 1)')
                 blackArr.push('rgba(0, 0, 0, 0.5)')
@@ -213,7 +219,10 @@ class CommitChart extends Component {
                                     e.preventDefault();
                                     const chart = Event[0]._chart;
                                     const element = chart.getElementAtEvent(e)[0];
-                                    const yAxis = chart.data.labels[element._index];
+                                    var yAxis = chart.data.labels[element._index];
+                                    {console.log("yAxis",yAxis)}
+                                    {yAxis.length < 6 ? yAxis = moment().format("YYYY")
+                                        + "-" + yAxis : console.log('not current year')}
                                     this.setState({y_Axis:yAxis, diff : false, showAllCommit: false})
                                 }
 
