@@ -35,7 +35,8 @@ function DropDownMenuMerge ({listOfDevelopers}) {
                     options={devArray}
                     defaultValue={{ label: selectedValue, value: selectedValue }}
                     onChange={handleChange}/>
-
+            </div>
+            <div className="snap-widget">
                 <SnapshotWidgetComponent/>
             </div>
             <br/>

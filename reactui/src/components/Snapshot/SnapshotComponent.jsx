@@ -68,6 +68,7 @@ export default class SnapshotComponent extends Component {
 
         async function deleteSnapshot(snapId) {
             await SnapshotService.deleteSnapshot(snapId);
+            window.scrollTo(window.screenX,window.screenY);
             window.location.reload();
         }
 

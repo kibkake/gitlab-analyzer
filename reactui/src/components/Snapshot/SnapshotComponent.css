@@ -17,5 +17,10 @@
 
 .snapshot-widget{
     margin-left: auto !important;
+    display:block !important;
+    float:none !important;
     margin-right: 30px;
+}
+.saved-icon{
+    text-align: right;
 }

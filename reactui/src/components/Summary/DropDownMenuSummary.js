@@ -88,6 +88,9 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                             onChange={handleChange}
                         />
                 </div>
+            </div>
+            <br/>
+            <div className="snap-widget">
                 <SnapshotWidgetComponent/>
             </div>
             <br/>

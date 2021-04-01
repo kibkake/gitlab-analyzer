@@ -29,7 +29,7 @@ export default function SnapshotWidgetComponent(){
 
     return(
         <>
-            <button className="login snapshot-widget" onClick={()=> saveHandler()}> Save Snapshot <BiSave/></button> {saved && <h4> Saved <FcCheckmark/> &emsp;</h4>}
+            <button className="login snapshot-widget" onClick={()=> saveHandler()}> Save Snapshot <BiSave/></button>{saved && <h4 className="saved-icon"> Saved <FcCheckmark/> &emsp;</h4>}
         </>
     )
 }
