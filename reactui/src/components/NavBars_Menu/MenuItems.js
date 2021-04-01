@@ -2,7 +2,7 @@ import * as GoIcons from "react-icons/go";
 import * as HiIcons from "react-icons/hi";
 import * as AIIcons from "react-icons/ai";
 import {CgProfile} from 'react-icons/cg';
-import {IoSettingsOutline} from 'react-icons/io5';
+import {RiCamera2Line} from "react-icons/all";
 export const MenuItems=[
 
     {
@@ -18,10 +18,10 @@ export const MenuItems=[
     //     icon: <AIIcons.AiOutlineExport/>
     // },
     {
-        title: 'Settings',
-        url: '/Settings',
+        title: 'Snapshots',
+        url: '/Snapshots',
         cName: 'nav-links',
-        icon: <IoSettingsOutline/>
+        icon: <RiCamera2Line/>
     },
     {
         title: 'Profile',
