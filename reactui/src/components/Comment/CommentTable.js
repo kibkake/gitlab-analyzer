@@ -28,8 +28,7 @@ class CommentTable extends Component{
         const id = pathArray[2];
         const developer = pathArray[4];
 
-        //request ref: http://localhost:8090/api/v1/projects/6/topTenUserNotes/user2/2021-01-01/2021-05-09
-        await axios.get("/api/v1/projects/" + id + "/topTenUserNotes/" + username + "/2021-01-01/2021-05-09")
+        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments = response.data
                 this.setState({comments: comments})
@@ -63,12 +62,16 @@ class CommentTable extends Component{
 
     render() {
         var Data = this.state.comments.map(function (item) {
+            let currentYear = new Date().getFullYear();
+            let dateString= moment(item.created_at).format('lll').replace(currentYear,"")
+
             return {
-                date: moment(item.created_at).format('ll'),
+                date: dateString,
                 wordCount: item.wordCount,
                 comments: item.body,
                 onIssue: item.issueNote
-            };})
+            };
+        })
 
         let issueBoolean = {true: "Issue", false: "Code Review"};
         let comments = Data.map(({date, wordCount, comments, onIssue})=>
@@ -86,9 +89,10 @@ class CommentTable extends Component{
                 </div>
                 <br/>
                 <Table striped bordered hover className="comments-table">
+                    <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Word Count</th>
+                            <th className="comments-table-date">Date</th>
+                            <th className="comments-table-wc">Word Count</th>
                             <th>Comments</th>
                             {this.state.issue === true && this.state.code_rev === true &&
                                 <th>On Issue/Code Review</th>
@@ -100,13 +104,14 @@ class CommentTable extends Component{
                                 <th>On Code Review</th>
                             }
                         </tr>
+                    </thead>
                     <tbody>
                         {this.state.issue===true &&
                             comments.map(comments => {  //(item, index) =>
                                     return comments.onIssue ?
                                         <tr>
-                                            <td>{moment(comments.date).format('LLL')}</td>
-                                            <td>&emsp;{comments.wordCount}</td>
+                                            <td>{comments.date}</td>
+                                            <td className="comments-table-wc">{comments.wordCount}</td>
                                             <td>{comments.comments}</td>
                                             <td>{comments.issueOrReview}</td>
                                         </tr>
@@ -118,8 +123,8 @@ class CommentTable extends Component{
                             comments.map(comments => {  //(item, index) =>
                                     return comments.onIssue?<div/>:
                                         <tr>
-                                            <td>{moment(comments.date).format('LLL')}</td>
-                                            <td>&emsp;{comments.wordCount}</td>
+                                            <td>{comments.date}</td>
+                                            <td className="comments-table-wc">{comments.wordCount}</td>
                                             <td>{comments.comments}</td>
                                             <td>{comments.issueOrReview}</td>
                                         </tr>

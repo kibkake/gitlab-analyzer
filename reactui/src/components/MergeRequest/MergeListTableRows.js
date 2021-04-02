@@ -49,7 +49,7 @@ export default function Row(props) {
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
-                    {moment(row.date).format('lll')}
+                    {row.date}
                 </TableCell>
                 <TableCell>#{row.id} <a href= {row.mrUrl}> {row.title}</a> </TableCell>
                 <TableCell align="right">{row.score.toFixed(1)}</TableCell>

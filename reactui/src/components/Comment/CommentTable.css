@@ -4,7 +4,17 @@
 
 .comments-table{
     margin:auto !important;
+    table-layout: auto;
     width:90% !important;
+}
+
+.comments-table-date{
+    min-width:175px;
+}
+
+.comments-table-wc{
+    min-width:120px;
+    text-align: center;
 }
 
 .filter{
