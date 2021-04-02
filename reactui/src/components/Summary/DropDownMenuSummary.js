@@ -23,29 +23,16 @@ function DropDownMenuSummary ({listOfDevelopers}) {
         console.log("curr dev", sessionStorage.getItem("CurrentDeveloper"))
     }
 
-    var devId = pathArray[4]
-    let currDevUsername;
     if (sessionStorage.getItem("Developers") == null) {
-        setDevs()
-
-    }
-
-    function setDevs() {
-        return async () => {
-            ProjectService.storeDevelopers(pathArray[2]).then(r =>r.map((mapItem) => {
-                if (mapItem.id === devId) {
-                    console.log(mapItem)
-                    currDevUsername = mapItem.username;
-                }
-            }));
-        }
+        console.log("repo number", pathArray[2])
+        ProjectService.storeDevelopers(pathArray[2])
     }
 
 
-    listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
+    // listOfDevelopers.map(dev => {devArray.push({label: dev.username, value: dev.username})})
 
 
-    const[selectedValue, setSelectedValue] = useState(currDevUsername)
+    const[selectedValue, setSelectedValue] = useState(pathArray[4])
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
@@ -103,7 +90,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                 <h3>Developer: </h3>
             <div className="DropDownMenu">
                     <Select
-                        options={devArray}
+                        options={listOfDevelopers.map(dev => <option key={dev.id}>{dev.name}</option> )}
                         defaultValue={{label: selectedValue, value: selectedValue}}
                         onChange={handleChange}
                     />
