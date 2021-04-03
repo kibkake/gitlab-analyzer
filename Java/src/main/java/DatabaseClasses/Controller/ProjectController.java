@@ -208,18 +208,21 @@ public class ProjectController {
                                         @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getTopDevNotes(projectId, committerName, StartLocalTime, endLocalTime, 10, true);
+        // TODO - Add in a path variable for filterByDevsCode. Right now sending a default value of
+        // false to ProjectService.
+        return projectService.getTopDevNotes(projectId, committerName, false, StartLocalTime, endLocalTime, 10, true);
     }
 
     // TODO: Change "allUserNotes" to "allDevNotes".
-    @GetMapping("projects/{projectId}/allUserNotes/{committerName}/{start}/{end}")
+    @GetMapping("projects/{projectId}/allUserNotes/{committerName}/{shouldFilter}/{start}/{end}")
     public List<Note> getAllDevNotes(@PathVariable("projectId") int projectId,
                                      @PathVariable("committerName") String committerName,
+                                     @PathVariable("shouldFilter") String shouldFilter,
                                      @PathVariable("start") String start,
                                      @PathVariable("end")String end) {
         LocalDate StartLocalTime = LocalDate.parse(start);
         LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getDevNotes(projectId, committerName, StartLocalTime, endLocalTime);
+        return projectService.getDevNotes(projectId, committerName, shouldFilter.equals("true"), StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/totalCommitScore/{committerName}/{start}/{end}/{whichDevField}")
@@ -258,7 +261,9 @@ public class ProjectController {
 
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
-        return projectService.getAllScores(projectId, username, startDate, endDate,
+        // TODO - Add a path variable for the filterByDevsCodeForCountingComments argument
+        // that's sent to ProjectService.
+        return projectService.getAllScores(projectId, username, false, startDate, endDate,
                 whichDevFieldIsString(whichDevField));
     }
 
