@@ -289,10 +289,10 @@ public class ProjectService {
         for (Commit currentCommit : projectCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
-                if (!StringFunctions.inList(commitIds, currentCommit.getId())
+                if (!StringFunctions.inList(commitIds, currentCommit.getCommitId())
                     && didDeveloperAuthorCommit(currentCommit, developer, devField)) {
                     devCommits.add(currentCommit);
-                    commitIds.add(currentCommit.getId());
+                    commitIds.add(currentCommit.getCommitId());
                 }
             }
         }
@@ -325,10 +325,10 @@ public class ProjectService {
 
         List<Commit> projectCommits = project.getCommits();
         for (Commit currentCommit : projectCommits) {
-            if (!StringFunctions.inList(commitIds, currentCommit.getId())
-                && currentCommit.getId().equals(hash)) {
+            if (!StringFunctions.inList(commitIds, currentCommit.getCommitId())
+                && currentCommit.getCommitId().equals(hash)) {
                 commits.add(currentCommit);
-                commitIds.add(currentCommit.getId());
+                commitIds.add(currentCommit.getCommitId());
             }
         }
         return commits;
@@ -466,7 +466,7 @@ public class ProjectService {
         Project project = projectRepository.findProjectById(projectId);
         List<Commit> commits = project.getCommits();
         Commit commit = commits.stream()
-        .filter(c -> commitId.equals(c.getId()))
+        .filter(c -> commitId.equals(c.getCommitId()))
                 .findAny()
                 .orElse(null);
         return commit;
