@@ -7,30 +7,18 @@ public class MergeRequestDateScore {
 
     private LocalDate mergedDate;
     private double mergeRequestScore;
-    private String authorName;
     private int numMergeRequests;
     private List<Integer> mergeRequestId;
 
     public MergeRequestDateScore() {
     }
 
-
     public LocalDate getMergedDate() {
         return mergedDate;
     }
 
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
     public void setMergedDate(LocalDate mergedDate) {
         this.mergedDate = mergedDate;
-    }
-
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
     }
 
     public double getMergeRequestScore() {
@@ -70,7 +58,6 @@ public class MergeRequestDateScore {
     public String toString() {
         return "DateScore{" +
                 "date=" + mergedDate +
-                ", userName='" + authorName + '\'' +
                 '}';
     }
 }

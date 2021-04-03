@@ -11,27 +11,24 @@ import java.util.List;
 public class CommitDateScore implements Comparable<CommitDateScore>{
     private LocalDate date;
     private double commitScore;
-    private String authorName;
     private int numCommits;
     private List<String> commitIds;
 
     public CommitDateScore() {
     }
 
-    public CommitDateScore(LocalDate date, double commitScore, String authorName, String id) {
+    public CommitDateScore(LocalDate date, double commitScore, String id) {
         this.date = date;
         this.commitScore = commitScore;
-        this.authorName = authorName;
         this.numCommits = 0;
         this.commitIds = new ArrayList<>();
         commitIds.add(id);
     }
 
-    public CommitDateScore(LocalDate date, double score, int numCommits, String authorName) {
+    public CommitDateScore(LocalDate date, double score, int numCommits) {
         this.date = date;
         this.commitScore = score;
         this.numCommits = numCommits;
-        this.authorName = authorName;
     }
     
     public LocalDate getDate() {
@@ -42,20 +39,12 @@ public class CommitDateScore implements Comparable<CommitDateScore>{
         return commitScore;
     }
 
-    public String getAuthorName() {
-        return authorName;
-    }
-
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
     public void setCommitScore(double commitScore) {
         this.commitScore = commitScore;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
     }
 
     public void addToCommitScore(double score) {
@@ -97,7 +86,6 @@ public class CommitDateScore implements Comparable<CommitDateScore>{
         return "DateScore{" +
                 "date=" + date +
                 ", commitScore=" + commitScore +
-                ", userName='" + authorName + '\'' +
                 ", numCommits=" + numCommits +
                 '}';
     }

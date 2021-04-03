@@ -38,12 +38,15 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(criterias),
-                Aggregation.project("authorName", "date", "commitScore")
+                Aggregation.project("authorName", "date", "commitScore", "commitId")
                 .and(DateOperators.DateToString.dateOf("date").toString("%Y-%m-%d")).as("groupByDate"),
                 Aggregation.group("groupByDate")
                         .sum("commitScore").as("commitScore")
                         .addToSet("groupByDate").as("date")
                         .count().as("numCommits")
+                        .push("commitId").as("commitIds")
+
+
         );
 
         AggregationResults<CommitDateScore> groupResults = mongoTemplate.aggregate(aggregation, Commit.class,
@@ -78,7 +81,7 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
         ArrayList<LocalDate> dates = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
         for(LocalDate date: dates){
             if(!containsDate(userCommitScores, date)) {
-                CommitDateScore scoreForDate = new CommitDateScore(date, 0, 0, devUserName);
+                CommitDateScore scoreForDate = new CommitDateScore(date, 0, 0);
                 userCommitScores.add(scoreForDate);
             }
         }
