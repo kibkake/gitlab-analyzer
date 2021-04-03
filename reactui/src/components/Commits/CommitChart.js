@@ -72,10 +72,10 @@ class CommitChart extends Component {
         const json = await result.json();
         var data = JSON.stringify(json);
         var DataArray = JSON.parse(data);
-        await DataArray.map(item => {
-            arr.push(item)
-        })
-        await this.setState({data: arr})
+        //await DataArray.map(item => {
+            //arr.push(item)
+        //})
+        //await this.setState({data: arr})
 
 
         let url2 = '/api/v1/projects/' + projNum + '/Commits/' + username + '/' + startTm + "/" + endTm  + "/either"
@@ -88,6 +88,30 @@ class CommitChart extends Component {
         })
         const resp = await result2.json();
         await this.setState({commits:resp})
+
+        var chartArr = [];
+        var index = 0;
+
+        for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)) {
+            chartArr.push(0)
+        }
+            //console.log(startTm)
+       // console.log(moment(startTm).format('L'))
+        for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)){
+            //arr.push(0)
+            var time = moment(dt).format('L')//02/18/2021
+            //var tempDate = moment(date).format('lll')
+
+
+
+
+
+            //console.log(fulltime)
+        }
+        //console.log(chartArr)
+        await this.setState({data:chartArr})
+
+
     }
 
     showComponents() {
