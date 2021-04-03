@@ -17,10 +17,11 @@ class CommentTable extends Component{
         super(props);
         this.state = {
             all_comments:[],
-            all_comments_sorted_by_word_count:[],
+            backup_all_comments:[], // Version that remains unsorted.
+                                    // Will keep the order given in getDataFromBackend().
             comments_on_devs_code:[],
-            comments_on_devs_code_sorted_by_word_count:[],
-            comments:[], // Will equal either all_comments or comments_on_devs_code
+            backup_comments_on_devs_code:[], // Version that remains unsorted.
+            comments:[], // Will equal either all_comments or comments_on_devs_code.
             issue:true,
             code_rev:true,
             parentdata: this.props.devName,
@@ -31,6 +32,8 @@ class CommentTable extends Component{
         this.enableCodeRev=this.enableCodeRev.bind(this);
         this.filterByDevCode=this.filterByDevCode.bind(this);
         this.sortByWordCount=this.sortByWordCount.bind(this);
+        this.sortByDate=this.sortByDate.bind(this);
+        this.unsortArrays=this.unsortArrays.bind(this);
     }
 
     componentDidMount() {
@@ -47,12 +50,11 @@ class CommentTable extends Component{
         await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/false" + "/2021-01-01/2021-05-09")
             .then(response => {
                 const all_comments = response.data
-                let all_comments_sorted_by_word_count = all_comments.slice();
-                all_comments_sorted_by_word_count.sort((a,b) => a.wordCount - b.wordCount);
-                this.setState({all_comments: all_comments})
-                this.setState({all_comments_sorted_by_word_count: all_comments_sorted_by_word_count})
+                const backup_all_comments = all_comments.slice();
+                this.setState({all_comments: all_comments});
+                this.setState({backup_all_comments: backup_all_comments});
                 console.log(this.state.all_comments);
-                console.log(this.state.all_comments_sorted_by_word_count);
+                console.log(this.state.backup_all_comments);
             }).catch((error) => {
             console.error(error);
         });
@@ -60,22 +62,22 @@ class CommentTable extends Component{
         await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/true" + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments_on_devs_code = response.data
-                let comments_on_devs_code_sorted_by_word_count = comments_on_devs_code.slice();
-                comments_on_devs_code_sorted_by_word_count.sort((a,b) => a.wordCount - b.wordCount);
-                this.setState({comments_on_devs_code: comments_on_devs_code})
-                this.setState({comments_on_devs_code_sorted_by_word_count: comments_on_devs_code_sorted_by_word_count})
+                const backup_comments_on_devs_code = comments_on_devs_code.slice();
+                this.setState({comments_on_devs_code: comments_on_devs_code});
+                this.setState({backup_comments_on_devs_code: backup_comments_on_devs_code});
                 console.log(this.state.comments_on_devs_code);
-                console.log(this.state.comments_on_devs_code_sorted_by_word_count);
+                console.log(this.state.backup_comments_on_devs_code);
             }).catch((error) => {
             console.error(error);
         });
 
         if (this.state.devs_code_btn_name === "Dev's Code") {
-            this.setState({comments:this.state.all_comments});
+            await this.setState({comments:this.state.all_comments.slice()});
         }
         else {
-            this.setState({comments:this.state.comments_on_devs_code});
+            await this.setState({comments:this.state.comments_on_devs_code.slice()});
         }
+        console.log(this.state.comments);
     }
 
     componentDidUpdate(prevProps){
@@ -103,22 +105,47 @@ class CommentTable extends Component{
     async filterByDevCode(e) {
         e.preventDefault();
         if (this.state.devs_code_btn_name === "Dev's Code") {
-            await this.setState({devs_code_btn_name:"All Code", comments:this.state.comments_on_devs_code});
+            await this.setState({devs_code_btn_name:"All Code", comments:this.state.comments_on_devs_code.slice()});
         }
         else {
-            await this.setState({devs_code_btn_name:"Dev's Code", comments:this.state.all_comments});
+            await this.setState({devs_code_btn_name:"Dev's Code", comments:this.state.all_comments.slice()});
+        }
+    }
+
+    async unsortArrays(e) {
+        e.preventDefault();
+        console.log(this.state.backup_comments_on_devs_code);
+        console.log(this.state.backup_all_comments);
+        await this.setState({all_comments:this.state.backup_all_comments.slice(),
+            comments_on_devs_code:this.state.backup_comments_on_devs_code.slice()});
+        if (this.state.devs_code_btn_name === "Dev's Code") {
+            // This means that currently, the comments table is showing comments
+            // for all code. So, set it equal to the backup of all_comments:
+            await this.setState({comments:this.state.backup_all_comments.slice()});
+        }
+        else {
+            await this.setState({comments:this.state.backup_comments_on_devs_code.slice()});
         }
     }
 
     async sortByWordCount(e) {
         e.preventDefault();
-        if (this.state.devs_code_btn_name === "Dev's Code") {
-            // This means that currently, comments on all code is being shown.
-            await this.setState({comments:this.state.all_comments_sorted_by_word_count});
-        }
-        else {
-            await this.setState({comments:this.state.comments_on_devs_code_sorted_by_word_count});
-        }
+        let comments_sorted = this.state.comments;
+        comments_sorted.sort((a,b) => a.wordCount - b.wordCount);
+
+        let all_comments_sorted = this.state.all_comments;
+        all_comments_sorted.sort((a,b) => a.wordCount - b.wordCount);
+
+        let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
+        comments_on_devs_code_sorted.sort((a,b) => a.wordCount - b.wordCount);
+
+        await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
+            comments_on_devs_code:comments_on_devs_code_sorted});
+    }
+
+    async sortByDate(e) {
+        e.preventDefault();
+        // TODO - implement
     }
 
     render() {
@@ -149,6 +176,8 @@ class CommentTable extends Component{
                     <button className="filter" onClick={this.enableCodeRev}> Code Review </button>
                     <button className="filter" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
                     <button className="filter" onClick={this.sortByWordCount}> Sort By Word Count </button>
+                    <button className="filter" onClick={this.sortByDate}> Sort By Date </button>
+                    <button className="filter" onClick={this.unsortArrays}> Unsort Table </button>
                 </div>
                 <br/>
                 <Table striped bordered hover className="comments-table">
