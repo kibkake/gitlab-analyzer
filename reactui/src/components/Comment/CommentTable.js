@@ -1,15 +1,25 @@
+/*
+References:
+
+- https://www.youtube.com/watch?v=MWD-iKzR2c8
+For how to sort an array of objects in Javascript.
+ */
+
 import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
 import moment from "moment";
 import "./CommentTable.css";
+import {sort} from "d3-array";
 
 class CommentTable extends Component{
     constructor(props) {
         super(props);
         this.state = {
             all_comments:[],
+            all_comments_sorted_by_word_count:[],
             comments_on_devs_code:[],
+            comments_on_devs_code_sorted_by_word_count:[],
             comments:[], // Will equal either all_comments or comments_on_devs_code
             issue:true,
             code_rev:true,
@@ -20,6 +30,7 @@ class CommentTable extends Component{
         this.enableIssue=this.enableIssue.bind(this);
         this.enableCodeRev=this.enableCodeRev.bind(this);
         this.filterByDevCode=this.filterByDevCode.bind(this);
+        this.sortByWordCount=this.sortByWordCount.bind(this);
     }
 
     componentDidMount() {
@@ -36,8 +47,12 @@ class CommentTable extends Component{
         await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/false" + "/2021-01-01/2021-05-09")
             .then(response => {
                 const all_comments = response.data
+                let all_comments_sorted_by_word_count = all_comments.slice();
+                all_comments_sorted_by_word_count.sort((a,b) => a.wordCount - b.wordCount);
                 this.setState({all_comments: all_comments})
+                this.setState({all_comments_sorted_by_word_count: all_comments_sorted_by_word_count})
                 console.log(this.state.all_comments);
+                console.log(this.state.all_comments_sorted_by_word_count);
             }).catch((error) => {
             console.error(error);
         });
@@ -45,8 +60,12 @@ class CommentTable extends Component{
         await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/true" + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments_on_devs_code = response.data
+                let comments_on_devs_code_sorted_by_word_count = comments_on_devs_code.slice();
+                comments_on_devs_code_sorted_by_word_count.sort((a,b) => a.wordCount - b.wordCount);
                 this.setState({comments_on_devs_code: comments_on_devs_code})
+                this.setState({comments_on_devs_code_sorted_by_word_count: comments_on_devs_code_sorted_by_word_count})
                 console.log(this.state.comments_on_devs_code);
+                console.log(this.state.comments_on_devs_code_sorted_by_word_count);
             }).catch((error) => {
             console.error(error);
         });
@@ -91,6 +110,17 @@ class CommentTable extends Component{
         }
     }
 
+    async sortByWordCount(e) {
+        e.preventDefault();
+        if (this.state.devs_code_btn_name === "Dev's Code") {
+            // This means that currently, comments on all code is being shown.
+            await this.setState({comments:this.state.all_comments_sorted_by_word_count});
+        }
+        else {
+            await this.setState({comments:this.state.comments_on_devs_code_sorted_by_word_count});
+        }
+    }
+
     render() {
         var Data = this.state.comments.map(function (item) {
             let currentYear = new Date().getFullYear();
@@ -118,6 +148,7 @@ class CommentTable extends Component{
                     <button className="filter" onClick={this.enableIssue}> Issue </button>
                     <button className="filter" onClick={this.enableCodeRev}> Code Review </button>
                     <button className="filter" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
+                    <button className="filter" onClick={this.sortByWordCount}> Sort By Word Count </button>
                 </div>
                 <br/>
                 <Table striped bordered hover className="comments-table">
