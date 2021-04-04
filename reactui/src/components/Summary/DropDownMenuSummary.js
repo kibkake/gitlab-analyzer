@@ -7,7 +7,6 @@ import "../Commits/HBox.css"
 import ProjectService from "../../Service/ProjectService";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
-import async from "asynckit";
 
 
 
@@ -18,9 +17,8 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     const pathArray = window.location.pathname.split('/');
 
-    if (sessionStorage.getItem("CurrentDeveloper") == null) {
+    if(sessionStorage.getItem("CurrentDeveloper") == null){
         sessionStorage.setItem("CurrentDeveloper", pathArray[4])
-        console.log("curr dev", sessionStorage.getItem("CurrentDeveloper"))
     }
 
     if (sessionStorage.getItem("Developers") == null) {
@@ -29,10 +27,10 @@ function DropDownMenuSummary ({listOfDevelopers}) {
     }
 
 
-    // listOfDevelopers.map(dev => {devArray.push({label: dev.username, value: dev.username})})
+    listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
 
 
-    const[selectedValue, setSelectedValue] = useState(pathArray[4])
+    const[selectedValue, setSelectedValue] = useState(currDevUsername)
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
@@ -90,7 +88,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                 <h3>Developer: </h3>
             <div className="DropDownMenu">
                     <Select
-                        options={listOfDevelopers.map(dev => <option key={dev.id}>{dev.name}</option> )}
+                        options={devArray}
                         defaultValue={{label: selectedValue, value: selectedValue}}
                         onChange={handleChange}
                     />
