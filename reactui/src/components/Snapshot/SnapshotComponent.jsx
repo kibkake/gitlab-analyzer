@@ -81,7 +81,7 @@ export default class SnapshotComponent extends Component {
                         <thead>
                         <tr>
                             <th>&nbsp;</th>
-                            <th>ID</th>
+                            <th>Snapshot ID</th>
                             <th>Developer</th>
                             <th>Project ID</th>
                             <th>Start Date</th>
