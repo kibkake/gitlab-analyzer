@@ -91,7 +91,7 @@ public class MergeRequestConnection {
 
         for (Commit singleCommit : mergeCommits) {
             singleCommit.setProjectId(projectId); // sets projectId if removing set project id a different way
-            singleCommit.setDiffs(CommitConnection.getSingleCommitDiffs(projectId, singleCommit.getId()));
+            singleCommit.setDiffs(CommitConnection.getSingleCommitDiffs(projectId, singleCommit.getCommitId()));
             singleCommit.calculateAndSetCommitScore(); // done after getting commits
         }
         return mergeCommits;

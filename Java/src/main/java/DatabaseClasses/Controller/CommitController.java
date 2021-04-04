@@ -42,7 +42,7 @@ public class CommitController {
         OffsetDateTime endDateWithOffSet = OffsetDateTime.parse(end + isoEnding);
         Date startDate = Date.from(startDateWithOffSet.toInstant());
         Date endDate = Date.from(endDateWithOffSet.toInstant());
-        return commitService.getUserCommits(projectId, startDate, endDate, authorName);
+        return commitService.getUserCommits(projectId, authorName, startDate, endDate);
     }
 
     @GetMapping("projects/{projectId}/Commits/scores/total/{userName}/{startDate}/{endDate}")
