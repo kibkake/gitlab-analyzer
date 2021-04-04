@@ -1,36 +1,35 @@
 import React, {Component} from "react";
 import DropDownMenuCommit from "../components/DropDownMenus/DropDownMenuCommits";
 import ProjectService from "../Service/ProjectService";
+import Navbar_Developers from "../components/NavBars_Menu/Navbar_Developers";
+import Select from "react-select";
+import CommitChart from "../components/Commits/CommitChart";
 
 class Chart extends Component{
 
     constructor(props){
         super(props);
         this.state={
-            developers: []
         };
     }
 
     async componentDidMount() {
-        var str = window.location.pathname;
-        var repNum = str.split("/")[2];
-
-        if(sessionStorage.getItem("Developers" + repNum) == null) {
-            await ProjectService.getListOfDevs(repNum)
-        }
-        await this.setState({developers:JSON.parse(sessionStorage.getItem("Developers" + repNum))})
     }
-
 
     render() {
 
-        var strDevelopers = JSON.stringify(this.state.developers);
-        var developersArray = JSON.parse(strDevelopers)
         return (
-
-            <header classname='Rest'>
-                <DropDownMenuCommit listOfDevelopers = {developersArray}/>
-            </header>
+            <div>
+                <Navbar_Developers devName = {window.location.pathname.split("/")[4]
+                }/>
+                <br>
+                </br>
+                <CommitChart devName = {window.location.pathname.split("/")[4]}
+                             startTime = {sessionStorage.getItem("startdate")}
+                             endTime = {sessionStorage.getItem("enddate")}/>
+                <br>
+                </br>
+            </div>
 
         )
     }

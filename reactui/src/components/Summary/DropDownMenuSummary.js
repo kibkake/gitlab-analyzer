@@ -7,10 +7,7 @@ import "../Commits/HBox.css"
 import ProjectService from "../../Service/ProjectService";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
-import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
-
-
-
+import moment from 'moment'
 
 function DropDownMenuSummary ({listOfDevelopers}) {
 
@@ -58,7 +55,8 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             return new Date (localStorage.getItem("enddate") + "T12:00:00")
         }
         else {
-            sessionStorage.setItem("enddate", "2021-03-01")
+            let currentDate = moment().format("YYYY-MM-DD");
+            sessionStorage.setItem("enddate", currentDate)
             return new Date (sessionStorage.getItem("enddate") + "T12:00:00")
         }
     }
@@ -76,35 +74,32 @@ function DropDownMenuSummary ({listOfDevelopers}) {
     }
 
     return (
-        <>
-            <Navbar_Developers devName = {selectedValue}/>
-            <br/>
-            <div className="box-container">
-                <h3 className="dev-label">Developer: </h3>
-                <div className="DropDownMenu">
-                        <Select
-                            options={devArray}
-                            defaultValue={{label: selectedValue, value: selectedValue}}
-                            onChange={handleChange}
-                        />
-                </div>
-            </div>
-            <br/>
-            <div className="snap-widget">
-                <SnapshotWidgetComponent/>
-            </div>
-            <br/>
 
-            <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
-            <SummaryScoreTable devName = {selectedValue}
-                               startTime = {changeDateFormat(getInitialStartDate())}
-                               endTime = {changeDateFormat(getInitialEndDate())}/>
-            <div>
+        <div>
+            <Navbar_Developers devName = {selectedValue}/>
+
+            <div className="box-container">
+                <h3>Developer: </h3>
+            <div className="DropDownMenu">
+                    <Select
+                        options={devArray}
+                        defaultValue={{label: selectedValue, value: selectedValue}}
+                        onChange={handleChange}
+                    />
+            </div>
+            </div>
+                <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
+                <SummaryScoreTable devName = {selectedValue}
+                                   startTime = {changeDateFormat(getInitialStartDate())}
+                                   endTime = {changeDateFormat(getInitialEndDate())}
+                />
+                <div>
                 <SummaryChartRadios devName = {selectedValue}
                                     startTime = {changeDateFormat(getInitialStartDate())}
                                     endTime = {changeDateFormat(getInitialEndDate())}/>
+
             </div>
-        </>
+        </div>
     )
 }
 
