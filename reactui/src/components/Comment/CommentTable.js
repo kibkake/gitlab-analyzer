@@ -3,6 +3,10 @@ References:
 
 - https://www.youtube.com/watch?v=MWD-iKzR2c8
 For how to sort an array of objects in Javascript.
+
+- https://stackoverflow.com/questions/14781153/how-to-compare-two-string-dates-in-javascript
+fuyi's answer showed that two strings representing dates (in the necessary format)
+can be directly compared to find which date is earlier/later.
  */
 
 import React, { Component } from "react";
@@ -21,7 +25,7 @@ class CommentTable extends Component{
                                     // Will keep the order given in getDataFromBackend().
             comments_on_devs_code:[],
             backup_comments_on_devs_code:[], // Version that remains unsorted.
-            comments:[], // Will equal either all_comments or comments_on_devs_code.
+            comments:[], // Will equal one of the above arrays, and is used for the table.
             issue:true,
             code_rev:true,
             parentdata: this.props.devName,
@@ -145,7 +149,17 @@ class CommentTable extends Component{
 
     async sortByDate(e) {
         e.preventDefault();
-        // TODO - implement
+        let comments_sorted = this.state.comments;
+        comments_sorted.sort((a,b) => a.created_at > b.created_at ? 1 : -1);
+
+        let all_comments_sorted = this.state.all_comments;
+        all_comments_sorted.sort((a,b) => a.created_at > b.created_at ? 1 : -1);
+
+        let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
+        comments_on_devs_code_sorted.sort((a,b) => a.created_at > b.created_at ? 1 : -1);
+
+        await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
+            comments_on_devs_code:comments_on_devs_code_sorted});
     }
 
     render() {
