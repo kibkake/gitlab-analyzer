@@ -24,11 +24,14 @@ class CommitChart extends Component {
             childVal : "non",
             diff: false,
             showAllCommit:true,
-            allCommits: []
+            allCommits: [],
+            totalScore: 0.0,
+            singleCommitScore: 0.0
         };
         this.handler = this.handler.bind(this)
         this.handler2 = this.handler2.bind(this)
         this.handler3 = this.handler3.bind(this)
+        this.addExcludedPoints = this.addExcludedPoints.bind(this)
     }
 
     async handler(hash) {
@@ -48,6 +51,15 @@ class CommitChart extends Component {
         await this.setState({
             allCommits: commits
         })
+    }
+
+    async addExcludedPoints(score){
+        console.log(score)
+        var commitScore1 = this.state.singleCommitScore
+        console.log(commitScore1)
+        commitScore1 += score
+        console.log(commitScore1)
+        this.setState({singleCommitScore:commitScore1})
     }
 
     async componentDidMount() {
@@ -77,6 +89,8 @@ class CommitChart extends Component {
             chartArr.push(0)
         }
 
+        var totalScore1 = 0.0;
+
         for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)){
 
             var time = moment(dt).format('L')
@@ -94,12 +108,13 @@ class CommitChart extends Component {
                 const tempFullTime = tempYear + '-' + tempMonth + '-' + tempDay
 
                 if(fullTime === tempFullTime){
+                    totalScore1 += item.commitScore
                     chartArr[index]++
                 }
             })
             index++
         }
-        await this.setState({data:chartArr})
+        await this.setState({data:chartArr, totalScore: totalScore1})
     }
 
     showComponents() {
@@ -120,6 +135,7 @@ class CommitChart extends Component {
             return (
                 <div>
                     <AllCommits
+                        totalScore = {this.state.totalScore}
                         devName = {this.props.devName}
                         startTime = {this.props.startTime}
                         endTime = {this.props.endTime}
@@ -134,6 +150,7 @@ class CommitChart extends Component {
                 <div>
                     <CommitsPerDay
                         devName = {this.props.devName}
+                        totalScore = {this.state.totalScore}
                         startTime = {this.state.y_Axis}
                         commits = {this.state.allCommits}
                         handler = {this.handler}
@@ -266,9 +283,12 @@ class CommitChart extends Component {
                 </div>
                     {this.showComponents()}
                     {(this.state.diff !== false) ? <SingleCommitDiff
+                        addExcludedPoints = {this.addExcludedPoints}
                         handler2 = {this.handler2}
                         hash = {this.state.childVal}
-                        commits={this.state.commits}/> : <div> </div>}
+                        commits={this.state.commits}
+                        singleCommitScore={this.state.singleCommitScore}
+                        /> : <div> </div>}
                 </div>
         )
     }
