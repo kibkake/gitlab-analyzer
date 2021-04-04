@@ -38,36 +38,11 @@ class SingleCommitDiff extends Component{
     }
 
     async getDataFromBackend(){
-      var str = window.location.pathname;
-      var repNum = str.split("/")[2];
-      var hash = this.props.hash;
-
-      let url2 = '/api/v1/projects/' + repNum + '/Commit/' + hash;
-      const result = await fetch(url2, {
-          method: 'GET',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          }
-      })
-      /*const resp = await result.json();
-      await this.setState({data:resp})
-      console.log(resp)
-
-        console.log(this.props.hash)
-        console.log(this.props.commits)*/
 
         var hash = this.props.hash;
         console.log(hash)
         console.log(this.state.commits)
         var tempArr = [];
-        //tempArr = this.props.commits
-        //console.log(this.props.commits)
-
-        //if(this.props.commit != null) {
-        //var tempArr = this.props.commits;
-        //console.log(tempArr)
-        //}
 
         await this.state.commits.map(function(item) {
             if(item.id === hash){
