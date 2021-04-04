@@ -101,10 +101,31 @@ class CommitChart extends Component {
             //arr.push(0)
             var time = moment(dt).format('L')//02/18/2021
             //var tempDate = moment(date).format('lll')
+            const month = time.substring(0,2)
+            const day = time.substring(3,5)
+            const year = time.substring(6,10)
+
+            const fulltime = year + '-' + month + '-' + day
 
 
+            await this.state.commits.map(function(item) {
+
+                var time1 = moment(item.committed_date).format('L')
+                //var tempDate = moment(date).format('lll')
+                const month1 = time1.substring(0,2)
+                const day1 = time1.substring(3,5)
+                const year1 = time1.substring(6,10)
 
 
+                const fulltime1 = year1 + '-' + month1 + '-' + day1
+
+                if(fulltime === fulltime1){
+                    chartArr[index]++
+                }
+
+                console.log(index)
+            })
+            index++
 
             //console.log(fulltime)
         }
