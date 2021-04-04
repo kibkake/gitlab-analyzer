@@ -58,25 +58,6 @@ class CommitChart extends Component {
     async getDataFromBackend (username, startTm, endTm) {
         var str = window.location.pathname;
         var projNum = str.split("/")[2];
-        var arr=[];
-
-        let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + username + '/' +
-            startTm + "/" + endTm + "/either"
-        const result = await fetch(url3, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        const json = await result.json();
-        var data = JSON.stringify(json);
-        var DataArray = JSON.parse(data);
-        //await DataArray.map(item => {
-            //arr.push(item)
-        //})
-        //await this.setState({data: arr})
-
 
         let url2 = '/api/v1/projects/' + projNum + '/Commits/' + username + '/' + startTm + "/" + endTm  + "/either"
         const result2 = await fetch(url2, {
@@ -95,44 +76,30 @@ class CommitChart extends Component {
         for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)) {
             chartArr.push(0)
         }
-            //console.log(startTm)
-       // console.log(moment(startTm).format('L'))
+
         for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)){
-            //arr.push(0)
-            var time = moment(dt).format('L')//02/18/2021
-            //var tempDate = moment(date).format('lll')
+
+            var time = moment(dt).format('L')
             const month = time.substring(0,2)
             const day = time.substring(3,5)
             const year = time.substring(6,10)
-
-            const fulltime = year + '-' + month + '-' + day
-
+            const fullTime = year + '-' + month + '-' + day
 
             await this.state.commits.map(function(item) {
 
                 var time1 = moment(item.committed_date).format('L')
-                //var tempDate = moment(date).format('lll')
-                const month1 = time1.substring(0,2)
-                const day1 = time1.substring(3,5)
-                const year1 = time1.substring(6,10)
+                const tempMonth = time1.substring(0,2)
+                const tempDay = time1.substring(3,5)
+                const tempYear = time1.substring(6,10)
+                const tempFullTime = tempYear + '-' + tempMonth + '-' + tempDay
 
-
-                const fulltime1 = year1 + '-' + month1 + '-' + day1
-
-                if(fulltime === fulltime1){
+                if(fullTime === tempFullTime){
                     chartArr[index]++
                 }
-
-                console.log(index)
             })
             index++
-
-            //console.log(fulltime)
         }
-        //console.log(chartArr)
         await this.setState({data:chartArr})
-
-
     }
 
     showComponents() {
