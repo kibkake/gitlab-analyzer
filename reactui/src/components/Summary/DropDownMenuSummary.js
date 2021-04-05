@@ -7,9 +7,8 @@ import "../Commits/HBox.css"
 import ProjectService from "../../Service/ProjectService";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
-
-
-
+import moment from 'moment'
+import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
 
 function DropDownMenuSummary ({listOfDevelopers}) {
 
@@ -57,7 +56,8 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             return new Date (localStorage.getItem("enddate") + "T12:00:00")
         }
         else {
-            sessionStorage.setItem("enddate", "2021-03-01")
+            let currentDate = moment().format("YYYY-MM-DD");
+            sessionStorage.setItem("enddate", currentDate)
             return new Date (sessionStorage.getItem("enddate") + "T12:00:00")
         }
     }
@@ -88,6 +88,9 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                         onChange={handleChange}
                     />
             </div>
+            </div>
+            <div>
+                <SnapshotWidgetComponent/>
             </div>
                 <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
                 <SummaryScoreTable devName = {selectedValue}
