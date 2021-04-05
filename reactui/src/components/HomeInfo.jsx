@@ -19,11 +19,14 @@ export default class HomeInfo extends Component {
         }, (error) => {
             console.log(error);
         });
-        ProfileService.setUserToken(sessionStorage.getItem('token')).then((response) => {
-            // sent post request
-        }, (error) => {
-            console.log(error);
-        });
+        if(!sessionStorage.getItem('__init__')){
+            ProfileService.setUserToken(sessionStorage.getItem('token')).then((response) => {
+                // sent post request
+            }, (error) => {
+                console.log(error);
+            });
+            sessionStorage.setItem('__init__',"__visited");
+        }
     }
 
 

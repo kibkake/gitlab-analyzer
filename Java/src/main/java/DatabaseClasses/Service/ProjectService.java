@@ -8,6 +8,7 @@ import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
 import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
 import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
 import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
+import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
 import main.java.Collections.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
@@ -31,14 +32,16 @@ public class ProjectService {
     private final MergeRequestRepository mergeRequestRepository;
     private final CommitRepository commitRepository;
     private final DeveloperRepository developerRepository;
+    private final SnapshotRepository snapshotRepository;
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository, MergeRequestRepository mergeRequestRepository,
-                          CommitRepository commitRepository, DeveloperRepository developerRepository) {
+                          CommitRepository commitRepository, DeveloperRepository developerRepository, SnapshotRepository snapshotRepository) {
         this.projectRepository = projectRepository;
         this.mergeRequestRepository = mergeRequestRepository;
         this.commitRepository = commitRepository;
         this.developerRepository = developerRepository;
+        this.snapshotRepository = snapshotRepository;
     }
 
     public enum UseWhichDevField {EITHER, NAME, USERNAME};
@@ -120,6 +123,24 @@ public class ProjectService {
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
         setDeveloperInfo(projectId, projectSettings, projectDevs);
+    }
+
+    @Transactional(timeout = 1200) // 20 min
+    public void saveSnapshot(Snapshot snapshot){
+        snapshotRepository.save(snapshot);
+    }
+
+    public Snapshot getSnapshot(String id){
+        return snapshotRepository.findById(id).orElse(null);
+    }
+
+    public List<Snapshot> getSnapshots(String username){
+        return snapshotRepository.findByUsername(username);
+    }
+
+    @Transactional(timeout = 1200) // 20 min
+    public void deleteSnapshot(String id){
+        snapshotRepository.deleteById(id);
     }
 
     private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {

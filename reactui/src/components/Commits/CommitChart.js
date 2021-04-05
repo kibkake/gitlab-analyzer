@@ -9,6 +9,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import moment from "moment";
 import img from './ChartBackground.jpg'
 import img2 from './LoadingBackground.jpg'
+import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
 
 class CommitChart extends Component {
 
@@ -190,6 +191,10 @@ class CommitChart extends Component {
         console.log(this.state.childVal)
         //height={daylist.length*(500/daylist.length)}
         return (
+            <div>
+                <SnapshotWidgetComponent/>
+                <br/>
+
             <div className="box-container" >
                 <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
                     <Button
@@ -258,6 +263,7 @@ class CommitChart extends Component {
                         hash = {this.state.childVal}
                         commits={this.state.commits}/> : <div> </div>}
                 </div>
+            </div>
         )
     }
 }
