@@ -19,7 +19,6 @@ class AllCommits extends Component{
             devName: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime
-
         };
         this.handler = this.handler.bind(this)
     }
@@ -37,6 +36,24 @@ class AllCommits extends Component{
             };
         });
         console.log(output)
+
+        if(sessionStorage.getItem("excludedFiles") === null){
+            var fileArray = []
+            sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
+        }
+
+        var tempArray = []
+        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+        var excludedScore = 0.0
+        this.props.commits.map(function (item) {
+            item.diffs.map(function (item2) {
+                for (var i = 0; i < tempArray.length; i++) {
+                    if (tempArray[i] === item.id + "_" + item2.new_path) {
+                        excludedScore += item2.diffScore
+                    }
+                }
+            })
+        });
 
         return(
             <TableContainer style={{ overflowX: "scroll" , height: "1050px", width: "500px"}}
