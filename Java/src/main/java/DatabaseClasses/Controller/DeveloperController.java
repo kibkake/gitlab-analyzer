@@ -49,5 +49,9 @@ public class DeveloperController {
         return developerService.getDevCommitScores(projectId, devId);
     }
 
+    @GetMapping("{devId}/devInfo")
+    public List<Developer> getDevInfo(@PathVariable int projectId, @PathVariable int devId) {
+        return developerService.getDevInfo(projectId, devId);
+    }
 
 }

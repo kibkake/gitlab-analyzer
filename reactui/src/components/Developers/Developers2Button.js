@@ -22,7 +22,6 @@ class Developers2Button extends Component{
 
 
 
-
     async getDataFromBackend(){
         var str = window.location.pathname;
         var repNum = str.split("/")[`2`];
@@ -84,10 +83,10 @@ class Developers2Button extends Component{
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        sessionStorage.setItem("CurrentDeveloper", user.username)
+                                        sessionStorage.setItem("CurrentDeveloper", JSON.stringify(user))
                                         this.storeNames()
 
-                                        window.location.href=  window.location.pathname + '/' + user.username + "/summary";
+                                        window.location.href=  window.location.pathname + '/' + user.id + "/summary";
                                     }}>
                                 <span >{user.username}</span>
                             </Button>

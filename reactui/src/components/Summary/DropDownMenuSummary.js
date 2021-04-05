@@ -18,23 +18,35 @@ function DropDownMenuSummary ({listOfDevelopers}) {
     const pathArray = window.location.pathname.split('/');
 
     if(sessionStorage.getItem("CurrentDeveloper") == null){
-        sessionStorage.setItem("CurrentDeveloper", pathArray[4])
+        getCurDevInfo(pathArray[2], pathArray[4])
+    }
+    async function getCurDevInfo(repNum, devID) {
+        let url2 = '/api/v2/Project/' + repNum + '/Developers/' + devID + 'devInfo'
+        var devs = [];
+        fetch(url2)
+            .then(response => {
+                return response.json();
+            })
+            .then(d => {
+                devs = d;
+                console.log("Dev info", devs);
+            })
+        var userData = [];
+        userData = await devs.map(({username, id}) => ({username, id}))
+        console.log("Maped user Data", userData)
+        await sessionStorage.setItem("CurrentDeveloper" + repNum, JSON.stringify(userData));
+        console.log("Developer session storage:", sessionStorage.getItem('CurrentDeveloper' + repNum))
     }
 
-    if (sessionStorage.getItem("Developers") == null) {
-        console.log("repo number", pathArray[2])
-        ProjectService.storeDevelopers(pathArray[2])
-    }
+    listOfDevelopers.map(item => {devArray.push({label: item.username, value: item.id})})
 
-
-    listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
-
-
-    const[selectedValue, setSelectedValue] = useState(currDevUsername)
+    const[selectedValue, setSelectedValue] = useState(
+        pathArray[4]
+    );
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
-        sessionStorage.setItem("CurrentDeveloper", obj.label)
+        sessionStorage.setItem("CurrentDeveloper", JSON.stringify(obj))
     }
 
     function getInitialStartDate() {
