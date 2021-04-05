@@ -21,37 +21,37 @@ class SummaryScoreTable extends Component{
         await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime)
      }
 
-     async getDataFromBackend (username, startTm, endTm) {
+     async getDataFromBackend (dev, startTm, endTm) {
 
         const pathArray = window.location.pathname.split('/');
-        const id = pathArray[2];
+        const projectId = pathArray[2];
+        var devId = pathArray[4];
         var name = username;
-        if(sessionStorage.getItem('DeveloperNames' + id) != null && sessionStorage.getItem('Developers' + id) != null) {
-            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
-                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
-                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
+        if(sessionStorage.getItem('DeveloperNames' + projectId) != null && sessionStorage.getItem('Developers' + projectId) != null) {
+            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + projectId)).length; i++) {
+                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + projectId))[i])) {
+                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + projectId))[i]//use name to retrieve data
                     console.log("summary score table for: ", name)
                 }
             }
         }
 
         //request ref: http://localhost:8090/api/v1/projects/6/allTotalScores/user2/2021-01-01/2021-02-23
-        const response = await axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/" +
+        const response = await axios.get("/api/v1/projects/" + projectId + "/allTotalScores/"+ username +"/" +
             startTm + "/"
             + endTm + "/either")
 
         const scores = await response.data
         await this.setState({scoreSummary: scores, parentdata: username,startTime: startTm,
             endTime: endTm})
-
-        const MRresponse = await axios.get("/api/v1/projects/" + id + "/mergeRequests/"+ username +"/" +startTm + "/" + endTm)
+        const MRresponse = await axios.get("/api/v2/Project/" + projectId + "/Developers/"+ devId +"/mergeRequestsAndCommits")
         .then(MRres => {
             this.setState({merges : MRres.data});
             this.applyMultipliersMR();
         }).catch((error) => {
             console.error(error);})
-        
-        const commitResponse = await axios.get("/api/v1/projects/" + id + "/Commits/"+ username +"/" +startTm + "/"+ endTm + "/either")
+
+        const commitResponse = await axios.get("/api/v2/projects/" + projectId + "/Commits/"+ username +"/" +startTm + "/"+ endTm + "/either")
         .then(res=>{
             this.setState({commits : res.data});
             this.applyMultipliersCommits();
