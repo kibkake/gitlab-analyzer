@@ -32,6 +32,7 @@ class CommitChart extends Component {
         this.handler2 = this.handler2.bind(this)
         this.handler3 = this.handler3.bind(this)
         this.addExcludedPoints = this.addExcludedPoints.bind(this)
+        this.resetSingleCommitScore = this.resetSingleCommitScore.bind(this)
     }
 
     async handler(hash) {
@@ -60,6 +61,10 @@ class CommitChart extends Component {
         commitScore1 += score
         console.log(commitScore1)
         this.setState({singleCommitScore:commitScore1})
+    }
+
+    async resetSingleCommitScore(){
+        this.setState({singleCommitScore:0.0})
     }
 
     async componentDidMount() {
@@ -141,7 +146,8 @@ class CommitChart extends Component {
                         endTime = {this.props.endTime}
                         handler = {this.handler}
                         handler3 = {this.handler3}
-                        commits={this.state.commits} />
+                        commits={this.state.commits}
+                        resetSingleCommitScore = {this.resetSingleCommitScore}/>
                 </div>
             )
         }
@@ -152,9 +158,9 @@ class CommitChart extends Component {
                         devName = {this.props.devName}
                         totalScore = {this.state.totalScore}
                         startTime = {this.state.y_Axis}
-                        commits = {this.state.allCommits}
                         handler = {this.handler}
-                        commits={this.state.commits} />
+                        commits={this.state.commits}
+                        resetSingleCommitScore = {this.resetSingleCommitScore}/>
                 </div>
             )
         }
@@ -272,7 +278,7 @@ class CommitChart extends Component {
                                 yAxes: [{
                                     ticks : {
                                         fontColor: "blue",
-                                        fontStyle	: 'bold'
+                                        fontStyle	: 'bold',
                                     },gridLines : {
                                     }
                                 }]
