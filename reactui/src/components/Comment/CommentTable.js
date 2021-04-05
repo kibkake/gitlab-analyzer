@@ -214,7 +214,7 @@ class CommentTable extends Component{
             <>
                 <table>
                     <tr>
-                        <td class="removeBorder">
+                        <td className="removeBorder">
                             <h4 className="sort-header-margin">Sort</h4>
                         </td>
                         <td className="removeBorder">
@@ -222,13 +222,13 @@ class CommentTable extends Component{
                         </td>
                     </tr>
                     <tr>
-                        <td class="removeBorder">
+                        <td className="removeBorder">
                             <button className="filter sort-by-date-margin" onClick={this.sortByDate}>            Sort by date            </button>
                         </td>
                         <td className="removeBorder">
                             <button className="filter unsort-margin" onClick={this.unsortArrays}>              Unsort table             </button>
                         </td>
-                        <td class="removeBorder">
+                        <td className="removeBorder">
                             <button className="filter comments-on-code-reviews-margin" onClick={this.enableCodeRev}>          Only comments on code reviews          </button>
                         </td>
                         <td className="removeBorder">
