@@ -72,11 +72,13 @@ class AllCommits extends Component{
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
                     color: 'black',
-                    backgroundColor: 'lightgreen'}}> Total iteration score:  {this.props.totalScore.toFixed(1)}</div>
+                    backgroundColor: 'lightgreen'}}> Total iteration score:
+                    {this.props.totalScore.toFixed(1)}</div>
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
                     color: 'black',
-                    backgroundColor: 'lightgreen'}}> Total Excluded Points:  {excludedScore.toFixed(1)}</div>
+                    backgroundColor: 'lightgreen'}}> Total Excluded Points:
+                    {excludedScore.toFixed(1)}</div>
                 <Table >
                     <TableHead className="tableCell">
                         <TableRow>
@@ -95,7 +97,9 @@ class AllCommits extends Component{
                         {this.props.commits.map((item) => (
                             <CommitInfo key={item.committed_date}
                                 commit={item}
-                                handler = {this.handler}/>
+                                handler = {this.handler}
+                                resetSingleCommitScore = {this.props.resetSingleCommitScore}
+                                commits = {this.props.commits}/>
                         ))}
                     </TableBody>
                 </Table>
