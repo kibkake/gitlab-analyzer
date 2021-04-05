@@ -1,13 +1,41 @@
 .filters-header-margin{
-    margin-left:65%;
+    margin-left:259.7%;
 }
 
 .sort-header-margin{
-    margin-left:15%
+    margin-left:82.5%;
 }
 
 .sort-by-date-margin{
-    margin-left:25%
+    margin-left:0% !important;
+}
+
+.sort-by-word-count-margin{
+    margin-left:1% !important;
+}
+
+.sort-by-message-margin{
+    margin-left:0.28% !important;
+}
+
+.unsort-margin{
+    margin-left:1% !important;
+}
+
+.comments-on-both-margin{
+    margin-left:24% !important;
+}
+
+.comments-on-issues-margin{
+    margin-left:15% !important;
+}
+
+.comments-on-code-reviews-margin{
+    margin-left: 24.15% !important;
+}
+
+.comments-on-dev-code-margin{
+    margin-left: 15% !important;
 }
 
 .comments-table{

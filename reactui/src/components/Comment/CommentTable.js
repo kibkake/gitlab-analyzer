@@ -39,7 +39,7 @@ class CommentTable extends Component{
             issue:true,
             code_rev:true,
             parentdata: this.props.devName,
-            devs_code_btn_name:"Dev's Code"
+            devs_code_btn_name:"Just the comments on own code in code reviews"
         }
         this.enableAll=this.enableAll.bind(this);
         this.enableIssue=this.enableIssue.bind(this);
@@ -86,7 +86,7 @@ class CommentTable extends Component{
             console.error(error);
         });
 
-        if (this.state.devs_code_btn_name === "Dev's Code") {
+        if (this.state.devs_code_btn_name === "Just the comments on own code in code reviews") {
             await this.setState({comments:this.state.all_comments.slice()});
         }
         else {
@@ -119,11 +119,11 @@ class CommentTable extends Component{
 
     async filterByDevCode(e) {
         e.preventDefault();
-        if (this.state.devs_code_btn_name === "Dev's Code") {
-            await this.setState({devs_code_btn_name:"All Code", comments:this.state.comments_on_devs_code.slice()});
+        if (this.state.devs_code_btn_name === "Just the comments on own code in code reviews") {
+            await this.setState({devs_code_btn_name:"                  All code review comments                  ", comments:this.state.comments_on_devs_code.slice()});
         }
         else {
-            await this.setState({devs_code_btn_name:"Dev's Code", comments:this.state.all_comments.slice()});
+            await this.setState({devs_code_btn_name:"Just the comments on own code in code reviews", comments:this.state.all_comments.slice()});
         }
     }
 
@@ -133,7 +133,7 @@ class CommentTable extends Component{
         console.log(this.state.backup_all_comments);
         await this.setState({all_comments:this.state.backup_all_comments.slice(),
             comments_on_devs_code:this.state.backup_comments_on_devs_code.slice()});
-        if (this.state.devs_code_btn_name === "Dev's Code") {
+        if (this.state.devs_code_btn_name === "Just the comments on own code in code reviews") {
             // This means that currently, the comments table is showing comments
             // for all code. So, set it equal to the backup of all_comments:
             await this.setState({comments:this.state.backup_all_comments.slice()});
@@ -218,39 +218,35 @@ class CommentTable extends Component{
                             <h4 className="sort-header-margin">Sort</h4>
                         </td>
                         <td className="removeBorder">
-                            <h4 className="filters-header-margin">Filters</h4>
+                            <h4 className="filters-header-margin">Filter</h4>
                         </td>
                     </tr>
                     <tr>
                         <td class="removeBorder">
-                            <button className="filter" onClick={this.sortByDate}> Sort By Date </button>
+                            <button className="filter sort-by-date-margin" onClick={this.sortByDate}>            Sort by date            </button>
+                        </td>
+                        <td className="removeBorder">
+                            <button className="filter unsort-margin" onClick={this.unsortArrays}>              Unsort table             </button>
                         </td>
                         <td class="removeBorder">
-                            <button className="filter" onClick={this.enableAll}> All </button>
-                        </td>
-                    </tr>
-                    <tr class="removeBorder">
-                        <td className="removeBorder">
-                            <button className="filter" onClick={this.sortByWordCount}> Sort By Word Count </button>
+                            <button className="filter comments-on-code-reviews-margin" onClick={this.enableCodeRev}>          Only comments on code reviews          </button>
                         </td>
                         <td className="removeBorder">
-                            <button className="filter" onClick={this.enableIssue}> Issue </button>
+                            <button className="filter comments-on-issues-margin" onClick={this.enableIssue}>                    Only comments on issues                   </button>
                         </td>
                     </tr>
                     <tr>
                         <td className="removeBorder">
-                            <button className="filter" onClick={this.sortByCommentMessage}>Sort By Comment Message</button>
+                            <button className="filter sort-by-message-margin" onClick={this.sortByCommentMessage}>Sort by comment message</button>
                         </td>
                         <td className="removeBorder">
-                            <button className="filter" onClick={this.enableCodeRev}> Code Review </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="removeBorder">
-                            <button className="filter" onClick={this.unsortArrays}> Unsort Table </button>
+                            <button className="filter sort-by-word-count-margin" onClick={this.sortByWordCount}>        Sort by word count        </button>
                         </td>
                         <td className="removeBorder">
-                            <button className="filter" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
+                            <button className="filter comments-on-both-margin" onClick={this.enableAll}> Comments on both issues and code reviews </button>
+                        </td>
+                        <td className="removeBorder">
+                            <button className="filter comments-on-dev-code-margin" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
                         </td>
                     </tr>
                 </table>
