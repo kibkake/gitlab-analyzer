@@ -68,7 +68,15 @@ class AllCommits extends Component{
                     color: 'black',
                     backgroundColor: 'lightgreen'}}> All Commits {" "}
                     {moment(this.props.startTime).format('lll').substring(0,12)} -
-                    {moment(this.props.endTime).format('lll').substring(0,12)}</div>
+                    {" " + moment(this.props.endTime).format('lll').substring(0,12)}</div>
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'black',
+                    backgroundColor: 'lightgreen'}}> Total iteration score:  {this.props.totalScore.toFixed(1)}</div>
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'black',
+                    backgroundColor: 'lightgreen'}}> Total Excluded Points:  {excludedScore.toFixed(1)}</div>
                 <Table >
                     <TableHead className="tableCell">
                         <TableRow>
