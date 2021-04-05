@@ -12,6 +12,11 @@ can be directly compared to find which date is earlier/later.
 For deep copying a string. The method given in the accepted answer was previously used
 in the sortByCommentMessage function, but it turns out deep copying isn't needed here
 (so that commit has been amended).
+
+- https://stackoverflow.com/questions/5684144/how-to-completely-remove-borders-from-html-table
+Used Stephen's answer to remove lines in a table. Made .removeBorder in
+CommentTable.css and used it in this file.
+
  */
 
 import React, { Component } from "react";
@@ -207,17 +212,48 @@ class CommentTable extends Component{
 
         return (
             <>
-                <h4 className="comments-filter">   Filters</h4>
-                <div className="comments-filter">
-                    <button className="filter" onClick={this.enableAll}> All </button>
-                    <button className="filter" onClick={this.enableIssue}> Issue </button>
-                    <button className="filter" onClick={this.enableCodeRev}> Code Review </button>
-                    <button className="filter" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
-                    <button className="filter" onClick={this.sortByWordCount}> Sort By Word Count </button>
-                    <button className="filter" onClick={this.sortByDate}> Sort By Date </button>
-                    <button className="filter" onClick={this.unsortArrays}> Unsort Table </button>
-                    <button className="filter" onClick={this.sortByCommentMessage}>Sort By Comment Message</button>
-                </div>
+                <table>
+                    <tr>
+                        <td class="removeBorder">
+                            <h4 className="sort-header-margin">Sort</h4>
+                        </td>
+                        <td className="removeBorder">
+                            <h4 className="filters-header-margin">Filters</h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="removeBorder">
+                            <button className="filter" onClick={this.sortByDate}> Sort By Date </button>
+                        </td>
+                        <td class="removeBorder">
+                            <button className="filter" onClick={this.enableAll}> All </button>
+                        </td>
+                    </tr>
+                    <tr class="removeBorder">
+                        <td className="removeBorder">
+                            <button className="filter" onClick={this.sortByWordCount}> Sort By Word Count </button>
+                        </td>
+                        <td className="removeBorder">
+                            <button className="filter" onClick={this.enableIssue}> Issue </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="removeBorder">
+                            <button className="filter" onClick={this.sortByCommentMessage}>Sort By Comment Message</button>
+                        </td>
+                        <td className="removeBorder">
+                            <button className="filter" onClick={this.enableCodeRev}> Code Review </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="removeBorder">
+                            <button className="filter" onClick={this.unsortArrays}> Unsort Table </button>
+                        </td>
+                        <td className="removeBorder">
+                            <button className="filter" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
+                        </td>
+                    </tr>
+                </table>
                 <br/>
                 <Table striped bordered hover className="comments-table">
                     <thead>

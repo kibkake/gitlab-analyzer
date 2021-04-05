@@ -1,5 +1,13 @@
-.comments-filter{
-    margin-left:78%;
+.filters-header-margin{
+    margin-left:65%;
+}
+
+.sort-header-margin{
+    margin-left:15%
+}
+
+.sort-by-date-margin{
+    margin-left:25%
 }
 
 .comments-table{
@@ -34,4 +42,8 @@
 
 .vspace{
     margin-bottom: 2cm;
+}
+
+.removeBorder{
+    border:none !important;
 }
