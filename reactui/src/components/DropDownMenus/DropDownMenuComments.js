@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import Select from 'react-select'
 import Navbar_Developers from "../NavBars_Menu/Navbar_Developers";
-import CustomizedRadios from "../Comment/RadioButtonComment";
 import CommentTable from "../Comment/CommentTable";
 import './DropDownMenu.css';
+import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
 
 function DropDownMenuComments ({listOfDevelopers}) {
 
@@ -27,19 +27,19 @@ function DropDownMenuComments ({listOfDevelopers}) {
 
         <div>
             <Navbar_Developers devName = {selectedValue}/>
-            <br>
-            </br>
+            <br/>
             <div className="DropDownMenu">
 
-            <Select
-                options={devArray}
-                defaultValue={{ label: selectedValue, value: selectedValue }}
-                onChange={handleChange}/>
+                <Select
+                    options={devArray}
+                    defaultValue={{ label: selectedValue, value: selectedValue }}
+                    onChange={handleChange}/>
             </div>
-            <br>
-            </br>
-            <h1 style={{textAlign:'center'}}>Comment Contribution</h1>
+            <div className="snap-widget">
+                <SnapshotWidgetComponent/>
+            </div>
             <br/>
+            <h1 style={{textAlign:'center'}}>Comment Contribution</h1>
             <br/>
             <CommentTable devName = {selectedValue}/>
 

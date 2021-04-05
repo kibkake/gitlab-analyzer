@@ -10,7 +10,6 @@
 
 .cancel:hover{
     color:red;
-    font-weight: bold;
 }
 
 .cancel:active{
@@ -24,7 +23,6 @@
 
 .signup:hover, .checkAvail:hover{
     color:darkcyan;
-    font-weight: bold;
 }
 
 .signup:active, .checkAvail:active{
@@ -44,7 +42,6 @@ input{
 
 .checkAvail:hover{
     color:black;
-    font-weight: bold;
 }
 
 .checkAvail:active{

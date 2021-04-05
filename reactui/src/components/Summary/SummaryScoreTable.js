@@ -132,6 +132,26 @@ class SummaryScoreTable extends Component{
         // copy button
         let toCopy = "Commits: " + (Math.round(totalCommitSc * 10) / 10) + " Merge Requests: " + (Math.round(totalMergeRequestSc * 10) / 10) + " Word count of comments: " + Math.round(totalCommentWordCt * 10) / 10;
 
+        // non-https copy method from Stack Overflow
+        // https://stackoverflow.com/questions/51805395/navigator-clipboard-is-undefined
+        function copyToClipboard(textToCopy) {
+            // text area method
+            let textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            // make the textarea out of viewport
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            return new Promise((res, rej) => {
+                // here the magic happens
+                document.execCommand('copy') ? res() : rej();
+                textArea.remove();
+            });
+        }
+
         return (
             <div className="container">
                 <Table striped bordered hover>
@@ -146,7 +166,7 @@ class SummaryScoreTable extends Component{
                             <td>{Math.round(totalCommitSc * 10) / 10}</td>
                             <td>{Math.round(totalMergeRequestSc * 10) / 10}</td>
                             <td>{Math.round(totalCommentWordCt * 10) / 10}</td>
-                            <td><button onClick={()=>navigator.clipboard.writeText(toCopy)}> Copy Fields</button></td>
+                            <td><button onClick={()=>copyToClipboard(toCopy)}> Copy Fields</button></td>
                         </tr>
                     </tbody>
                 </Table>
