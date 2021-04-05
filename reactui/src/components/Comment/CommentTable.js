@@ -66,8 +66,7 @@ class CommentTable extends Component{
             .then(response => {
                 const all_comments = response.data
                 const backup_all_comments = all_comments.slice();
-                this.setState({all_comments: all_comments});
-                this.setState({backup_all_comments: backup_all_comments});
+                this.setState({all_comments: all_comments, backup_all_comments: backup_all_comments});
                 console.log(this.state.all_comments);
                 console.log(this.state.backup_all_comments);
             }).catch((error) => {
@@ -78,8 +77,8 @@ class CommentTable extends Component{
             .then(response => {
                 const comments_on_devs_code = response.data
                 const backup_comments_on_devs_code = comments_on_devs_code.slice();
-                this.setState({comments_on_devs_code: comments_on_devs_code});
-                this.setState({backup_comments_on_devs_code: backup_comments_on_devs_code});
+                this.setState({comments_on_devs_code: comments_on_devs_code,
+                    backup_comments_on_devs_code: backup_comments_on_devs_code});
                 console.log(this.state.comments_on_devs_code);
                 console.log(this.state.backup_comments_on_devs_code);
             }).catch((error) => {
