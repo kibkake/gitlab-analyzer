@@ -7,6 +7,11 @@ For how to sort an array of objects in Javascript.
 - https://stackoverflow.com/questions/14781153/how-to-compare-two-string-dates-in-javascript
 fuyi's answer showed that two strings representing dates (in the necessary format)
 can be directly compared to find which date is earlier/later.
+
+- https://stackoverflow.com/questions/31712808/how-to-force-javascript-to-deep-copy-a-string
+For deep copying a string. The method given in the accepted answer was previously used
+in the sortByCommentMessage function, but it turns out deep copying isn't needed here
+(so that commit has been amended).
  */
 
 import React, { Component } from "react";
@@ -38,6 +43,7 @@ class CommentTable extends Component{
         this.sortByWordCount=this.sortByWordCount.bind(this);
         this.sortByDate=this.sortByDate.bind(this);
         this.unsortArrays=this.unsortArrays.bind(this);
+        this.sortByCommentMessage=this.sortByCommentMessage.bind(this);
     }
 
     componentDidMount() {
@@ -162,6 +168,24 @@ class CommentTable extends Component{
             comments_on_devs_code:comments_on_devs_code_sorted});
     }
 
+    async sortByCommentMessage(e) {
+        e.preventDefault();
+        // Uppercase and lowercase letters will be treated the same for ordering.
+        let comments_sorted = this.state.comments;
+        comments_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? 1 : -1);
+        // Note that a.body and b.body will not be modified by toLowerCase(),
+        // as the method creates a new object. So making a deep copy is not necessary.
+
+        let all_comments_sorted = this.state.all_comments;
+        all_comments_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? 1 : -1);
+
+        let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
+        comments_on_devs_code_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? 1 : -1);
+
+        await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
+            comments_on_devs_code:comments_on_devs_code_sorted});
+    }
+
     render() {
         var Data = this.state.comments.map(function (item) {
             let currentYear = new Date().getFullYear();
@@ -192,6 +216,7 @@ class CommentTable extends Component{
                     <button className="filter" onClick={this.sortByWordCount}> Sort By Word Count </button>
                     <button className="filter" onClick={this.sortByDate}> Sort By Date </button>
                     <button className="filter" onClick={this.unsortArrays}> Unsort Table </button>
+                    <button className="filter" onClick={this.sortByCommentMessage}>Sort By Comment Message</button>
                 </div>
                 <br/>
                 <Table striped bordered hover className="comments-table">
