@@ -67,6 +67,8 @@ class Developers2Button extends Component{
     }
 
     render(){
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
         return(
@@ -79,7 +81,7 @@ class Developers2Button extends Component{
                                     onClick={(e) => {
                                         e.preventDefault();
                                         sessionStorage.setItem('CurrentDeveloper', JSON.stringify(user))
-                                        console.log("Developer",sessionStorage.getItem('CurrentDeveloper'))
+                                        console.log("Developer",sessionStorage.getItem('CurrentDeveloper' + repNum))
                                         this.storeNames()
 
                                         window.location.href=  window.location.pathname + '/' + user.username + "/summary";

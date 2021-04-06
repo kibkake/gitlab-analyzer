@@ -20,7 +20,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
         sessionStorage.setItem("CurrentDeveloper", pathArray[4])
     }
 
-    listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
+    listOfDevelopers.map(item => {devArray.push({label: item.username, value: item.id})})
 
     const[selectedValue, setSelectedValue] = useState(
         pathArray[4]
@@ -84,7 +84,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             <div className="DropDownMenu">
                     <Select
                         options={devArray}
-                        defaultValue={{label: selectedValue, value: selectedValue}}
+                        defaultValue={{label: selectedValue, value: obj.value}}
                         onChange={handleChange}
                     />
             </div>
