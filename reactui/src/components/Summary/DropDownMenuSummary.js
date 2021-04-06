@@ -84,7 +84,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             <div className="DropDownMenu">
                     <Select
                         options={devArray}
-                        defaultValue={{label: selectedValue, value: obj.value}}
+                        defaultValue={{label: selectedValue, value: selectedValue}}
                         onChange={handleChange}
                     />
             </div>
