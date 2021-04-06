@@ -4,6 +4,7 @@ import CommitsPerDay from "./CommitsPerDay";
 import SingleCommitDiff from "../Developers/SingleCommitDiffs"
 import "./HBox.css"
 import CommitMergeRequest from "./CommitMergeRequest";
+import ProjectService from "../../Service/ProjectService";
 
 
 class CommitChart extends Component {
@@ -37,7 +38,14 @@ class CommitChart extends Component {
     }
 
     async componentDidMount() {
+        var str = window.location.pathname;
+        var repNum = str.split("/")[2];
+        var devId = str.split("/")[4];
         const {parentdata} = this.state;
+        if(sessionStorage.getItem("CurrentDeveloper") == null) {
+            await ProjectService.getCurDevInfo(repNum, devId)
+
+        }
         await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 

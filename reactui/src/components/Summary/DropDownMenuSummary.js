@@ -9,7 +9,7 @@ import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
 
 
-
+//TODO: snapshot comp. -> snap.jsx -> load snap ->
 
 function DropDownMenuSummary ({listOfDevelopers}) {
 
@@ -17,31 +17,12 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     const pathArray = window.location.pathname.split('/');
 
-    if(sessionStorage.getItem("CurrentDeveloper") == null){
-        getCurDevInfo(pathArray[2], pathArray[4])
-    }
-    async function getCurDevInfo(repNum, devID) {
-        let url2 = '/api/v2/Project/' + repNum + '/Developers/' + devID + 'devInfo'
-        var devs = [];
-        fetch(url2)
-            .then(response => {
-                return response.json();
-            })
-            .then(d => {
-                devs = d;
-                console.log("Dev info", devs);
-            })
-        var userData = [];
-        userData = await devs.map(({username, id}) => ({username, id}))
-        console.log("Maped user Data", userData)
-        await sessionStorage.setItem("CurrentDeveloper" + repNum, JSON.stringify(userData));
-        console.log("Developer session storage:", sessionStorage.getItem('CurrentDeveloper' + repNum))
-    }
-
     listOfDevelopers.map(item => {devArray.push({label: item.username, value: item.id})})
+    var currDevJSON = JSON.parse(sessionStorage.getItem('CurrentDeveloper')).username
+    console.log("Drop Down dev", currDevJSON)
 
     const[selectedValue, setSelectedValue] = useState(
-        pathArray[4]
+        currDevJSON
     );
 
     const handleChange = obj => {
@@ -107,12 +88,12 @@ function DropDownMenuSummary ({listOfDevelopers}) {
             </div>
             </div>
                 <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
-                <SummaryScoreTable devName = {selectedValue}
+                <SummaryScoreTable devId = {selectedValue}
                                    startTime = {changeDateFormat(getInitialStartDate())}
                                    endTime = {changeDateFormat(getInitialEndDate())}
                 />
                 <div>
-                <SummaryChartRadios devName = {selectedValue}
+                <SummaryChartRadios devId = {selectedValue}
                                     startTime = {changeDateFormat(getInitialStartDate())}
                                     endTime = {changeDateFormat(getInitialEndDate())}/>
 

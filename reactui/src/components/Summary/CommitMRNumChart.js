@@ -13,7 +13,7 @@ export default class CommitMRNumChart extends PureComponent {
         super(props);
         this.state = {
             frequency:[{date: null, numCommits: 0, numMergeRequest: 0}],
-            parentdata: this.props.devName,
+            parentdata: this.props.devId,
             startTime: this.props.startTime,
             endTime: this.props.endTime
         }

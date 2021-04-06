@@ -14,14 +14,14 @@ function DropDownMenuCommit ({listOfDevelopers}) {
     })
 
     const pathArray = window.location.pathname.split('/');
-
+    var currDev = JSON.parse(sessionStorage.getItem('CurrentDeveloper')).username
     const [selectedValue, setSelectedValue] = useState(
-        pathArray[4]
+        currDev
     );
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
-        sessionStorage.setItem("CurrentDeveloper", obj.label);
+        sessionStorage.setItem("CurrentDeveloper", obj);
     }
 
     return (

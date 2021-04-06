@@ -9,10 +9,11 @@ function DropDownMenuComments ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
-        devArray.push({label: item, value: item})
+        devArray.push({label: item.username, value: item.id})
     })
 
     const pathArray = window.location.pathname.split('/');
+
 
     const [selectedValue, setSelectedValue] = useState(
         pathArray[4]

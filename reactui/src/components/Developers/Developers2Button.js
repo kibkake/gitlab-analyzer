@@ -16,6 +16,8 @@ class Developers2Button extends Component{
 
 
 
+
+
     async componentDidMount() {
        await this.getDataFromBackend();
     }
@@ -73,7 +75,6 @@ class Developers2Button extends Component{
     render(){
         var data = JSON.stringify(this.state.data);
         var DataArray = JSON.parse(data)
-
         return(
             <ul>
                 {this.state.users.map((user) => {
@@ -83,7 +84,8 @@ class Developers2Button extends Component{
                                     type="button"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        sessionStorage.setItem("CurrentDeveloper", JSON.stringify(user))
+                                        sessionStorage.setItem('CurrentDeveloper', JSON.stringify(user))
+                                        console.log("Developer",sessionStorage.getItem('CurrentDeveloper'))
                                         this.storeNames()
 
                                         window.location.href=  window.location.pathname + '/' + user.id + "/summary";

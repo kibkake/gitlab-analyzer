@@ -17,6 +17,7 @@ function Chart(props){
     if (props.value === "score") {
         return (<div>
             <CommitMRScoreChart devName = {props.devName}
+                                devId = {props.devId}
                                 startTime = {props.startTime}
                                 endTime = {props.endTime}/>
         </div>);
@@ -24,6 +25,7 @@ function Chart(props){
     else if (props.value === "number") {
         return (<div>
             <CommitMRNumChart devName={props.devName}
+                              devId = {props.devId}
                               startTime = {props.startTime}
                               endTime = {props.endTime}/>
         </div>);
@@ -31,6 +33,7 @@ function Chart(props){
     else {
         return (<div>
             <CommentChart devName={props.devName}
+                          devId = {props.devId}
                           startTime = {props.startTime}
                           endTime = {props.endTime}/>
         </div>);
@@ -41,7 +44,8 @@ export default class RadioButtonSummaryChart extends Component {
     constructor(props) {
         super(props);
         this.state = {value: "score",
-            parentData: this.props.devName,
+            devId: this.props.devId,
+            devName: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime,
         };

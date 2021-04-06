@@ -6,7 +6,10 @@ class Summary extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            developers: []
+            developers: [],
+            currDev: []                     ,
+                        data: [],
+
         };
     }
 
@@ -14,6 +17,7 @@ class Summary extends Component {
 
         var str = window.location.pathname;
         var repNum = str.split("/")[2];
+        var devId = str.split("/")[4];
 
         if(sessionStorage.getItem("Developers" + repNum) == null) {
             console.log("no developer objects in session storage")
@@ -31,6 +35,21 @@ class Summary extends Component {
         console.log("state.developers", this.state.developers)
         console.log("Developer",sessionStorage.getItem('Developers' + repNum))
         console.log("DeveloperNames",sessionStorage.getItem('DeveloperNames' + repNum))
+        await this.getCurDevInfo(repNum, devId)
+    }
+
+    async getCurDevInfo(repNum, devID) {
+        let url2 = '/api/v2/Project/' + repNum + '/Developers/' + devID + '/devInfo'
+        await fetch(url2)
+            .then(response => {
+                return response.json();
+            })
+            .then(d => {
+                this.setState({ currDev: d });
+                console.log("curr dev info", this.state.currDev);
+            })
+        await sessionStorage.setItem("CurrentDeveloper", JSON.stringify(this.state.currDev))
+        console.log("curr dev in session storage",  sessionStorage.getItem("CurrentDeveloper"))
     }
 
     static getDerivedStateFromProps() {

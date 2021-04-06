@@ -10,7 +10,7 @@ class SummaryScoreTable extends Component{
              scoreSummary:[],
              merges:[],
              commits:[],
-             parentdata: this.props.devName,
+             parentdata: this.props.devId,
              startTime: this.props.startTime,
              endTime: this.props.endTime
          }
@@ -21,11 +21,10 @@ class SummaryScoreTable extends Component{
         await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime)
      }
 
-     async getDataFromBackend (dev, startTm, endTm) {
+     async getDataFromBackend (username, devId, startTm, endTm) {
 
         const pathArray = window.location.pathname.split('/');
         const projectId = pathArray[2];
-        var devId = pathArray[4];
         var name = username;
         if(sessionStorage.getItem('DeveloperNames' + projectId) != null && sessionStorage.getItem('Developers' + projectId) != null) {
             for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + projectId)).length; i++) {
