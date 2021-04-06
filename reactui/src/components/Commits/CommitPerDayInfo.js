@@ -21,6 +21,24 @@ function CommitPerDayInfo(props) {
         false
     );
 
+    if(sessionStorage.getItem("excludedFiles") === null){
+        var fileArray = []
+        sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
+    }
+
+    var tempArray = []
+    tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+    var isInArray = false
+    props.commits.map(function (item) {
+        item.diffs.map(function (item2) {
+            for (var i = 0; i < tempArray.length; i++) {
+                if (tempArray[i] === props.commit.id + "_" + item2.new_path) {
+                    isInArray = true
+                }
+            }
+        })
+    });
+
     return (
         <React.Fragment>
             <TableRow className="commitTable">
@@ -31,8 +49,9 @@ function CommitPerDayInfo(props) {
                 {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
                     props.commit.title.substring(0,10)}
                 </TableCell>
-                <TableCell align="right" style={{color:"blue",  fontSize:"15", fontWeight:"bold"}}>
-                    {"+" + props.commit.commitScore.toFixed(1)}
+                <TableCell align="right">
+                    {isInArray? <div style={{color:"red", fontSize:"15", fontWeight:"bold"}}> {"+" + props.commit.commitScore.toFixed(1)} </div> : <div style={{color:"blue", fontSize:"15", fontWeight:"bold"}}> {"+" + props.commit.commitScore.toFixed(1)} </div>}
+
                 </TableCell>
 
                 <TableCell align="right">
@@ -51,6 +70,7 @@ function CommitPerDayInfo(props) {
                             type="button"
                             onClick={(e) => {
                                 e.preventDefault();
+                                {props.resetSingleCommitScore()}
                                 {props.handler(props.commit.id)}
                             }}>
                         DIFF
