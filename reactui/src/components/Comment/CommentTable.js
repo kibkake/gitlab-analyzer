@@ -184,7 +184,7 @@ class CommentTable extends Component{
         // Uppercase and lowercase letters will be treated the same for ordering.
         let sorted_by_comment_msg_state = this.state.sorted_by_comment_msg_state;
 
-        if (sorted_by_comment_msg_state == 2) {
+        if (sorted_by_comment_msg_state === 2) {
             // Go to state 0 (i.e., unsort):
             await this.unsortArrays(e);
         }
@@ -193,7 +193,7 @@ class CommentTable extends Component{
             // Will either be sorting in ascending or descending order. Check which it is
             // right now.
             let multiplier = 1;
-            if (sorted_by_comment_msg_state == 1) {
+            if (sorted_by_comment_msg_state === 1) {
                 // In ascending order, so want to sort in descending order:
                 multiplier = -1;
             }

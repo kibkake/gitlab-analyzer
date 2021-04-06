@@ -7,15 +7,15 @@
 }
 
 .sort-by-date-margin{
-    margin-left:0% !important;
+    margin-left:0 !important;
 }
 
 .sort-by-word-count-margin{
-    margin-left:0% !important;
+    margin-left:0 !important;
 }
 
 .sort-by-message-margin{
-    margin-left:0% !important;
+    margin-left:0 !important;
 }
 
 .unsort-margin{
@@ -72,7 +72,6 @@
 
 .filter:hover{
     color:darkcyan;
-    font-weight: bold;
 }
 
 .filter:active{
