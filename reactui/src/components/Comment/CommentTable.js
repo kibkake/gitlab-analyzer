@@ -44,6 +44,7 @@ class CommentTable extends Component{
             // For the following variables, 0 means unsorted, 1 means sorted in ascending
             // order, and 2 means sorted in descending order.
             sorted_by_date_state:0,
+            sorted_by_word_count_state:0,
             sorted_by_comment_msg_state:0
         }
         this.enableAll=this.enableAll.bind(this);
@@ -145,23 +146,33 @@ class CommentTable extends Component{
         else {
             await this.setState({comments:this.state.backup_comments_on_devs_code.slice()});
         }
-        await this.setState({sorted_by_comment_msg_state:0, sorted_by_date_state:0});
+        await this.setState({sorted_by_comment_msg_state:0, sorted_by_date_state:0, sorted_by_word_count_state:0});
     }
 
     async sortByWordCount(e) {
         e.preventDefault();
-        let comments_sorted = this.state.comments;
-        comments_sorted.sort((a,b) => a.wordCount - b.wordCount);
+        let sorted_by_word_count_state = this.state.sorted_by_word_count_state;
+        if (sorted_by_word_count_state === 2) {
+            await this.unsortArrays(e);
+        }
+        else {
+            let order_decider = 1;
+            if (sorted_by_word_count_state === 1) {
+                order_decider = -1;
+            }
+            let comments_sorted = this.state.comments;
+            comments_sorted.sort((a,b) => order_decider * (a.wordCount - b.wordCount));
 
-        let all_comments_sorted = this.state.all_comments;
-        all_comments_sorted.sort((a,b) => a.wordCount - b.wordCount);
+            let all_comments_sorted = this.state.all_comments;
+            all_comments_sorted.sort((a,b) => order_decider * (a.wordCount - b.wordCount));
 
-        let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
-        comments_on_devs_code_sorted.sort((a,b) => a.wordCount - b.wordCount);
+            let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
+            comments_on_devs_code_sorted.sort((a,b) => order_decider * (a.wordCount - b.wordCount));
 
-        await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
-            comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_comment_msg_state:0,
-            sorted_by_date_state:0});
+            await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
+                comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_word_count_state:sorted_by_word_count_state + 1,
+                sorted_by_comment_msg_state:0, sorted_by_date_state:0});
+        }
     }
 
     async sortByDate(e) {
@@ -185,8 +196,8 @@ class CommentTable extends Component{
             comments_on_devs_code_sorted.sort((a,b) => a.created_at > b.created_at ? order_decider : -1 * order_decider);
 
             await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
-                comments_on_devs_code:comments_on_devs_code_sorted,
-                sorted_by_comment_msg_state:0, sorted_by_date_state:sorted_by_date_state + 1});
+                comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_date_state:sorted_by_date_state + 1,
+                sorted_by_comment_msg_state:0, sorted_by_word_count_state:0});
         }
     }
 
@@ -220,7 +231,7 @@ class CommentTable extends Component{
 
             await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
                 comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_comment_msg_state:sorted_by_comment_msg_state + 1,
-                sorted_by_date_state:0});
+                sorted_by_date_state:0, sorted_by_word_count_state:0});
         }
     }
 
@@ -297,7 +308,15 @@ class CommentTable extends Component{
                                 <th className="comments-table-date">Date <button className="table-button filter sort-by-date-margin button-colour-when-sorted-descending" onClick={this.sortByDate}><FaSort/></button></th>
                             }
 
-                            <th className="comments-table-wc">Word Count <button className="table-button filter sort-by-word-count-margin" onClick={this.sortByWordCount}><FaSort/></button></th>
+                            {this.state.sorted_by_word_count_state === 0 &&
+                                <th className="comments-table-wc">Word Count <button className="table-button filter sort-by-word-count-margin button-colour-when-unsorted" onClick={this.sortByWordCount}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_word_count_state === 1 &&
+                                <th className="comments-table-wc">Word Count <button className="table-button filter sort-by-word-count-margin button-colour-when-sorted-ascending" onClick={this.sortByWordCount}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_word_count_state === 2 &&
+                                <th className="comments-table-wc">Word Count <button className="table-button filter sort-by-word-count-margin button-colour-when-sorted-descending" onClick={this.sortByWordCount}><FaSort/></button></th>
+                            }
 
                             {this.state.sorted_by_comment_msg_state === 0 &&
                                 <th>Comments <button className="table-button filter sort-by-message-margin button-colour-when-unsorted" onClick={this.sortByCommentMessage}><FaSort/></button></th>
