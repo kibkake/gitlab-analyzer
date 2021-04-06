@@ -10,12 +10,19 @@ class CommitMergeRequest extends PureComponent {
         super(props);
         this.state = {
             data: {mrScore: 0, diffs : [{diff: []}]},
-            hash : this.props.hash
+            hash : this.props.hash,
         }
     }
 //http://localhost:8090/api/v2/projects/6/mergeRequests/81dcd6aab70ebf99195e234d9f4f49ec13d0a252
     async componentDidMount() {
         await this.getDataFromBackend();
+        await this.getCurDevInfo
+    }
+
+
+    static getDerivedStateFromProps() {
+        console.log("Running the Summary component")
+        return null
     }
 
     async componentDidUpdate(prevProps){

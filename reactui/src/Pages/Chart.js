@@ -7,7 +7,8 @@ class Chart extends Component{
     constructor(props){
         super(props);
         this.state={
-            developers: []
+            developers: [],
+            currDev: this.props.currDev
         };
     }
 
@@ -29,7 +30,7 @@ class Chart extends Component{
         return (
 
             <header classname='Rest'>
-                <DropDownMenuCommit listOfDevelopers = {developersArray.map(dev => dev.username)}/>
+                <DropDownMenuCommit listOfDevelopers = {developersArray.map(dev => dev)}/>
 
             </header>
 

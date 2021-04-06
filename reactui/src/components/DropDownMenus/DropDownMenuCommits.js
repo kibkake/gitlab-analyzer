@@ -10,11 +10,12 @@ function DropDownMenuCommit ({listOfDevelopers}) {
 
     const devArray = [];
     listOfDevelopers.map(item => {
-        devArray.push({label: item, value: item})
+        devArray.push({label: item.label, value: item.id})
     })
 
     const pathArray = window.location.pathname.split('/');
     var currDev = JSON.parse(sessionStorage.getItem('CurrentDeveloper')).username
+    console.log("Cur Dev", sessionStorage.getItem('CurrentDeveloper').username)
     const [selectedValue, setSelectedValue] = useState(
         currDev
     );

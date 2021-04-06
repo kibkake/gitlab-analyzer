@@ -42,10 +42,7 @@ class CommitChart extends Component {
         var repNum = str.split("/")[2];
         var devId = str.split("/")[4];
         const {parentdata} = this.state;
-        if(sessionStorage.getItem("CurrentDeveloper") == null) {
-            await ProjectService.getCurDevInfo(repNum, devId)
-
-        }
+        await ProjectService.getCurDevInfo(repNum, devId)
         await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
     }
 

@@ -88,7 +88,7 @@ class Developers2Button extends Component{
                                         console.log("Developer",sessionStorage.getItem('CurrentDeveloper'))
                                         this.storeNames()
 
-                                        window.location.href=  window.location.pathname + '/' + user.id + "/summary";
+                                        window.location.href=  window.location.pathname + '/' + user.username + "/summary";
                                     }}>
                                 <span >{user.username}</span>
                             </Button>

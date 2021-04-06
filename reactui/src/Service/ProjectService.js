@@ -64,7 +64,7 @@ class ProjectService {
 
         let url2 = '/api/v2/Project/' + repNum + '/Developers/all'
         var users = [];
-        fetch(url2)
+        await fetch(url2)
             .then(response => {
                 return response.json();
             })
@@ -77,21 +77,6 @@ class ProjectService {
         console.log("Maped user Data", userData)
         await sessionStorage.setItem("Developers" + repNum, JSON.stringify(userData));
         console.log("Developer session storage:",sessionStorage.getItem('Developers' + repNum))
-
-    }
-
-    async getCurDevInfo(repNum, devID) {
-        let url2 = '/api/v2/Project/' + repNum + '/Developers/' + devID + '/devInfo'
-        await fetch(url2)
-            .then(response => {
-                return response.json();
-            })
-            .then(d => {
-                this.setState({ currDev: d });
-                console.log("curr dev info", this.state.currDev);
-            })
-        await sessionStorage.setItem("CurrentDeveloper", JSON.stringify(this.state.currDev))
-        console.log("curr dev in session storage",  sessionStorage.getItem("CurrentDeveloper"))
     }
 }
 

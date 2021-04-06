@@ -7,8 +7,8 @@ class Summary extends Component {
         super(props);
         this.state = {
             developers: [],
-            currDev: []                     ,
-                        data: [],
+            currDev: [],
+            data: [],
 
         };
     }
