@@ -40,8 +40,7 @@ export default class MergeListTable  extends PureComponent {
                 }
             }
         }
-
-        const response = axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
+        const response = axios.get("/api/v2/Project/" + id + "/Developers/" + username + "/mergeRequestsAndCommits")
             .then(res => {
                         this.setState({merges : res.data, parentData: username});
                         this.applyMultipliers();

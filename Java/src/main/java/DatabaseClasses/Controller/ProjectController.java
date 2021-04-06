@@ -108,10 +108,6 @@ public class ProjectController {
         // rather than done as everytime the user access each project page
         // commenting this out doesn't affect the current app
 
-//        if (!project.isInfoSet()) {
-//            projectService.setProjectInfo(projectId);
-//            project = projectService.getProject(projectId); // get project now that it has been modified
-//        }
         return project;
     }
 
@@ -133,22 +129,6 @@ public class ProjectController {
         return projectService.getDevIssues(projectId, userName, StartLocalTime, endLocalTime);
     }
 
-    @GetMapping("projects/{projectId}/mergeRequests")
-    public List<MergeRequest> getProjectMergeRequests(@PathVariable("projectId") int projectId) {
-        return projectService.getProjectMRs(projectId);
-    }
-
-    // TODO: Change the mapping from userName to username, to make semantics clearer.
-    // It refers to the dev's username, not a user's name.
-    @GetMapping("projects/{projectId}/mergeRequests/{userName}/{start}/{end}")
-    public List<MergeRequest> getDevMergeRequests(@PathVariable("projectId") int projectId,
-                                                  @PathVariable("userName") String userName,
-                                                  @PathVariable("start") String start,
-                                                  @PathVariable("end") String end) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
-        return projectService.getDevMergeRequests(projectId, userName, StartLocalTime, endLocalTime);
-    }
 
     private ProjectService.UseWhichDevField whichDevFieldIsString(String whichDevField) {
         if (whichDevField.equalsIgnoreCase("username")) {
@@ -261,16 +241,6 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/commit/{commitId}")
     public Commit getCommit(@PathVariable String commitId, @PathVariable int projectId) {
         return projectService.getCommit(projectId, commitId);
-    }
-
-    @GetMapping("setProjectMrs/{projectId}")
-    public void setProjectMRs(@PathVariable int projectId) {
-        projectService.setProjectMrs(projectId);
-    }
-
-    @GetMapping("projects/{projectId}/mergeRequest/{mrId}")
-    public MergeRequest getMergeRequest(@PathVariable int mrId, @PathVariable int projectId) {
-        return projectService.getMergeRequest(projectId, mrId);
     }
 
     @GetMapping("projects/{projectId}/allTotalScores/{username}/{start}/{end}/{whichDevField}")
