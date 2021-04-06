@@ -43,7 +43,8 @@ class CommentTable extends Component{
             devs_code_btn_name:"Just the comments on own code in code reviews",
             // For the following variables, 0 means unsorted, 1 means sorted in ascending
             // order, and 2 means sorted in descending order.
-            sorted_by_comment_msg_state:0,
+            sorted_by_date_state:0,
+            sorted_by_comment_msg_state:0
         }
         this.enableAll=this.enableAll.bind(this);
         this.enableIssue=this.enableIssue.bind(this);
@@ -144,7 +145,7 @@ class CommentTable extends Component{
         else {
             await this.setState({comments:this.state.backup_comments_on_devs_code.slice()});
         }
-        await this.setState({sorted_by_comment_msg_state:0});
+        await this.setState({sorted_by_comment_msg_state:0, sorted_by_date_state:0});
     }
 
     async sortByWordCount(e) {
@@ -159,24 +160,34 @@ class CommentTable extends Component{
         comments_on_devs_code_sorted.sort((a,b) => a.wordCount - b.wordCount);
 
         await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
-            comments_on_devs_code:comments_on_devs_code_sorted,
-            sorted_by_comment_msg_state:0});
+            comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_comment_msg_state:0,
+            sorted_by_date_state:0});
     }
 
     async sortByDate(e) {
         e.preventDefault();
-        let comments_sorted = this.state.comments;
-        comments_sorted.sort((a,b) => a.created_at > b.created_at ? 1 : -1);
+        let sorted_by_date_state = this.state.sorted_by_date_state;
+        if (sorted_by_date_state == 2) {
+            await this.unsortArrays(e);
+        }
+        else {
+            let order_decider = 1;
+            if (sorted_by_date_state == 1) {
+                order_decider = -1;
+            }
+            let comments_sorted = this.state.comments;
+            comments_sorted.sort((a,b) => a.created_at > b.created_at ? order_decider : -1 * order_decider);
 
-        let all_comments_sorted = this.state.all_comments;
-        all_comments_sorted.sort((a,b) => a.created_at > b.created_at ? 1 : -1);
+            let all_comments_sorted = this.state.all_comments;
+            all_comments_sorted.sort((a,b) => a.created_at > b.created_at ? order_decider : -1 * order_decider);
 
-        let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
-        comments_on_devs_code_sorted.sort((a,b) => a.created_at > b.created_at ? 1 : -1);
+            let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
+            comments_on_devs_code_sorted.sort((a,b) => a.created_at > b.created_at ? order_decider : -1 * order_decider);
 
-        await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
-            comments_on_devs_code:comments_on_devs_code_sorted,
-            sorted_by_comment_msg_state:0});
+            await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
+                comments_on_devs_code:comments_on_devs_code_sorted,
+                sorted_by_comment_msg_state:0, sorted_by_date_state:sorted_by_date_state + 1});
+        }
     }
 
     async sortByCommentMessage(e) {
@@ -189,26 +200,27 @@ class CommentTable extends Component{
             await this.unsortArrays(e);
         }
         else {
-            let comments_sorted = this.state.comments;
             // Will either be sorting in ascending or descending order. Check which it is
             // right now.
-            let multiplier = 1;
+            let order_decider = 1;
             if (sorted_by_comment_msg_state == 1) {
                 // In ascending order, so want to sort in descending order:
-                multiplier = -1;
+                order_decider = -1;
             }
-            comments_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? multiplier : -1 * multiplier);
+            let comments_sorted = this.state.comments;
+            comments_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? order_decider : -1 * order_decider);
             // Note that a.body and b.body will not be modified by toLowerCase(),
             // as the method creates a new object. So making a deep copy is not necessary.
 
             let all_comments_sorted = this.state.all_comments;
-            all_comments_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? multiplier : -1 * multiplier);
+            all_comments_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? order_decider : -1 * order_decider);
 
             let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
-            comments_on_devs_code_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? multiplier : -1 * multiplier);
+            comments_on_devs_code_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? order_decider : -1 * order_decider);
 
             await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
-                comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_comment_msg_state:sorted_by_comment_msg_state + 1});
+                comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_comment_msg_state:sorted_by_comment_msg_state + 1,
+                sorted_by_date_state:0});
         }
     }
 
@@ -275,7 +287,16 @@ class CommentTable extends Component{
                 <Table striped bordered hover className="comments-table">
                     <thead>
                         <tr>
-                            <th className="comments-table-date">Date <button className="filter sort-by-date-margin" onClick={this.sortByDate}><FaSort/></button></th>
+                            {this.state.sorted_by_date_state === 0 &&
+                                <th className="comments-table-date">Date <button className="filter sort-by-date-margin button-colour-when-unsorted" onClick={this.sortByDate}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_date_state === 1 &&
+                                <th className="comments-table-date">Date <button className="filter sort-by-date-margin button-colour-when-sorted-ascending" onClick={this.sortByDate}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_date_state === 2 &&
+                                <th className="comments-table-date">Date <button className="filter sort-by-date-margin button-colour-when-sorted-descending" onClick={this.sortByDate}><FaSort/></button></th>
+                            }
+
                             <th className="comments-table-wc">Word Count <button className="filter sort-by-word-count-margin" onClick={this.sortByWordCount}><FaSort/></button></th>
 
                             {this.state.sorted_by_comment_msg_state === 0 &&
