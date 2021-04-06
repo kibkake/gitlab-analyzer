@@ -63,40 +63,58 @@ export default class ExpandButton extends Component  {
                         p={1}
                         m={1}
                         justifyContent="flex-start">
-                {props.ever.map((item) => (
-                    <div style={{fontWeight: 'bold',
-                        fontSize: '20px',
-                        color: 'black',
-                        backgroundColor: 'lightgreen'}}>
-                        {moment(item.committed_date).format('lll').substring(12,21)}
-                        {"  |   Total Commit Score: "}
-                        {item.commitScore}</div>
-                ))}
+            {this.props.ever.map((item) => (
+                <div style={{
+                    fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'black',
+                    backgroundColor: 'lightgreen'
+                }}>
+                    {moment(item.committed_date).format('lll').substring(12, 21)}
+                    {"  |   Total Commit Score: "}
+                    {Math.abs((item.commitScore).toFixed(1))}</div>
+            ))}
+            <div style={{
+                fontWeight: 'bold',
+                fontSize: '20px',
+                color: 'black',
+                backgroundColor: 'lightgreen'
+            }}>
+                {"Excluded Points: "}
+                {Math.abs((excludedScore).toFixed(1))}</div>
+
+            <div style={{flexDirection: "row", justifyContent: "flex-start", display: "flex"}}>
                 <button style={{
                     backgroundColor: 'lightblue',
                     color: 'black',
-                    borderRadius: '0%'}}
-                    type="button"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        props.handler()
-                    }}>
+                    borderRadius: '0%'
+                }}
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            this.props.handler()
+                        }}>
                     EXPAND ALL
                 </button>
+            </div>
 
-                <Table aria-label="collapsible table" >
-                    <TableBody>
-                        {props.ever.map((item) =>
+            <Table aria-label="collapsible table">
+                <TableBody>
+                    {this.props.ever.map((item) =>
 
-                            item.diffs.map((item2, index) => (
-                                <Row key={item2.new_path} row={item2}
-                                handler = {props.handler}
-                                expanded = {props.expanded}/>
-                            )))}
-                    </TableBody>
-                </Table>
+                        item.diffs.map((item2, index) => (
+                            <Row key={item2.new_path}
+                                 row={item2}
+                                 handler={this.props.handler}
+                                 expanded={this.props.expanded}
+                                 addExcludedPoints={this.props.addExcludedPoints}
+                                 hash={this.props.hash}/>
+                        )))}
+                </TableBody>
+            </Table>
         </TableContainer>
-    );
+        )
+    }
 }
 
 
