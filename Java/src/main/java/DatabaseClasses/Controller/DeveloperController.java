@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses.Controller;
 
+import main.java.Collections.Commit;
 import main.java.DatabaseClasses.Scores.CommitDateScore;
 import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
 import main.java.DatabaseClasses.Service.DeveloperService;
@@ -49,5 +50,9 @@ public class DeveloperController {
         return developerService.getDevCommitScores(projectId, username);
     }
 
+    @GetMapping("{username}/commits")
+    public List<Commit> getDevCommits(@PathVariable int projectId, @PathVariable String username) {
+        return developerService.getDevCommits(projectId, username);
+    }
 
 }

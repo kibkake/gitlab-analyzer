@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -166,6 +168,14 @@ public class ProjectService {
             AllScores devAllScores = new AllScores(projectSettings.getStartDate(), projectSettings.getEndDate(), devTotalCommitScore,
                     devTotalMergeRequestScore);
 
+            //https://www.javaprogramto.com/2020/12/java-convert-localdate-to-date.html
+            ZoneId systemTimeZone = ZoneId.systemDefault();
+            ZonedDateTime zonedStartTime = projectSettings.getStartDate().atStartOfDay(systemTimeZone);
+            ZonedDateTime zonedEndTime = projectSettings.getEndDate().atStartOfDay(systemTimeZone);
+            Date startDate = Date.from(zonedStartTime.toInstant());
+            Date endDate = Date.from(zonedEndTime.toInstant());
+            List<Commit> devCommits = commitRepository.findByProjectIdAndAndAuthorNameAndDateBetween(projectId,
+                    dev.getUsername(), startDate,endDate);
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
                constructor because of spring
              */
@@ -176,6 +186,7 @@ public class ProjectService {
             dev.setCommitDateScores(devCommitScores);
             dev.setCommitArray(devCommitScoresWithEveryDay);
             dev.setAllScores(devAllScores);
+            dev.setCommits(devCommits);
             developerRepository.saveDev(dev);
         }
         /* TODO I should be able to call developerRepository.saveAll(projectDevs)

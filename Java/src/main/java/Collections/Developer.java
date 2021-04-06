@@ -32,6 +32,7 @@ public class Developer {
     private List<CommitDateScore> commitArray;
     private List<MergeRequestDateScore> mergeRequestDateScores;
     private List<MergeRequest> mergeRequestsAndCommits;
+    private List<Commit> commits;
     private AllScores allScores;
 
     public Developer() {
@@ -128,6 +129,14 @@ public class Developer {
 
     public void setAllScores(AllScores allScores) {
         this.allScores = allScores;
+    }
+
+    public List<Commit> getCommits() {
+        return commits;
+    }
+
+    public void setCommits(List<Commit> commits) {
+        this.commits = commits;
     }
 
     @Override

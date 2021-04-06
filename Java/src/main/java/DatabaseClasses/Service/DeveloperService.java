@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses.Service;
 
+import main.java.Collections.Commit;
 import main.java.DatabaseClasses.Scores.CommitDateScore;
 import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
 import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
@@ -37,5 +38,10 @@ public class DeveloperService {
     public List<CommitDateScore> getDevCommitScores(int projectId, String username) {
         Developer developer = developerRepository.findDeveloperByProjectIdAndUsername(projectId, username);
         return developer.getCommitDateScores();
+    }
+
+    public List<Commit> getDevCommits(int projectId, String username) {
+        Developer developer = developerRepository.findDeveloperByProjectIdAndUsername(projectId, username);
+        return developer.getCommits();
     }
 }
