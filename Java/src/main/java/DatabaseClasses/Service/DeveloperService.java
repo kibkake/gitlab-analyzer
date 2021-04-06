@@ -29,13 +29,13 @@ public class DeveloperService {
         return developer.getMergeRequestsAndCommits();
     }
 
-    public List<MergeRequestDateScore> getDevMergeRequestsScores(int projectId, int devId) {
-        Developer developer = developerRepository.findDeveloperByProjectIdAndDevId(projectId, devId);
+    public List<MergeRequestDateScore> getDevMergeRequestsScores(int projectId, String username) {
+        Developer developer = developerRepository.findDeveloperByProjectIdAndUsername(projectId, username);
         return developer.getMergeRequestDateScores();
     }
 
-    public List<CommitDateScore> getDevCommitScores(int projectId, int devId) {
-        Developer developer = developerRepository.findDeveloperByProjectIdAndDevId(projectId, devId);
+    public List<CommitDateScore> getDevCommitScores(int projectId, String username) {
+        Developer developer = developerRepository.findDeveloperByProjectIdAndUsername(projectId, username);
         return developer.getCommitDateScores();
     }
 }
