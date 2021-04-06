@@ -16,7 +16,8 @@ class SingleCommitDiff extends Component{
             data: [],
             hash : this.props.hash,
             expanded: false,
-            commits : this.props.commits
+            commits : this.props.commits,
+            render : false
         };
         this.handler = this.handler.bind(this)
     }
@@ -80,9 +81,13 @@ class SingleCommitDiff extends Component{
         return (
             <div>
                 <ExpandButton
+                    hash = {this.props.hash}
                     ever = {this.state.data}
                     handler = {this.handler}
-                    expanded = {this.state.expanded}>
+                    expanded = {this.state.expanded}
+                    addExcludedPoints = {this.props.addExcludedPoints}
+                    singleCommitScore = {this.props.singleCommitScore}
+                    handler2 = {this.handler2}>
                 </ExpandButton>
             </div>
         )
