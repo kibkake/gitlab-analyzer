@@ -46,7 +46,7 @@ export default function Row(props) {
         sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
     }
     var tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
-)
+
     return (
         <React.Fragment >
             <TableRow
@@ -81,6 +81,11 @@ export default function Row(props) {
                     style={{display:"flex", flexDirection:"column"}}
                     align ="left">
                     <button
+                        style={{
+                            backgroundColor: 'red',
+                            color: 'black',
+                            borderRadius: '0%'
+                        }}
                         type="button"
                         onClick={(e) => {
                             e.preventDefault();
@@ -92,6 +97,11 @@ export default function Row(props) {
                     </button>
 
                     <button
+                        style={{
+                            backgroundColor: 'cyan',
+                            color: 'black',
+                            borderRadius: '0%'
+                        }}
                         type="button"
                         onClick={(e) => {
                             e.preventDefault();
