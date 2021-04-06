@@ -26,6 +26,8 @@ export default function Row(props) {
         false
     );
 
+    const [checked,setChecked] = React.useState(true)
+
     React.useEffect(() => {
 
         if(expanded) {
@@ -34,26 +36,34 @@ export default function Row(props) {
         if(!expanded){
             setOpen(false)
         }
-
     }, [expanded]);
 
     const oldF = row.old_path;
     const newF = row.new_path;
 
+    if(sessionStorage.getItem("excludedFiles") === null){
+        var fileArray = []
+        sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
+    }
+    var tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+)
     return (
         <React.Fragment >
             <TableRow
                 className="commitTable">
                 <TableCell
                     align="top"
-                    style={{wordWrap: "break-word", maxWidth:"390px", fontSize:"15", fontWeight:"bold"}}>
+                    style={{wordWrap: "break-word", maxWidth:"300px", fontSize:"15", fontWeight:"bold"}}>
                     {row.renamed_file ? oldF + "\nRENAMED TO:\n" + newF : newF}
                 </TableCell>
+
                 <TableCell
-                    align="right"
-                    style={{color:"blue", fontSize:"15", fontWeight:"bold"}}>
-                    {"+" + row.diffScore}
+                    style={{maxWidth:"50px"}}
+
+                align="right">
+                    {checkIfFileIsExcluded(tempArray, newF, props.hash) ? <div style={{color:"red", fontSize:"15", fontWeight:"bold"}}> {"+" + row.diffScore} </div> : <div style={{color:"blue", fontSize:"15", fontWeight:"bold"}}> {"+" + row.diffScore} </div>}
                 </TableCell>
+
 
                 <TableCell
                     align="right">
@@ -65,17 +75,36 @@ export default function Row(props) {
                     </IconButton>
                 </TableCell>
 
+
+
                 <TableCell
-                    align ="right">
+                    style={{display:"flex", flexDirection:"column"}}
+                    align ="left">
                     <button
                         type="button"
                         onClick={(e) => {
                             e.preventDefault();
+                            {checkIfFileIsExcluded(tempArray, newF, props.hash) ? console.log("already excluded") : props.addExcludedPoints(row.diffScore)}
+                            addFileToListOfExcluded(tempArray, newF, props.hash)
+                            setChecked(!checked)
                         }}>
-                        TODO
+                        IGNORE
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            {checkIfFileIsExcluded(tempArray, newF, props.hash) ?  props.addExcludedPoints(-row.diffScore) : console.log("not excluded")}
+                            removeFromExcludedFiles(tempArray, newF, props.hash)
+                            setChecked(!checked)
+                        }}>
+                        {"RE-ADD"}
                     </button>
                 </TableCell>
             </TableRow>
+
+
 
             <TableRow
                 style={{backgroundColor: "rgb(242, 242, 242)"}}>
@@ -104,3 +133,38 @@ export default function Row(props) {
         </React.Fragment>
     );
 }
+
+function addFileToListOfExcluded(tempArray, newF, hash){
+    tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+    for(var i = 0; i < tempArray.length; i++){
+        if(tempArray[i] === hash + "_" + newF ){
+            return
+        }
+    }
+    tempArray.push(hash + "_" + newF)
+    sessionStorage.setItem("excludedFiles",JSON.stringify( tempArray))
+    console.log("hello", JSON.parse(sessionStorage.getItem("excludedFiles")))
+}
+
+function checkIfFileIsExcluded(tempArray, newF, hash){
+    tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+    for(var i = 0; i < tempArray.length; i++){
+        if(tempArray[i] === hash + "_" + newF ){
+            return true;
+        }
+    }
+    return false;
+}
+
+function removeFromExcludedFiles(tempArray, newF, hash){
+    tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+    for(var i = 0; i < tempArray.length; i++){
+        if(tempArray[i] === hash + "_" + newF ){
+            tempArray.splice(i, 1);
+            //return
+        }
+    }
+    sessionStorage.setItem("excludedFiles",JSON.stringify( tempArray))
+    console.log("hello", JSON.parse(sessionStorage.getItem("excludedFiles")))
+}
+
