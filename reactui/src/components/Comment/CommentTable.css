@@ -86,3 +86,8 @@
 .removeBorder{
     border:none !important;
 }
+
+.table-button{
+    border-width: 0;
+    background-color: #ffffff00;
+}

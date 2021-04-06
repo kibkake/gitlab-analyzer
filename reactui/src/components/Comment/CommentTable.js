@@ -288,25 +288,25 @@ class CommentTable extends Component{
                     <thead>
                         <tr>
                             {this.state.sorted_by_date_state === 0 &&
-                                <th className="comments-table-date">Date <button className="filter sort-by-date-margin button-colour-when-unsorted" onClick={this.sortByDate}><FaSort/></button></th>
+                                <th className="comments-table-date">Date <button className="table-button filter sort-by-date-margin button-colour-when-unsorted" onClick={this.sortByDate}><FaSort/></button></th>
                             }
                             {this.state.sorted_by_date_state === 1 &&
-                                <th className="comments-table-date">Date <button className="filter sort-by-date-margin button-colour-when-sorted-ascending" onClick={this.sortByDate}><FaSort/></button></th>
+                                <th className="comments-table-date">Date <button className="table-button filter sort-by-date-margin button-colour-when-sorted-ascending" onClick={this.sortByDate}><FaSort/></button></th>
                             }
                             {this.state.sorted_by_date_state === 2 &&
-                                <th className="comments-table-date">Date <button className="filter sort-by-date-margin button-colour-when-sorted-descending" onClick={this.sortByDate}><FaSort/></button></th>
+                                <th className="comments-table-date">Date <button className="table-button filter sort-by-date-margin button-colour-when-sorted-descending" onClick={this.sortByDate}><FaSort/></button></th>
                             }
 
-                            <th className="comments-table-wc">Word Count <button className="filter sort-by-word-count-margin" onClick={this.sortByWordCount}><FaSort/></button></th>
+                            <th className="comments-table-wc">Word Count <button className="table-button filter sort-by-word-count-margin" onClick={this.sortByWordCount}><FaSort/></button></th>
 
                             {this.state.sorted_by_comment_msg_state === 0 &&
-                                <th>Comments <button className="filter sort-by-message-margin button-colour-when-unsorted" onClick={this.sortByCommentMessage}><FaSort/></button></th>
+                                <th>Comments <button className="table-button filter sort-by-message-margin button-colour-when-unsorted" onClick={this.sortByCommentMessage}><FaSort/></button></th>
                             }
                             {this.state.sorted_by_comment_msg_state === 1 &&
-                                <th>Comments <button className="filter sort-by-message-margin button-colour-when-sorted-ascending" onClick={this.sortByCommentMessage}><FaSort/></button></th>
+                                <th>Comments <button className="table-button filter sort-by-message-margin button-colour-when-sorted-ascending" onClick={this.sortByCommentMessage}><FaSort/></button></th>
                             }
                             {this.state.sorted_by_comment_msg_state === 2 &&
-                                <th>Comments <button className="filter sort-by-message-margin button-colour-when-sorted-descending" onClick={this.sortByCommentMessage}><FaSort/></button></th>
+                                <th>Comments <button className="table-button filter sort-by-message-margin button-colour-when-sorted-descending" onClick={this.sortByCommentMessage}><FaSort/></button></th>
                             }
 
                             {this.state.issue === true && this.state.code_rev === true &&
