@@ -29,24 +29,24 @@ public class DeveloperController {
         return developerService.getProjectDevs(projectId);
     }
 
-    @GetMapping("{devId}/mergeRequestsAndCommits")
-    public List<MergeRequest> getDevMergeRequestsAndCommits(@PathVariable int projectId, @PathVariable int devId) {
-        return developerService.getDevMergeRequestsAndCommits(projectId, devId);
+    @GetMapping("{username}/mergeRequestsAndCommits")
+    public List<MergeRequest> getDevMergeRequestsAndCommits(@PathVariable int projectId, @PathVariable String username) {
+        return developerService.getDevMergeRequestsAndCommits(projectId, username);
     }
 
-    @GetMapping("{devId}/mergeRequestsScores")
-    public List<MergeRequestDateScore> getDevMergeRequestsScores(@PathVariable int projectId, @PathVariable int devId) {
-        return developerService.getDevMergeRequestsScores(projectId, devId);
+    @GetMapping("{username}/mergeRequestsScores")
+    public List<MergeRequestDateScore> getDevMergeRequestsScores(@PathVariable int projectId, @PathVariable String username) {
+        return developerService.getDevMergeRequestsScores(projectId, username);
     }
 
-    @GetMapping("{devId}/commitScores")
-    public List<CommitDateScore> getDevCommitScores(@PathVariable int projectId, @PathVariable int devId) {
-        return developerService.getDevCommitScores(projectId, devId);
+    @GetMapping("{username}/commitScores")
+    public List<CommitDateScore> getDevCommitScores(@PathVariable int projectId, @PathVariable String username) {
+        return developerService.getDevCommitScores(projectId, username);
     }
 
-    @GetMapping("{devId}/commitArray")
-    public List<CommitDateScore> getDevCommitArray(@PathVariable int projectId, @PathVariable int devId) {
-        return developerService.getDevCommitScores(projectId, devId);
+    @GetMapping("{username}/commitArray")
+    public List<CommitDateScore> getDevCommitArray(@PathVariable int projectId, @PathVariable String username) {
+        return developerService.getDevCommitScores(projectId, username);
     }
 
 

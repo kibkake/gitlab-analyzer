@@ -18,6 +18,6 @@ public interface DeveloperRepository extends MongoRepository<Developer, Integer>
     @Query(fields="{ 'devId' : 1, 'projectId' : 1, 'name' : 1, 'username' :1 }") // UI only wants these fields
     List<Developer> findDevelopersByProjectId(int projectId);
 
-    Developer findDeveloperByProjectIdAndDevId(int projectId, int devId);
+    Developer findDeveloperByProjectIdAndUsername(int projectId, String devId);
 
 }

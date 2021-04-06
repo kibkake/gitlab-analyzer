@@ -24,8 +24,8 @@ public class DeveloperService {
         return developerRepository.findDevelopersByProjectId(projectId);
     }
 
-    public List<MergeRequest> getDevMergeRequestsAndCommits(int projectId, int devId) {
-        Developer developer = developerRepository.findDeveloperByProjectIdAndDevId(projectId, devId);
+    public List<MergeRequest> getDevMergeRequestsAndCommits(int projectId, String username) {
+        Developer developer = developerRepository.findDeveloperByProjectIdAndUsername(projectId, username);
         return developer.getMergeRequestsAndCommits();
     }
 
