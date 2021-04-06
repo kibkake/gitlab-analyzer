@@ -22,7 +22,8 @@ class CommitsPerDay extends Component{
             data: [],
             devName: this.props.devName,
             startTime: this.props.startTime,
-            date : ""
+            date : "",
+            totalScore: 0.0
         };
         this.handler = this.handler.bind(this)
     }
@@ -38,6 +39,8 @@ class CommitsPerDay extends Component{
     async getData(userName, date) {
         var listOfDates = [];
         var tempDate = "";
+        var score = 0.0
+
         this.props.commits.map(function(item) {
             var time = moment(item.committed_date).format('L')//02/18/2021
             tempDate = moment(date).format('lll')
@@ -48,9 +51,10 @@ class CommitsPerDay extends Component{
             const fulltime = year + '-' + month + '-' + day
             if(fulltime === date){
                 listOfDates.push(item)
+                score += item.commitScore
             }
         })
-        await this.setState({data:listOfDates, date: tempDate})
+        await this.setState({data:listOfDates, date: tempDate, totalScore: score})
     }
 
     async componentDidUpdate(prevProps){
@@ -69,6 +73,25 @@ class CommitsPerDay extends Component{
         });
         console.log(output)
 
+        if(sessionStorage.getItem("excludedFiles") === null){
+            var fileArray = []
+            sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
+        }
+
+        var tempArray = []
+        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+        var excludedScore = 0.0
+        this.state.data.map(function (item) {
+            item.diffs.map(function (item2) {
+                for (var i = 0; i < tempArray.length; i++) {
+                    if (tempArray[i] === item.id + "_" + item2.new_path) {
+                        excludedScore += item2.diffScore
+                    }
+                }
+            })
+        });
+
+
         return(
             <TableContainer
                 style={{ overflowX: "scroll" , height: "1050px", width: "500px"}}
@@ -83,6 +106,22 @@ class CommitsPerDay extends Component{
                     color: 'black',
                     backgroundColor: 'lightgreen'}}>
                     Commits on {this.state.date.substring(0,12)}
+                </div>
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'black',
+                    backgroundColor: 'lightgreen'}}>Total iteration score:  {this.props.totalScore.toFixed(1)}</div>
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'black',
+                    backgroundColor: 'lightgreen'}}>
+                    Commit Score on this day: {(this.state.totalScore).toFixed(1)}
+                </div>
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'black',
+                    backgroundColor: 'lightgreen'}}>
+                    Excluded points on this day: {(excludedScore).toFixed(1)}
                 </div>
                 <Table
                     aria-label="collapsible table" >
@@ -110,7 +149,9 @@ class CommitsPerDay extends Component{
                             <CommitPerDayInfo
                                 key={item.committed_date}
                                 commit={item}
-                                handler = {this.handler}/>
+                                commits = {this.state.data}
+                                handler = {this.handler}
+                                resetSingleCommitScore = {this.props.resetSingleCommitScore}/>
                         ))}
                     </TableBody>
                 </Table>
