@@ -11,11 +11,11 @@
 }
 
 .sort-by-word-count-margin{
-    margin-left:1% !important;
+    margin-left:0% !important;
 }
 
 .sort-by-message-margin{
-    margin-left:0.28% !important;
+    margin-left:0% !important;
 }
 
 .unsort-margin{
@@ -36,6 +36,18 @@
 
 .comments-on-dev-code-margin{
     margin-left: 15% !important;
+}
+
+.button-colour-when-unsorted{
+    color: #000000 !important;
+}
+
+.button-colour-when-sorted-ascending{
+    color: #4ac11b !important;
+}
+
+.button-colour-when-sorted-descending{
+    color: #8a0808 !important;
 }
 
 .comments-table{
