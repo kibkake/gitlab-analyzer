@@ -48,6 +48,7 @@ import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
 import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
 import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
 import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
+import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
 import main.java.Main;
 import main.java.DatabaseClasses.Service.ProjectService;
 import org.junit.Test;
@@ -86,6 +87,9 @@ public class ProjectFunctionsTest {
     @Autowired
     private DeveloperRepository developerRepository;
 
+    @Autowired
+    private SnapshotRepository snapshotRepository;
+
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Test
@@ -93,7 +97,7 @@ public class ProjectFunctionsTest {
         Project testProjFromRepo = projectRepository.findProjectById(6);
         assertEquals(6, testProjFromRepo.getId());
         ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository);
+                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
         Project testProjFromService = projectService.getProject(6);
         assertEquals(6, testProjFromService.getId());
         assertEquals(testProjFromRepo, testProjFromService);
@@ -102,7 +106,7 @@ public class ProjectFunctionsTest {
     @Test
     public void testScoresPerDay() {
         ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository);
+                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
         LocalDate start = LocalDate.parse("2021-01-01");
         LocalDate end = LocalDate.parse("2021-03-19");
         List<DateScore> user2Scores = projectService.getScoresPerDayForMRsAndCommits(
@@ -113,7 +117,7 @@ public class ProjectFunctionsTest {
     @Test
     public void testNumMRs() {
         ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository);
+                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
         LocalDate start = LocalDate.parse("2021-01-01");
         LocalDate end = LocalDate.parse("2021-02-28");
         int numMRs = projectService.getNumDevMergeRequests(6, "user2",

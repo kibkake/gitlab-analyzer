@@ -1,0 +1,26 @@
+.snapshot-h, .snapshot-l{
+    text-align: center !important;
+}
+
+.snapshot-unformat{
+    text-align: left !important;
+}
+
+.snapshot-container{
+    margin-bottom: 2cm;
+}
+
+.snapshots-table{
+    margin:auto;
+    width:80%;
+}
+
+.snapshot-widget{
+    margin-left: auto !important;
+    display:block !important;
+    float:none !important;
+    margin-right: 30px;
+}
+.saved-icon{
+    text-align: right;
+}

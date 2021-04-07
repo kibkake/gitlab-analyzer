@@ -59,6 +59,27 @@ public class ProjectController {
         projectService.setProjectInfoWithSettings(projectId, projectSettings);
     }
 
+    @PostMapping(path = "saveSnapshot")
+    public String saveSnapshot(@RequestBody Snapshot snapshot){
+        projectService.saveSnapshot(snapshot);
+        return snapshot.getId();
+    }
+
+    @GetMapping("getSnapshot/{snapId}")
+    public Snapshot getSnapshot(@PathVariable("snapId") String id){
+        return projectService.getSnapshot(id);
+    }
+
+    @GetMapping("getSnapshots/{username}")
+    public List<Snapshot> getSnapshots(@PathVariable("username") String username){
+        return projectService.getSnapshots(username);
+    }
+
+    @GetMapping(path = "deleteSnapshot/{snapId}")
+    public void deleteSnapshot(@PathVariable("snapId") String id){
+        projectService.deleteSnapshot(id);
+    }
+
     //TODO: how to update if the current db is not empty,
     //and a new project is added? Because the new project isn't getting updated by setProjectInfo() call
     @GetMapping("projects")

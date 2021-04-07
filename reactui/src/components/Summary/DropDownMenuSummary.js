@@ -8,6 +8,7 @@ import ProjectService from "../../Service/ProjectService";
 import SummaryScoreTable from "./SummaryScoreTable";
 import SummaryChartRadios from "./RadioButtonSummaryChart";
 import moment from 'moment'
+import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
 
 function DropDownMenuSummary ({listOfDevelopers}) {
 
@@ -87,6 +88,9 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                         onChange={handleChange}
                     />
             </div>
+            </div>
+            <div>
+                <SnapshotWidgetComponent/>
             </div>
                 <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
                 <SummaryScoreTable devName = {selectedValue}

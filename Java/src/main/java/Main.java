@@ -52,7 +52,7 @@ public class Main {
             String[] beanNames = ctx.getBeanDefinitionNames();
             Arrays.sort(beanNames);
             for (String beanName : beanNames) {
-                writer.write(beanName);
+                writer.write(beanName+"\n");
             }
             writer.flush();
             writer.close();
