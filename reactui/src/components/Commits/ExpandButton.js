@@ -29,6 +29,84 @@ export default class ExpandButton extends Component  {
         }
     }
 
+    checkAllFilesAreIgnored(){
+        console.log(this.props.ever)
+
+        var tempArray = []
+        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+        var tempHash = this.props.hash
+        var allFilesExcluded = true
+
+        this.props.ever.map(function (item) {
+            item.diffs.map(function (item2) {
+                var isExcluded = false;
+                for (var i = 0; i < tempArray.length; i++) {
+                    if (tempArray[i] === tempHash + "_" + item2.new_path) {
+                        isExcluded = true
+                    }
+                }
+                if(!isExcluded){
+                    allFilesExcluded = false
+                }
+            })
+        });
+
+        return allFilesExcluded
+    }
+
+    ignoreAllFilesOfCommit(){
+        console.log(this.props.ever)
+
+        var tempArray = []
+        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+        var tempHash = this.props.hash
+
+        this.props.ever.map(function (item) {
+            item.diffs.map(function (item2) {
+                var isExcluded = false;
+                for (var i = 0; i < tempArray.length; i++) {
+                    if (tempArray[i] === tempHash + "_" + item2.new_path) {
+                        isExcluded = true
+                    }
+                }
+                if(!isExcluded){
+                    tempArray.push(tempHash + "_" + item2.new_path)
+                }
+            })
+        });
+
+        sessionStorage.setItem("excludedFiles",JSON.stringify( tempArray))
+        this.props.addExcludedPoints()
+    }
+
+    reAddAllFilesOfCommit(){
+        console.log(this.props.ever)
+
+        var tempArray = []
+        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+        var tempHash = this.props.hash
+
+        this.props.ever.map(function (item) {
+            item.diffs.map(function (item2) {
+                var isExcluded = false;
+                var index = -1
+                for (var i = 0; i < tempArray.length; i++) {
+                    if (tempArray[i] === tempHash + "_" + item2.new_path) {
+                        isExcluded = true
+                        index = i
+                    }
+                }
+                if(isExcluded && index != -1){
+                    tempArray.splice(index, 1);
+                }
+            })
+        });
+
+        sessionStorage.setItem("excludedFiles",JSON.stringify( tempArray))
+        this.props.addExcludedPoints()
+
+    }
+
     render() {
 
         if(sessionStorage.getItem("excludedFiles") === null){
@@ -96,6 +174,23 @@ export default class ExpandButton extends Component  {
                         }}>
                     EXPAND ALL
                 </button>
+
+                <button style={{
+                    backgroundColor: 'red',
+                    color: 'black',
+                    borderRadius: '0%',
+                    marginLeft:"380px"
+                }}
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            {console.log(this.checkAllFilesAreIgnored())}
+                            {this.checkAllFilesAreIgnored() ?  this.reAddAllFilesOfCommit() : this.ignoreAllFilesOfCommit()}
+                        }}>
+                    {"IGNORE ALL"}
+                </button>
+
+
             </div>
 
             <Table aria-label="collapsible table">
@@ -116,5 +211,4 @@ export default class ExpandButton extends Component  {
         )
     }
 }
-
 
