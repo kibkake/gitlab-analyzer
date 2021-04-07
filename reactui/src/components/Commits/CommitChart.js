@@ -227,20 +227,23 @@ class CommitChart extends Component {
         //height={daylist.length*(500/daylist.length)}
         return (
             <div>
-                <SnapshotWidgetComponent/>
-                <br/>
 
             <div className="box-container" >
                 <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
+                    <div style={{flexDirection: "row",display: "flex"}}>
                     <Button
                             onClick={(e) => {
                                 this.setState({showAllCommit: true, diff:false})
                             }}>
                         <span >show all commits</span>
                     </Button>
+                        <SnapshotWidgetComponent/>
+
+                    </div>
                 <div className="horizontalBar" style={{backgroundImage: `url(${img})`,
                     backgroundSize: "cover"
                 }}>
+
                 <HorizontalBar
 
                     data={{labels: daylist,
