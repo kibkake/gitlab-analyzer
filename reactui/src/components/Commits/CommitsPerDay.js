@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
-import Button from 'react-bootstrap/Button';
 import  "./HBox.css"
 import {Table} from "react-bootstrap";
-import FormCheck from "react-bootstrap/FormCheck";
 import "../Projects/ProjectList.css";
 import moment from "moment";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -13,7 +11,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import CommitPerDayInfo from "./CommitPerDayInfo";
 import '../MergeRequest/MergeListTable.css'
-
+import CommitService from "./CommitService";
 
 class CommitsPerDay extends Component{
     constructor(props){
@@ -78,19 +76,7 @@ class CommitsPerDay extends Component{
             sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
         }
 
-        var tempArray = []
-        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
-        var excludedScore = 0.0
-        this.state.data.map(function (item) {
-            item.diffs.map(function (item2) {
-                for (var i = 0; i < tempArray.length; i++) {
-                    if (tempArray[i] === item.id + "_" + item2.new_path) {
-                        excludedScore += item2.diffScore
-                    }
-                }
-            })
-        });
-
+        var excludedScore = CommitService.calculateExcludedScoreWithoutHashProvided(this.state.data)
 
         return(
             <TableContainer
@@ -109,19 +95,22 @@ class CommitsPerDay extends Component{
                 </div>
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
-                    color: 'black',
-                    backgroundColor: 'lightgreen'}}>Total iteration score:  {this.props.totalScore.toFixed(1)}</div>
+                    color: 'blue',
+                    backgroundColor: 'lightgreen'}}>{"Total iteration score: "}
+                    {this.props.totalScore.toFixed(1)}</div>
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
-                    color: 'black',
+                    color: 'blue',
                     backgroundColor: 'lightgreen'}}>
-                    Commit Score on this day: {(this.state.totalScore).toFixed(1)}
+                    {"Score on this day: "}
+                    {(this.state.totalScore).toFixed(1)}
                 </div>
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
-                    color: 'black',
+                    color: 'red',
                     backgroundColor: 'lightgreen'}}>
-                    Excluded points on this day: {(excludedScore).toFixed(1)}
+                    {"Excluded points on this day: "}
+                    {(excludedScore).toFixed(1)}
                 </div>
                 <Table
                     aria-label="collapsible table" >

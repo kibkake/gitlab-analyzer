@@ -1,7 +1,4 @@
-import axios from 'axios';
 import TableCell from "@material-ui/core/TableCell";
-import React from "react";
-const PROJECT_URL = "/api/v1/";
 
 class CommitService {
     //rowcommitdiff
@@ -133,6 +130,24 @@ class CommitService {
                 })
             });
         }
+        return excludedScore
+    }
+    //
+
+    //commitperday
+    calculateExcludedScoreWithoutHashProvided(commits){
+        var tempArray = []
+        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+        var excludedScore = 0.0
+        commits.map(function (item) {
+            item.diffs.map(function (item2) {
+                for (var i = 0; i < tempArray.length; i++) {
+                    if (tempArray[i] === item.id + "_" + item2.new_path) {
+                        excludedScore += item2.diffScore
+                    }
+                }
+            })
+        });
         return excludedScore
     }
     //
