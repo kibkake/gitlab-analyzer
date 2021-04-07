@@ -53,14 +53,14 @@ export class Navbar_Developers extends Component{
                         cName: 'nav-links'
                     },
                     {
-                        title: 'Commits',
-                        url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/commits',
+                        title: 'Merge Requests',
+                        url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/merges',
                         cName: 'nav-links'
                     },
                     {
-                        title: 'Merge Requests',
-                        url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/codediff',
-                        cName: 'nav-links'
+                       title: 'Commits',
+                       url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' +  this.props.devName + '/commits',
+                       cName: 'nav-links'
                     },
                     {
                         title: 'Comments',

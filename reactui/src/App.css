@@ -35,7 +35,6 @@
 
 .login:hover{
     color:darkcyan;
-    font-weight: bold;
 }
 
 .login:active{
@@ -43,9 +42,13 @@
     color:white;
 }
 
-h2{
+h2, h3{
     margin-left: 20px;
     padding-top:20px;
+}
+
+.dev-label{
+    padding-top:0px !important;
 }
 
 .signuptext{

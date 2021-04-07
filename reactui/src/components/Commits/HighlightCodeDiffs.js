@@ -3,6 +3,9 @@ import React from "react";
 // This function highlights the diffs in an appropriate color
 // Took off from Abtin's work in the SingeCommitDiffs.js to reuse in other part of the code
 export default function HighlightCodeDiffs(par) {
+        if(par === ""){
+            return par
+        }
         var lineBegin = 0;
         var strArray = [];
         var index = 0;

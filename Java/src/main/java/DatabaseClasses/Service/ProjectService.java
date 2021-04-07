@@ -8,6 +8,7 @@ import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
 import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
 import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
 import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
+import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
 import main.java.Collections.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
@@ -31,14 +32,16 @@ public class ProjectService {
     private final MergeRequestRepository mergeRequestRepository;
     private final CommitRepository commitRepository;
     private final DeveloperRepository developerRepository;
+    private final SnapshotRepository snapshotRepository;
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository, MergeRequestRepository mergeRequestRepository,
-                          CommitRepository commitRepository, DeveloperRepository developerRepository) {
+                          CommitRepository commitRepository, DeveloperRepository developerRepository, SnapshotRepository snapshotRepository) {
         this.projectRepository = projectRepository;
         this.mergeRequestRepository = mergeRequestRepository;
         this.commitRepository = commitRepository;
         this.developerRepository = developerRepository;
+        this.snapshotRepository = snapshotRepository;
     }
 
     public enum UseWhichDevField {EITHER, NAME, USERNAME};
@@ -122,6 +125,24 @@ public class ProjectService {
         setDeveloperInfo(projectId, projectSettings, projectDevs);
     }
 
+    @Transactional(timeout = 1200) // 20 min
+    public void saveSnapshot(Snapshot snapshot){
+        snapshotRepository.save(snapshot);
+    }
+
+    public Snapshot getSnapshot(String id){
+        return snapshotRepository.findById(id).orElse(null);
+    }
+
+    public List<Snapshot> getSnapshots(String username){
+        return snapshotRepository.findByUsername(username);
+    }
+
+    @Transactional(timeout = 1200) // 20 min
+    public void deleteSnapshot(String id){
+        snapshotRepository.deleteById(id);
+    }
+
     private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
         for (Developer dev: projectDevs) {
             List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
@@ -161,7 +182,6 @@ public class ProjectService {
             but I get an error saying that this method (.saveAll) does not exist
          */
     }
-
 
     public List<DateScore> getDevCommitScoresPerDay(int projectId, String username, LocalDate start,
                                                     LocalDate end, UseWhichDevField devField) {
@@ -250,7 +270,6 @@ public class ProjectService {
                || commit.getAuthorName().equals(nameOrUsername);
     }
 
-
     private boolean didDeveloperAuthorCommit(Commit commit, Developer developer,
                                              UseWhichDevField devField) {
         // For this function, it turns out that .getCommitter_name() and
@@ -259,7 +278,7 @@ public class ProjectService {
         // In this function, either both username and name will be used,
         // or just one of them. It depends on the enum value of devField.
 
-        if (developer == null) {
+        if (developer == null || commit == null) {
             return false;
         }
         else if (devField == UseWhichDevField.EITHER) {
@@ -291,10 +310,10 @@ public class ProjectService {
         for (Commit currentCommit : projectCommits) {
             LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
-                if (!StringFunctions.inList(commitIds, currentCommit.getId())
+                if (!StringFunctions.inList(commitIds, currentCommit.getCommitId())
                     && didDeveloperAuthorCommit(currentCommit, developer, devField)) {
                     devCommits.add(currentCommit);
-                    commitIds.add(currentCommit.getId());
+                    commitIds.add(currentCommit.getCommitId());
                 }
             }
         }
@@ -327,15 +346,17 @@ public class ProjectService {
 
         List<Commit> projectCommits = project.getCommits();
         for (Commit currentCommit : projectCommits) {
-            if (!StringFunctions.inList(commitIds, currentCommit.getId())
-                && currentCommit.getId().equals(hash)) {
+            if (!StringFunctions.inList(commitIds, currentCommit.getCommitId())
+                && currentCommit.getCommitId().equals(hash)) {
                 commits.add(currentCommit);
-                commitIds.add(currentCommit.getId());
+                commitIds.add(currentCommit.getCommitId());
             }
         }
         return commits;
     }
 
+    // TODO - For this, currently it looks like MRs that the dev only commented
+    // on are returned as well. This should be fixed for calculating the score.
     public List<MergeRequest> getDevMergeRequests(int projectId, String username, LocalDate start, LocalDate end) {
         Project project = projectRepository.findProjectById(projectId);
         List<MergeRequest> mergeRequests = project.getMergedRequests();
@@ -393,9 +414,9 @@ public class ProjectService {
         return devIssues;
     }
 
-    public List<Note> getTopDevNotes(int projectID, String username, LocalDate start, LocalDate end,
-                                      int limit, boolean applyLimit) {
-        List<Note> devNotes = getDevNotes(projectID, username, start, end);
+    public List<Note> getTopDevNotes(int projectID, String username, boolean filterByDevsCode,
+                                     LocalDate start, LocalDate end, int limit, boolean applyLimit) {
+        List<Note> devNotes = getDevNotes(projectID, username, filterByDevsCode, start, end);
         devNotes.sort(Comparator.comparingInt(Note::getWordCount));
         Collections.reverse(devNotes);
         List<Note> topNotes;
@@ -408,7 +429,20 @@ public class ProjectService {
         return topNotes;
     }
 
-    public List<Note> getDevNotes(int projectId, String username, LocalDate start, LocalDate end) {
+    private boolean didDevContributeCodeToMR(MergeRequest mergeRequest, Developer developer) {
+        if (mergeRequest == null || developer == null) {
+            return false;
+        }
+        List<Commit> commits = mergeRequest.getCommits();
+        for (Commit currentCommit: commits) {
+            if (didDeveloperAuthorCommit(currentCommit, developer, UseWhichDevField.EITHER)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Note> getDevNotes(int projectId, String username, boolean filterByDevsCode, LocalDate start, LocalDate end) {
         Project project = projectRepository.findProjectById(projectId);
         List<Issue> issues = project.getIssues();
         List<Note> devNotes = new ArrayList<>();
@@ -425,7 +459,11 @@ public class ProjectService {
             }
         }
         List<MergeRequest> mergeRequests = project.getMergedRequests();
+        Developer developer = findDeveloperWithUsernameField(username, projectId);
         for (MergeRequest mergeRequest : mergeRequests) {
+            if (filterByDevsCode && !didDevContributeCodeToMR(mergeRequest, developer)) {
+                continue;
+            }
             List<Note> mrNotes = mergeRequest.getAllNotes();
             if (mrNotes != null) {
                 for (Note note : mrNotes) {
@@ -449,7 +487,7 @@ public class ProjectService {
         Project project = projectRepository.findProjectById(projectId);
         List<Commit> commits = project.getCommits();
         Commit commit = commits.stream()
-        .filter(c -> commitId.equals(c.getId()))
+        .filter(c -> commitId.equals(c.getCommitId()))
                 .findAny()
                 .orElse(null);
         return commit;
@@ -475,9 +513,9 @@ public class ProjectService {
         return totalMRScore;
     }
 
-    public int getTotalDevCommentWordCount(int projectId, String username,
+    public int getTotalDevCommentWordCount(int projectId, String username, boolean filterByDevsCode,
                                             LocalDate start, LocalDate end) {
-        List<Note> devNotes = this.getTopDevNotes(projectId, username, start, end, 100000, false);
+        List<Note> devNotes = this.getTopDevNotes(projectId, username, filterByDevsCode, start, end, 100000, false);
         int totalCommentWordCount = 0;
         for (Note currentNote: devNotes) {
             totalCommentWordCount += currentNote.getWordCount();
@@ -485,7 +523,7 @@ public class ProjectService {
         return totalCommentWordCount;
     }
 
-    public AllScores getAllScores(int projectId, String username, LocalDate startDate,
+    public AllScores getAllScores(int projectId, String username, boolean filterByDevsCodeForCountingComments, LocalDate startDate,
                                   LocalDate endDate, UseWhichDevField devFieldToUseForGettingCommits) {
         AllScores allScores = new AllScores(startDate, endDate, 0, 0, 0);
         double totalCommitScore = this.getTotalDevCommitScore(projectId, username, startDate,
@@ -494,14 +532,12 @@ public class ProjectService {
         double totalMergeRequestScore = this.getTotalDevMRScore(projectId, username,
                                                                  startDate, endDate);
         allScores.setTotalMergeRequestScore(totalMergeRequestScore);
-        int totalCommentWordCount = this.getTotalDevCommentWordCount(projectId, username, startDate,
-                                                                      endDate);
+        int totalCommentWordCount = this.getTotalDevCommentWordCount(projectId, username,
+                filterByDevsCodeForCountingComments, startDate, endDate);
         allScores.setTotalCommentWordCount(totalCommentWordCount);
 
         return allScores;
     }
-
-
 
     public List<Developer> getMembers(int ProjectId){
         Project project = projectRepository.findProjectById(ProjectId);
