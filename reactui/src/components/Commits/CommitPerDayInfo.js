@@ -29,15 +29,41 @@ function CommitPerDayInfo(props) {
     var tempArray = []
     tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
     var isInArray = false
-    props.commits.map(function (item) {
-        item.diffs.map(function (item2) {
-            for (var i = 0; i < tempArray.length; i++) {
-                if (tempArray[i] === props.commit.id + "_" + item2.new_path) {
-                    isInArray = true
-                }
+    var numberOfFilesExcluded = 0
+    var numberOfFilesInCommit = 0
+    props.commit.diffs.map(function (item2) {
+        numberOfFilesInCommit++
+        for (var i = 0; i < tempArray.length; i++) {
+            if (tempArray[i] === props.commit.id + "_" + item2.new_path) {
+                isInArray = true
+                numberOfFilesExcluded++
             }
-        })
-    });
+        }
+    })
+
+    console.log(props.commit)
+    var allFilesExcluded = false
+    if(props.commit.length === numberOfFilesExcluded){
+        allFilesExcluded = true
+    }
+
+    function checkIfFilesAreExcluded(){
+        if(numberOfFilesInCommit === numberOfFilesExcluded){
+            return(
+                <TableCell align="right">
+                    {isInArray? <div style={{color:"red", fontSize:"15", fontWeight:"bold"}}> {props.commit.commitScore.toFixed(1)} </div> : <div style={{color:"blue", fontSize:"15", fontWeight:"bold"}}> {props.commit.commitScore.toFixed(1)} </div>}
+                </TableCell>
+            )
+        }else{
+            return(
+                <TableCell align="right">
+                    {isInArray? <div style={{color:"darkorange", fontSize:"15", fontWeight:"bold"}}> {props.commit.commitScore.toFixed(1)} </div> : <div style={{color:"blue", fontSize:"15", fontWeight:"bold"}}> {props.commit.commitScore.toFixed(1)} </div>}
+                </TableCell>
+            )
+        }
+    }
+
+
 
     return (
         <React.Fragment>
@@ -49,10 +75,8 @@ function CommitPerDayInfo(props) {
                 {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
                     props.commit.title.substring(0,10)}
                 </TableCell>
-                <TableCell align="right">
-                    {isInArray? <div style={{color:"red", fontSize:"15", fontWeight:"bold"}}> {"+" + props.commit.commitScore.toFixed(1)} </div> : <div style={{color:"blue", fontSize:"15", fontWeight:"bold"}}> {"+" + props.commit.commitScore.toFixed(1)} </div>}
+                {checkIfFilesAreExcluded()}
 
-                </TableCell>
 
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small"
