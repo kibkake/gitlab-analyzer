@@ -82,34 +82,19 @@ export default function Row(props) {
                     align ="left">
                     <button
                         style={{
-                            backgroundColor: 'red',
+                            backgroundColor: 'darkorange',
                             color: 'black',
                             borderRadius: '0%'
                         }}
                         type="button"
                         onClick={(e) => {
                             e.preventDefault();
-                            {checkIfFileIsExcluded(tempArray, newF, props.hash) ? console.log("already excluded") : props.addExcludedPoints(row.diffScore)}
-                            addFileToListOfExcluded(tempArray, newF, props.hash)
+                            {checkIfFileIsExcluded(tempArray, newF, props.hash) ? props.addExcludedPoints(-row.diffScore) : props.addExcludedPoints(row.diffScore)}
+                            {checkIfFileIsExcluded(tempArray, newF, props.hash) ? removeFromExcludedFiles(tempArray, newF, props.hash) : addFileToListOfExcluded(tempArray, newF, props.hash)}
+
                             setChecked(!checked)
                         }}>
                         IGNORE
-                    </button>
-
-                    <button
-                        style={{
-                            backgroundColor: 'cyan',
-                            color: 'black',
-                            borderRadius: '0%'
-                        }}
-                        type="button"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            {checkIfFileIsExcluded(tempArray, newF, props.hash) ?  props.addExcludedPoints(-row.diffScore) : console.log("not excluded")}
-                            removeFromExcludedFiles(tempArray, newF, props.hash)
-                            setChecked(!checked)
-                        }}>
-                        {"RE-ADD"}
                     </button>
                 </TableCell>
             </TableRow>
