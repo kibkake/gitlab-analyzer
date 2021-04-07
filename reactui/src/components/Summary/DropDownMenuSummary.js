@@ -22,7 +22,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     listOfDevelopers.map(item => {devArray.push({label: item.username, value: item.id})})
 
-    const[selectedValue, setSelectedValue] = useState(
+    let[selectedValue, setSelectedValue] = useState(
         pathArray[4]
     );
 
@@ -86,6 +86,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
                         options={devArray}
                         defaultValue={{label: selectedValue, value: selectedValue}}
                         onChange={handleChange}
+
                     />
             </div>
             </div>
