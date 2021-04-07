@@ -6,8 +6,7 @@ import moment from "moment";
 import {Table} from "react-bootstrap";
 import TableBody from "@material-ui/core/TableBody";
 import Row from "./RowsCodeDiff";
-import TableCell from "@material-ui/core/TableCell";
-import FormCheck from "react-bootstrap/FormCheck";
+import CommitService from "./CommitService";
 
 export default class ExpandButton extends Component  {
 
@@ -29,84 +28,6 @@ export default class ExpandButton extends Component  {
         }
     }
 
-    checkAllFilesAreIgnored(){
-        console.log(this.props.ever)
-
-        var tempArray = []
-        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
-        var tempHash = this.props.hash
-        var allFilesExcluded = true
-
-        this.props.ever.map(function (item) {
-            item.diffs.map(function (item2) {
-                var isExcluded = false;
-                for (var i = 0; i < tempArray.length; i++) {
-                    if (tempArray[i] === tempHash + "_" + item2.new_path) {
-                        isExcluded = true
-                    }
-                }
-                if(!isExcluded){
-                    allFilesExcluded = false
-                }
-            })
-        });
-
-        return allFilesExcluded
-    }
-
-    ignoreAllFilesOfCommit(){
-        console.log(this.props.ever)
-
-        var tempArray = []
-        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
-        var tempHash = this.props.hash
-
-        this.props.ever.map(function (item) {
-            item.diffs.map(function (item2) {
-                var isExcluded = false;
-                for (var i = 0; i < tempArray.length; i++) {
-                    if (tempArray[i] === tempHash + "_" + item2.new_path) {
-                        isExcluded = true
-                    }
-                }
-                if(!isExcluded){
-                    tempArray.push(tempHash + "_" + item2.new_path)
-                }
-            })
-        });
-
-        sessionStorage.setItem("excludedFiles",JSON.stringify( tempArray))
-        this.props.addExcludedPoints()
-    }
-
-    reAddAllFilesOfCommit(){
-        console.log(this.props.ever)
-
-        var tempArray = []
-        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
-        var tempHash = this.props.hash
-
-        this.props.ever.map(function (item) {
-            item.diffs.map(function (item2) {
-                var isExcluded = false;
-                var index = -1
-                for (var i = 0; i < tempArray.length; i++) {
-                    if (tempArray[i] === tempHash + "_" + item2.new_path) {
-                        isExcluded = true
-                        index = i
-                    }
-                }
-                if(isExcluded && index != -1){
-                    tempArray.splice(index, 1);
-                }
-            })
-        });
-
-        sessionStorage.setItem("excludedFiles",JSON.stringify( tempArray))
-        this.props.addExcludedPoints()
-
-    }
-
     render() {
 
         if(sessionStorage.getItem("excludedFiles") === null){
@@ -114,24 +35,8 @@ export default class ExpandButton extends Component  {
             sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
         }
 
-        var tempArray = []
-        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
-        var tempHash = this.props.hash
-        if(this.props.hash != null) {
-            var excludedScore = 0.0
-            this.props.ever.map(function (item) {
-                item.diffs.map(function (item2) {
-                    for (var i = 0; i < tempArray.length; i++) {
-                        if (tempArray[i] === tempHash + "_" + item2.new_path) {
-                            excludedScore += item2.diffScore
-                        }
-                    }
-                })
-            });
-        }
-
+        var excludedScore = CommitService.calculateExcludedScore(this.props.ever, this.props.hash)
         console.log("the excludedScore", excludedScore)
-
 
         return(
         <TableContainer style={{overflowX: "scroll", height: "1050px", width: "600px"}}
@@ -146,22 +51,33 @@ export default class ExpandButton extends Component  {
                     fontWeight: 'bold',
                     fontSize: '20px',
                     color: 'black',
-                    backgroundColor: 'lightgreen'
+                    backgroundColor: 'lightgreen',
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    display: "flex"
                 }}>
-                    {moment(item.committed_date).format('lll').substring(12, 21)}
-                    {"  |   Total Commit Score: "}
-                    {Math.abs((item.commitScore).toFixed(1))}</div>
+                        <div>
+                            {moment(item.committed_date).format('lll').substring(12, 21) + "  |   "}
+                        </div>
+                        <div style={{
+                            color: 'blue',
+                        }}>
+                            {"Total Commit Score: "}
+                            {Math.abs((item.commitScore).toFixed(1))}
+                        </div>
+                </div>
             ))}
             <div style={{
                 fontWeight: 'bold',
                 fontSize: '20px',
-                color: 'black',
+                color: 'red',
                 backgroundColor: 'lightgreen'
             }}>
                 {"Excluded Points: "}
                 {Math.abs((excludedScore).toFixed(1))}</div>
 
-            <div style={{flexDirection: "row", justifyContent: "flex-start", display: "flex"}}>
+            <div
+                style={{flexDirection: "row", justifyContent: "flex-start", display: "flex"}}>
                 <button style={{
                     backgroundColor: 'lightblue',
                     color: 'black',
@@ -184,19 +100,19 @@ export default class ExpandButton extends Component  {
                         type="button"
                         onClick={(e) => {
                             e.preventDefault();
-                            {console.log(this.checkAllFilesAreIgnored())}
-                            {this.checkAllFilesAreIgnored() ?  this.reAddAllFilesOfCommit() : this.ignoreAllFilesOfCommit()}
+                            {console.log(CommitService.checkAllFilesAreIgnored(this.props.ever, this.props.hash))}
+                            {CommitService.checkAllFilesAreIgnored(this.props.ever, this.props.hash) ?
+                                CommitService.reAddAllFilesOfCommit(this.props.ever, this.props.hash) :
+                                CommitService.ignoreAllFilesOfCommit(this.props.ever, this.props.hash)}
+                            {this.props.addExcludedPoints()}
                         }}>
                     {"IGNORE ALL"}
                 </button>
-
-
             </div>
 
             <Table aria-label="collapsible table">
                 <TableBody>
                     {this.props.ever.map((item) =>
-
                         item.diffs.map((item2, index) => (
                             <Row key={item2.new_path}
                                  row={item2}
