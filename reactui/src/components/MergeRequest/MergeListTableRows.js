@@ -13,8 +13,9 @@ import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
-import {Tooltip} from "@material-ui/core";
-
+import {ClickAwayListener, Tooltip, withStyles} from "@material-ui/core";
+import styles from "./ToolTip.css"
+import {any} from "expect/build/asymmetricMatchers";
 
 const PopOver = ({Diffs}) => {
     return (
@@ -24,9 +25,6 @@ const PopOver = ({Diffs}) => {
     )
 
 }
-
-const longText = "Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus. "
-+ "Nullam eget est sed sem iaculis gravida eget vitae justo.";
 
 //[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
 // const PopOver = ({Diffs}) => {
@@ -47,6 +45,15 @@ const longText = "Aliquam eget finibus ante, non facilisis lectus. Sed vitae dig
 //     )
 // }
 
+const StyledTooltip = withStyles((theme) => ({
+    tooltip: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 500,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+}))(Tooltip);
 
 // Table structure is based on the library from [https://material-ui.com/components/tables/]
 export default function Row(props) {
@@ -54,10 +61,18 @@ export default function Row(props) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
+    const [tooltipOpen, tooltipSetOpen] = React.useState(false);
+
+    const handleTooltipClose = () => {
+        tooltipSetOpen(false);
+    };
+
+    const handleTooltipOpen = () => {
+        tooltipSetOpen(true);
+    };
+
     return (
         <React.Fragment>
-            {/*<div className="box-container">*/}
-
             <TableRow className={classes.root}>
                 <TableCell component="th" scope="row">
                     {row.date}
@@ -67,22 +82,44 @@ export default function Row(props) {
                 <TableCell align="right"> {row.sum}</TableCell>
 
                 <TableCell align ="right">
-                    <Tooltip arrow placement={"right-start"} title={row.diffs.map(item => {
-                        return (
-                            <ul>
-                                <h5>{item.path}</h5>
-                                <h6><Highlight className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight></h6>
-                            </ul>
-                        )
-                    })}>
+                    <ClickAwayListener onClickAway={handleTooltipClose}>
+                        <div>
+                            <StyledTooltip
+                                placement={"right-start"}
+                                // PopperProps={{
+                                //     disablePortal: true,
+                                // }}
+                                onClose={handleTooltipClose}
+                                open={tooltipOpen}
+                                disableFocusListener
+                                disableHoverListener
+                                disableTouchListener
+                                title={row.diffs.map(item => {
+                                    return (
+                                    <React.Fragment>
 
-                    {/*<OverlayTrigger trigger="focus" placement="right" justifyContent="flex-start"*/}
-                    {/*                display="flex" flexDirection="row" p={1} m={1}*/}
-                    {/*                overlay={<PopOver order={3} Diffs={row.diffs} />} >*/}
-                        <button aria-label="expand row" size="small" onClick={() => setOpen(!open)}
+                                    {/*// <div>*/}
+                                            <ul>
+                                                <h5>{item.path}</h5>
+                                                <h6><Highlight
+                                                    className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
+                                                </h6>
+                                            </ul>
+                                        {/*</div>*/}
+                                        </React.Fragment>
+                                    )
+                                })}
+
+                            >
+
+                        <button aria-label="expand row" size="small"
+                                onClick={() => {  setOpen(!open);
+                                                  handleTooltipOpen();}}
                                 type="button" order={1} className="btn btn-secondary">View</button>
-                    {/*</OverlayTrigger>*/}
-                        </Tooltip>
+                   {/* /!*    </Tooltip>*!/*/}
+                    </StyledTooltip>
+                        </div>
+                    </ClickAwayListener>
                 </TableCell>
             </TableRow>
             <TableRow>
@@ -136,7 +173,7 @@ const useRowStyles = makeStyles({
     root: {
         '& > *': {
             borderBottom: 'unset',
-            fontSize: '15pt',
+            fontSize: '12pt',
             backgroundColor: 'lightgrey',
 
         },

@@ -3,30 +3,47 @@
 // import Grid from '@material-ui/core/Grid';
 // import Button from '@material-ui/core/Button';
 // import Tooltip from '@material-ui/core/Tooltip';
+// import {ClickAwayListener, withStyles} from "@material-ui/core";
+// import Highlight from "react-highlight";
+// import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 //
-// const useStyles = makeStyles((theme) => ({
-//     button: {
-//         margin: theme.spacing(1),
+// const tooltipStyle = withStyles((theme) => ({
+//     tooltip: {
+//         backgroundColor: '#f5f5f9',
+//         color: 'rgba(0, 0, 0, 0.87)',
+//         maxWidth: 800,
+//         fontSize: theme.typography.pxToRem(12),
+//         border: '1px solid #dadde9',
 //     },
-//     customWidth: {
-//         maxWidth: 500,
-//     },
-//     noMaxWidth: {
-//         maxWidth: 'none',
-//     },
-// }));
+// }))(Tooltip);
 //
-// const longText = "Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus. " + Praesent non nunc mollis, fermentum neque at, semper arcu."" +
-// "Nullam eget est sed sem iaculis gravida eget vitae justo.";
 //
-// export default function PositionedTooltips() {
-//     const classes = useStyles();
+// export default function Tooltip (Diffs) {
+//     const classes = tooltipStyle();
 //
 //     return (
-//         <div className={classes.root}>
-//             <Tooltip title= {longText} placement="right-start">
-//                 <Button>right-start</Button>
-//             </Tooltip>
-//         </div>
+//         <ClickAwayListener onClickAway={}
+//         <HtmlTooltip
+//             placement={"right-start"}
+//             title={row.diffs.map(item => {
+//                 return (
+//                     <React.Fragment class="tooltip">
+//                         <ul>
+//                             <h5>{item.path}</h5>
+//                             <h6><Highlight className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight></h6>
+//                         </ul>
+//                     </React.Fragment>
+//                 )
+//             })}
+//         >
+//
+//             <button aria-label="expand row" size="small" onClick={() => setOpen(!open)}
+//                     onClick={() => tooltipSetOpen(!tooltipOpen)}
+//                     type="button" order={1} className="btn btn-secondary">View</button>
+//             {/*    </Tooltip>*/}
+//         </HtmlTooltip>
+// </div>
+//
+// </ClickAwayListener>
 //     );
 // }

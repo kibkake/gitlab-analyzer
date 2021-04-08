@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import axios from "axios";
 import Row from "./MergeListTableRows";
 import PopOver from "./MergeListTableRows";
-
+import "./TableStyle.css"
 import './MergeListTable.css'
 import moment from "moment";
 import CommitList from "./CommitList";
@@ -164,7 +164,7 @@ export default class MergeListTable  extends PureComponent {
         console.log(output);
 
         return (
-            <div className="box-container" aria-setsize={500} onCompositionStart={200}>
+            <div className="box-container" style={{"width": "1000px"}} aria-setsize={500} onCompositionStart={200}>
                 <div class ="box">
             <TableContainer component={Paper} display="flex" flexDirection="row" p={1} m={1} justifyContent="flex-start">
                 <Table aria-label="collapsible table" >
@@ -175,7 +175,6 @@ export default class MergeListTable  extends PureComponent {
                             <TableCell align="right">Merge Score</TableCell>
                             <TableCell align="right">&Sigma; Commit Score</TableCell>
                             <TableCell align="right">Commits & Diffs</TableCell>
-                            {/*<TableCell align="right">Full Diff</TableCell>*/}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -186,52 +185,8 @@ export default class MergeListTable  extends PureComponent {
 
                 </Table>
             </TableContainer>
-            {/*{(this.state.diffShow == false) ? <DiffWindow*/}
-            {/*    Diffs={output.diffs}*/}
-            {/*    handler2 = {this.handler}/> : <div> </div>}*/}
                 </div>
             </div>
         );
     }
 }
-
-
-function DiffWindow(props) {
-    const {Diffs} = props;
-
-    return (
-        <div>
-            {/*// <Popover id="popover-basic" placement='right' class="justify-content-end" >*/}
-            {Diffs.map((item, index) => {
-                return(
-                    <ul key={index}>
-                        <h5 className="filename">{item.path}</h5>
-                        <li><Highlight className="highlighted-text">{HighlightCodeDiffs(item.diff)} </Highlight></li>
-                        {/*<Popover.Title as="h3">{item.new_path}</Popover.Title>*/}
-                        {/*<Popover.Content><Highlight className="highlighted-text">  </Highlight>*/}
-                        {/*</Popover.Content>*/}
-                    </ul>
-                )
-            })}
-        </div>
-    )
-}
-
-
-const useRowStyles = makeStyles({
-    root: {
-        '& > *': {
-            borderBottom: 'unset',
-            fontSize: '15pt',
-            backgroundColor: 'lightgrey',
-
-        },
-    },
-    tableCell: {
-        '& > *': {
-            borderBottom: 'unset',
-            fontSize: '20pt',
-            fontWeight: 'bold',
-        },
-    }
-});
