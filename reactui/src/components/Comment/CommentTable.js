@@ -1,25 +1,60 @@
+/*
+References:
+
+- https://www.youtube.com/watch?v=MWD-iKzR2c8
+For how to sort an array of objects in Javascript.
+
+- https://stackoverflow.com/questions/14781153/how-to-compare-two-string-dates-in-javascript
+fuyi's answer showed that two strings representing dates (in the necessary format)
+can be directly compared to find which date is earlier/later.
+
+- https://stackoverflow.com/questions/31712808/how-to-force-javascript-to-deep-copy-a-string
+For deep copying a string. The method given in the accepted answer was previously used
+in the sortByCommentMessage function, but it turns out deep copying isn't needed here
+(so that commit has been amended).
+
+- https://stackoverflow.com/questions/5684144/how-to-completely-remove-borders-from-html-table
+Used Stephen's answer to remove lines in a table. Made .removeBorder in
+CommentTable.css and used it in this file.
+
+ */
+
 import React, { Component } from "react";
 import {Table} from 'react-bootstrap'
 import axios from "axios";
 import moment from "moment";
 import "./CommentTable.css";
+import {sort} from "d3-array";
+import {FaSort} from "react-icons/fa";
 
 class CommentTable extends Component{
     constructor(props) {
         super(props);
         this.state = {
             all_comments:[],
+            backup_all_comments:[], // Version that remains unsorted.
+                                    // Will keep the order given in getDataFromBackend().
             comments_on_devs_code:[],
-            comments:[], // Will equal either all_comments or comments_on_devs_code
+            backup_comments_on_devs_code:[], // Version that remains unsorted.
+            comments:[], // Will equal one of the above arrays, and is used for the table.
             issue:true,
             code_rev:true,
             parentdata: this.props.devName,
-            devs_code_btn_name:"Dev's Code"
+            devs_code_btn_name:"Just the comments on own code in code reviews",
+            // For the following variables, 0 means unsorted, 1 means sorted in ascending
+            // order, and 2 means sorted in descending order.
+            sorted_by_date_state:0,
+            sorted_by_word_count_state:0,
+            sorted_by_comment_msg_state:0
         }
         this.enableAll=this.enableAll.bind(this);
         this.enableIssue=this.enableIssue.bind(this);
         this.enableCodeRev=this.enableCodeRev.bind(this);
         this.filterByDevCode=this.filterByDevCode.bind(this);
+        this.sortByWordCount=this.sortByWordCount.bind(this);
+        this.sortByDate=this.sortByDate.bind(this);
+        this.unsortArrays=this.unsortArrays.bind(this);
+        this.sortByCommentMessage=this.sortByCommentMessage.bind(this);
     }
 
     componentDidMount() {
@@ -36,8 +71,10 @@ class CommentTable extends Component{
         await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/false" + "/2021-01-01/2021-05-09")
             .then(response => {
                 const all_comments = response.data
-                this.setState({all_comments: all_comments})
+                const backup_all_comments = all_comments.slice();
+                this.setState({all_comments: all_comments, backup_all_comments: backup_all_comments});
                 console.log(this.state.all_comments);
+                console.log(this.state.backup_all_comments);
             }).catch((error) => {
             console.error(error);
         });
@@ -45,18 +82,22 @@ class CommentTable extends Component{
         await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/true" + "/2021-01-01/2021-05-09")
             .then(response => {
                 const comments_on_devs_code = response.data
-                this.setState({comments_on_devs_code: comments_on_devs_code})
+                const backup_comments_on_devs_code = comments_on_devs_code.slice();
+                this.setState({comments_on_devs_code: comments_on_devs_code,
+                    backup_comments_on_devs_code: backup_comments_on_devs_code});
                 console.log(this.state.comments_on_devs_code);
+                console.log(this.state.backup_comments_on_devs_code);
             }).catch((error) => {
             console.error(error);
         });
 
-        if (this.state.devs_code_btn_name === "Dev's Code") {
-            this.setState({comments:this.state.all_comments});
+        if (this.state.devs_code_btn_name === "Just the comments on own code in code reviews") {
+            await this.setState({comments:this.state.all_comments.slice()});
         }
         else {
-            this.setState({comments:this.state.comments_on_devs_code});
+            await this.setState({comments:this.state.comments_on_devs_code.slice()});
         }
+        console.log(this.state.comments);
     }
 
     componentDidUpdate(prevProps){
@@ -83,11 +124,114 @@ class CommentTable extends Component{
 
     async filterByDevCode(e) {
         e.preventDefault();
-        if (this.state.devs_code_btn_name === "Dev's Code") {
-            await this.setState({devs_code_btn_name:"All Code", comments:this.state.comments_on_devs_code});
+        if (this.state.devs_code_btn_name === "Just the comments on own code in code reviews") {
+            await this.setState({devs_code_btn_name:"                  All code review comments                  ", comments:this.state.comments_on_devs_code.slice()});
         }
         else {
-            await this.setState({devs_code_btn_name:"Dev's Code", comments:this.state.all_comments});
+            await this.setState({devs_code_btn_name:"Just the comments on own code in code reviews", comments:this.state.all_comments.slice()});
+        }
+    }
+
+    async unsortArrays(e) {
+        e.preventDefault();
+        console.log(this.state.backup_comments_on_devs_code);
+        console.log(this.state.backup_all_comments);
+        await this.setState({all_comments:this.state.backup_all_comments.slice(),
+            comments_on_devs_code:this.state.backup_comments_on_devs_code.slice()});
+        if (this.state.devs_code_btn_name === "Just the comments on own code in code reviews") {
+            // This means that currently, the comments table is showing comments
+            // for all code. So, set it equal to the backup of all_comments:
+            await this.setState({comments:this.state.backup_all_comments.slice()});
+        }
+        else {
+            await this.setState({comments:this.state.backup_comments_on_devs_code.slice()});
+        }
+        await this.setState({sorted_by_comment_msg_state:0, sorted_by_date_state:0, sorted_by_word_count_state:0});
+    }
+
+    async sortByWordCount(e) {
+        e.preventDefault();
+        let sorted_by_word_count_state = this.state.sorted_by_word_count_state;
+        if (sorted_by_word_count_state === 2) {
+            await this.unsortArrays(e);
+        }
+        else {
+            let order_decider = 1;
+            if (sorted_by_word_count_state === 1) {
+                order_decider = -1;
+            }
+            let comments_sorted = this.state.comments;
+            comments_sorted.sort((a,b) => order_decider * (a.wordCount - b.wordCount));
+
+            let all_comments_sorted = this.state.all_comments;
+            all_comments_sorted.sort((a,b) => order_decider * (a.wordCount - b.wordCount));
+
+            let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
+            comments_on_devs_code_sorted.sort((a,b) => order_decider * (a.wordCount - b.wordCount));
+
+            await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
+                comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_word_count_state:sorted_by_word_count_state + 1,
+                sorted_by_comment_msg_state:0, sorted_by_date_state:0});
+        }
+    }
+
+    async sortByDate(e) {
+        e.preventDefault();
+        let sorted_by_date_state = this.state.sorted_by_date_state;
+        if (sorted_by_date_state === 2) {
+            await this.unsortArrays(e);
+        }
+        else {
+            let order_decider = 1;
+            if (sorted_by_date_state === 1) {
+                order_decider = -1;
+            }
+            let comments_sorted = this.state.comments;
+            comments_sorted.sort((a,b) => a.created_at > b.created_at ? order_decider : -1 * order_decider);
+
+            let all_comments_sorted = this.state.all_comments;
+            all_comments_sorted.sort((a,b) => a.created_at > b.created_at ? order_decider : -1 * order_decider);
+
+            let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
+            comments_on_devs_code_sorted.sort((a,b) => a.created_at > b.created_at ? order_decider : -1 * order_decider);
+
+            await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
+                comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_date_state:sorted_by_date_state + 1,
+                sorted_by_comment_msg_state:0, sorted_by_word_count_state:0});
+        }
+    }
+
+    async sortByCommentMessage(e) {
+        e.preventDefault();
+        // Uppercase and lowercase letters will be treated the same for ordering.
+        let sorted_by_comment_msg_state = this.state.sorted_by_comment_msg_state;
+
+        if (sorted_by_comment_msg_state === 2) {
+            // Go to state 0 (i.e., unsort):
+            await this.unsortArrays(e);
+        }
+        else {
+            // Will either be sorting in ascending or descending order. Check which it is
+            // right now.
+            let order_decider = 1;
+            if (sorted_by_comment_msg_state === 1) {
+                // In ascending order, so want to sort in descending order:
+                order_decider = -1;
+            }
+            let comments_sorted = this.state.comments;
+            comments_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? order_decider : -1 * order_decider);
+            // Note that a.body and b.body will not be modified by toLowerCase(),
+            // as the method creates a new object. So making a deep copy is not necessary.
+
+            let all_comments_sorted = this.state.all_comments;
+            all_comments_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? order_decider : -1 * order_decider);
+
+            let comments_on_devs_code_sorted = this.state.comments_on_devs_code;
+            comments_on_devs_code_sorted.sort((a,b) => a.body.toLowerCase() > b.body.toLowerCase() ? order_decider : -1 * order_decider);
+
+            await this.setState({comments:comments_sorted, all_comments:all_comments_sorted,
+                comments_on_devs_code:comments_on_devs_code_sorted, sorted_by_comment_msg_state:sorted_by_comment_msg_state + 1,
+                sorted_by_date_state:0, sorted_by_word_count_state:0});
         }
     }
 
@@ -112,20 +256,80 @@ class CommentTable extends Component{
 
         return (
             <>
-                <h4 className="comments-filter">   Filters</h4>
-                <div className="comments-filter">
-                    <button className="filter" onClick={this.enableAll}> All </button>
-                    <button className="filter" onClick={this.enableIssue}> Issue </button>
-                    <button className="filter" onClick={this.enableCodeRev}> Code Review </button>
-                    <button className="filter" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
-                </div>
+                <table>
+                    <tr>
+                        <td className="removeBorder">
+                            <h4 className="filters-header-margin">Filter Options</h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="removeBorder">
+                            {this.state.issue === false &&
+                                <button className="filter comments-on-code-reviews-margin filter-button-colour-when-used" onClick={this.enableCodeRev}>          Only comments on code reviews          </button>
+                            }
+                            {this.state.issue == true &&
+                                <button className="filter comments-on-code-reviews-margin" onClick={this.enableCodeRev}>          Only comments on code reviews          </button>
+                            }
+                        </td>
+                        <td className="removeBorder">
+                            {this.state.code_rev === false &&
+                                <button className="filter comments-on-issues-margin filter-button-colour-when-used" onClick={this.enableIssue}>                    Only comments on issues                   </button>
+                            }
+                            {this.state.code_rev == true &&
+                                <button className="filter comments-on-issues-margin" onClick={this.enableIssue}>                    Only comments on issues                   </button>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="removeBorder">
+                            {this.state.code_rev === true && this.state.issue === true &&
+                                <button className="filter comments-on-both-margin filter-button-colour-when-used" onClick={this.enableAll}> Comments on both issues and code reviews </button>
+                            }
+                            {(this.state.code_rev === false || this.state.issue === false) &&
+                                <button className="filter comments-on-both-margin" onClick={this.enableAll}> Comments on both issues and code reviews </button>
+                            }
+                        </td>
+                        <td className="removeBorder">
+                            {this.state.code_rev === true &&
+                                <button className="filter comments-on-dev-code-margin" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
+                            }
+                        </td>
+                    </tr>
+                </table>
                 <br/>
                 <Table striped bordered hover className="comments-table">
                     <thead>
                         <tr>
-                            <th className="comments-table-date">Date</th>
-                            <th className="comments-table-wc">Word Count</th>
-                            <th>Comments</th>
+                            {this.state.sorted_by_date_state === 0 &&
+                                <th className="comments-table-date">Date <button className="table-button filter sort-by-date-margin button-colour-when-unsorted" onClick={this.sortByDate}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_date_state === 1 &&
+                                <th className="comments-table-date">Date <button className="table-button filter sort-by-date-margin button-colour-when-sorted-ascending" onClick={this.sortByDate}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_date_state === 2 &&
+                                <th className="comments-table-date">Date <button className="table-button filter sort-by-date-margin button-colour-when-sorted-descending" onClick={this.sortByDate}><FaSort/></button></th>
+                            }
+
+                            {this.state.sorted_by_word_count_state === 0 &&
+                                <th className="comments-table-wc">Word Count <button className="table-button filter sort-by-word-count-margin button-colour-when-unsorted" onClick={this.sortByWordCount}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_word_count_state === 1 &&
+                                <th className="comments-table-wc">Word Count <button className="table-button filter sort-by-word-count-margin button-colour-when-sorted-ascending" onClick={this.sortByWordCount}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_word_count_state === 2 &&
+                                <th className="comments-table-wc">Word Count <button className="table-button filter sort-by-word-count-margin button-colour-when-sorted-descending" onClick={this.sortByWordCount}><FaSort/></button></th>
+                            }
+
+                            {this.state.sorted_by_comment_msg_state === 0 &&
+                                <th>Comments <button className="table-button filter sort-by-message-margin button-colour-when-unsorted" onClick={this.sortByCommentMessage}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_comment_msg_state === 1 &&
+                                <th>Comments <button className="table-button filter sort-by-message-margin button-colour-when-sorted-ascending" onClick={this.sortByCommentMessage}><FaSort/></button></th>
+                            }
+                            {this.state.sorted_by_comment_msg_state === 2 &&
+                                <th>Comments <button className="table-button filter sort-by-message-margin button-colour-when-sorted-descending" onClick={this.sortByCommentMessage}><FaSort/></button></th>
+                            }
+
                             {this.state.issue === true && this.state.code_rev === true &&
                                 <th>On Issue/Code Review</th>
                             }
