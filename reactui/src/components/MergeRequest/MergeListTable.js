@@ -11,7 +11,6 @@ import Row from "./MergeListTableRows";
 import './MergeListTable.css'
 import moment from "moment";
 
-
 export default class MergeListTable  extends PureComponent {
 
     applyMultipliers(){
@@ -58,10 +57,7 @@ export default class MergeListTable  extends PureComponent {
         this.state = {
             merges:[],
             parentData: this.props.devName,
-            diffShow: false,
         }
-        this.handler = this.handler.bind(this)
-        this.handler2 = this.handler2.bind(this)
     }
 
     componentDidMount(){
@@ -85,6 +81,8 @@ export default class MergeListTable  extends PureComponent {
             .then(res => {
                 this.setState({merges : res.data, parentData: username});
                 this.applyMultipliers();
+                console.log(res.data);
+
             }).catch((error) => {
                 console.error(error);})
     }
@@ -98,26 +96,6 @@ export default class MergeListTable  extends PureComponent {
         console.log("update");
     }
 
-    getFullDiffScore (id) {
-        this.state.merges.item(function(item) {
-
-        })
-    }
-
-
-    async handler() {
-        await this.setState({
-            diffShow: true
-        })
-    }
-
-    async handler2() {
-        await this.setState({
-            diffShow: false
-        })
-    }
-
-
     render () {
         const output = this.state.merges.map(function(item) {
             let currentYear = new Date().getFullYear();
@@ -126,43 +104,45 @@ export default class MergeListTable  extends PureComponent {
                 id: item.id,
                 date: dateString,
                 title: item.title,
-                score: item.mrScore,
-                diffScore: 0,
+                score: (item.mrScore + item.sumOfCommits).toFixed(1),
                 mrUrl: item.web_url,
                 sum: item.sumOfCommits,
                 diffs: item.diffs.map(function (diffs) {
                     return {
                         path: diffs.new_path,
                         diff: diffs.diff,
+                        diffScore: diffs.diffScore
                     };
                 }),
                 commits: item.commits.map(function (commit) {
+                    let currentYear = new Date().getFullYear();
+                    let dateString= moment(commit.committed_date).format('lll').replace(currentYear,"")
                     return {
-                        commitDate: commit.date,
+                        commitDate: dateString,
                         message: commit.message,
-                        score: commit.commitScore,
+                        score: commit.commitScore.toFixed(1),
                         author: commit.committer_name,
                         commitDiffs: commit.diffs.map(function (diffs) {
                             return {
                                 path: diffs.new_path,
-                                diff: diffs.diff
+                                diff: diffs.diff,
+                                diffScore: diffs.diffScore
                             };
                         })
                     };
                 })
             };
         });
-        // this.setState({merges: output})
         console.log(output);
 
         return (
-            <div className="box-container" style={{"width": "800px"}} aria-setsize={500} onCompositionStart={200}>
+            <div className="box-container" style={{"width": "900px"}} aria-setsize={500} onCompositionStart={200}>
                 <div class ="box">
             <TableContainer component={Paper} display="flex" flexDirection="row" p={1} m={1} justifyContent="flex-start">
                 <Table aria-label="collapsible table" >
                     <TableHead className="tableCell">
                         <TableRow>
-                            <TableCell align="left" className="tableCell"> Date </TableCell>
+                            <TableCell align="left"> Date </TableCell>
                             <TableCell>Merge Title</TableCell>
                             <TableCell align="right">Merge Score</TableCell>
                             <TableCell align="right">&Sigma; Commit Score</TableCell>

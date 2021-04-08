@@ -20,7 +20,7 @@ const StyledTooltip = withStyles((theme) => ({
     tooltip: {
         backgroundColor: '#f5f5f9',
         color: 'rgba(0, 0, 0, 0.87)',
-        maxWidth: 500,
+        maxWidth: 550,
         fontSize: theme.typography.pxToRem(12),
         border: '1px solid #dadde9',
     },
@@ -54,11 +54,11 @@ export default function Row(props) {
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
-                <TableCell component="th" scope="row">
+                <TableCell align="left" component="th" scope="row">
                     {row.date}
                 </TableCell>
                 <TableCell>#{row.id} <a href= {row.mrUrl}> {row.title}</a> </TableCell>
-                <TableCell align="right">{row.score.toFixed(1)}</TableCell>
+                <TableCell align="right">{row.score}</TableCell>
                 <TableCell align="right"> {row.sum}</TableCell>
 
                 <TableCell align ="right">
@@ -75,7 +75,7 @@ export default function Row(props) {
                                     return (
                                     <React.Fragment>
                                         <ul>
-                                            <h5>{item.path}</h5>
+                                            <h5><u>{item.path}</u> (+{item.diffScore}) </h5>
                                             <h6><Highlight
                                                 className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
                                             </h6>
@@ -119,7 +119,7 @@ export default function Row(props) {
 
                                             <TableCell>{commitsRow.message}</TableCell>
                                             <TableCell align="right">{commitsRow.author}</TableCell>
-                                            <TableCell align="right">{commitsRow.score.toFixed(1)}</TableCell>
+                                            <TableCell align="right">{commitsRow.score}</TableCell>
                                             <TableCell align="right" >
                                                 <ClickAwayListener onClickAway={handleCommitTooltipClose}>
                                                     <div>
@@ -134,7 +134,7 @@ export default function Row(props) {
                                                                 return (
                                                                     <React.Fragment>
                                                                         <ul>
-                                                                            <h5>{item.path}</h5>
+                                                                            <h5><u>{item.path}</u> (+{item.diffScore})</h5>
                                                                             <h6><Highlight
                                                                                 className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
                                                                             </h6>
@@ -164,7 +164,7 @@ const useRowStyles = makeStyles({
     root: {
         '& > *': {
             borderBottom: 'unset',
-            fontSize: '12pt',
+            fontSize: '11pt',
             backgroundColor: 'lightgrey',
 
         },
