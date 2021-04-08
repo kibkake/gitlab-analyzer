@@ -143,7 +143,6 @@ export default class MergeListTable  extends PureComponent {
         console.log(output);
 
         return (
-
                 <TableContainer component={Paper} display="flex" flexDirection="row" p={1} m={1} justifyContent="flex-start">
                     <Table aria-label="collapsible table" >
                         <TableHead className="tableCell">
