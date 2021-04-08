@@ -1,5 +1,57 @@
-.comments-filter{
-    margin-left:78%;
+.filters-header-margin{
+    margin-left:39.5%;
+}
+
+.sort-header-margin{
+    margin-left:82.5%;
+}
+
+.sort-by-date-margin{
+    margin-left:0 !important;
+}
+
+.sort-by-word-count-margin{
+    margin-left:0 !important;
+}
+
+.sort-by-message-margin{
+    margin-left:0 !important;
+}
+
+.unsort-margin{
+    margin-left:1% !important;
+}
+
+.comments-on-both-margin{
+    margin-left:0 !important;
+}
+
+.comments-on-issues-margin{
+    margin-left:-45% !important;
+}
+
+.comments-on-code-reviews-margin{
+    margin-left: 0 !important;
+}
+
+.comments-on-dev-code-margin{
+    margin-left:-45% !important;
+}
+
+.button-colour-when-unsorted{
+    color: #000000 !important;
+}
+
+.button-colour-when-sorted-ascending{
+    color: #4ac11b !important;
+}
+
+.button-colour-when-sorted-descending{
+    color: #d90c0c !important;
+}
+
+.filter-button-colour-when-used{
+    color: #070da9 !important;
 }
 
 .comments-table{
@@ -24,7 +76,6 @@
 
 .filter:hover{
     color:darkcyan;
-    font-weight: bold;
 }
 
 .filter:active{
@@ -34,4 +85,13 @@
 
 .vspace{
     margin-bottom: 2cm;
+}
+
+.removeBorder{
+    border:none !important;
+}
+
+.table-button{
+    border-width: 0;
+    background-color: #ffffff00;
 }

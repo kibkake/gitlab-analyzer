@@ -24,7 +24,6 @@ function DropDownMenuComments ({listOfDevelopers}) {
     }
 
     return (
-
         <div>
             <Navbar_Developers devName = {selectedValue}/>
             <br/>
@@ -38,11 +37,9 @@ function DropDownMenuComments ({listOfDevelopers}) {
             <div className="snap-widget">
                 <SnapshotWidgetComponent/>
             </div>
-            <br/>
             <h1 style={{textAlign:'center'}}>Comment Contribution</h1>
             <br/>
             <CommentTable devName = {selectedValue}/>
-
         </div>
     )
 }
