@@ -14,36 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import {ClickAwayListener, Tooltip, withStyles} from "@material-ui/core";
-import styles from "./ToolTip.css"
-import {any} from "expect/build/asymmetricMatchers";
 
-const PopOver = ({Diffs}) => {
-    return (
-            <Popover id="popover-basic" placement='right' class="justify-content-end" >
-                hey
-            </Popover>
-    )
-
-}
-
-//[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
-// const PopOver = ({Diffs}) => {
-//     return (
-//         <div className="box">
-//             <Popover id="popover-basic" placement='right' class="justify-content-end" >
-//                  {Diffs.map((item => {
-//                      return(
-//                          <ul>
-//                              <Popover.Title as="h3">{item.path}</Popover.Title>
-//                              <Popover.Content><Highlight className="highlighted-text"> {HighlightCodeDiffs(item.diff)} </Highlight>
-//                              </Popover.Content>
-//                          </ul>
-//                      )
-//                 }))}
-//             </Popover>
-//         </div>
-//     )
-// }
 
 const StyledTooltip = withStyles((theme) => ({
     tooltip: {
@@ -71,6 +42,15 @@ export default function Row(props) {
         tooltipSetOpen(true);
     };
 
+    const [commitTooltipOpen, commitTooltipSetOpen] = React.useState(false);
+    const handleCommitTooltipClose = () => {
+        commitTooltipSetOpen(false);
+    };
+
+    const handleCommitTooltipOpen = () => {
+        commitTooltipSetOpen(true);
+    };
+
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
@@ -86,9 +66,6 @@ export default function Row(props) {
                         <div>
                             <StyledTooltip
                                 placement={"right-start"}
-                                // PopperProps={{
-                                //     disablePortal: true,
-                                // }}
                                 onClose={handleTooltipClose}
                                 open={tooltipOpen}
                                 disableFocusListener
@@ -97,27 +74,20 @@ export default function Row(props) {
                                 title={row.diffs.map(item => {
                                     return (
                                     <React.Fragment>
-
-                                    {/*// <div>*/}
-                                            <ul>
-                                                <h5>{item.path}</h5>
-                                                <h6><Highlight
-                                                    className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
-                                                </h6>
-                                            </ul>
-                                        {/*</div>*/}
-                                        </React.Fragment>
+                                        <ul>
+                                            <h5>{item.path}</h5>
+                                            <h6><Highlight
+                                                className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
+                                            </h6>
+                                        </ul>
+                                    </React.Fragment>
                                     )
-                                })}
-
-                            >
-
-                        <button aria-label="expand row" size="small"
-                                onClick={() => {  setOpen(!open);
-                                                  handleTooltipOpen();}}
-                                type="button" order={1} className="btn btn-secondary">View</button>
-                   {/* /!*    </Tooltip>*!/*/}
-                    </StyledTooltip>
+                                })}>
+                            <button aria-label="expand row" size="small"
+                                    onClick={() => {  setOpen(!open);
+                                                      handleTooltipOpen();}}
+                                    type="button" order={1} className="btn btn-secondary">View</button>
+                            </StyledTooltip>
                         </div>
                     </ClickAwayListener>
                 </TableCell>
@@ -151,9 +121,32 @@ export default function Row(props) {
                                             <TableCell align="right">{commitsRow.author}</TableCell>
                                             <TableCell align="right">{commitsRow.score.toFixed(1)}</TableCell>
                                             <TableCell align="right" >
-                                                <OverlayTrigger trigger="focus"  placement="right" overlay={<PopOver Diffs={commitsRow.commitDiffs}/>}>
-                                                    <button type="button" className="btn btn-outline-secondary">View</button>
-                                                </OverlayTrigger>
+                                                <ClickAwayListener onClickAway={handleCommitTooltipClose}>
+                                                    <div>
+                                                        <StyledTooltip
+                                                            placement={"right-start"}
+                                                            onClose={handleCommitTooltipClose}
+                                                            open={commitTooltipOpen}
+                                                            disableFocusListener
+                                                            disableHoverListener
+                                                            disableTouchListener
+                                                            title={commitsRow.commitDiffs.map(item => {
+                                                                return (
+                                                                    <React.Fragment>
+                                                                        <ul>
+                                                                            <h5>{item.path}</h5>
+                                                                            <h6><Highlight
+                                                                                className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
+                                                                            </h6>
+                                                                        </ul>
+                                                                    </React.Fragment>
+                                                                )
+                                                            })}>
+                                                            <button type="button" className="btn btn-outline-secondary"
+                                                                    onClick={() => handleCommitTooltipOpen()}>View</button>
+                                                        </StyledTooltip>
+                                                    </div>
+                                                </ClickAwayListener>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -163,9 +156,7 @@ export default function Row(props) {
                     </Collapse>
                 </TableCell>
             </TableRow>
-        {/*</div>*/}
         </React.Fragment>
-
     );
 }
 
@@ -179,3 +170,23 @@ const useRowStyles = makeStyles({
         },
     },
 });
+
+
+//[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
+// const PopOver = ({Diffs}) => {
+//     return (
+//         <div className="box">
+//             <Popover id="popover-basic" placement='right' class="justify-content-end" >
+//                  {Diffs.map((item => {
+//                      return(
+//                          <ul>
+//                              <Popover.Title as="h3">{item.path}</Popover.Title>
+//                              <Popover.Content><Highlight className="highlighted-text"> {HighlightCodeDiffs(item.diff)} </Highlight>
+//                              </Popover.Content>
+//                          </ul>
+//                      )
+//                 }))}
+//             </Popover>
+//         </div>
+//     )
+// }

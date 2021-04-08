@@ -1,5 +1,4 @@
 import React, {PureComponent} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,16 +8,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import axios from "axios";
 import Row from "./MergeListTableRows";
-import PopOver from "./MergeListTableRows";
-import "./TableStyle.css"
 import './MergeListTable.css'
 import moment from "moment";
-import CommitList from "./CommitList";
-import Highlight from "react-highlight";
-import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
-import SingleCommitDiff from "../Commits/CommitDiff";
-import async from "asynckit";
-// import { merge } from 'jquery';
+
 
 export default class MergeListTable  extends PureComponent {
 
@@ -164,7 +156,7 @@ export default class MergeListTable  extends PureComponent {
         console.log(output);
 
         return (
-            <div className="box-container" style={{"width": "1000px"}} aria-setsize={500} onCompositionStart={200}>
+            <div className="box-container" style={{"width": "800px"}} aria-setsize={500} onCompositionStart={200}>
                 <div class ="box">
             <TableContainer component={Paper} display="flex" flexDirection="row" p={1} m={1} justifyContent="flex-start">
                 <Table aria-label="collapsible table" >
