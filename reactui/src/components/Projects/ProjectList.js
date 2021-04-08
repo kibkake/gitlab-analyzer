@@ -4,7 +4,37 @@ import {Table} from 'react-bootstrap'
 import "./ProjectList.css";
 import moment from "moment";
 import FormCheck from 'react-bootstrap/FormCheck'
-import ProjectService from "../../Service/ProjectService";
+import ToolkitProvider, {Search} from "react-bootstrap-table2-toolkit";
+import { Button } from "react-bootstrap";
+import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
+
+const { SearchBar } = Search;
+
+let projectNameFilter;
+let groupNameFilter;
+
+
+const ClearButton = props => {
+    const handleClick = () => {
+        props.onSearch("");
+        props.clearAllFilter();
+    };
+    return (
+        <Button
+            variant="secondary"
+            onClick={handleClick}
+            style={{
+                fontSize: "16px",
+                padding: "5px",
+                margin: "10px",
+                height: "40px"
+            }}
+        >
+            Clear
+        </Button>
+    );
+};
+
 
 class ProjectList extends Component {
 
@@ -23,6 +53,7 @@ class ProjectList extends Component {
             .then(response => {
                 const projects = response.data
                 this.setState({projects: projects})
+                console.log(this.state.projects)
             })
             .catch((error) => {
                 console.error(error);
@@ -72,54 +103,70 @@ class ProjectList extends Component {
         // })
     }
 
+    clearAllFilter() {
+        projectNameFilter("");
+        groupNameFilter("");
+    }
+
     render() {
 
+        //https://codesandbox.io/s/react-bootstrap-table2-clear-search-bar-and-filter-v6w8e?from-embed=&file=/src/Table.js
         return (
             <div>
-                <div align="center" style={{padding: '20px'}}>
-                    <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
-                </div>
-                <Table striped borded hover style={{margin: 'auto', width: '85%'}}>
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Last Updated</th>
-                        <th><FormCheck class="form-check-inline">
-                            <FormCheck.Label>
-                                <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
-                                Sync Data</FormCheck.Label>
-                        </FormCheck>
-                        </th>
-                        <th>Created</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    { this.state.projects.map(projects =>
+                <div>
+                    <h1>Clear search bar and filter</h1>
+                    <ToolkitProvider
+                        bootstrap4
+                        keyField="name"
+                        data={this.state.projects}
+                        columns={this.columns}
+                        search
+                    >
+                    <div align="center" style={{padding: '20px'}}>
+                        <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
+                    </div>
+                    <Table striped borded hover style={{margin: 'auto', width: '85%'}}>
+                        <thead>
                         <tr>
-                            <button className="Button" to={projects.url}
-                                    type="button"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        window.location.href= window.location.pathname + "/" + projects.id + "/Developers";
-
-                                    }}>{projects.id}</button>
-
-                            <td>{projects.name}</td>
-                            <td>{projects.description}</td>
-                            <td>{(projects.last_sync_at === "never") ? "Not Available" : moment(projects.last_sync_at).format('lll')}</td>
-                            <td>
-                                <input type="checkbox" defaultChecked={!projects.checked}
-                                       checked={projects.checked}
-                                       onChange={() => this.handleSingleCheckboxChange(projects.id)}/>
-                            </td>
-                            <td>{moment(projects.created_at).format('ll')}</td>
-
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Last Updated</th>
+                            <th><FormCheck class="form-check-inline">
+                                <FormCheck.Label>
+                                    <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
+                                    Sync Data</FormCheck.Label>
+                            </FormCheck>
+                            </th>
+                            <th>Created</th>
                         </tr>
-                    )}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                        { this.state.projects.map(projects =>
+                            <tr>
+                                <button className="Button" to={projects.url}
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            window.location.href= window.location.pathname + "/" + projects.id + "/Developers";
+
+                                        }}>{projects.id}</button>
+
+                                <td>{projects.name}</td>
+                                <td>{projects.description}</td>
+                                <td>{(projects.last_sync_at === "never") ? "Not Available" : moment(projects.last_sync_at).format('lll')}</td>
+                                <td>
+                                    <input type="checkbox" defaultChecked={!projects.checked}
+                                           checked={projects.checked}
+                                           onChange={() => this.handleSingleCheckboxChange(projects.id)}/>
+                                </td>
+                                <td>{moment(projects.created_at).format('ll')}</td>
+
+                            </tr>
+                        )}
+                        </tbody>
+                    </Table>
+                    </ToolkitProvider>
             </div>
         )
     }
