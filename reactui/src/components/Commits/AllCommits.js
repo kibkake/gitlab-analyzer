@@ -37,21 +37,18 @@ class AllCommits extends Component{
         });
         console.log(output)
 
-        if(sessionStorage.getItem("excludedFiles") === null){
-            var fileArray = []
-            sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
-        }
-
+        CommitService.initializeStorageForExcludedFiles()
         var excludedScore = CommitService.calculateExcludedScoreWithoutHashProvided(this.props.commits)
 
         return(
-            <TableContainer style={{ overflowX: "scroll" , height: "1050px", width: "500px"}}
-            component={Paper}
-            display="flex"
-            flexDirection="row"
-            p={1}
-            m={1}
-            justifyContent="flex-start">
+            <TableContainer
+                style={{ overflowX: "scroll" , height: "1050px", width: "500px"}}
+                component={Paper}
+                display="flex"
+                flexDirection="row"
+                p={1}
+                m={1}
+                justifyContent="flex-start">
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
                     color: 'black',

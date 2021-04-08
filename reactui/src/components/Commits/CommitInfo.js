@@ -19,10 +19,7 @@ function CommitInfo(props) {
         false
     );
 
-    if(sessionStorage.getItem("excludedFiles") === null){
-        var fileArray = []
-        sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
-    }
+    CommitService.initializeStorageForExcludedFiles()
 
     var numberOfFilesExcluded = CommitService.calculateNumberOfExcludedFilesInCommit(props.commit.diffs, props.commit.id)
     var numberOfFilesInCommit = CommitService.calculateNumberOfFilesInCommit(props.commit.diffs)

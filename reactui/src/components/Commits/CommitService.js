@@ -201,6 +201,13 @@ class CommitService {
             )
         }
     }
+
+    initializeStorageForExcludedFiles(){
+        if(sessionStorage.getItem("excludedFiles") === null){
+            var fileArray = []
+            sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
+        }
+    }
 }
 
 export default new CommitService();

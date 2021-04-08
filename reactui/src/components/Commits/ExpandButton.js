@@ -30,10 +30,7 @@ export default class ExpandButton extends Component  {
 
     render() {
 
-        if(sessionStorage.getItem("excludedFiles") === null){
-            var fileArray = []
-            sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
-        }
+        CommitService.initializeStorageForExcludedFiles()
 
         var excludedScore = CommitService.calculateExcludedScore(this.props.ever, this.props.hash)
         console.log("the excludedScore", excludedScore)

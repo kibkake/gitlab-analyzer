@@ -36,10 +36,7 @@ export default function Row(props) {
     const oldF = row.old_path;
     const newF = row.new_path;
 
-    if(sessionStorage.getItem("excludedFiles") === null){
-        var fileArray = []
-        sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
-    }
+    CommitService.initializeStorageForExcludedFiles()
     var tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
 
     return (
