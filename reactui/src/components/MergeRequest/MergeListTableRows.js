@@ -83,19 +83,18 @@ export default function Row(props) {
                                 disableTouchListener
                                 title={row.diffs.map(item => {
                                     return (
-                                        <div className="box-container" style={{"maxHeight": 1500, "overflow-y": "auto"}}>
-                                        <div class="box" style={{"maxHeight": 700, "overflow-y": "auto"}}>
-                                        <React.Fragment >
+                                        <div className="box-container"
+                                             style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                        <React.Fragment class="box"
+                                                        style={{"maxHeight": 700, "overflow-y": "auto", "pointer-events": "auto"}}>
                                         <ul>
                                             <h5><u>{item.path}</u> (+{item.diffScore}) </h5>
                                             <h6><Highlight
                                                 className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
                                             </h6>
                                         </ul>
-                                    </React.Fragment>
+                                        </React.Fragment>
                                         </div>
-                                        </div>
-
                                     )
                                 })}>
                             <button aria-label="expand row" size="small"
@@ -145,9 +144,10 @@ export default function Row(props) {
                                                             disableTouchListener
                                                             title={commitsRow.commitDiffs.map(item => {
                                                                 return (
-                                                                    <div style={{"maxHeight": 400, "overflow-y": "scroll"}}>
-
-                                                                    <React.Fragment>
+                                                                    <div className="box-container"
+                                                                         style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                                                        <React.Fragment class="box"
+                                                                                        style={{"maxHeight": 700, "overflow-y": "auto", "pointer-events": "auto"}}>
                                                                         <ul>
                                                                             <h5><u>{item.path}</u> (+{item.diffScore})</h5>
                                                                             <h6><Highlight

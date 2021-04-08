@@ -4,7 +4,6 @@ import Select from 'react-select'
 import Navbar_Developers from "../NavBars_Menu/Navbar_Developers";
 import './DropDownMenu.css';
 import MergeListTable from "../MergeRequest/MergeListTable";
-import NewMergeList from "../MergeRequest/NewMergeList";
 
 function DropDownMenuMerge ({listOfDevelopers}) {
 
