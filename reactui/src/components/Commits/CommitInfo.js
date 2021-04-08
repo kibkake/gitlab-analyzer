@@ -8,14 +8,10 @@ import Box from "@material-ui/core/Box";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
-import {makeStyles} from "@material-ui/core/styles";
-import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
-import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
-import Flexbox from "flexbox-react";
-import TableContainer from "@material-ui/core/TableContainer";
 import './TableStyle.css'
+import CommitService from "./CommitService";
 
 function CommitInfo(props) {
 
@@ -28,42 +24,10 @@ function CommitInfo(props) {
         sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
     }
 
-    var tempArray = []
-    tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
-    var isInArray = false
-    var numberOfFilesExcluded = 0
-    var numberOfFilesInCommit = 0
-    props.commit.diffs.map(function (item2) {
-        numberOfFilesInCommit++
-        for (var i = 0; i < tempArray.length; i++) {
-            if (tempArray[i] === props.commit.id + "_" + item2.new_path) {
-                isInArray = true
-                numberOfFilesExcluded++
-            }
-        }
-    })
+    var numberOfFilesExcluded = CommitService.calculateNumberOfExcludedFilesInCommit(props.commit.diffs, props.commit.id)
+    var numberOfFilesInCommit = CommitService.calculateNumberOfFilesInCommit(props.commit.diffs)
 
     console.log(props.commit)
-    var allFilesExcluded = false
-    if(props.commit.length === numberOfFilesExcluded){
-        allFilesExcluded = true
-    }
-
-    function checkIfFilesAreExcluded(){
-        if(numberOfFilesInCommit === numberOfFilesExcluded){
-            return(
-                <TableCell align="right">
-                    {isInArray? <div style={{color:"red", fontSize:"15", fontWeight:"bold"}}> {props.commit.commitScore.toFixed(1)} </div> : <div style={{color:"blue", fontSize:"15", fontWeight:"bold"}}> {props.commit.commitScore.toFixed(1)} </div>}
-                </TableCell>
-            )
-        }else{
-            return(
-                <TableCell align="right">
-                    {isInArray? <div style={{color:"darkorange", fontSize:"15", fontWeight:"bold"}}> {props.commit.commitScore.toFixed(1)} </div> : <div style={{color:"blue", fontSize:"15", fontWeight:"bold"}}> {props.commit.commitScore.toFixed(1)} </div>}
-                </TableCell>
-            )
-        }
-    }
 
     return (
         <React.Fragment>
@@ -75,7 +39,7 @@ function CommitInfo(props) {
                 <TableCell><a href= {props.commit.mrUrl}>
                     {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
                         props.commit.title.substring(0,10)}</a> </TableCell>
-                {checkIfFilesAreExcluded()}
+                {CommitService.adjustTheColorOfScore(numberOfFilesExcluded,numberOfFilesInCommit,props.commit.commitScore)}
 
                 <TableCell align="top">
                     <IconButton aria-label="expand row"

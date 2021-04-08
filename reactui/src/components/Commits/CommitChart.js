@@ -8,7 +8,6 @@ import Button from "react-bootstrap/Button";
 import Spinner from 'react-bootstrap/Spinner'
 import moment from "moment";
 import img from './ChartBackground.jpg'
-import img2 from './LoadingBackground.jpg'
 import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
 
 class CommitChart extends Component {
@@ -229,8 +228,10 @@ class CommitChart extends Component {
             <div>
 
             <div className="box-container" >
-                <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
-                    <div style={{flexDirection: "row",display: "flex"}}>
+                <div
+                    style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
+                    <div
+                        style={{flexDirection: "row",display: "flex"}}>
                     <Button
                             onClick={(e) => {
                                 this.setState({showAllCommit: true, diff:false})
@@ -238,7 +239,6 @@ class CommitChart extends Component {
                         <span >show all commits</span>
                     </Button>
                         <SnapshotWidgetComponent/>
-
                     </div>
                 <div className="horizontalBar" style={{backgroundImage: `url(${img})`,
                     backgroundSize: "cover"
