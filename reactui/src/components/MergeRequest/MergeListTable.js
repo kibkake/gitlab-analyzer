@@ -136,7 +136,7 @@ export default class MergeListTable  extends PureComponent {
         console.log(output);
 
         return (
-            <div className="box-container" style={{"width": "900px"}} aria-setsize={500} onCompositionStart={200}>
+            <div className="box-container" style={{"width": "1000px"}} aria-setsize={500} onCompositionStart={200}>
                 <div class ="box">
             <TableContainer component={Paper} display="flex" flexDirection="row" p={1} m={1} justifyContent="flex-start">
                 <Table aria-label="collapsible table" >

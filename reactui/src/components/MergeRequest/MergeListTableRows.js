@@ -83,16 +83,19 @@ export default function Row(props) {
                                 disableTouchListener
                                 title={row.diffs.map(item => {
                                     return (
-                                    <React.Fragment >
-                                        <div style={{"maxHeight": 700, "overflow-y": "scroll"}}>
+                                        <div className="box-container" style={{"maxHeight": 1500, "overflow-y": "auto"}}>
+                                        <div class="box" style={{"maxHeight": 700, "overflow-y": "auto"}}>
+                                        <React.Fragment >
                                         <ul>
                                             <h5><u>{item.path}</u> (+{item.diffScore}) </h5>
                                             <h6><Highlight
                                                 className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
                                             </h6>
                                         </ul>
-                                        </div>
                                     </React.Fragment>
+                                        </div>
+                                        </div>
+
                                     )
                                 })}>
                             <button aria-label="expand row" size="small"
