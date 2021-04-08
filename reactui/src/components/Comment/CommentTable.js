@@ -259,19 +259,10 @@ class CommentTable extends Component{
                 <table>
                     <tr>
                         <td className="removeBorder">
-                            <h4 className="sort-header-margin">Sort</h4>
-                        </td>
-                        <td className="removeBorder">
-                            <h4 className="filters-header-margin">Filter</h4>
+                            <h4 className="filters-header-margin">Filter Options</h4>
                         </td>
                     </tr>
                     <tr>
-                        <td className="removeBorder">
-                            <button className="filter sort-by-date-margin" onClick={this.sortByDate}>            Sort by date            </button>
-                        </td>
-                        <td className="removeBorder">
-                            <button className="filter unsort-margin" onClick={this.unsortArrays}>              Unsort table             </button>
-                        </td>
                         <td className="removeBorder">
                             <button className="filter comments-on-code-reviews-margin" onClick={this.enableCodeRev}>          Only comments on code reviews          </button>
                         </td>
@@ -280,12 +271,6 @@ class CommentTable extends Component{
                         </td>
                     </tr>
                     <tr>
-                        <td className="removeBorder">
-                            <button className="filter sort-by-message-margin" onClick={this.sortByCommentMessage}>Sort by comment message</button>
-                        </td>
-                        <td className="removeBorder">
-                            <button className="filter sort-by-word-count-margin" onClick={this.sortByWordCount}>        Sort by word count        </button>
-                        </td>
                         <td className="removeBorder">
                             <button className="filter comments-on-both-margin" onClick={this.enableAll}> Comments on both issues and code reviews </button>
                         </td>
