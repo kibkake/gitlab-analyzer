@@ -4,36 +4,8 @@ import {Table} from 'react-bootstrap'
 import "./ProjectList.css";
 import moment from "moment";
 import FormCheck from 'react-bootstrap/FormCheck'
-import ToolkitProvider, {Search} from "react-bootstrap-table2-toolkit";
 import { Button } from "react-bootstrap";
-// import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
-import { MDBDataTable } from 'mdbreact';
-const { SearchBar } = Search;
-
-let projectNameFilter;
-let groupNameFilter;
-
-
-const ClearButton = props => {
-    const handleClick = () => {
-        props.onSearch("");
-        props.clearAllFilter();
-    };
-    return (
-        <Button
-            variant="secondary"
-            onClick={handleClick}
-            style={{
-                fontSize: "16px",
-                padding: "5px",
-                margin: "10px",
-                height: "40px"
-            }}
-        >
-            Clear
-        </Button>
-    );
-};
+import {MDBBtn, MDBDataTable, MDBInput,  MDBCard, MDBCardBody, MDBCardHeader, MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
 
 
 export default class ProjectList extends Component {
@@ -60,6 +32,9 @@ export default class ProjectList extends Component {
             })
     }
 
+    checkAllHandler = () => {
+        setAreAllChecked(areAllChecked ? false : true);
+    };
     //Handles checkbox behaviour
     // handleSelectAllChange = () => {
     //     const selectAll = !this.state.selectAll;
@@ -103,21 +78,30 @@ export default class ProjectList extends Component {
         // })
     }
 
-    clearAllFilter() {
-        projectNameFilter("");
-        groupNameFilter("");
-    }
 
     render() {
         const output = this.state.projects.map(function (item) {
             let currentYear = new Date().getFullYear();
-            let dateString = moment(item.created_at).format('ll').replace(currentYear, "")
+            let dateString = moment(item.created_at).format('ll').replace(", "+currentYear, "")
             return {
-                id: item.id,
-                name: item.name,
-                des: item.description,
-                updated: item.lastProjectUpdateAt,
+                id: <MDBBtn color="purple" size="sm" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    window.location.href= window.location.pathname + "/" + item.id + "/Developers";
+
+                                                }}>{item.id}</MDBBtn>,
+                name: <MDBBtn color="purple" size="sm" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    window.location.href= window.location.pathname + "/" + item.id + "/Developers";
+
+                                                }}>{item.name}</MDBBtn>,
+                des: <MDBBtn color="purple" size="sm" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    window.location.href= window.location.pathname + "/" + item.id + "/Developers";
+
+                                                }}>{item.description}</MDBBtn>,
                 created: dateString,
+                updated: "null", //item.lastProjectUpdateAt,
+                'check': <MDBInput label= " " type="checkbox" id="checkbox5" />,
             }
         });
         console.log(output)
@@ -132,7 +116,7 @@ export default class ProjectList extends Component {
                     width: 150
                 },
                 {
-                    label: 'Name',
+                    label: 'Project Name',
                     field: 'name',
                     sort: 'asc',
                     width: 150
@@ -144,16 +128,22 @@ export default class ProjectList extends Component {
                     width: 400
                 },
                 {
+                    label: 'CreatedAt',
+                    field: 'created',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
                     label: 'UpdatedAt',
                     field: 'updated',
                     sort: 'asc',
                     width: 150
                 },
                 {
-                    label: 'CreatedAt',
-                    field: 'created',
+                    label: <MDBInput label=" " type="checkbox" id="checkbox5" onClick={checkAllHandler} />,
+                    field: 'check',
                     sort: 'asc',
-                    width: 150
+                    width: 50
                 },
             ],
             rows: output,
@@ -163,9 +153,8 @@ export default class ProjectList extends Component {
 
         return (
             <div>
-                <MDBDataTable
+                <MDBDataTable hover
                     striped
-                    bordered
                     small
                     data={data1}
                 />
