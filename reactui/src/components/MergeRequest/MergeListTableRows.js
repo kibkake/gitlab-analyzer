@@ -14,16 +14,6 @@ import moment from "moment";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import {ClickAwayListener, Tooltip, withStyles} from "@material-ui/core";
 import './MergeListTable.css'
-// const useRowStyles = makeStyles({
-//     root: {
-//         '& > *': {
-//             borderBottom: 'unset',
-//             fontSize: '15pt',
-//             backgroundColor: 'lightgrey',
-//             overflow-y: 'scroll',
-//         },
-//     },
-// });
 
 const StyledTooltip = withStyles((theme) => ({
     tooltip: {
@@ -32,6 +22,9 @@ const StyledTooltip = withStyles((theme) => ({
         maxWidth: 550,
         fontSize: theme.typography.pxToRem(12),
         border: '1px solid #dadde9',
+    },
+    tooltipPlacementRight: {
+        margin: "10px",
     },
 }))(Tooltip);
 
@@ -73,10 +66,10 @@ export default function Row(props) {
                 <TableCell align ="right">
                     <ClickAwayListener onClickAway={handleTooltipClose}>
                         <div>
-                            <StyledTooltip
+                            <StyledTooltip arrow
                                 data-trigger="focus"
                                 placement={"right-start"}
-                                // onClose={handleTooltipClose}
+                                onClose={handleTooltipClose}
                                 open={tooltipOpen}
                                 disableFocusListener
                                 disableHoverListener
@@ -84,16 +77,17 @@ export default function Row(props) {
                                 title={row.diffs.map(item => {
                                     return (
                                         <div className="box-container"
-                                             style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
-                                        <React.Fragment class="box"
-                                                        style={{"maxHeight": 700, "overflow-y": "auto", "pointer-events": "auto"}}>
-                                        <ul>
-                                            <h5><u>{item.path}</u> (+{item.diffScore}) </h5>
-                                            <h6><Highlight
-                                                className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
-                                            </h6>
-                                        </ul>
-                                        </React.Fragment>
+                                             style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto",
+                                                 "margin-top": 10}}>
+                                            <React.Fragment class="box"
+                                                            style={{"maxHeight": 700, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                                <ul>
+                                                    <h5><u>{item.path}</u> (+{item.diffScore}) </h5>
+                                                    <h6><Highlight
+                                                        className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
+                                                    </h6>
+                                                </ul>
+                                            </React.Fragment>
                                         </div>
                                     )
                                 })}>
@@ -135,7 +129,7 @@ export default function Row(props) {
                                             <TableCell align="right" >
                                                 <ClickAwayListener onClickAway={handleCommitTooltipClose}>
                                                     <div>
-                                                        <StyledTooltip
+                                                        <StyledTooltip arrow
                                                             placement={"right-start"}
                                                             onClose={handleCommitTooltipClose}
                                                             open={commitTooltipOpen}
@@ -144,10 +138,11 @@ export default function Row(props) {
                                                             disableTouchListener
                                                             title={commitsRow.commitDiffs.map(item => {
                                                                 return (
-                                                                    <div className="box-container"
-                                                                         style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                                                    <div className="box-container" style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
                                                                         <React.Fragment class="box"
-                                                                                        style={{"maxHeight": 700, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                                                                        style={{"maxHeight": 700, "overflow-y": "auto",
+                                                                                            "pointer-events": "auto",
+                                                                                            "margin-top": 10}}>
                                                                         <ul>
                                                                             <h5><u>{item.path}</u> (+{item.diffScore})</h5>
                                                                             <h6><Highlight
