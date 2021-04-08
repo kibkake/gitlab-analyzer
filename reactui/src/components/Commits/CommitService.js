@@ -151,6 +151,56 @@ class CommitService {
         return excludedScore
     }
     //
+
+    //commitperdayinfo/commitinfo
+    calculateNumberOfExcludedFilesInCommit(diffs, id){
+        var tempArray = []
+        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
+        var numberOfFilesExcluded = 0
+        diffs.map(function (item2) {
+            for (var i = 0; i < tempArray.length; i++) {
+                if (tempArray[i] === id + "_" + item2.new_path) {
+                    numberOfFilesExcluded++
+                }
+            }
+        })
+        return numberOfFilesExcluded
+    }
+
+    calculateNumberOfFilesInCommit(diffs){
+        var numberOfFilesInCommit = 0
+        diffs.map(function (item2) {
+            numberOfFilesInCommit++
+        })
+        return numberOfFilesInCommit
+    }
+
+    adjustTheColorOfScore(numberOfFilesExcluded, numberOfFilesInCommit, commitScore){
+        if(numberOfFilesInCommit === numberOfFilesExcluded){
+            return(
+                <TableCell align="right">
+                    {numberOfFilesExcluded > 0 ?
+                        <div
+                            style={{color:"red", fontSize:"15", fontWeight:"bold"}}>
+                            {commitScore.toFixed(1)} </div> :
+                        <div style={{color:"blue", fontSize:"15", fontWeight:"bold"}}>
+                            {commitScore.toFixed(1)}
+                        </div>}
+                </TableCell>
+            )
+        }else{
+            return(
+                <TableCell align="right">
+                    {numberOfFilesExcluded > 0 ?
+                        <div
+                            style={{color:"darkorange", fontSize:"15", fontWeight:"bold"}}>
+                            {commitScore.toFixed(1)} </div> :
+                        <div style={{color:"blue", fontSize:"15", fontWeight:"bold"}}>
+                            {commitScore.toFixed(1)} </div>}
+                </TableCell>
+            )
+        }
+    }
 }
 
 export default new CommitService();
