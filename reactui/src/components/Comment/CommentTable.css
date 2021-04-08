@@ -47,7 +47,11 @@
 }
 
 .button-colour-when-sorted-descending{
-    color: #8a0808 !important;
+    color: #d90c0c !important;
+}
+
+.filter-button-colour-when-used{
+    color: #070da9 !important;
 }
 
 .comments-table{

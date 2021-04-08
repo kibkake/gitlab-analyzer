@@ -264,18 +264,35 @@ class CommentTable extends Component{
                     </tr>
                     <tr>
                         <td className="removeBorder">
-                            <button className="filter comments-on-code-reviews-margin" onClick={this.enableCodeRev}>          Only comments on code reviews          </button>
+                            {this.state.issue === false &&
+                                <button className="filter comments-on-code-reviews-margin filter-button-colour-when-used" onClick={this.enableCodeRev}>          Only comments on code reviews          </button>
+                            }
+                            {this.state.issue == true &&
+                                <button className="filter comments-on-code-reviews-margin" onClick={this.enableCodeRev}>          Only comments on code reviews          </button>
+                            }
                         </td>
                         <td className="removeBorder">
-                            <button className="filter comments-on-issues-margin" onClick={this.enableIssue}>                    Only comments on issues                   </button>
+                            {this.state.code_rev === false &&
+                                <button className="filter comments-on-issues-margin filter-button-colour-when-used" onClick={this.enableIssue}>                    Only comments on issues                   </button>
+                            }
+                            {this.state.code_rev == true &&
+                                <button className="filter comments-on-issues-margin" onClick={this.enableIssue}>                    Only comments on issues                   </button>
+                            }
                         </td>
                     </tr>
                     <tr>
                         <td className="removeBorder">
-                            <button className="filter comments-on-both-margin" onClick={this.enableAll}> Comments on both issues and code reviews </button>
+                            {this.state.code_rev === true && this.state.issue === true &&
+                                <button className="filter comments-on-both-margin filter-button-colour-when-used" onClick={this.enableAll}> Comments on both issues and code reviews </button>
+                            }
+                            {(this.state.code_rev === false || this.state.issue === false) &&
+                                <button className="filter comments-on-both-margin" onClick={this.enableAll}> Comments on both issues and code reviews </button>
+                            }
                         </td>
                         <td className="removeBorder">
-                            <button className="filter comments-on-dev-code-margin" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
+                            {this.state.code_rev === true &&
+                                <button className="filter comments-on-dev-code-margin" onClick={this.filterByDevCode}> {this.state.devs_code_btn_name} </button>
+                            }
                         </td>
                     </tr>
                 </table>
