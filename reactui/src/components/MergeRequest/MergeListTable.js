@@ -16,44 +16,11 @@ import moment from "moment";
 import CommitList from "./CommitList";
 import Highlight from "react-highlight";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
+import SingleCommitDiff from "../Commits/CommitDiff";
+import async from "asynckit";
 // import { merge } from 'jquery';
 
 export default class MergeListTable  extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            merges:[],
-            parentData: this.props.devName,
-            diffShow: false,
-        }
-    }
-
-    componentDidMount(){
-        const {parentData: parentData} = this.state;
-        this.getDataFromBackend(parentData)
-    }
-
-    getDataFromBackend (username, startTm, endTm) {
-        const pathArray = window.location.pathname.split('/');
-        const id = pathArray[2];
-        var name = username;
-        if(sessionStorage.getItem('DeveloperNames' + id) != null && sessionStorage.getItem('Developers' + id) != null) {
-            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
-                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
-                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
-                }
-            }
-        }
-
-        const response = axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
-            .then(res => {
-                this.setState({merges : res.data, parentData: username});
-                this.applyMultipliers();
-            }).catch((error) => {
-                console.error(error);})
-
-
-    }
 
     applyMultipliers(){
         var scale = JSON.parse(sessionStorage.getItem('languageScale'));
@@ -94,6 +61,42 @@ export default class MergeListTable  extends PureComponent {
         })
     }
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            merges:[],
+            parentData: this.props.devName,
+            diffShow: false,
+        }
+        this.handler = this.handler.bind(this)
+        this.handler2 = this.handler2.bind(this)
+    }
+
+    componentDidMount(){
+        const {parentData: parentData} = this.state;
+        this.getDataFromBackend(parentData)
+    }
+
+    getDataFromBackend (username, startTm, endTm) {
+        const pathArray = window.location.pathname.split('/');
+        const id = pathArray[2];
+        var name = username;
+        if(sessionStorage.getItem('DeveloperNames' + id) != null && sessionStorage.getItem('Developers' + id) != null) {
+            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
+                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
+                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
+                }
+            }
+        }
+
+        const response = axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
+            .then(res => {
+                this.setState({merges : res.data, parentData: username});
+                this.applyMultipliers();
+            }).catch((error) => {
+                console.error(error);})
+    }
+
     async componentDidUpdate(prevProps){
         if (this.props.devName !== prevProps.devName ||
             this.props.startTime !== prevProps.startTime ||
@@ -110,12 +113,18 @@ export default class MergeListTable  extends PureComponent {
     }
 
 
-    async handler(hash) {
+    async handler() {
         await this.setState({
-            childVal: hash,
-            diff : true
+            diffShow: true
         })
     }
+
+    async handler2() {
+        await this.setState({
+            diffShow: false
+        })
+    }
+
 
     render () {
         const output = this.state.merges.map(function(item) {
@@ -155,7 +164,8 @@ export default class MergeListTable  extends PureComponent {
         console.log(output);
 
         return (
-            <div className="box-container">
+            <div className="box-container" aria-setsize={500} onCompositionStart={200}>
+                <div class ="box">
             <TableContainer component={Paper} display="flex" flexDirection="row" p={1} m={1} justifyContent="flex-start">
                 <Table aria-label="collapsible table" >
                     <TableHead className="tableCell">
@@ -176,13 +186,17 @@ export default class MergeListTable  extends PureComponent {
 
                 </Table>
             </TableContainer>
-                {(this.state.diffShow !== false) ? <DiffWindow Diffs={output.diffs}/> : <div> </div>}
+            {/*{(this.state.diffShow == false) ? <DiffWindow*/}
+            {/*    Diffs={output.diffs}*/}
+            {/*    handler2 = {this.handler}/> : <div> </div>}*/}
+                </div>
             </div>
         );
     }
 }
 
-function DiffWindow(props){
+
+function DiffWindow(props) {
     const {Diffs} = props;
 
     return (
