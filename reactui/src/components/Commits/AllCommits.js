@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import Button from 'react-bootstrap/Button';
 import  "./HBox.css"
 import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
@@ -10,6 +9,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import CommitInfo from "./CommitInfo";
 import moment from "moment";
+import CommitService from "./CommitService";
 
 class AllCommits extends Component{
     constructor(props){
@@ -42,18 +42,7 @@ class AllCommits extends Component{
             sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
         }
 
-        var tempArray = []
-        tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
-        var excludedScore = 0.0
-        this.props.commits.map(function (item) {
-            item.diffs.map(function (item2) {
-                for (var i = 0; i < tempArray.length; i++) {
-                    if (tempArray[i] === item.id + "_" + item2.new_path) {
-                        excludedScore += item2.diffScore
-                    }
-                }
-            })
-        });
+        var excludedScore = CommitService.calculateExcludedScoreWithoutHashProvided(this.props.commits)
 
         return(
             <TableContainer style={{ overflowX: "scroll" , height: "1050px", width: "500px"}}
@@ -71,24 +60,28 @@ class AllCommits extends Component{
                     {" " + moment(this.props.endTime).format('lll').substring(0,12)}</div>
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
-                    color: 'black',
+                    color: 'blue',
                     backgroundColor: 'lightgreen'}}> Total iteration score:
-                    {this.props.totalScore.toFixed(1)}</div>
+                    {" " + this.props.totalScore.toFixed(1)}</div>
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
-                    color: 'black',
+                    color: 'red',
                     backgroundColor: 'lightgreen'}}> Total Excluded Points:
-                    {excludedScore.toFixed(1)}</div>
+                    {" " + excludedScore.toFixed(1)}</div>
                 <Table >
                     <TableHead className="tableCell">
                         <TableRow>
-                            <TableCell align="left" className="tableCell" style={{fontWeight: 'bold', fontSize: '20px'}}>
+                            <TableCell
+                                align="left" className="tableCell"
+                                style={{fontWeight: 'bold', fontSize: '20px'}}>
                                 Date
                             </TableCell>
-                            <TableCell style={{fontWeight: 'bold', fontSize: '20px'} }>
+                            <TableCell
+                                style={{fontWeight: 'bold', fontSize: '20px'} }>
                                 Title
                             </TableCell>
-                            <TableCell align="right" style={{fontWeight: 'bold', fontSize: '20px'}}>
+                            <TableCell align="right"
+                                       style={{fontWeight: 'bold', fontSize: '20px'}}>
                                 Score
                             </TableCell>
                         </TableRow>
