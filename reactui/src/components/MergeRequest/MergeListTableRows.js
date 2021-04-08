@@ -8,13 +8,22 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import {makeStyles} from "@material-ui/core/styles";
-import {OverlayTrigger, Popover} from 'react-bootstrap'
 import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import {ClickAwayListener, Tooltip, withStyles} from "@material-ui/core";
-
+import './MergeListTable.css'
+// const useRowStyles = makeStyles({
+//     root: {
+//         '& > *': {
+//             borderBottom: 'unset',
+//             fontSize: '15pt',
+//             backgroundColor: 'lightgrey',
+//             overflow-y: 'scroll',
+//         },
+//     },
+// });
 
 const StyledTooltip = withStyles((theme) => ({
     tooltip: {
@@ -65,21 +74,24 @@ export default function Row(props) {
                     <ClickAwayListener onClickAway={handleTooltipClose}>
                         <div>
                             <StyledTooltip
+                                data-trigger="focus"
                                 placement={"right-start"}
-                                onClose={handleTooltipClose}
+                                // onClose={handleTooltipClose}
                                 open={tooltipOpen}
                                 disableFocusListener
                                 disableHoverListener
                                 disableTouchListener
                                 title={row.diffs.map(item => {
                                     return (
-                                    <React.Fragment>
+                                    <React.Fragment >
+                                        <div style={{"maxHeight": 700, "overflow-y": "scroll"}}>
                                         <ul>
                                             <h5><u>{item.path}</u> (+{item.diffScore}) </h5>
                                             <h6><Highlight
                                                 className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
                                             </h6>
                                         </ul>
+                                        </div>
                                     </React.Fragment>
                                     )
                                 })}>
@@ -114,9 +126,7 @@ export default function Row(props) {
                                         <TableRow key={commitsRow.commitDate}>
                                             <TableCell component="th" scope="row">
                                                 {moment(commitsRow.commitDate).format('LLL')}
-
                                             </TableCell>
-
                                             <TableCell>{commitsRow.message}</TableCell>
                                             <TableCell align="right">{commitsRow.author}</TableCell>
                                             <TableCell align="right">{commitsRow.score}</TableCell>
@@ -132,6 +142,8 @@ export default function Row(props) {
                                                             disableTouchListener
                                                             title={commitsRow.commitDiffs.map(item => {
                                                                 return (
+                                                                    <div style={{"maxHeight": 400, "overflow-y": "scroll"}}>
+
                                                                     <React.Fragment>
                                                                         <ul>
                                                                             <h5><u>{item.path}</u> (+{item.diffScore})</h5>
@@ -140,6 +152,7 @@ export default function Row(props) {
                                                                             </h6>
                                                                         </ul>
                                                                     </React.Fragment>
+                                                                    </div>
                                                                 )
                                                             })}>
                                                             <button type="button" className="btn btn-outline-secondary"
