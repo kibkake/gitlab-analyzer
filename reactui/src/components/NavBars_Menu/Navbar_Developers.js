@@ -28,6 +28,7 @@ export class Navbar_Developers extends Component{
                     url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' + window.location.pathname.split("/")[4] + '/commits',
                     cName: 'nav-links'
                 },
+
                 {
                     title: 'Comments',
                     url: '/Repo/' + window.location.pathname.split("/")[2] + '/Developers/' + window.location.pathname.split("/")[4] + '/comments',
