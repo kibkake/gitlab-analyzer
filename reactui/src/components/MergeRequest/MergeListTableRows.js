@@ -34,7 +34,7 @@ const StyledTooltip = withStyles((theme) => ({
 
 // Table structure is based on the library from [https://material-ui.com/components/tables/]
 export default function Row(props) {
-    const { row } = props;
+    const {row} = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
@@ -57,66 +57,87 @@ export default function Row(props) {
         commitTooltipSetOpen(true);
     };
 
+    const [expanded, setExpanded]  = React.useState(false);
+
+    // React.useEffect(() => {
+    //     if(expanded) {
+    //         setOpen(true)
+    //     }
+    //     if(!expanded){
+    //         setOpen(false)
+    //     }
+    //
+    // }, [expanded]);
+
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell align="left" component="th" scope="row">
                     {row.date}
                 </TableCell>
-                <TableCell>#{row.id} <a href= {row.mrUrl}> {row.title}</a> </TableCell>
+                <TableCell>#{row.id} <a href={row.mrUrl}> {row.title}</a> </TableCell>
                 <TableCell align="right">{row.score}</TableCell>
                 <TableCell align="right"> {row.sum}</TableCell>
 
-                <TableCell align ="right">
+                <TableCell align="right">
                     <ClickAwayListener onClickAway={handleTooltipClose}>
                         <div>
                             <StyledTooltip arrow
-                                data-trigger="focus"
-                                placement={"right-start"}
-                                onClose={handleTooltipClose}
-                                open={tooltipOpen}
-                                disableFocusListener
-                                disableHoverListener
-                                disableTouchListener
-                                title={
-                                        <div style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
-                                            <TableContainer component={Paper}>
-                                                <Table hover aria-label="collapsible table">
-                                                    <TableHead>
-                                                        <TableRow>
-                                                            <TableCell>
-                                                                <button style={{
-                                                                    backgroundColor: 'lightblue',
-                                                                    color: 'black',
-                                                                    borderRadius: '0%'}}
-                                                                        type="button"
-                                                                        onClick={(e) => {
-                                                                            e.preventDefault();
-                                                                            props.handler();
-                                                                            // setExpand(!expanded);
-                                                                        }}>
-                                                                     Expand / Collapse All
-                                                                </button>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                        {row.diffs.map((item) => (<DiffRow key={item.diff} diff={item}/>))}
-                                                    </TableBody>
-                                                </Table>
-                                            </TableContainer>
-                                    </div>
-                                }>
-                                <button aria-label="expand row" size="small" onClick={() => {  setOpen(!open);
-                                            handleTooltipOpen();}}
-                                        type="button" order={1} className="btn btn-secondary">View</button>
+                                           data-trigger="focus"
+                                           placement={"right-start"}
+                                           onClose={handleTooltipClose}
+                                           open={tooltipOpen}
+                                           disableFocusListener
+                                           disableHoverListener
+                                           disableTouchListener
+                                           title={
+                                               <div style={{
+                                                   "maxHeight": 1500,
+                                                   "overflow-y": "auto",
+                                                   "pointer-events": "auto"
+                                               }}>
+                                                   <TableContainer component={Paper}>
+                                                       <Table hover aria-label="collapsible table">
+                                                           <TableHead>
+                                                               <TableRow>
+                                                                   <TableCell>
+                                                                       <button style={{
+                                                                           backgroundColor: 'lightblue',
+                                                                           color: 'black',
+                                                                           borderRadius: '0%'
+                                                                       }}
+                                                                               type="button"
+                                                                               onClick={(e) => {
+                                                                                   e.preventDefault();
+                                                                                   // props.handler();
+                                                                                   setExpanded(!expanded);
+                                                                               }}>
+                                                                           Expand / Collapse All
+                                                                       </button>
+                                                                   </TableCell>
+                                                               </TableRow>
+                                                           </TableHead>
+                                                           <TableBody>
+                                                               {row.diffs.map((item) => (
+                                                                   <DiffRow key={item.diff} expanded={expanded} diff={item}/>))}
+                                                           </TableBody>
+                                                       </Table>
+                                                   </TableContainer>
+                                               </div>
+                                           }>
+                                <button aria-label="expand row" size="small" onClick={() => {
+                                    setOpen(!open);
+                                    handleTooltipOpen();
+                                }}
+                                        type="button" order={1} className="btn btn-secondary">View
+                                </button>
                             </StyledTooltip>
                         </div>
                     </ClickAwayListener>
                 </TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
                             <Typography variant="h6" gutterBottom component="div">
@@ -139,24 +160,31 @@ export default function Row(props) {
                                             <TableCell>{commitsRow.message}</TableCell>
                                             <TableCell align="right">{commitsRow.author}</TableCell>
                                             <TableCell align="right">{commitsRow.score}</TableCell>
-                                            <TableCell align="right" >
+                                            <TableCell align="right">
                                                 <ClickAwayListener onClickAway={handleCommitTooltipClose}>
                                                     <div>
                                                         <StyledTooltip arrow
-                                                            placement={"right-start"}
-                                                            onClose={handleCommitTooltipClose}
-                                                            open={commitTooltipOpen}
-                                                            disableFocusListener
-                                                            disableHoverListener
-                                                            disableTouchListener
-                                                           title={commitsRow.commitDiffs.map((item) => {
-                                                               return (
-                                                                   <div className="box-container" style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
-                                                                       <DiffTable key={item.diff} diffs={item}/>
-                                                                   </div>
-                                                               )})}>
+                                                                       placement={"right-start"}
+                                                                       onClose={handleCommitTooltipClose}
+                                                                       open={commitTooltipOpen}
+                                                                       disableFocusListener
+                                                                       disableHoverListener
+                                                                       disableTouchListener
+                                                                       title={commitsRow.commitDiffs.map((item) => {
+                                                                           return (
+                                                                               <div className="box-container" style={{
+                                                                                   "maxHeight": 1500,
+                                                                                   "overflow-y": "auto",
+                                                                                   "pointer-events": "auto"
+                                                                               }}>
+                                                                                   <DiffTable key={item.diff}
+                                                                                              diffs={item}/>
+                                                                               </div>
+                                                                           )
+                                                                       })}>
                                                             <button type="button" className="btn btn-outline-secondary"
-                                                                    onClick={() => handleCommitTooltipOpen()}>View</button>
+                                                                    onClick={() => handleCommitTooltipOpen()}>View
+                                                            </button>
                                                         </StyledTooltip>
                                                     </div>
                                                 </ClickAwayListener>

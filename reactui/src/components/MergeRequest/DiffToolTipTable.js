@@ -17,12 +17,11 @@ import TableHead from "@material-ui/core/TableHead";
 
 export default function DiffRow (props) {
     const {diff} = props;
-    var  expanded  = props.expanded
+    const expanded  = props.expanded;
 
     const [open, setOpen] = React.useState(false);
 
     React.useEffect(() => {
-
         if(expanded) {
             setOpen(true)
         }
