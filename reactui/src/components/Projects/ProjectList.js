@@ -4,7 +4,6 @@ import "./ProjectList.css";
 import moment from "moment";
 import FormCheck from 'react-bootstrap/FormCheck'
 import {MDBBtn, MDBDataTable, MDBInput,  MDBCard, MDBCardBody, MDBCardHeader, MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
-import {alignAuto} from "react-charts/dist/react-charts.min.mjs";
 import {ProgressBar} from "react-bootstrap";
 
 //[https://mdbootstrap.com/docs/react/tables/datatables/]
@@ -81,6 +80,13 @@ export default class ProjectList extends Component {
         // })
     }
 
+    createCheckedArray(){
+        let idArray = this.state.projects.map(item => item.id);
+        for (let i in idArray) {
+            idArray[i].checked = true;
+        }
+        console.log(idArray)
+    }
 
     //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
     render() {
@@ -101,7 +107,32 @@ export default class ProjectList extends Component {
             }
         })
 
-        let checkedStatusArray = this.state.projects.map((item => ({...item, checked: this.state.selectAll})));
+        let issueBoolean = {true: "Issue", false: "Code Review"};
+        let comments = Data.map(({date, wordCount, comments, onIssue})=>
+            ({date, wordCount, comments, issueOrReview: issueBoolean[onIssue],onIssue}));
+        console.log(comments);
+        console.log(this.state.issue);
+
+        let checked = {true: this.state.selectAll}
+        let array = this.state.projects.map(({id, infoSet}) => (id, checkedStatus: checked}))
+
+        for (let i in idArray) {
+            idArray[i].checked = true;
+        }
+        console.log(idArray)
+        let result = data.map(({ a, b }) => ({a, b}));
+
+        idArray.map(function(e){
+            e.checked = this.state.selectAll;
+        });
+        // console.log(idArray)
+        let array = this.state.projects.map(item => ({...item, checked: this.state.selectAll}))
+        const twoDimensionalArray = array.map((node) => [node.id, node.checked]);
+
+        console.log(twoDimensionalArray)
+
+        let idArray = this.state.projects.map({id, checked} => {id, true});
+
         console.log(checkedStatusArray)
 
         const data = {
