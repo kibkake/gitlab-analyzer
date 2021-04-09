@@ -77,12 +77,32 @@ export default function Row(props) {
                                 disableFocusListener
                                 disableHoverListener
                                 disableTouchListener
-                                title={row.diffs.map((item) => {
-                                    return (
-                                        <div className="box-container" style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
-                                        <DiffTable key={item.diff} diffs={item}/>
+                                title={
+                                    <div style={{"pointer-events": "auto"}}>
+                                        <button style={{
+                                            backgroundColor: 'lightblue',
+                                            color: 'black',
+                                            borderRadius: '0%'}}
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    props.handler();
+                                                    // setExpand(!expanded);
+                                                }}>
+                                            EXPAND ALL
+                                        </button>
+                                        <div style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+
+                                            {row.diffs.map((item) => {
+                                                return (
+                                                    <DiffTable key={item.diff} diffs={item}
+                                                               handler = {props.handler}
+                                                               expanded = {props.expanded}/>
+                                                )})}
                                         </div>
-                                    )})}>
+                                    </div>
+
+                                }>
                                 <button aria-label="expand row" size="small" onClick={() => {  setOpen(!open);
                                             handleTooltipOpen();}}
                                         type="button" order={1} className="btn btn-secondary">View</button>
