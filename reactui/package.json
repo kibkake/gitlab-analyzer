@@ -23,7 +23,6 @@
     "date-fns": "^2.0.0-beta.5",
     "flexbox-react": "^4.4.0",
     "jquery": "^1.9.1",
-    "mdbreact": "^5.0.2",
     "moment": "^2.29.1",
     "popper.js": "^1.16.1",
     "react": "^17.0.1",

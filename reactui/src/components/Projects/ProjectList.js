@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import {Table} from 'react-bootstrap'
 import "./ProjectList.css";
 import moment from "moment";
 import FormCheck from 'react-bootstrap/FormCheck'
-import { Button } from "react-bootstrap";
 import {MDBBtn, MDBDataTable, MDBInput,  MDBCard, MDBCardBody, MDBCardHeader, MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
-import {Link} from "@material-ui/core";
 
 //[https://mdbootstrap.com/docs/react/tables/datatables/]
 export default class ProjectList extends Component {
