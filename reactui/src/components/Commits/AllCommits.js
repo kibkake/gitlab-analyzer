@@ -58,8 +58,13 @@ class AllCommits extends Component{
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
                     color: 'blue',
-                    backgroundColor: 'lightgreen'}}> Total iteration score:
+                    backgroundColor: 'lightgreen'}}> Total iteration Score:
                     {" " + this.props.totalScore.toFixed(1)}</div>
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'blue',
+                    backgroundColor: 'lightgreen'}}> Included Score:
+                    {" " + (this.props.totalScore - excludedScore).toFixed(1)}</div>
                 <div style={{fontWeight: 'bold',
                     fontSize: '20px',
                     color: 'red',
