@@ -10,7 +10,7 @@ import axios from "axios";
 import Row from "./MergeListTableRows";
 import './MergeListTable.css'
 import moment from "moment";
-i
+
 export default class MergeListTable  extends PureComponent {
 
     applyMultipliers(){
