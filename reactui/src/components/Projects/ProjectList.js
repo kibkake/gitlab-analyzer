@@ -80,11 +80,7 @@ export default class ProjectList extends Component {
         //     }
         // })
     }
-    //
-    // handleRowClick(e, props)  {
-    //         e.preventDefault();
-    //         window.location.href= window.location.pathname + "/" + props + "/Developers";
-    // }
+
 
     //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
     render() {
@@ -104,6 +100,9 @@ export default class ProjectList extends Component {
                 syncing: <ProgressBar animated now={45} />,
             }
         })
+
+        let checkedStatusArray = this.state.projects.map((item => ({...item, checked: this.state.selectAll})));
+        console.log(checkedStatusArray)
 
         const data = {
             columns: [
