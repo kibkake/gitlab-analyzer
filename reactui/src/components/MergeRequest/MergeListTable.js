@@ -10,8 +10,7 @@ import axios from "axios";
 import Row from "./MergeListTableRows";
 import './MergeListTable.css'
 import moment from "moment";
-import ExpandButton from "../Commits/ExpandButton";
-
+i
 export default class MergeListTable  extends PureComponent {
 
     applyMultipliers(){
@@ -58,9 +57,7 @@ export default class MergeListTable  extends PureComponent {
         this.state = {
             merges:[],
             parentData: this.props.devName,
-            expanded: false,
         }
-        this.handler = this.handler.bind(this)
     }
 
     componentDidMount(){
@@ -96,19 +93,6 @@ export default class MergeListTable  extends PureComponent {
             this.props.endTime !== prevProps.endTime){
             await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
         }
-        console.log("update");
-    }
-
-    async handler() {
-        if(this.state.expanded === true) {
-            await this.setState({
-                expanded: false
-            })
-        } else{
-            await this.setState({
-                expanded: true
-            })
-        }
     }
 
     render () {
@@ -137,7 +121,7 @@ export default class MergeListTable  extends PureComponent {
                         message: commit.message,
                         score: commit.commitScore.toFixed(1),
                         author: commit.committer_name,
-                        commitDiffs: commit.diffs.map(function (diffs) {
+                        diffs: commit.diffs.map(function (diffs) {
                             return {
                                 path: diffs.new_path,
                                 diff: diffs.diff,
@@ -148,7 +132,6 @@ export default class MergeListTable  extends PureComponent {
                 })
             };
         });
-        console.log(output);
 
         return (
             <div className="box-container" style={{"width": "1000px"}} aria-setsize={500} onCompositionStart={200}>
@@ -166,9 +149,7 @@ export default class MergeListTable  extends PureComponent {
                     </TableHead>
                     <TableBody>
                         {output.map((merge) => (
-                            <Row key={merge.date} row={merge}
-                                 handler = {this.handler}
-                                 expanded = {this.state.expanded}/>
+                            <Row key={merge.date} row={merge}/>
                         ))}
                     </TableBody>
 

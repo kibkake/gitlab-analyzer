@@ -8,29 +8,10 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import {makeStyles} from "@material-ui/core/styles";
-import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import moment from "moment";
-import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import {ClickAwayListener, Tooltip, withStyles} from "@material-ui/core";
 import './MergeListTable.css'
-import Paper from "@material-ui/core/Paper";
-import TableContainer from "@material-ui/core/TableContainer";
-import DiffTable from "./DiffToolTipTable";
-import DiffRow from "./DiffToolTipTable";
-
-const StyledTooltip = withStyles((theme) => ({
-    tooltip: {
-        backgroundColor: '#f5f5f9',
-        color: 'rgba(0, 0, 0, 0.87)',
-        maxWidth: 550,
-        fontSize: theme.typography.pxToRem(12),
-        border: '1px solid #dadde9',
-    },
-    tooltipPlacementRight: {
-        margin: "10px",
-    },
-}))(Tooltip);
+import DiffTable from "./DiffTable";
 
 // Table structure is based on the library from [https://material-ui.com/components/tables/]
 export default function Row(props) {
@@ -39,35 +20,12 @@ export default function Row(props) {
     const classes = useRowStyles();
 
     const [tooltipOpen, tooltipSetOpen] = React.useState(false);
-
-    const handleTooltipClose = () => {
-        tooltipSetOpen(false);
-    };
-
-    const handleTooltipOpen = () => {
-        tooltipSetOpen(true);
-    };
+    const handleTooltipClose = () => { tooltipSetOpen(false);}
+    const handleTooltipOpen = () => {tooltipSetOpen(true);}
 
     const [commitTooltipOpen, commitTooltipSetOpen] = React.useState(false);
-    const handleCommitTooltipClose = () => {
-        commitTooltipSetOpen(false);
-    };
-
-    const handleCommitTooltipOpen = () => {
-        commitTooltipSetOpen(true);
-    };
-
-    const [expanded, setExpanded]  = React.useState(false);
-
-    // React.useEffect(() => {
-    //     if(expanded) {
-    //         setOpen(true)
-    //     }
-    //     if(!expanded){
-    //         setOpen(false)
-    //     }
-    //
-    // }, [expanded]);
+    const handleCommitTooltipClose = () => {commitTooltipSetOpen(false);}
+    const handleCommitTooltipOpen = () => {commitTooltipSetOpen(true);}
 
     return (
         <React.Fragment>
@@ -91,38 +49,8 @@ export default function Row(props) {
                                            disableHoverListener
                                            disableTouchListener
                                            title={
-                                               <div style={{
-                                                   "maxHeight": 1500,
-                                                   "overflow-y": "auto",
-                                                   "pointer-events": "auto"
-                                               }}>
-                                                   <TableContainer component={Paper}>
-                                                       <Table hover aria-label="collapsible table">
-                                                           <TableHead>
-                                                               <TableRow>
-                                                                   <TableCell>
-                                                                       <button style={{
-                                                                           backgroundColor: 'lightblue',
-                                                                           color: 'black',
-                                                                           borderRadius: '0%'
-                                                                       }}
-                                                                               type="button"
-                                                                               onClick={(e) => {
-                                                                                   e.preventDefault();
-                                                                                   // props.handler();
-                                                                                   setExpanded(!expanded);
-                                                                               }}>
-                                                                           Expand / Collapse All
-                                                                       </button>
-                                                                   </TableCell>
-                                                               </TableRow>
-                                                           </TableHead>
-                                                           <TableBody>
-                                                               {row.diffs.map((item) => (
-                                                                   <DiffRow key={item.diff} expanded={expanded} diff={item}/>))}
-                                                           </TableBody>
-                                                       </Table>
-                                                   </TableContainer>
+                                               <div style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                                  <DiffTable data={row}/>
                                                </div>
                                            }>
                                 <button aria-label="expand row" size="small" onClick={() => {
@@ -170,18 +98,11 @@ export default function Row(props) {
                                                                        disableFocusListener
                                                                        disableHoverListener
                                                                        disableTouchListener
-                                                                       title={commitsRow.commitDiffs.map((item) => {
-                                                                           return (
-                                                                               <div className="box-container" style={{
-                                                                                   "maxHeight": 1500,
-                                                                                   "overflow-y": "auto",
-                                                                                   "pointer-events": "auto"
-                                                                               }}>
-                                                                                   <DiffTable key={item.diff}
-                                                                                              diffs={item}/>
-                                                                               </div>
-                                                                           )
-                                                                       })}>
+                                                                       title={
+                                                                           <div style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                                                               <DiffTable data={commitsRow}/>
+                                                                           </div>
+                                                                       }>
                                                             <button type="button" className="btn btn-outline-secondary"
                                                                     onClick={() => handleCommitTooltipOpen()}>View
                                                             </button>
@@ -212,22 +133,15 @@ const useRowStyles = makeStyles({
     },
 });
 
-
-//[https://stackoverflow.com/questions/48780494/how-to-pass-value-to-popover-from-renderer]
-// const PopOver = ({Diffs}) => {
-//     return (
-//         <div className="box">
-//             <Popover id="popover-basic" placement='right' class="justify-content-end" >
-//                  {Diffs.map((item => {
-//                      return(
-//                          <ul>
-//                              <Popover.Title as="h3">{item.path}</Popover.Title>
-//                              <Popover.Content><Highlight className="highlighted-text"> {HighlightCodeDiffs(item.diff)} </Highlight>
-//                              </Popover.Content>
-//                          </ul>
-//                      )
-//                 }))}
-//             </Popover>
-//         </div>
-//     )
-// }
+const StyledTooltip = withStyles((theme) => ({
+    tooltip: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 550,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+    tooltipPlacementRight: {
+        margin: "10px",
+    },
+}))(Tooltip);
