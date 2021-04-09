@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
-import Button from 'react-bootstrap/Button';
 import  "./HBox.css"
 import {Table} from "react-bootstrap";
-import FormCheck from "react-bootstrap/FormCheck";
 import "../Projects/ProjectList.css";
 import moment from "moment";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -13,7 +11,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import CommitPerDayInfo from "./CommitPerDayInfo";
 import '../MergeRequest/MergeListTable.css'
-
+import CommitService from "./CommitService";
 
 class CommitsPerDay extends Component{
     constructor(props){
@@ -22,7 +20,8 @@ class CommitsPerDay extends Component{
             data: [],
             devName: this.props.devName,
             startTime: this.props.startTime,
-            date : ""
+            date : "",
+            totalScore: 0.0
         };
         this.handler = this.handler.bind(this)
     }
@@ -38,6 +37,8 @@ class CommitsPerDay extends Component{
     async getData(userName, date) {
         var listOfDates = [];
         var tempDate = "";
+        var score = 0.0
+
         this.props.commits.map(function(item) {
             var time = moment(item.committed_date).format('L')//02/18/2021
             tempDate = moment(date).format('lll')
@@ -48,9 +49,10 @@ class CommitsPerDay extends Component{
             const fulltime = year + '-' + month + '-' + day
             if(fulltime === date){
                 listOfDates.push(item)
+                score += item.commitScore
             }
         })
-        await this.setState({data:listOfDates, date: tempDate})
+        await this.setState({data:listOfDates, date: tempDate, totalScore: score})
     }
 
     async componentDidUpdate(prevProps){
@@ -69,6 +71,13 @@ class CommitsPerDay extends Component{
         });
         console.log(output)
 
+        if(sessionStorage.getItem("excludedFiles") === null){
+            var fileArray = []
+            sessionStorage.setItem("excludedFiles",  JSON.stringify(fileArray))
+        }
+
+        var excludedScore = CommitService.calculateExcludedScoreWithoutHashProvided(this.state.data)
+
         return(
             <TableContainer
                 style={{ overflowX: "scroll" , height: "1050px", width: "500px"}}
@@ -83,6 +92,25 @@ class CommitsPerDay extends Component{
                     color: 'black',
                     backgroundColor: 'lightgreen'}}>
                     Commits on {this.state.date.substring(0,12)}
+                </div>
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'blue',
+                    backgroundColor: 'lightgreen'}}>{"Total iteration score: "}
+                    {this.props.totalScore.toFixed(1)}</div>
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'blue',
+                    backgroundColor: 'lightgreen'}}>
+                    {"Score on this day: "}
+                    {(this.state.totalScore).toFixed(1)}
+                </div>
+                <div style={{fontWeight: 'bold',
+                    fontSize: '20px',
+                    color: 'red',
+                    backgroundColor: 'lightgreen'}}>
+                    {"Excluded points on this day: "}
+                    {(excludedScore).toFixed(1)}
                 </div>
                 <Table
                     aria-label="collapsible table" >
@@ -110,7 +138,9 @@ class CommitsPerDay extends Component{
                             <CommitPerDayInfo
                                 key={item.committed_date}
                                 commit={item}
-                                handler = {this.handler}/>
+                                commits = {this.state.data}
+                                handler = {this.handler}
+                                resetSingleCommitScore = {this.props.resetSingleCommitScore}/>
                         ))}
                     </TableBody>
                 </Table>

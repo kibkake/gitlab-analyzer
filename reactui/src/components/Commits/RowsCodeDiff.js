@@ -4,18 +4,13 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import {makeStyles} from "@material-ui/core/styles";
-import {OverlayTrigger} from 'react-bootstrap'
-import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './TableStyle.css'
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
-import Flexbox from "flexbox-react";
-import TableContainer from "@material-ui/core/TableContainer";
 import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
 import Collapse from "@material-ui/core/Collapse";
+import CommitService from "./CommitService";
 
 export default function Row(props) {
 
@@ -26,6 +21,8 @@ export default function Row(props) {
         false
     );
 
+    const [checked,setChecked] = React.useState(true)
+
     React.useEffect(() => {
 
         if(expanded) {
@@ -34,11 +31,13 @@ export default function Row(props) {
         if(!expanded){
             setOpen(false)
         }
-
     }, [expanded]);
 
     const oldF = row.old_path;
     const newF = row.new_path;
+
+    CommitService.initializeStorageForExcludedFiles()
+    var tempArray = JSON.parse(sessionStorage.getItem("excludedFiles"))
 
     return (
         <React.Fragment >
@@ -46,13 +45,23 @@ export default function Row(props) {
                 className="commitTable">
                 <TableCell
                     align="top"
-                    style={{wordWrap: "break-word", maxWidth:"390px", fontSize:"15", fontWeight:"bold"}}>
+                    style={{wordWrap: "break-word", maxWidth:"300px", fontSize:"15", fontWeight:"bold"}}>
                     {row.renamed_file ? oldF + "\nRENAMED TO:\n" + newF : newF}
                 </TableCell>
+
                 <TableCell
-                    align="right"
-                    style={{color:"blue", fontSize:"15", fontWeight:"bold"}}>
-                    {"+" + row.diffScore}
+                    style={{maxWidth:"50px"}}
+
+                align="right">
+                    {CommitService.checkIfFileIsExcluded(tempArray, newF, props.hash) ?
+                        <div
+                            style={{color:"red", fontSize:"15", fontWeight:"bold"}}>
+                            {"+" + row.diffScore}
+                        </div> :
+                        <div
+                            style={{color:"blue", fontSize:"15", fontWeight:"bold"}}>
+                            {"+" + row.diffScore}
+                        </div>}
                 </TableCell>
 
                 <TableCell
@@ -66,13 +75,26 @@ export default function Row(props) {
                 </TableCell>
 
                 <TableCell
-                    align ="right">
+                    style={{display:"flex", flexDirection:"column"}}
+                    align ="left">
                     <button
+                        style={{
+                            backgroundColor: 'darkorange',
+                            color: 'black',
+                            borderRadius: '0%'
+                        }}
                         type="button"
                         onClick={(e) => {
                             e.preventDefault();
+                            {CommitService.checkIfFileIsExcluded(tempArray, newF, props.hash) ?
+                                props.addExcludedPoints(-row.diffScore) :
+                                props.addExcludedPoints(row.diffScore)}
+                            {CommitService.checkIfFileIsExcluded(tempArray, newF, props.hash) ?
+                                CommitService.removeFromExcludedFiles(tempArray, newF, props.hash) :
+                                CommitService.addFileToListOfExcluded(tempArray, newF, props.hash)}
+                            setChecked(!checked)
                         }}>
-                        TODO
+                        IGNORE
                     </button>
                 </TableCell>
             </TableRow>
@@ -104,3 +126,7 @@ export default function Row(props) {
         </React.Fragment>
     );
 }
+
+
+
+

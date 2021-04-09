@@ -10,3 +10,10 @@
    fontSize: '20pt';
    fontWeight: 'bold';
 }
+
+.tooltip {
+'& > *'
+   overflow: scroll;
+   maxHeight: '500pt';
+
+}

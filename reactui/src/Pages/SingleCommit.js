@@ -1,4 +1,4 @@
-import SingleCommitDiffs from "../components/Developers/SingleCommitDiffs";
+import SingleCommitDiffs from "../components/Commits/SingleCommitDiffs";
 import Navbar_Developers from "../components/NavBars_Menu/Navbar_Developers";
 import React from "react";
 
