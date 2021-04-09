@@ -12,65 +12,11 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
 import Highlight from "react-highlight";
+import TableHead from "@material-ui/core/TableHead";
 
-export default function DiffTable (props) {
-    const {diffs} = props;
 
-    const [open, setOpen] = React.useState(false);
-    var  expanded  = props.expanded
-
-    // const [expanded, setExpand] = React.useState(false);
-    //
-    // React.useEffect(() => {
-    //     if(expanded) {
-    //         setOpen(true)
-    //     }
-    //     if(!expanded){
-    //         setOpen(false)
-    //     }
-    // }, [expanded]);
-
-    return (
-            <TableContainer component={Paper}>
-                <Table hover aria-label="collapsible table">
-                    <TableBody>
-                        <React.Fragment>
-                            <TableRow>
-                                <TableCell align="left" component="th" scope="row">
-                                    <h5><u>{diffs.path}</u> (+{diffs.diffScore})</h5>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                                        {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
-                                    <Collapse in={open} timeout="auto" unmountOnExit>
-                                        <Box>
-                                            <Table size="small" aria-label="commits">
-                                                <TableBody>
-                                                    <TableRow>
-                                                        <TableCell><Highlight
-                                                            className="highlighted-text">{HighlightCodeDiffs(diffs.diff)}</Highlight></TableCell>
-                                                    </TableRow>
-                                                </TableBody>
-                                            </Table>
-                                        </Box>
-                                    </Collapse>
-                                </TableCell>
-                            </TableRow>
-                        </React.Fragment>
-                    </TableBody>
-                </Table>
-            </TableContainer>
-    )
-}
-//<DiffRow key={diffs.path} row={diffs}/>
-
-const DiffRow = (props) =>{
-    const {row} = props;
+export default function DiffRow (props) {
+    const {diff} = props;
     var  expanded  = props.expanded
 
     const [open, setOpen] = React.useState(false);
@@ -90,7 +36,7 @@ const DiffRow = (props) =>{
         <React.Fragment>
             <TableRow>
                 <TableCell align="left" component="th" scope="row">
-                    <h5><u>{row.path}</u> (+{row.diffScore})</h5>
+                    <h5><u>{diff.path}</u> (+{diff.diffScore})</h5>
                 </TableCell>
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
@@ -105,7 +51,8 @@ const DiffRow = (props) =>{
                             <Table size="small" aria-label="commits">
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell><Highlight className="highlighted-text">{HighlightCodeDiffs(row.diff)}</Highlight></TableCell>
+                                        <TableCell><Highlight
+                                            className="highlighted-text">{HighlightCodeDiffs(diff.diff)}</Highlight></TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
@@ -116,3 +63,40 @@ const DiffRow = (props) =>{
         </React.Fragment>
     );
 }
+
+
+// export default function DiffTable (props) {
+//     const {diffs} = props;
+//
+//     const [open, setOpen] = React.useState(false);
+//     var  expanded  = props.expanded;
+//
+//     // const [expanded, setExpand] = React.useState(false);
+//     //
+//     // React.useEffect(() => {
+//     //     if(expanded) {
+//     //         setOpen(true)
+//     //     }
+//     //     if(!expanded){
+//     //         setOpen(false)
+//     //     }
+//     // }, [expanded]);
+//
+//     return (
+//         <TableContainer component={Paper}>
+//             <Table hover aria-label="collapsible table">
+//                 <TableHead>
+//                     <TableRow>
+//                         <TableCell>
+//                             Hi
+//                         </TableCell>
+//                     </TableRow>
+//                 </TableHead>
+//                 <TableBody>
+//                     {diffs.map((item) => (<DiffRow key={item.diff} diff={item}/>))}
+//                 </TableBody>
+//             </Table>
+//         </TableContainer>
+//     )
+// }
+// //<DiffRow key={diffs.path} row={diffs}/>

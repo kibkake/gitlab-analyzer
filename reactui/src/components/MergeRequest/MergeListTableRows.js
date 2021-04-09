@@ -17,6 +17,7 @@ import './MergeListTable.css'
 import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
 import DiffTable from "./DiffToolTipTable";
+import DiffRow from "./DiffToolTipTable";
 
 const StyledTooltip = withStyles((theme) => ({
     tooltip: {
@@ -78,30 +79,33 @@ export default function Row(props) {
                                 disableHoverListener
                                 disableTouchListener
                                 title={
-                                    <div style={{"pointer-events": "auto"}}>
-                                        <button style={{
-                                            backgroundColor: 'lightblue',
-                                            color: 'black',
-                                            borderRadius: '0%'}}
-                                                type="button"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    props.handler();
-                                                    // setExpand(!expanded);
-                                                }}>
-                                            EXPAND ALL
-                                        </button>
                                         <div style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
-
-                                            {row.diffs.map((item) => {
-                                                return (
-                                                    <DiffTable key={item.diff} diffs={item}
-                                                               handler = {props.handler}
-                                                               expanded = {props.expanded}/>
-                                                )})}
-                                        </div>
+                                            <TableContainer component={Paper}>
+                                                <Table hover aria-label="collapsible table">
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell>
+                                                                <button style={{
+                                                                    backgroundColor: 'lightblue',
+                                                                    color: 'black',
+                                                                    borderRadius: '0%'}}
+                                                                        type="button"
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            props.handler();
+                                                                            // setExpand(!expanded);
+                                                                        }}>
+                                                                     Expand / Collapse All
+                                                                </button>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {row.diffs.map((item) => (<DiffRow key={item.diff} diff={item}/>))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
                                     </div>
-
                                 }>
                                 <button aria-label="expand row" size="small" onClick={() => {  setOpen(!open);
                                             handleTooltipOpen();}}
