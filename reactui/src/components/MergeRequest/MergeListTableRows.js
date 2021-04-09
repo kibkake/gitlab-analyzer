@@ -16,6 +16,7 @@ import {ClickAwayListener, Tooltip, withStyles} from "@material-ui/core";
 import './MergeListTable.css'
 import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
+import DiffTable from "./DiffToolTipTable";
 
 const StyledTooltip = withStyles((theme) => ({
     tooltip: {
@@ -76,25 +77,15 @@ export default function Row(props) {
                                 disableFocusListener
                                 disableHoverListener
                                 disableTouchListener
-                                title={row.diffs.map(item => {
+                                title={row.diffs.map((item) => {
                                     return (
-                                        <TableContainer component={Paper} display="flex" flexDirection="row" p={1} m={1} justifyContent="flex-start">
-                                            <Table aria-label="collapsible table" >
-                                                <TableHead className="tableCell">
-                                                    <TableRow>
-                                                        <TableCell>{item.path}</TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    <Row key={item.diff} row={item}/>
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
+                                        <div className="box-container" style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                        <DiffTable key={item.diff} diffs={item}/>
+                                        </div>
                                     )})}>
-                            <button aria-label="expand row" size="small"
-                                    onClick={() => {  setOpen(!open);
-                                                      handleTooltipOpen();}}
-                                    type="button" order={1} className="btn btn-secondary">View</button>
+                                <button aria-label="expand row" size="small" onClick={() => {  setOpen(!open);
+                                            handleTooltipOpen();}}
+                                        type="button" order={1} className="btn btn-secondary">View</button>
                             </StyledTooltip>
                         </div>
                     </ClickAwayListener>
@@ -120,9 +111,7 @@ export default function Row(props) {
                                 <TableBody>
                                     {row.commits.map((commitsRow) => (
                                         <TableRow key={commitsRow.commitDate}>
-                                            <TableCell component="th" scope="row">
-                                                {moment(commitsRow.commitDate).format('LLL')}
-                                            </TableCell>
+                                            <TableCell component="th" scope="row">{commitsRow.commitDate}</TableCell>
                                             <TableCell>{commitsRow.message}</TableCell>
                                             <TableCell align="right">{commitsRow.author}</TableCell>
                                             <TableCell align="right">{commitsRow.score}</TableCell>
@@ -136,23 +125,12 @@ export default function Row(props) {
                                                             disableFocusListener
                                                             disableHoverListener
                                                             disableTouchListener
-                                                            title={commitsRow.commitDiffs.map(item => {
-                                                                return (
-                                                                    <div className="box-container" style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
-                                                                        <React.Fragment class="box"
-                                                                                        style={{"maxHeight": 700, "overflow-y": "auto",
-                                                                                            "pointer-events": "auto",
-                                                                                            "margin-top": 10}}>
-                                                                        <ul>
-                                                                            <h5><u>{item.path}</u> (+{item.diffScore})</h5>
-                                                                            <h6><Highlight
-                                                                                className="highlighted-text">{HighlightCodeDiffs(item.diff)}</Highlight>
-                                                                            </h6>
-                                                                        </ul>
-                                                                    </React.Fragment>
-                                                                    </div>
-                                                                )
-                                                            })}>
+                                                           title={commitsRow.commitDiffs.map((item) => {
+                                                               return (
+                                                                   <div className="box-container" style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                                                       <DiffTable key={item.diff} diffs={item}/>
+                                                                   </div>
+                                                               )})}>
                                                             <button type="button" className="btn btn-outline-secondary"
                                                                     onClick={() => handleCommitTooltipOpen()}>View</button>
                                                         </StyledTooltip>

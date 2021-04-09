@@ -4,16 +4,10 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import {makeStyles} from "@material-ui/core/styles";
-import {OverlayTrigger} from 'react-bootstrap'
-import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './TableStyle.css'
 import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
-import Flexbox from "flexbox-react";
-import TableContainer from "@material-ui/core/TableContainer";
 import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
 import Collapse from "@material-ui/core/Collapse";
 
@@ -55,8 +49,7 @@ export default function Row(props) {
                     {"+" + row.diffScore}
                 </TableCell>
 
-                <TableCell
-                    align="right">
+                <TableCell align="right">
                     <IconButton
                         aria-label="expand row"
                         size="small"
