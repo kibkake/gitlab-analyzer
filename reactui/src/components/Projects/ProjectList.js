@@ -4,6 +4,8 @@ import "./ProjectList.css";
 import moment from "moment";
 import FormCheck from 'react-bootstrap/FormCheck'
 import {MDBBtn, MDBDataTable, MDBInput,  MDBCard, MDBCardBody, MDBCardHeader, MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
+import {alignAuto} from "react-charts/dist/react-charts.min.mjs";
+import {ProgressBar} from "react-bootstrap";
 
 //[https://mdbootstrap.com/docs/react/tables/datatables/]
 export default class ProjectList extends Component {
@@ -13,6 +15,7 @@ export default class ProjectList extends Component {
         this.state = {
             projects: [],
             selectAll: true,
+            checked: [],
         }
         this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
         this.handleSingleCheckboxChange = this.handleSingleCheckboxChange.bind(this);
@@ -90,6 +93,7 @@ export default class ProjectList extends Component {
             let currentYear = new Date().getFullYear();
             let dateString = moment(item.created_at).format('ll').replace(", "+currentYear, "")
             return {
+                check: <input type="checkbox" defaultChecked={true}/>,
                 id: <button color="purple" onClick={(e) => { e.preventDefault();
                     window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.id}</button>,
                 name: item.name,
@@ -97,7 +101,7 @@ export default class ProjectList extends Component {
                     window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.description}</MDBBtn>,
                 created: dateString,
                 updated: "null", //item.lastProjectUpdateAt,
-                check: <input type="checkbox" defaultChecked={true}/>,
+                syncing: <ProgressBar animated now={45} />,
             }
         })
 
@@ -134,13 +138,20 @@ export default class ProjectList extends Component {
                     width: 150
                 },
                 {
-                    label: <FormCheck class="form-check-inline"> <FormCheck.Label>
-                        <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
-                        Sync Data</FormCheck.Label>
-                    </FormCheck>, //<MDBInput label=" " type="checkbox" id="checkbox5"/>,
+                    label: 'Sync Progress',
+                    field: 'syncing',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: <MDBInput label=" " type="checkbox"/>,
+                    // <FormCheck class="form-check-inline"> <FormCheck.Label>
+                    //     <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
+                    // </FormCheck.Label>
+                    // </FormCheck>, //
                     field: 'check',
                     sort: 'asc',
-                    width: 50
+                    width: 10
                 },
             ],
             rows: output,
@@ -151,9 +162,8 @@ export default class ProjectList extends Component {
                 <div align="center" style={{padding: '20px'}}>
                     <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
                 </div>
-                <MDBDataTable hover
+                <MDBDataTable hover btn fixed
                     searchLabel="Search By Project Name/Month"
-                    striped
                     small
                     data={data}
                 />
