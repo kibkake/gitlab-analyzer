@@ -1,11 +1,5 @@
 import React, {Component} from 'react'
 import "../Projects/ProjectList.css";
-import {Table} from "react-bootstrap";
-import HighlightCodeDiffs from "./HighlightCodeDiffs"
-import TableContainer from "@material-ui/core/TableContainer";
-import Paper from "@material-ui/core/Paper";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import ExpandButton from "./ExpandButton";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -16,7 +10,8 @@ class SingleCommitDiff extends Component{
             data: [],
             hash : this.props.hash,
             expanded: false,
-            commits : this.props.commits
+            commits : this.props.commits,
+            render : false
         };
         this.handler = this.handler.bind(this)
     }
@@ -38,21 +33,19 @@ class SingleCommitDiff extends Component{
     }
 
     async getDataFromBackend(){
-        var str = window.location.pathname;
-        var repNum = str.split("/")[2];
-        var hash = this.props.hash;
 
-        let url2 = '/api/v1/projects/' + repNum + '/Commit/' + hash;
-        const result = await fetch(url2, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+        var hash = this.props.hash;
+        console.log(hash)
+        console.log(this.state.commits)
+        var tempArr = [];
+
+        await this.state.commits.map(function(item) {
+            if(item.id === hash){
+                tempArr.push(item)
             }
         })
-        const resp = await result.json();
-        await this.setState({data:resp})
-        console.log(resp)
+        console.log(tempArr)
+        await this.setState({data:tempArr})
     }
 
     async componentDidUpdate(prevProps){
@@ -82,9 +75,13 @@ class SingleCommitDiff extends Component{
         return (
             <div>
                 <ExpandButton
+                    hash = {this.props.hash}
                     ever = {this.state.data}
                     handler = {this.handler}
-                    expanded = {this.state.expanded}>
+                    expanded = {this.state.expanded}
+                    addExcludedPoints = {this.props.addExcludedPoints}
+                    singleCommitScore = {this.props.singleCommitScore}
+                    handler2 = {this.handler2}>
                 </ExpandButton>
             </div>
         )
