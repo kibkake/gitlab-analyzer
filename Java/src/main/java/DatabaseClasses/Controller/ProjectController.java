@@ -61,8 +61,6 @@ public class ProjectController {
 
     @PostMapping(path = "saveSnapshot")
     public String saveSnapshot(@RequestBody Snapshot snapshot){
-        System.out.println(snapshot);
-        System.out.println(snapshot.getLanguageScale());
         projectService.saveSnapshot(snapshot);
         return snapshot.getId();
     }

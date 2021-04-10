@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button,Table,Modal, Form} from 'react-bootstrap';
+import CongifService from "../../Service/ConfigService";
 
 
 class LanguageScaleTable extends Component{
@@ -111,6 +112,13 @@ class LanguageScaleTable extends Component{
             chosenIndex:tempIndex,
             editScaleIsShown:true
         });
+    }
+
+    saveConfig(){
+        await ConfigService.saveConfig(                 // current user
+            sessionStorage.getItem('startdate'),            // chosen snapshot date
+            sessionStorage.getItem('enddate'),              // "                  "
+        );
     }
 
 
