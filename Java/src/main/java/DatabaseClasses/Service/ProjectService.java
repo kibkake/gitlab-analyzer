@@ -407,14 +407,19 @@ public class ProjectService {
         Project project = projectRepository.findProjectById(projectId);
         List<MergeRequest> mergeRequests = project.getMergedRequests();
         List<MergeRequest> devMergeRequests = new ArrayList<>();
+        Developer dev = null;
+        for (Developer currentDev : getProjectDevelopers(projectId)) {
+            if (currentDev.getUsername().equals(username)) {
+                dev = currentDev;
+                break;
+            }
+        }
+        assert(dev != null);
         for (MergeRequest mergeRequest : mergeRequests) {
             LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
-            if (mergedDate.compareTo(start) >= 0 && mergedDate.compareTo(end) <= 0) {
-                for (Developer dev : mergeRequest.getContributors()) {
-                    if (dev.getUsername().equals(username)) {
-                        devMergeRequests.add(mergeRequest);
-                    }
-                }
+            if (mergedDate.compareTo(start) >= 0 && mergedDate.compareTo(end) <= 0
+                && didDevContributeCodeToMR(mergeRequest, dev)) {
+                devMergeRequests.add(mergeRequest);
             }
         }
         return devMergeRequests;
