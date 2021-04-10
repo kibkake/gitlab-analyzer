@@ -29,6 +29,7 @@ public class DeveloperController {
         return developerService.getProjectDevs(projectId);
     }
 
+    // this contains scores
     @GetMapping("{devId}/mergeRequestsAndCommits")
     public List<MergeRequest> getDevMergeRequestsAndCommits(@PathVariable int projectId, @PathVariable int devId) {
         return developerService.getDevMergeRequestsAndCommits(projectId, devId);

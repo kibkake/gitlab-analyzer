@@ -8,20 +8,23 @@ import Box from "@material-ui/core/Box";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
-import {makeStyles} from "@material-ui/core/styles";
-import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
-import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs";
-import Flexbox from "flexbox-react";
-import TableContainer from "@material-ui/core/TableContainer";
 import './TableStyle.css'
+import CommitService from "./CommitService";
 
 function CommitInfo(props) {
 
     const [open, setOpen] = React.useState(
         false
     );
+
+    CommitService.initializeStorageForExcludedFiles()
+
+    var numberOfFilesExcluded = CommitService.calculateNumberOfExcludedFilesInCommit(props.commit.diffs, props.commit.id)
+    var numberOfFilesInCommit = CommitService.calculateNumberOfFilesInCommit(props.commit.diffs)
+
+    console.log(props.commit)
 
     return (
         <React.Fragment>
@@ -33,9 +36,7 @@ function CommitInfo(props) {
                 <TableCell><a href= {props.commit.mrUrl}>
                     {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
                         props.commit.title.substring(0,10)}</a> </TableCell>
-                <TableCell align="right" style={{color:"blue", fontSize:"15", fontWeight:"bold"}}>
-                    {"+" + props.commit.commitScore.toFixed(1)}
-                </TableCell>
+                {CommitService.adjustTheColorOfScore(numberOfFilesExcluded,numberOfFilesInCommit,props.commit.commitScore)}
 
                 <TableCell align="top">
                     <IconButton aria-label="expand row"
@@ -56,6 +57,7 @@ function CommitInfo(props) {
                         type="button"
                         onClick={(e) => {
                             e.preventDefault();
+                            {props.resetSingleCommitScore()}
                             {props.handler(props.commit.id)}
                         }}>
                         DIFF

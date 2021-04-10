@@ -8,7 +8,6 @@ import Button from "react-bootstrap/Button";
 import Spinner from 'react-bootstrap/Spinner'
 import moment from "moment";
 import img from './ChartBackground.jpg'
-import img2 from './LoadingBackground.jpg'
 import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
 
 class CommitChart extends Component {
@@ -25,11 +24,15 @@ class CommitChart extends Component {
             childVal : "non",
             diff: false,
             showAllCommit:true,
-            allCommits: []
+            allCommits: [],
+            totalScore: 0.0,
+            singleCommitScore: 0.0
         };
         this.handler = this.handler.bind(this)
         this.handler2 = this.handler2.bind(this)
         this.handler3 = this.handler3.bind(this)
+        this.addExcludedPoints = this.addExcludedPoints.bind(this)
+        this.resetSingleCommitScore = this.resetSingleCommitScore.bind(this)
     }
 
     async handler(hash) {
@@ -51,6 +54,19 @@ class CommitChart extends Component {
         })
     }
 
+    async addExcludedPoints(score){
+        console.log(score)
+        var commitScore1 = this.state.singleCommitScore
+        console.log(commitScore1)
+        commitScore1 += score
+        console.log(commitScore1)
+        this.setState({singleCommitScore:commitScore1})
+    }
+
+    async resetSingleCommitScore(){
+        this.setState({singleCommitScore:0.0})
+    }
+
     async componentDidMount() {
         const {parentdata} = this.state;
         await this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime )
@@ -59,25 +75,6 @@ class CommitChart extends Component {
     async getDataFromBackend (username, startTm, endTm) {
         var str = window.location.pathname;
         var projNum = str.split("/")[2];
-        var arr=[];
-
-        let url3 = '/api/v1/projects/' + projNum + '/Commitsarray/' + username + '/' +
-            startTm + "/" + endTm + "/either"
-        const result = await fetch(url3, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        const json = await result.json();
-        var data = JSON.stringify(json);
-        var DataArray = JSON.parse(data);
-        await DataArray.map(item => {
-            arr.push(item)
-        })
-        await this.setState({data: arr})
-
 
         let url2 = '/api/v1/projects/' + projNum + '/Commits/' + username + '/' + startTm + "/" + endTm  + "/either"
         const result2 = await fetch(url2, {
@@ -88,6 +85,41 @@ class CommitChart extends Component {
             }
         })
         const resp = await result2.json();
+        await this.setState({commits:resp})
+
+        var chartArr = [];
+        var index = 0;
+
+        for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)) {
+            chartArr.push(0)
+        }
+
+        var totalScore1 = 0.0;
+
+        for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)){
+
+            var time = moment(dt).format('L')
+            const month = time.substring(0,2)
+            const day = time.substring(3,5)
+            const year = time.substring(6,10)
+            const fullTime = year + '-' + month + '-' + day
+
+            await this.state.commits.map(function(item) {
+
+                var time1 = moment(item.committed_date).format('L')
+                const tempMonth = time1.substring(0,2)
+                const tempDay = time1.substring(3,5)
+                const tempYear = time1.substring(6,10)
+                const tempFullTime = tempYear + '-' + tempMonth + '-' + tempDay
+
+                if(fullTime === tempFullTime){
+                    totalScore1 += item.commitScore
+                    chartArr[index]++
+                }
+            })
+            index++
+        }
+        await this.setState({data:chartArr, totalScore: totalScore1})
         await this.setState({commits:resp});
         this.applyMultipliers()
     }
@@ -139,12 +171,14 @@ class CommitChart extends Component {
             return (
                 <div>
                     <AllCommits
+                        totalScore = {this.state.totalScore}
                         devName = {this.props.devName}
                         startTime = {this.props.startTime}
                         endTime = {this.props.endTime}
                         handler = {this.handler}
                         handler3 = {this.handler3}
-                        commits={this.state.commits} />
+                        commits={this.state.commits}
+                        resetSingleCommitScore = {this.resetSingleCommitScore}/>
                 </div>
             )
         }
@@ -153,10 +187,11 @@ class CommitChart extends Component {
                 <div>
                     <CommitsPerDay
                         devName = {this.props.devName}
+                        totalScore = {this.state.totalScore}
                         startTime = {this.state.y_Axis}
-                        commits = {this.state.allCommits}
                         handler = {this.handler}
-                        commits={this.state.commits} />
+                        commits={this.state.commits}
+                        resetSingleCommitScore = {this.resetSingleCommitScore}/>
                 </div>
             )
         }
@@ -222,20 +257,24 @@ class CommitChart extends Component {
         //height={daylist.length*(500/daylist.length)}
         return (
             <div>
-                <SnapshotWidgetComponent/>
-                <br/>
 
             <div className="box-container" >
-                <div style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
+                <div
+                    style={{ overflow: "scroll", minHeight: "1000px", width: "1000px"}}>
+                    <div
+                        style={{flexDirection: "row",display: "flex"}}>
                     <Button
                             onClick={(e) => {
                                 this.setState({showAllCommit: true, diff:false})
                             }}>
                         <span >show all commits</span>
                     </Button>
+                        <SnapshotWidgetComponent/>
+                    </div>
                 <div className="horizontalBar" style={{backgroundImage: `url(${img})`,
                     backgroundSize: "cover"
                 }}>
+
                 <HorizontalBar
 
                     data={{labels: daylist,
@@ -278,7 +317,7 @@ class CommitChart extends Component {
                                 yAxes: [{
                                     ticks : {
                                         fontColor: "blue",
-                                        fontStyle	: 'bold'
+                                        fontStyle	: 'bold',
                                     },gridLines : {
                                     }
                                 }]
@@ -289,9 +328,12 @@ class CommitChart extends Component {
                 </div>
                     {this.showComponents()}
                     {(this.state.diff !== false) ? <SingleCommitDiff
+                        addExcludedPoints = {this.addExcludedPoints}
                         handler2 = {this.handler2}
                         hash = {this.state.childVal}
-                        commits={this.state.commits}/> : <div> </div>}
+                        commits={this.state.commits}
+                        singleCommitScore={this.state.singleCommitScore}
+                        /> : <div> </div>}
                 </div>
             </div>
         )
