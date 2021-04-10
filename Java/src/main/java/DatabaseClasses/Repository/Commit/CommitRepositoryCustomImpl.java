@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses.Repository.Commit;
 
+import main.java.Collections.MergeRequest;
 import main.java.DatabaseClasses.Scores.CommitDateScore;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Collections.Commit;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -71,7 +73,6 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
         AggregationResults<Double> groupResults = mongoTemplate.aggregate(aggregation, Commit.class, Double.class);
         Optional<Double> result = Optional.ofNullable(groupResults.getUniqueMappedResult());
         return result.orElse(0.0);
-
     }
 
     @Override
@@ -87,6 +88,22 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
         }
         userCommitScores.sort(Comparator.comparing(CommitDateScore::getDate));
         return userCommitScores;
+    }
+
+    @Override
+    public List<Commit> getDevCommits(int projectId, String devUsername, String devName,  LocalDate startDate, LocalDate endDate) {
+        final Criteria usernameMatchCriteria = Criteria.where("username").is(devUsername);
+        final Criteria nameMatchCriteria = Criteria.where("name").is(devUsername);
+
+        final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
+        final Criteria dateMatchCriteria = Criteria.where("date").gte(startDate).lte(endDate);
+        Criteria criterias = new Criteria()
+                .andOperator(projectMatchCriteria, dateMatchCriteria);
+
+        Query query = new Query();
+        query.addCriteria(criterias);
+        return mongoTemplate.find(query, Commit.class);
+
     }
 
     public boolean containsDate(final List<CommitDateScore> UserScores, final LocalDate date){

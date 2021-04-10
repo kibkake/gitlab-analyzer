@@ -17,9 +17,7 @@ import java.util.List;
 @Repository
 public interface CommitRepository extends MongoRepository<Commit, String>, CommitRepositoryCustom {
 
-
     Commit findByProjectIdAndCommitId(int projectId, String commitHash);
 
-    //TODO update to Author_Email when that issue be solved or other unique identifier
-    List<Commit> findByProjectIdAndAuthorNameOrAuthorNameAndDateBetween(int projectId, String username, String name, Date startDate, Date endDate);
 }
+

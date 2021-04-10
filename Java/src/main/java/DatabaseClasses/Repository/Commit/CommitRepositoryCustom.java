@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses.Repository.Commit;
 
+import main.java.Collections.Commit;
 import main.java.DatabaseClasses.Scores.CommitDateScore;
 
 import java.time.LocalDate;
@@ -16,4 +17,6 @@ public interface CommitRepositoryCustom {
     Double userTotalCommitScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 
     List<CommitDateScore> getCommitsWithEveryDateBetweenRange(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+
+    List<Commit> getDevCommits(int projectId, String devUsername, String devName, LocalDate startDate, LocalDate endDate);
 }

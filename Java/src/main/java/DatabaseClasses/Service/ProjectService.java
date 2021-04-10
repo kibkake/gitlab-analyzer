@@ -108,24 +108,6 @@ public class ProjectService {
         setDeveloperInfo(projectId, projectSettings, projectDevs);
     }
 
-    @Transactional(timeout = 1200) // 20 min
-    public void saveSnapshot(Snapshot snapshot){
-        snapshotRepository.save(snapshot);
-    }
-
-    public Snapshot getSnapshot(String id){
-        return snapshotRepository.findById(id).orElse(null);
-    }
-
-    public List<Snapshot> getSnapshots(String username){
-        return snapshotRepository.findByUsername(username);
-    }
-
-    @Transactional(timeout = 1200) // 20 min
-    public void deleteSnapshot(String id){
-        snapshotRepository.deleteById(id);
-    }
-
     private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
         for (Developer dev: projectDevs) {
             List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
@@ -149,14 +131,9 @@ public class ProjectService {
             AllScores devAllScores = new AllScores(projectSettings.getStartDate(), projectSettings.getEndDate(), devTotalCommitScore,
                     devTotalMergeRequestScore);
 
-            //https://www.javaprogramto.com/2020/12/java-convert-localdate-to-date.html
-            ZoneId systemTimeZone = ZoneId.systemDefault();
-            ZonedDateTime zonedStartTime = projectSettings.getStartDate().atStartOfDay(systemTimeZone);
-            ZonedDateTime zonedEndTime = projectSettings.getEndDate().atStartOfDay(systemTimeZone);
-            Date startDate = Date.from(zonedStartTime.toInstant());
-            Date endDate = Date.from(zonedEndTime.toInstant());
-            List<Commit> devCommits = commitRepository.findByProjectIdAndAuthorNameOrAuthorNameAndDateBetween(projectId,
-                    dev.getUsername(), dev.getName(), startDate,endDate);
+
+            List<Commit> devCommits = commitRepository.getDevCommits(projectId,
+                    dev.getUsername(), dev.getName(), projectSettings.getStartDate(), projectSettings.getEndDate());
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
                constructor because of spring
              */
@@ -174,6 +151,25 @@ public class ProjectService {
             but I get an error saying that this method (.saveAll) does not exist
          */
     }
+
+    @Transactional(timeout = 1200) // 20 min
+    public void saveSnapshot(Snapshot snapshot){
+        snapshotRepository.save(snapshot);
+    }
+
+    public Snapshot getSnapshot(String id){
+        return snapshotRepository.findById(id).orElse(null);
+    }
+
+    public List<Snapshot> getSnapshots(String username){
+        return snapshotRepository.findByUsername(username);
+    }
+
+    @Transactional(timeout = 1200) // 20 min
+    public void deleteSnapshot(String id){
+        snapshotRepository.deleteById(id);
+    }
+
 
     public List<DateScore> getDevCommitScoresPerDay(int projectId, String username, LocalDate start,
                                                     LocalDate end, UseWhichDevField devField) {
