@@ -70,6 +70,7 @@ public class ProjectController {
 
         this.snapshot = new Snapshot(startDate, endDate);
         for (int i=0; i < projectIds.length-1; i++) {
+            System.out.println("update is doing");
 //            snapshot.setProjectId(projectIds[i]);
             projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
             System.out.println("update is done");
@@ -90,11 +91,11 @@ public class ProjectController {
         // rather than done as everytime the user access each project page
         // commenting this out doesn't affect the current app
 
-        if (!project.isInfoSet()) {
-            this.snapshot = new Snapshot(startDate, endDate);
-            projectService.setProjectInfoWithSettings(projectId, snapshot);
-            project = projectService.getProject(projectId); // get project now that it has been modified
-        }
+//        if (!project.isInfoSet()) {
+//            this.snapshot = new Snapshot(startDate, endDate);
+//            projectService.setProjectInfoWithSettings(projectId, snapshot);
+//            project = projectService.getProject(projectId); // get project now that it has been modified
+//        }
         return project;
     }
 

@@ -117,11 +117,23 @@ public class ProjectService {
                 "Project with id " + projectId + " does not exist"));
 
         project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        System.out.println("update is doing1");
+
         List<Commit> projectCommits = new CommitConnection().getProjectCommitsFromGitLab(projectId);
+        System.out.println("update is doing2");
+
         List<MergeRequest> projectMergeRequests = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
+        System.out.println("update is doing3");
+
         project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
+        System.out.println("update is doin4g");
+
         projectRepository.save(project);
+        System.out.println("update is doing5");
+
         commitRepository.saveAll(projectCommits);
+        System.out.println("update is doing6");
+
         mergeRequestRepository.saveAll(projectMergeRequests);
 
         //after all info has been collected we can now query the database to build each developers info
