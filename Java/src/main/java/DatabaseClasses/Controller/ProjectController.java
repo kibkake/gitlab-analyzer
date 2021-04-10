@@ -13,6 +13,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -48,30 +49,39 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+
+    //TODO: how to update if the current db is not empty,
+    //and a new project is added? Because the new project isn't getting updated by setProjectInfoWithSetting() call
+    @GetMapping("projects")
+    public List<Project> getAllProjects() {
+        if(projectService.getAllProjects().isEmpty()) {
+            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
+            projectService.saveNewProjects(projects);
+        }
+        return projectService.getAllProjects();
+    }
+
+    // Let user sync the data of repositories of interest at once in the Repository list page by the request from the UI
+    // changed input argument from ProjectSetting to Snapshot
+    @PostMapping("setProjectInfoWithSettings")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void setProjectInfoWithSettings(@RequestBody int[] projectIds) {
+        System.out.println(Arrays.toString(projectIds));// array is received properly
+
+        this.snapshot = new Snapshot(startDate, endDate);
+        for (int i=0; i < projectIds.length-1; i++) {
+//            snapshot.setProjectId(projectIds[i]);
+            projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
+            System.out.println("update is done");
+       }
+    }
+
     // can only be used on very small projects
     @GetMapping("setProjectInfo/{projectId}")
     public void setProjectInfo(@PathVariable int projectId) {
         projectService.setProjectInfo(projectId);
     }
 
-    //changed input argument from ProjectSetting to Snapshot
-    @PostMapping("setProjectInfoWithSettings")
-    @ResponseStatus(value = HttpStatus.OK)
-    public void setProjectInfoWithSettings(@RequestBody int[] projectId) {
-       for (int i=0; i < projectId.length-1; i++) {
-           snapshot.setProjectId(i);
-           projectService.setProjectInfoWithSettings(i, snapshot);
-       }
-    }
-
-    // Let user sync the data of repositories of interest at once in the Repository list page
-    //  by the request from the UI
-    //TODO: setProjectInfo testing
-    @PostMapping("/updateRepo")
-    @ResponseStatus(value = HttpStatus.OK)
-    public void updateProjectDB(@RequestBody int projectId) {
-        projectService.setProjectInfo(projectId);
-    }
 
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {
@@ -80,10 +90,11 @@ public class ProjectController {
         // rather than done as everytime the user access each project page
         // commenting this out doesn't affect the current app
 
-//        if (!project.isInfoSet()) {
-//            projectService.setProjectInfo(projectId);
-//            project = projectService.getProject(projectId); // get project now that it has been modified
-//        }
+        if (!project.isInfoSet()) {
+            this.snapshot = new Snapshot(startDate, endDate);
+            projectService.setProjectInfoWithSettings(projectId, snapshot);
+            project = projectService.getProject(projectId); // get project now that it has been modified
+        }
         return project;
     }
 
@@ -109,16 +120,6 @@ public class ProjectController {
         projectService.deleteSnapshot(id);
     }
 
-    //TODO: how to update if the current db is not empty,
-    //and a new project is added? Because the new project isn't getting updated by setProjectInfo() call
-    @GetMapping("projects")
-    public List<Project> getAllProjects() {
-        if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
-            projectService.saveNewProjects(projects);
-        }
-        return projectService.getAllProjects();
-    }
 
 
     @GetMapping("projects/{projectId}/developers")

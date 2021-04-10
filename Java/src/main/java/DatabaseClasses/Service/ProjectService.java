@@ -16,12 +16,16 @@ import main.java.ConnectToGitlab.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequestConnection;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -143,28 +147,29 @@ public class ProjectService {
         snapshotRepository.deleteById(id);
     }
 
-    //added
+    //added to change argument to snapshot instead of projectSetting
     private void setDeveloperInfoWithSnapshot(int projectId, Snapshot snapshot, List<Developer> projectDevs) {
+
         for (Developer dev: projectDevs) {
             List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
-                    dev.getUsername(), snapshot.getStartDate(), snapshot.getEndDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
 
             List<MergeRequestDateScore> devMergeRequestDateScores = mergeRequestRepository.getDevsMrsScoreADay(projectId,
-                    dev.getUsername(), snapshot.getStartDate(), snapshot.getEndDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
 
             List<CommitDateScore> devCommitScores = commitRepository.getDevCommitDateScore(projectId,
-                    dev.getUsername(), snapshot.getStartDate(), snapshot.getEndDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
 
             List<CommitDateScore> devCommitScoresWithEveryDay = commitRepository.getCommitsWithEveryDateBetweenRange(projectId,
-                    dev.getUsername(), snapshot.getStartDate(), snapshot.getEndDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
 
             Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId,
-                    dev.getUsername(), snapshot.getStartDate(), snapshot.getEndDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
 
             Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId,
-                    dev.getUsername(), snapshot.getStartDate(), snapshot.getEndDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
 
-            AllScores devAllScores = new AllScores(snapshot.getStartDate(), snapshot.getEndDate(), devTotalCommitScore,
+            AllScores devAllScores = new AllScores((ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(),(ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate(), devTotalCommitScore,
                     devTotalMergeRequestScore);
 
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a

@@ -13,8 +13,9 @@ export default class ProjectList extends Component {
         super();
         this.state = {
             projects: [],
-            selectAll: true,
             checkedStatus: [],
+            selectAll: true,
+            updateSubmitted: false,
         }
         this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
         this.handleSingleCheckboxChange = this.handleSingleCheckboxChange.bind(this);
@@ -37,7 +38,6 @@ export default class ProjectList extends Component {
             })
     }
 
-
     // Handles checkbox behaviour
     handleSelectAllChange = () => {
         const selectAll = !this.state.selectAll;
@@ -48,9 +48,6 @@ export default class ProjectList extends Component {
         console.log(allChecked)
         this.setState({checkedStatus: allChecked})
         console.log(this.state.checkedStatus);
-
-
-
     };
 
     handleSingleCheckboxChange = id => {
@@ -63,17 +60,18 @@ export default class ProjectList extends Component {
         this.setState({checkedStatus: singleChecked});
     };
 
-    // Handles Update button onclick behavior, but the update function in the backend isn't working yet so commented out.
-
-    updateRepos() {
+    // Handles Update button onclick behavior
+    handleUpdateRepos= () => {
         const projectIdToUpdate = this.state.checkedStatus
-            .reduce((result, {id, checked})=>[...result, ...checked? [id]: []], []);
+            .reduce((result, {id, checked}) => [...result, ...checked ? [id] : []], []);
         console.log(projectIdToUpdate);
 
         axios.post("/api/v1/setProjectInfoWithSettings", projectIdToUpdate, {
-            headers: { 'Content-Type': 'application/json'}
+            headers: {'Content-Type': 'application/json'}
         }).then(response => {
             console.log("Id array sent successfully")
+        }).catch((error) => {
+            console.error(error);
         })
     }
 
@@ -82,7 +80,8 @@ export default class ProjectList extends Component {
         const selected = this.state.selectAll
         const output = this.state.projects.map(function (item) {
             let currentYear = new Date().getFullYear();
-            let dateString = moment(item.created_at).format('ll').replace(", "+currentYear, "")
+            let dateStringCreated = moment(item.created_at).format('ll').replace(", "+currentYear, "")
+            let dateStringUpdated = moment(item.lastSyncAt).format('lll').replace(currentYear, "")
             return {
                 check: <input type="checkbox" defaultChecked={selected}
                             onChange={() => this.handleSingleCheckboxChange(item.id)}/>,
@@ -94,8 +93,8 @@ export default class ProjectList extends Component {
                 name: item.name,
                 des: <MDBBtn color="purple" size="sm" onClick={(e) => {e.preventDefault();
                     window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.description}</MDBBtn>,
-                created: dateString,
-                updated: "null", //item.lastProjectUpdateAt,
+                created: dateStringCreated,
+                updated: (item.lastSyncAt === "never") ? "Not Available" : dateStringUpdated,
                 syncing: <ProgressBar animated now={45} />,
             }
         })
@@ -104,52 +103,18 @@ export default class ProjectList extends Component {
 
         const data = {
             columns: [
-                {
-                    label: 'ID',
-                    field: 'id',
-                    sort: 'asc',
-                    width: 150
-                },
-                {
-                    label: 'Project Name',
-                    field: 'name',
-                    sort: 'asc',
-                    width: 150
-                },
-                {
-                    label: 'Description',
-                    field: 'des',
-                    sort: 'asc',
-                    width: 400
-                },
-                {
-                    label: 'CreatedAt',
-                    field: 'created',
-                    sort: 'asc',
-                    width: 150
-                },
-                {
-                    label: 'UpdatedAt',
-                    field: 'updated',
-                    sort: 'asc',
-                    width: 150
-                },
-                {
-                    label: 'Sync Progress',
-                    field: 'syncing',
-                    sort: 'asc',
-                    width: 150
-                },
-                {
-                    label: <MDBInput label=" " type="checkbox" valueDefault={this.state.selectAll} checked={!this.state.selectAll} onChange={this.handleSelectAllChange}/>,
+                {label: 'ID', field: 'id', sort: 'asc', width: 150},
+                {label: 'Project Name', field: 'name', sort: 'asc', width: 150},
+                {label: 'Description', field: 'des', sort: 'asc', width: 400},
+                {label: 'CreatedAt', field: 'created', sort: 'asc', width: 150},
+                {label: 'UpdatedAt', field: 'updated', sort: 'asc', width: 150},
+                {label: 'Sync Progress', field: 'syncing', sort: 'asc', width: 150},
+                {label: <MDBInput label=" " type="checkbox" valueDefault={this.state.selectAll} checked={!this.state.selectAll} onChange={this.handleSelectAllChange}/>,
                     // <FormCheck class="form-check-inline"> <FormCheck.Label>
                     //     <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
                     // </FormCheck.Label>
                     // </FormCheck>, //
-                    field: 'check',
-                    sort: 'asc',
-                    width: 10
-                },
+                    field: 'check', sort: 'asc', width: 10},
             ],
             rows: output,
         }
@@ -157,7 +122,7 @@ export default class ProjectList extends Component {
         return (
             <div>
                 <div align="center" style={{padding: '20px'}}>
-                    <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
+                    <button type="button" className="btn btn-secondary" onClick={this.handleUpdateRepos()}>Update Selected Projects</button>
                 </div>
                 <MDBDataTable hover btn sortable pagesAmount={20}
                     searchLabel="Search By Project Name/Month"
@@ -166,62 +131,5 @@ export default class ProjectList extends Component {
                 />
             </div>
         );
-
-            // <div>
-            //     <div>
-            //         <h1>Clear search bar and filter</h1>
-            //         <ToolkitProvider
-            //             bootstrap4
-            //             keyField="name"
-            //             data={output}
-            //             columns={this.columns}
-            //             search
-            //         >
-            //         <div align="center" style={{padding: '20px'}}>
-            //             <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
-            //         </div>
-            //         <Table striped borded hover style={{margin: 'auto', width: '85%'}}>
-            //             <thead>
-            //             <tr>
-            //                 <th>ID</th>
-            //                 <th>Name</th>
-            //                 <th>Description</th>
-            //                 <th>Last Updated</th>
-            //                 <th><FormCheck class="form-check-inline">
-            //                     <FormCheck.Label>
-            //                         <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
-            //                         Sync Data</FormCheck.Label>
-            //                 </FormCheck>
-            //                 </th>
-            //                 <th>Created</th>
-            //             </tr>
-            //             </thead>
-            //             <tbody>
-            //             { this.state.projects.map(projects =>
-            //                 <tr>
-            //                     <button className="Button" to={projects.url}
-            //                             type="button"
-            //                             onClick={(e) => {
-            //                                 e.preventDefault();
-            //                                 window.location.href= window.location.pathname + "/" + projects.id + "/Developers";
-            //
-            //                             }}>{projects.id}</button>
-            //
-            //                     <td>{projects.name}</td>
-            //                     <td>{projects.description}</td>
-            //                     <td>{(projects.last_sync_at === "never") ? "Not Available" : moment(projects.last_sync_at).format('lll')}</td>
-            //                     <td>
-            //                         <input type="checkbox" defaultChecked={!projects.checked}
-            //                                checked={projects.checked}
-            //                                onChange={() => this.handleSingleCheckboxChange(projects.id)}/>
-            //                     </td>
-            //                     <td>{moment(projects.created_at).format('ll')}</td>
-            //
-            //                 </tr>
-            //             )}
-            //             </tbody>
-            //         </Table>
-            //         </ToolkitProvider>
-            // </div>
-        }
+    }
 }

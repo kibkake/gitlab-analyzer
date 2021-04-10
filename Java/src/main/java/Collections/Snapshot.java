@@ -3,8 +3,6 @@ package main.java.Collections;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalDate;
-
 /**
  * used for saving snapshots of gitlab repositories
  */
@@ -14,16 +12,20 @@ public class Snapshot {
     @Id
     private String id;
     private String username;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private int projectId;
     private String dev;
     private String page;
 
     public Snapshot(){}
 
-    public Snapshot(String id, String username, LocalDate startDate, LocalDate endDate, int projectId, String dev, String page) {
-        this.id = id;
+    public Snapshot(String startDate, String endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public Snapshot(String username, String startDate, String endDate, int projectId, String dev, String page) {
         this.username = username;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -48,19 +50,19 @@ public class Snapshot {
         this.username = username;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
