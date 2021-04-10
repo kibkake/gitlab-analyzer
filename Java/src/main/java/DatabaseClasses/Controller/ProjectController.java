@@ -59,6 +59,17 @@ public class ProjectController {
         projectService.setProjectInfoWithSettings(projectId, projectSettings);
     }
 
+    @PostMapping("saveConfig")
+    public String saveConfig(@RequestBody Configuration config){
+        projectService.saveConfig(config);
+        return config.getId();
+    }
+
+    @PostMapping("getConfig/{configId}")
+    public Configuration getConfig(@PathVariable("configId") String id){
+        return projectService.getConfig(id);
+    }
+
     @PostMapping(path = "saveSnapshot")
     public String saveSnapshot(@RequestBody Snapshot snapshot){
         projectService.saveSnapshot(snapshot);
