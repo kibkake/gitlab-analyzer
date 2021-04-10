@@ -41,6 +41,7 @@ public class ProjectController {
     private final ProjectService projectService;
     private String startDate = "2021-02-22T13:59:00.000Z";
     private String endDate = "2021-03-15T13:59:00.000Z";
+    private Snapshot snapshot;
 
     @Autowired
     public ProjectController(ProjectService projectService) {
@@ -53,43 +54,14 @@ public class ProjectController {
         projectService.setProjectInfo(projectId);
     }
 
-    @RequestMapping("setProjectInfoWithSettings/{projectId}")
-    public void setProjectInfoWithSettings(@PathVariable int projectId, ProjectSettings projectSettings) {
-        projectSettings.setProjectId(projectId);
-        projectService.setProjectInfoWithSettings(projectId, projectSettings);
-    }
-
-    @PostMapping(path = "saveSnapshot")
-    public String saveSnapshot(@RequestBody Snapshot snapshot){
-        projectService.saveSnapshot(snapshot);
-        return snapshot.getId();
-    }
-
-    @GetMapping("getSnapshot/{snapId}")
-    public Snapshot getSnapshot(@PathVariable("snapId") String id){
-        return projectService.getSnapshot(id);
-    }
-
-    @GetMapping("getSnapshots/{username}")
-    public List<Snapshot> getSnapshots(@PathVariable("username") String username){
-        return projectService.getSnapshots(username);
-    }
-
-    @GetMapping(path = "deleteSnapshot/{snapId}")
-    public void deleteSnapshot(@PathVariable("snapId") String id){
-        projectService.deleteSnapshot(id);
-    }
-
-    //TODO: how to update if the current db is not empty,
-    //and a new project is added? Because the new project isn't getting updated by setProjectInfo() call
-    @GetMapping("projects")
-    public List<Project> getAllProjects() {
-        if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
-            projectService.saveNewProjects(projects);
-        }
-
-        return projectService.getAllProjects();
+    //changed input argument from ProjectSetting to Snapshot
+    @PostMapping("setProjectInfoWithSettings")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void setProjectInfoWithSettings(@RequestBody int[] projectId) {
+       for (int i=0; i < projectId.length-1; i++) {
+           snapshot.setProjectId(i);
+           projectService.setProjectInfoWithSettings(i, snapshot);
+       }
     }
 
     // Let user sync the data of repositories of interest at once in the Repository list page
@@ -114,6 +86,40 @@ public class ProjectController {
 //        }
         return project;
     }
+
+    @PostMapping(path = "saveSnapshot")
+    public String saveSnapshot(@RequestBody Snapshot snapshot){
+        projectService.saveSnapshot(snapshot);
+        return snapshot.getId();
+    }
+
+    @GetMapping("getSnapshot/{snapId}")
+    public Snapshot getSnapshot(@PathVariable("snapId") String id){
+        this.snapshot = projectService.getSnapshot(id);
+        return snapshot;
+    }
+
+    @GetMapping("getSnapshots/{username}")
+    public List<Snapshot> getSnapshots(@PathVariable("username") String username){
+        return projectService.getSnapshots(username);
+    }
+
+    @GetMapping(path = "deleteSnapshot/{snapId}")
+    public void deleteSnapshot(@PathVariable("snapId") String id){
+        projectService.deleteSnapshot(id);
+    }
+
+    //TODO: how to update if the current db is not empty,
+    //and a new project is added? Because the new project isn't getting updated by setProjectInfo() call
+    @GetMapping("projects")
+    public List<Project> getAllProjects() {
+        if(projectService.getAllProjects().isEmpty()) {
+            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
+            projectService.saveNewProjects(projects);
+        }
+        return projectService.getAllProjects();
+    }
+
 
     @GetMapping("projects/{projectId}/developers")
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {

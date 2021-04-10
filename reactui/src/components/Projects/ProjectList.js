@@ -14,11 +14,10 @@ export default class ProjectList extends Component {
         this.state = {
             projects: [],
             selectAll: true,
-            checked: [],
+            checkedStatus: [],
         }
         this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
         this.handleSingleCheckboxChange = this.handleSingleCheckboxChange.bind(this);
-        // this.handleRowClick = this.handleRowClick(this);
     }
 
     componentDidMount() {
@@ -30,69 +29,66 @@ export default class ProjectList extends Component {
 
                 const array = this.state.projects.map(item => ({...item, checked: this.state.selectAll}))
                 const checkedStatusArray = array.map(({id, checked}) => ({id, checked}));
-                this.setState({checked: checkedStatusArray})
-                console.log(this.state.checked)
+                this.setState({checkedStatus: checkedStatusArray})
+                console.log(this.state.checkedStatus)
             })
             .catch((error) => {
                 console.error(error);
             })
     }
 
-    // checkAllHandler = () => {
-    //     setAreAllChecked(areAllChecked ? false : true);
-    // };
+
     // Handles checkbox behaviour
     handleSelectAllChange = () => {
         const selectAll = !this.state.selectAll;
         this.setState({selectAll: selectAll});
+        console.log(this.state.selectAll);
 
-        const changed = this.state.projects.map(function (item) {
-            return {
-                id: item.id,
-                name: item.name,
-                description: item.description,
-                last_sync_at: item.last_sync_at,
-                created_at: item.created_at,
-                checked: selectAll,
-            }
-        });
-        this.setState({projects: changed})
-        console.log(this.state.projects);
+        const allChecked = this.state.checkedStatus.map(item => ({...item, checked: selectAll}))
+        console.log(allChecked)
+        this.setState({checkedStatus: allChecked})
+        console.log(this.state.checkedStatus);
+
+
+
     };
 
     handleSingleCheckboxChange = id => {
-        const changed = this.state.projects.map(function (item) {
+        const singleChecked = this.state.checkedStatus.map(function (item) {
             return {
                 id: item.id,
-                name: item.name,
-                description: item.description,
-                last_sync_at: item.last_sync_at,
-                created_at: item.created_at,
                 checked: (item.id === id) ? !item.checked : item.checked
             }
         })
-
-        this.setState({projects: changed});
+        this.setState({checkedStatus: singleChecked});
     };
 
     // Handles Update button onclick behavior, but the update function in the backend isn't working yet so commented out.
 
     updateRepos() {
-        // this.state.projects.map(item => {
-        //     if (item.checked) {
-        //         ProjectService.sendUpdateDecision(item.id);
-        //     }
-        // })
+        const projectIdToUpdate = this.state.checkedStatus
+            .reduce((result, {id, checked})=>[...result, ...checked? [id]: []], []);
+        console.log(projectIdToUpdate);
+
+        axios.post("/api/v1/setProjectInfoWithSettings", projectIdToUpdate, {
+            headers: { 'Content-Type': 'application/json'}
+        }).then(response => {
+            console.log("Id array sent successfully")
+        })
     }
 
     //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
     render() {
-
+        const selected = this.state.selectAll
         const output = this.state.projects.map(function (item) {
             let currentYear = new Date().getFullYear();
             let dateString = moment(item.created_at).format('ll').replace(", "+currentYear, "")
             return {
-                check: <input type="checkbox" defaultChecked={true}/>,
+                check: <input type="checkbox" defaultChecked={selected}
+                            onChange={() => this.handleSingleCheckboxChange(item.id)}/>,
+                // <MDBInput label=' ' checked={this.state.selectAll ? true : checked[1].checked} type='checkbox' id='checkbox7' onChange={() => checkHandler(2)}/>,
+
+                //<MDBInput label=' ' checked={areAllChecked  ? true : checked[1].checked} type='checkbox' id='checkbox7'  onClick={() => checkHandler(2)}/>
                 id: <button color="purple" onClick={(e) => { e.preventDefault();
                     window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.id}</button>,
                 name: item.name,
@@ -145,7 +141,7 @@ export default class ProjectList extends Component {
                     width: 150
                 },
                 {
-                    label: <MDBInput label=" " type="checkbox"/>,
+                    label: <MDBInput label=" " type="checkbox" valueDefault={this.state.selectAll} checked={!this.state.selectAll} onChange={this.handleSelectAllChange}/>,
                     // <FormCheck class="form-check-inline"> <FormCheck.Label>
                     //     <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
                     // </FormCheck.Label>
@@ -163,7 +159,7 @@ export default class ProjectList extends Component {
                 <div align="center" style={{padding: '20px'}}>
                     <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
                 </div>
-                <MDBDataTable hover btn responsive sortable pagesAmount={20}
+                <MDBDataTable hover btn sortable pagesAmount={20}
                     searchLabel="Search By Project Name/Month"
                     small
                     data={data}
