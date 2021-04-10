@@ -35,7 +35,15 @@ class SummaryScoreTable extends Component{
             }
         }
 
-        const MRresponse = await axios.get("/api/v2/Project/" + id + "/Developers/"+ username +"/mergeRequestsAndCommits")
+         const response = await axios.get("/api/v1/projects/" + id + "/allTotalScores/"+ username +"/" +
+             startTm + "/"
+             + endTm + "/either")
+
+         const scores = await response.data
+         await this.setState({scoreSummary: scores, parentdata: username,startTime: startTm,
+             endTime: endTm})
+
+         const MRresponse = await axios.get("/api/v2/Project/" + id + "/Developers/"+ username +"/mergeRequestsAndCommits")
         .then(MRres => {
             this.setState({merges : MRres.data});
             this.applyMultipliersMR();
