@@ -76,7 +76,7 @@ class SummaryScoreTable extends Component{
             }
             newMerges[k].mrScore=newMRScore;
         }
-        const totalMRScore = newMerges.map(item => item.mrScore).reduce((prev, next) => prev + next);
+        const totalMRScore = newMerges.map(item => item.mrScore).reduce((prev, next) => prev + next, 0);
         var newscoreSummary ={...this.state.scoreSummary};
         newscoreSummary={...newscoreSummary,totalMergeRequestScore:totalMRScore};
         this.setState({
@@ -103,7 +103,7 @@ class SummaryScoreTable extends Component{
             }
             newCommits[k].commitScore=newCommitsScore;
         }
-        const totalComScore = newCommits.map(item => item.commitScore).reduce((prev, next) => prev + next);
+        const totalComScore = newCommits.map(item => item.commitScore).reduce((prev, next) => prev + next, 0);
         var newscoreSummary ={...this.state.scoreSummary};
         newscoreSummary={...newscoreSummary,totalCommitScore:totalComScore};
         this.setState({

@@ -28,7 +28,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     const handleChange = obj => {
         setSelectedValue(obj.label);
-        sessionStorage.setItem("CurrentDeveloper", obj.label)
+        sessionStorage.setItem("CurrentDeveloper", obj.label);
     }
 
     function getInitialStartDate() {
@@ -104,6 +104,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
             </div>
         </div>
+
     )
 }
 
