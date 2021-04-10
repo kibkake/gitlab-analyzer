@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses.Repository.MergeRequest;
 
+import main.java.Collections.Commit;
 import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
 import main.java.Collections.MergeRequest;
 
@@ -21,6 +22,8 @@ public interface MergeRequestRepositoryCustom {
     List<MergeRequest> getDevMergeRequests(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 
     Double getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+
+    List<Commit> getDevCommits(int projectId, String devUserName, String devName, LocalDate startDate, LocalDate endDate);
 
 
 }

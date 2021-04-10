@@ -131,8 +131,7 @@ public class ProjectService {
             AllScores devAllScores = new AllScores(projectSettings.getStartDate(), projectSettings.getEndDate(), devTotalCommitScore,
                     devTotalMergeRequestScore);
 
-
-            List<Commit> devCommits = commitRepository.getDevCommits(projectId,
+            List<Commit> devCommits = mergeRequestRepository.getDevCommits(projectId,
                     dev.getUsername(), dev.getName(), projectSettings.getStartDate(), projectSettings.getEndDate());
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
                constructor because of spring

@@ -17,6 +17,4 @@ public interface MergeRequestRepository extends MongoRepository<MergeRequest, St
 
     MergeRequest findByProjectIdAndId(int projectId, int id);
 
-    List<MergeRequest> findByProjectId(int projectId);
-
 }

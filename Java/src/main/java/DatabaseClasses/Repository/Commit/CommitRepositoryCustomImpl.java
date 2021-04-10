@@ -92,13 +92,16 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 
     @Override
     public List<Commit> getDevCommits(int projectId, String devUsername, String devName,  LocalDate startDate, LocalDate endDate) {
-        final Criteria usernameMatchCriteria = Criteria.where("username").is(devUsername);
-        final Criteria nameMatchCriteria = Criteria.where("name").is(devUsername);
+        final Criteria authorUsernameMatchCriteria = Criteria.where("authorName").is(devUsername);
+        final Criteria authorNameMatchCriteria = Criteria.where("authorName").is(devUsername);
+        final Criteria committerUsernameMatchCriteria = Criteria.where("committerName").is(devUsername);
+        final Criteria committerNameMatchCriteria = Criteria.where("committerName").is(devUsername);
 
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("date").gte(startDate).lte(endDate);
         Criteria criterias = new Criteria()
-                .andOperator(projectMatchCriteria, dateMatchCriteria);
+                .andOperator(projectMatchCriteria, dateMatchCriteria)
+                .orOperator(authorUsernameMatchCriteria, authorNameMatchCriteria, committerNameMatchCriteria, committerUsernameMatchCriteria);
 
         Query query = new Query();
         query.addCriteria(criterias);
