@@ -155,8 +155,8 @@ public class ProjectService {
             ZonedDateTime zonedEndTime = projectSettings.getEndDate().atStartOfDay(systemTimeZone);
             Date startDate = Date.from(zonedStartTime.toInstant());
             Date endDate = Date.from(zonedEndTime.toInstant());
-            List<Commit> devCommits = commitRepository.findByProjectIdAndAndAuthorNameAndDateBetween(projectId,
-                    dev.getUsername(), startDate,endDate);
+            List<Commit> devCommits = commitRepository.findByProjectIdAndAuthorNameOrAuthorNameAndDateBetween(projectId,
+                    dev.getUsername(), dev.getName(), startDate,endDate);
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
                constructor because of spring
              */
