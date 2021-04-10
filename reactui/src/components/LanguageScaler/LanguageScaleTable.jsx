@@ -65,11 +65,7 @@ class LanguageScaleTable extends Component{
         let tempScale=[...this.state.LanguageScale];
         const newScale={
             name:this.name.value,
-<<<<<<< HEAD
             extension:this.extension.value,
-=======
-            extention:this.extention.value,
->>>>>>> 271be13f3888b844adcc10ac38e451165195b7ac
             multiplier:this.multiplier.value,
         }
         tempScale[this.state.chosenIndex]=newScale;
@@ -171,15 +167,9 @@ class LanguageScaleTable extends Component{
                                     <Form.Label>Language Name</Form.Label>
                                     <Form.Control type="text" ref={(input)=>{this.name=input}} defaultValue={this.state.chosenScale.name}/>
                                 </Form.Group>
-<<<<<<< HEAD
                                 <Form.Group controlId="extension" style={{marginLeft:'12px'}}>
                                     <Form.Label>extension Name</Form.Label>
                                     <Form.Control type="text" ref={(input)=>{this.extension=input}} defaultValue={this.state.chosenScale.extension}/>
-=======
-                                <Form.Group controlId="extention" style={{marginLeft:'12px'}}>
-                                    <Form.Label>Extention Name</Form.Label>
-                                    <Form.Control type="text" ref={(input)=>{this.extention=input}} defaultValue={this.state.chosenScale.extention}/>
->>>>>>> 271be13f3888b844adcc10ac38e451165195b7ac
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group controlId="multiplier" style={{marginLeft:'12px'}}>

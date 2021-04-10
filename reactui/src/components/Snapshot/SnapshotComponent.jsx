@@ -38,9 +38,11 @@ export default class SnapshotComponent extends Component {
         }, (error) => {
             console.log(error);
         });
+        console.log(this.state.snapshot);
         sessionStorage.setItem("CurrentDeveloper",this.state.snapshot.dev)
         sessionStorage.setItem("startdate",this.state.snapshot.startDate)
         sessionStorage.setItem("enddate",this.state.snapshot.endDate)
+        sessionStorage.setItem("languageScale",this.state.snapshot.languageScale)
         window.location.href="/Repo/"+this.state.snapshot.projectId + "/Developers/"+this.state.snapshot.dev+"/"+this.state.snapshot.page
     }
 
