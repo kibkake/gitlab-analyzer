@@ -53,7 +53,7 @@ public class DatabaseFunctions {
      */
     private static MongoDatabase connectToDatabase() {
         mongoClient = MongoClients.create(mongoDBConnectionAddress);
-        return mongoClient.getDatabase("nateTest");
+        return mongoClient.getDatabase("gitlab");
     }
 
     /**
