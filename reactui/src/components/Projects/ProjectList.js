@@ -27,6 +27,11 @@ export default class ProjectList extends Component {
                 const projects = response.data
                 this.setState({projects: projects})
                 console.log(this.state.projects)
+
+                const array = this.state.projects.map(item => ({...item, checked: this.state.selectAll}))
+                const checkedStatusArray = array.map(({id, checked}) => ({id, checked}));
+                this.setState({checked: checkedStatusArray})
+                console.log(this.state.checked)
             })
             .catch((error) => {
                 console.error(error);
@@ -80,14 +85,6 @@ export default class ProjectList extends Component {
         // })
     }
 
-    createCheckedArray(){
-        let idArray = this.state.projects.map(item => item.id);
-        for (let i in idArray) {
-            idArray[i].checked = true;
-        }
-        console.log(idArray)
-    }
-
     //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
     render() {
 
@@ -107,33 +104,7 @@ export default class ProjectList extends Component {
             }
         })
 
-        let issueBoolean = {true: "Issue", false: "Code Review"};
-        let comments = Data.map(({date, wordCount, comments, onIssue})=>
-            ({date, wordCount, comments, issueOrReview: issueBoolean[onIssue],onIssue}));
-        console.log(comments);
-        console.log(this.state.issue);
-
-        let checked = {true: this.state.selectAll}
-        let array = this.state.projects.map(({id, infoSet}) => (id, checkedStatus: checked}))
-
-        for (let i in idArray) {
-            idArray[i].checked = true;
-        }
-        console.log(idArray)
-        let result = data.map(({ a, b }) => ({a, b}));
-
-        idArray.map(function(e){
-            e.checked = this.state.selectAll;
-        });
-        // console.log(idArray)
-        let array = this.state.projects.map(item => ({...item, checked: this.state.selectAll}))
-        const twoDimensionalArray = array.map((node) => [node.id, node.checked]);
-
-        console.log(twoDimensionalArray)
-
-        let idArray = this.state.projects.map({id, checked} => {id, true});
-
-        console.log(checkedStatusArray)
+        // console.log (this.state.checked)
 
         const data = {
             columns: [
@@ -192,7 +163,7 @@ export default class ProjectList extends Component {
                 <div align="center" style={{padding: '20px'}}>
                     <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
                 </div>
-                <MDBDataTable hover btn fixed
+                <MDBDataTable hover btn responsive sortable pagesAmount={20}
                     searchLabel="Search By Project Name/Month"
                     small
                     data={data}
