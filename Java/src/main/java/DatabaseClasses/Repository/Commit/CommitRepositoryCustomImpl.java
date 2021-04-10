@@ -90,25 +90,6 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
         return userCommitScores;
     }
 
-    @Override
-    public List<Commit> getDevCommits(int projectId, String devUsername, String devName,  LocalDate startDate, LocalDate endDate) {
-        final Criteria authorUsernameMatchCriteria = Criteria.where("authorName").is(devUsername);
-        final Criteria authorNameMatchCriteria = Criteria.where("authorName").is(devUsername);
-        final Criteria committerUsernameMatchCriteria = Criteria.where("committerName").is(devUsername);
-        final Criteria committerNameMatchCriteria = Criteria.where("committerName").is(devUsername);
-
-        final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
-        final Criteria dateMatchCriteria = Criteria.where("date").gte(startDate).lte(endDate);
-        Criteria criterias = new Criteria()
-                .andOperator(projectMatchCriteria, dateMatchCriteria)
-                .orOperator(authorUsernameMatchCriteria, authorNameMatchCriteria, committerNameMatchCriteria, committerUsernameMatchCriteria);
-
-        Query query = new Query();
-        query.addCriteria(criterias);
-        return mongoTemplate.find(query, Commit.class);
-
-    }
-
     public boolean containsDate(final List<CommitDateScore> UserScores, final LocalDate date){
         return UserScores.stream().anyMatch(scores -> scores.getDate().compareTo(date) == 0);
     }

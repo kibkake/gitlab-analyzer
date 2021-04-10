@@ -18,5 +18,4 @@ public interface CommitRepositoryCustom {
 
     List<CommitDateScore> getCommitsWithEveryDateBetweenRange(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 
-    List<Commit> getDevCommits(int projectId, String devUsername, String devName, LocalDate startDate, LocalDate endDate);
 }

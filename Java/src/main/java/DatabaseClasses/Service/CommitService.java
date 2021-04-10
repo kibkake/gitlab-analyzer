@@ -31,6 +31,4 @@ public class CommitService {
     public Commit getCommit(int projectId, String commitHash) {
         return commitRepository.findByProjectIdAndCommitId(projectId, commitHash);
     }
-
-
 }

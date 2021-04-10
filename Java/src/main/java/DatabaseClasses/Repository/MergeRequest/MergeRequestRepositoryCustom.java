@@ -23,7 +23,4 @@ public interface MergeRequestRepositoryCustom {
 
     Double getUserTotalMergeRequestScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
 
-    List<Commit> getDevCommits(int projectId, String devUserName, String devName, LocalDate startDate, LocalDate endDate);
-
-
 }

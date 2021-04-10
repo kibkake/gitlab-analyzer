@@ -87,38 +87,6 @@ public class MergeRequestRepositoryCustomImpl implements MergeRequestRepositoryC
     }
 
     @Override
-    public List<Commit> getDevCommits(int projectId, String devUsername, String devName, LocalDate startDate, LocalDate endDate) {
-        final Criteria authorUsernameMatchCriteria = Criteria.where("commits")
-                .elemMatch(Criteria.where("authorName").is(devUsername));
-        final Criteria authorNameMatchCriteria = Criteria.where("commits")
-                .elemMatch(Criteria.where("authorName").is(devName));
-
-        final Criteria committerUsernameMatchCriteria = Criteria.where("commits")
-                .elemMatch(Criteria.where("committerName").is(devUsername));
-        final Criteria committerNameMatchCriteria = Criteria.where("commits")
-                .elemMatch(Criteria.where("committerName").is(devName));
-
-        final Criteria dateMatchCriteria = Criteria.where("date")
-                .elemMatch(Criteria.where("date").gte(startDate).lte(endDate));
-
-        final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
-
-        Criteria criterias = new Criteria()
-                .andOperator(projectMatchCriteria, dateMatchCriteria)
-                .orOperator(authorUsernameMatchCriteria, authorNameMatchCriteria, committerNameMatchCriteria, committerUsernameMatchCriteria);
-
-        Query query = new Query();
-        query.addCriteria(criterias);
-        List<MergeRequest> mrWithDevCommits = mongoTemplate.find(query, MergeRequest.class);
-        List<Commit> devCommits = new ArrayList<>();
-
-        for(MergeRequest mr: mrWithDevCommits) {
-            devCommits.addAll(mr.getCommits());
-        }
-        return devCommits;
-    }
-
-    @Override
     public MergeRequest getMrByCommitHash(int projectId, String hash){
 
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);

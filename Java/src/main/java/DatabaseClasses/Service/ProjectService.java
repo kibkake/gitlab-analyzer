@@ -131,8 +131,22 @@ public class ProjectService {
             AllScores devAllScores = new AllScores(projectSettings.getStartDate(), projectSettings.getEndDate(), devTotalCommitScore,
                     devTotalMergeRequestScore);
 
-            List<Commit> devCommits = mergeRequestRepository.getDevCommits(projectId,
-                    dev.getUsername(), dev.getName(), projectSettings.getStartDate(), projectSettings.getEndDate());
+            //https://www.javaprogramto.com/2020/12/java-convert-localdate-to-date.html
+            ZoneId systemTimeZone = ZoneId.systemDefault();
+            ZonedDateTime zonedStartTime = projectSettings.getStartDate().atStartOfDay(systemTimeZone);
+            ZonedDateTime zonedEndTime = projectSettings.getEndDate().atStartOfDay(systemTimeZone);
+            Date startDate = Date.from(zonedStartTime.toInstant());
+            Date endDate = Date.from(zonedEndTime.toInstant());
+
+            List<Commit> devCommitsByUsername = commitRepository.findByProjectIdAndAndAuthorNameAndDateBetween(projectId,
+                    dev.getUsername(), startDate, endDate);
+            List<Commit> devCommitsByName = commitRepository.findByProjectIdAndAndAuthorNameAndDateBetween(projectId,
+                    dev.getName(), startDate, endDate);
+
+            List<Commit> devCommits = new ArrayList<>();
+            devCommits.addAll(devCommitsByUsername);
+            devCommits.addAll(devCommitsByName);
+
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
                constructor because of spring
              */

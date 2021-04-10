@@ -1,6 +1,6 @@
 package main.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.Scores.CommitDateScore;
+import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
 import main.java.DatabaseClasses.Service.CommitService;
 import main.java.Collections.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -19,7 +17,7 @@ import java.util.List;
 public class CommitController {
 
     private final CommitService commitService;
-    private String isoEnding = "T00:00:00.000Z";
+
 
     @Autowired
     public CommitController(CommitService commitService) {
@@ -37,4 +35,5 @@ public class CommitController {
 
         return commitService.getCommit(projectId, hash);
     }
+
 }

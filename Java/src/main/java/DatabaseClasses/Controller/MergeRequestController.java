@@ -37,12 +37,4 @@ public class MergeRequestController {
         return mergeRequestService.getMergeRequest(projectId, mrId);
     }
 
-    @GetMapping("projects/{projectId}/comms/{username}/{name}/{sd}/{end}")
-    public List<Commit> getC(@PathVariable int mrId, @PathVariable int projectId, @PathVariable String end, @PathVariable String sd, @PathVariable String username, @PathVariable String name) {
-        LocalDate ss = LocalDate.parse(sd);
-        LocalDate dd = LocalDate.parse(end);
-
-        return mergeRequestRepository.getDevCommits(projectId, username, name, ss, dd);
-    }
-
 }
