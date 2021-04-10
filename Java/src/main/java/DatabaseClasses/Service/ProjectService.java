@@ -70,17 +70,6 @@ public class ProjectService {
         return project.getIssues();
     }
 
-    public List<MergeRequest> getProjectMRs(int projectId) {
-        Project project = projectRepository.findProjectById(projectId);
-        return project.getMergedRequests();
-    }
-
-    public int getNumDevCommits(int projectId, String username, LocalDate start, LocalDate end,
-                                UseWhichDevField devField) {
-        List<Commit> allCommits = this.getDevCommits(projectId, username, start, end, devField);
-        return allCommits.size();
-    }
-
     public int getNumDevMergeRequests(int projectId, String username, LocalDate start, LocalDate end) {
         List<MergeRequest> devMRs = getDevMergeRequests(projectId, username, start, end);
         return devMRs.size();
@@ -99,14 +88,6 @@ public class ProjectService {
             project.setLastSyncAt();
             projectRepository.save(project);
         }
-    }
-
-    public void setProjectMrs(int projectId) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
-                "Project with id " + projectId + " does not exist"));
-        List<MergeRequest> projectMrs = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
-        project.setMergedRequests(projectMrs);
-        projectRepository.save(project);
     }
 
     @Transactional(timeout = 1200) // 20 min

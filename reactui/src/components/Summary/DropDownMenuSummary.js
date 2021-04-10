@@ -20,7 +20,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
         sessionStorage.setItem("CurrentDeveloper", pathArray[4])
     }
 
-    listOfDevelopers.map(item => {devArray.push({label: item.username, value: item.id})})
+    listOfDevelopers.map(item => {devArray.push({label: item, value: item})})
 
     let[selectedValue, setSelectedValue] = useState(
         pathArray[4]
@@ -81,24 +81,23 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
             <div className="box-container">
                 <h3>Developer: </h3>
-            <div className="DropDownMenu">
+                <div className="DropDownMenu">
                     <Select
                         options={devArray}
                         defaultValue={{label: selectedValue, value: selectedValue}}
                         onChange={handleChange}
-
                     />
-            </div>
+                </div>
             </div>
             <div>
                 <SnapshotWidgetComponent/>
             </div>
-                <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
-                <SummaryScoreTable devName = {selectedValue}
-                                   startTime = {changeDateFormat(getInitialStartDate())}
-                                   endTime = {changeDateFormat(getInitialEndDate())}
-                />
-                <div>
+            <h4 style={{textAlign:'center'}}>Total Scores For {selectedValue}  </h4>
+            <SummaryScoreTable devName = {selectedValue}
+                               startTime = {changeDateFormat(getInitialStartDate())}
+                               endTime = {changeDateFormat(getInitialEndDate())}
+            />
+            <div>
                 <SummaryChartRadios devName = {selectedValue}
                                     startTime = {changeDateFormat(getInitialStartDate())}
                                     endTime = {changeDateFormat(getInitialEndDate())}/>

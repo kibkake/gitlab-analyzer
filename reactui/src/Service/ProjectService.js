@@ -59,25 +59,21 @@ class ProjectService {
         return monthNum < 10 ? '0'.concat(monthNum.toString()) : monthNum.toString();
     }
 
-    async storeDevelopers(repNum){
+    async storeDevelopers(repNum) {
         console.log("getting list of users")
 
         let url2 = '/api/v2/Project/' + repNum + '/Developers/all'
-        var users = [];
-        await fetch(url2)
-            .then(response => {
-                return response.json();
-            })
-            .then(d => {
-                users = d;
-                console.log("Project service", users);
-            })
-        var userData = [];
-        userData = await users.map(({username,id})=> ({username,id}))
-        console.log("Maped user Data", userData)
-        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(userData));
-        console.log("Developer session storage:",sessionStorage.getItem('Developers' + repNum))
-
+        const result = await fetch(url2, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        var resp;
+        resp = result.json();
+        var listOfDevelopers = await resp;
+        await sessionStorage.setItem("Developers" + repNum, JSON.stringify(listOfDevelopers));
     }
 
 }

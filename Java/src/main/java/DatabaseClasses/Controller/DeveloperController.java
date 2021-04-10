@@ -26,8 +26,8 @@ public class DeveloperController {
     }
 
     @GetMapping("all")
-    public List<Developer> getProjectDevs(@PathVariable int projectId) {
-        return developerService.getProjectDevs(projectId);
+    public List<String> getProjectDevs(@PathVariable int projectId) {
+        return developerService.getProjectDevUsernames(projectId);
     }
 
     @GetMapping("{username}/mergeRequestsAndCommits")

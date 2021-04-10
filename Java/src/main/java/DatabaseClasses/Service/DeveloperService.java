@@ -9,6 +9,7 @@ import main.java.Collections.MergeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,8 +22,15 @@ public class DeveloperService {
         this.developerRepository = developerRepository;
     }
 
-    public List<Developer> getProjectDevs(int projectId) {
-        return developerRepository.findDevelopersByProjectId(projectId);
+    public List<String> getProjectDevUsernames(int projectId) {
+        List<Developer> members = developerRepository.findDevelopersByProjectId(projectId);
+        List<String> memberUsernames = new ArrayList<>();
+
+        for (int i = 0; i < members.size(); i++){
+            memberUsernames.add(members.get(i).getUsername());
+        }
+        java.util.Collections.sort(memberUsernames);
+        return memberUsernames;
     }
 
     public List<MergeRequest> getDevMergeRequestsAndCommits(int projectId, String username) {
