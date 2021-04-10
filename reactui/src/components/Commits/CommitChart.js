@@ -75,8 +75,7 @@ class CommitChart extends Component {
     async getDataFromBackend (username, startTm, endTm) {
         var str = window.location.pathname;
         var projNum = str.split("/")[2];
-
-        let url2 = '/api/v1/projects/' + projNum + '/Commits/' + username + '/' + startTm + "/" + endTm  + "/either"
+        let url2 = '/api/v2/Project/' + projNum + '/Developers/' + username + '/commits'
         const result2 = await fetch(url2, {
             method: 'GET',
             headers: {
