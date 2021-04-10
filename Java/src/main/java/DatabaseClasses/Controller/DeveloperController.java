@@ -36,8 +36,8 @@ public class DeveloperController {
     }
 
     @GetMapping("{devId}/mergeRequestsScores")
-    public List<MergeRequestDateScore> getDevMergeRequestsScores(@PathVariable int projectId, @PathVariable int devId) {
-        return developerService.getDevMergeRequestsScores(projectId, devId);
+    public List<MergeRequestDateScore> getDevMergeRequestsScores(@PathVariable int projectId, @PathVariable String username) {
+        return developerService.getDevMergeRequestsScores(projectId, username);
     }
 
     @GetMapping("{username}/commitScores")

@@ -53,7 +53,7 @@ class SummaryScoreTable extends Component{
     applyMultipliersMR(){
         var scale = JSON.parse(sessionStorage.getItem('languageScale'));
         var newMerges = [...this.state.merges];
-        for(const k in newMerges){
+        for(let k in newMerges){
             var newMRScore=0;
             for(var i in newMerges[k].diffs){
                 var fileExtension = newMerges[k].diffs[i].new_path.split(".").pop();
