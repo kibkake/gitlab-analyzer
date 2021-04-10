@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import "../Projects/ProjectList.css";
 import {Table} from "react-bootstrap";
-import HighlightCodeDiffs from "../Commits/HighlightCodeDiffs"
+import HighlightCodeDiffs from "./HighlightCodeDiffs"
 
 class SingleCommitDiff extends Component{
     constructor(props){

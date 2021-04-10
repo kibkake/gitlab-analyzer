@@ -4,7 +4,6 @@ import Select from 'react-select'
 import Navbar_Developers from "../NavBars_Menu/Navbar_Developers";
 import './DropDownMenu.css';
 import MergeListTable from "../MergeRequest/MergeListTable";
-import SnapshotWidgetComponent from "../Snapshot/SnapshotWidgetComponent";
 
 function DropDownMenuMerge ({listOfDevelopers}) {
 
@@ -28,19 +27,20 @@ function DropDownMenuMerge ({listOfDevelopers}) {
 
         <div classname='CodeDiff'>
             <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
-            <br/>
+            <br>
+            </br>
             <div className="DropDownMenu">
 
-                <Select
-                    options={devArray}
-                    defaultValue={{ label: selectedValue, value: selectedValue }}
-                    onChange={handleChange}/>
+            <Select
+                options={devArray}
+                defaultValue={{ label: selectedValue, value: selectedValue }}
+                onChange={handleChange}/>
             </div>
-            <div className="snap-widget">
-                <SnapshotWidgetComponent/>
-            </div>
-            <br/>
+            <br>
+            </br>
             <h2> Merge Requests</h2>
+            {/*<NewMergeList  devName = {selectedValue}/>*/}
+
             <MergeListTable  devName = {selectedValue}/>
         </div>
     )

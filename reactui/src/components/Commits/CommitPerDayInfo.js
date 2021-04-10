@@ -7,19 +7,23 @@ import Box from "@material-ui/core/Box";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
-import {makeStyles} from "@material-ui/core/styles";
-import {OverlayTrigger} from 'react-bootstrap'
-import Highlight from "react-highlight";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
 import './TableStyle.css'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import CommitService from "./CommitService";
 
 function CommitPerDayInfo(props) {
 
     const [open, setOpen] = React.useState(
         false
     );
+
+    CommitService.initializeStorageForExcludedFiles()
+
+    var numberOfFilesExcluded = CommitService.calculateNumberOfExcludedFilesInCommit(props.commit.diffs, props.commit.id)
+    var numberOfFilesInCommit = CommitService.calculateNumberOfFilesInCommit(props.commit.diffs)
+    console.log(props.commit)
 
     return (
         <React.Fragment>
@@ -31,9 +35,7 @@ function CommitPerDayInfo(props) {
                 {props.commit.title.length > 10 ? props.commit.title.substring(0,10) + "..." :
                     props.commit.title.substring(0,10)}
                 </TableCell>
-                <TableCell align="right" style={{color:"blue",  fontSize:"15", fontWeight:"bold"}}>
-                    {"+" + props.commit.commitScore.toFixed(1)}
-                </TableCell>
+                {CommitService.adjustTheColorOfScore(numberOfFilesExcluded,numberOfFilesInCommit,props.commit.commitScore )}
 
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small"
@@ -51,6 +53,7 @@ function CommitPerDayInfo(props) {
                             type="button"
                             onClick={(e) => {
                                 e.preventDefault();
+                                {props.resetSingleCommitScore()}
                                 {props.handler(props.commit.id)}
                             }}>
                         DIFF
