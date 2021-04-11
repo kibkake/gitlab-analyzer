@@ -71,11 +71,15 @@ public class ProjectController {
         this.snapshot = new Snapshot(startDate, endDate);
         for (int i=0; i < projectIds.length-1; i++) {
             System.out.println("update is doing");
-//            snapshot.setProjectId(projectIds[i]);
             projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
-            System.out.println("update is done");
+        //took about 5 mins
        }
+        System.out.println("update is done");
+
+
     }
+
+
 
     // can only be used on very small projects
     @GetMapping("setProjectInfo/{projectId}")

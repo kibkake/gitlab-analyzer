@@ -5,6 +5,7 @@ import moment from "moment";
 import FormCheck from 'react-bootstrap/FormCheck'
 import {MDBBtn, MDBDataTable, MDBInput,  MDBCard, MDBCardBody, MDBCardHeader, MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
 import {ProgressBar} from "react-bootstrap";
+import UpdatePopup from "./UpdatePopUp";
 
 //[https://mdbootstrap.com/docs/react/tables/datatables/]
 export default class ProjectList extends Component {
@@ -15,7 +16,7 @@ export default class ProjectList extends Component {
             projects: [],
             checkedStatus: [],
             selectAll: true,
-            updateSubmitted: false,
+            updating: false,
         }
         this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
         this.handleSingleCheckboxChange = this.handleSingleCheckboxChange.bind(this);
@@ -75,13 +76,17 @@ export default class ProjectList extends Component {
         })
     }
 
+    triggerUpdatePopup = (boolean) => {
+        this.setState({updating: boolean})
+    }
+
     //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
     render() {
         const selected = this.state.selectAll
         const output = this.state.projects.map(function (item) {
             let currentYear = new Date().getFullYear();
             let dateStringCreated = moment(item.created_at).format('ll').replace(", "+currentYear, "")
-            let dateStringUpdated = moment(item.lastSyncAt).format('lll').replace(currentYear, "")
+            let dateStringUpdated = moment(item.last_sync_at).format('lll').replace(currentYear, "")
             return {
                 check: <input type="checkbox" defaultChecked={selected}
                             onChange={() => this.handleSingleCheckboxChange(item.id)}/>,
@@ -94,7 +99,7 @@ export default class ProjectList extends Component {
                 des: <MDBBtn color="purple" size="sm" onClick={(e) => {e.preventDefault();
                     window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.description}</MDBBtn>,
                 created: dateStringCreated,
-                updated: (item.lastSyncAt === "never") ? "Not Available" : dateStringUpdated,
+                updated: (item.last_sync_at === "never" || item.last_sync_at === null) ? "Not Available" : dateStringUpdated,
                 syncing: <ProgressBar animated now={45} />,
             }
         })
@@ -122,7 +127,8 @@ export default class ProjectList extends Component {
         return (
             <div>
                 <div align="center" style={{padding: '20px'}}>
-                    <button type="button" className="btn btn-secondary" onClick={this.handleUpdateRepos()}>Update Selected Projects</button>
+                    <button type="button" className="btn btn-secondary" onClick={() => {this.handleUpdateRepos(); this.triggerUpdatePopup(true);}}>Update Selected Projects</button>
+                    {/*<UpdatePopup closeOnOutsideClick={true} trigger={this.state.updating} setTrigger={this.triggerUpdatePopup(true)}/>*/}
                 </div>
                 <MDBDataTable hover btn sortable pagesAmount={20}
                     searchLabel="Search By Project Name/Month"
