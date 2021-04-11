@@ -49,7 +49,7 @@ export default function Row(props) {
                                            disableHoverListener
                                            disableTouchListener
                                            title={
-                                               <div style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                               <div style={{"maxHeight": 1000, "overflow-y": "auto", "pointer-events": "auto"}}>
                                                   <DiffTable data={row}/>
                                                </div>
                                            }>
@@ -99,7 +99,7 @@ export default function Row(props) {
                                                                        disableHoverListener
                                                                        disableTouchListener
                                                                        title={
-                                                                           <div style={{"maxHeight": 1500, "overflow-y": "auto", "pointer-events": "auto"}}>
+                                                                           <div style={{"maxHeight": 1000, "overflow-y": "auto", "pointer-events": "auto"}}>
                                                                                <DiffTable data={commitsRow}/>
                                                                            </div>
                                                                        }>
