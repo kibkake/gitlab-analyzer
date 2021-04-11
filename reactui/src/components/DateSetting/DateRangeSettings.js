@@ -16,23 +16,24 @@ function DateRangeSettings(){
 
     function getStartDate(){
         if(sessionStorage.getItem("startdate") == null){
-            sessionStorage.setItem("startdate", "2021-01-20")
+            sessionStorage.setItem("startdate", "2021-01-20"+"T12:00:00")
         }
         if(localStorage.getItem("startdate") == null){
-            localStorage.setItem("startdate", "2021-01-20")
+            localStorage.setItem("startdate", "2021-01-20"+"T12:00:00")
         }
-        return new Date(sessionStorage.getItem("startdate") + "T12:00:00")
+        return new Date(sessionStorage.getItem("startdate"))
     }
 
     function getEndDate(){
-        let currentDate = moment().format("YYYY-MM-DD");
+        let currentDate = moment().format("YYYY-MM-DDTHH:mm:ss");
+        console.log(currentDate)
         if(sessionStorage.getItem("enddate") == null){
             sessionStorage.setItem("enddate", currentDate)
         }
         if(localStorage.getItem("enddate") == null){
             localStorage.setItem("enddate", currentDate)
         }
-        return new Date(sessionStorage.getItem("enddate") + "T12:00:00")
+        return new Date(sessionStorage.getItem("enddate"))
     }
 
     function sendDateToBackEnd(date){
@@ -55,21 +56,22 @@ function DateRangeSettings(){
     )
 
     function formatDate(date){
-        var startDateArr = (date.toDateString()).split(" ");
-
+        console.log(date)
+        var startDateArr = (date.toString()).split(" ");
+        console.log(startDateArr)
         var monthLetter = startDateArr[1];
         var month = ProjectService.convertMonthToNumber(monthLetter);
         var day = startDateArr[2];
         var year = startDateArr[3];
-
-        return year + "-" + month + "-" + day;
+        var time = startDateArr[4];
+        
+        return year + "-" + month + "-" + day+'T'+time;
 
     }
     const handleStartDateChange= (date) =>{
         setSelectedStartDate(date)
         const data = { starttime: selectedStartDate };
         var completeDate = formatDate(date)
-
         sessionStorage.setItem("startdate", completeDate);
         localStorage.setItem("startdate", completeDate)
         console.log(sessionStorage.getItem("startdate"))
@@ -82,8 +84,6 @@ function DateRangeSettings(){
 
         sessionStorage.setItem("enddate", completeDate);
         localStorage.setItem("enddate", completeDate)
-        console.log(sessionStorage.getItem("enddate"))
-        console.log(localStorage.getItem("enddate"))
 
     }
     return(   
@@ -92,9 +92,9 @@ function DateRangeSettings(){
         <Grid container justify="center">
             <span className="startDate">   
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>   
-                        <DatePicker
+                        <DateTimePicker
                             variant='inline' 
-                            format='MM/dd/yyyy'
+                            format='MM/dd/yyyy hh:mm a'
                             margin='normal' 
                             id='startDate'
                             label='Start Date' 
@@ -106,9 +106,9 @@ function DateRangeSettings(){
             
             <span className="endDate">   
             <MuiPickersUtilsProvider utils={DateFnsUtils}>  
-                    <DatePicker
+                    <DateTimePicker
                         variant='inline' 
-                        format='MM/dd/yyyy'
+                        format='MM/dd/yyyy hh:mm a'
                         margin='normal' 
                         id='endDate'
                         label='End Date' 
