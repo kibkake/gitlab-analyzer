@@ -6,6 +6,9 @@ import FormCheck from 'react-bootstrap/FormCheck'
 import {MDBBtn, MDBDataTable, MDBInput,  MDBCard, MDBCardBody, MDBCardHeader, MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
 import {ProgressBar} from "react-bootstrap";
 import UpdatePopup from "./UpdatePopUp";
+import {CircularProgress, Modal} from "@material-ui/core";
+import Button from "react-bootstrap/Button";
+import UpdateModal from "./UpdateModal";
 
 //[https://mdbootstrap.com/docs/react/tables/datatables/]
 export default function ProjectList (){
@@ -15,13 +18,13 @@ export default function ProjectList (){
     const [updatePopup, setUpdatePopup] = useState(false);
     const [areAllChecked, setAreAllChecked] = useState(false)
 
-
+    //TODO: prevent infinite rerendering
+    //[https://dmitripavlutin.com/react-useeffect-infinite-loop/#:~:text=The%20infinite%20loop%20is%20fixed,callback%2C%20dependencies)%20dependencies%20argument.&text=Adding%20%5Bvalue%5D%20as%20a%20dependency,so%20solves%20the%20infinite%20loop.]
     useEffect(()=>{
         axios.get('/api/v1/projects')
             .then(response => {
                 getProjects(response.data)
                 console.log(projects)
-
 
                 const array = projects.map(item => ({...item, checked: areAllChecked}))
                 const checkedStatusArray = array.map(({id, checked}) => ({id, checked}))
@@ -114,7 +117,10 @@ export default function ProjectList (){
         <div>
             <div align="center" style={{padding: '20px'}}>
                 <button type="button" className="btn btn-secondary" onClick={() => {handleUpdateRepos(); setUpdatePopup(true);}}>Update Selected Projects</button>
-                <UpdatePopup closeOnOutsideClick={true} trigger={updatePopup} setTrigger={setUpdatePopup} transparent={false}/>
+                <UpdateModal show={updatePopup} onHide={setUpdatePopup(false)}>
+
+            </UpdateModal>
+                {/*<UpdatePopup closeOnOutsideClick={true} trigger={updatePopup} setTrigger={setUpdatePopup} transparent={false}/>*/}
             </div>
             <MDBDataTable hover btn sortable pagesAmount={20}
                 searchLabel="Search By Project Name/Month"
@@ -124,29 +130,3 @@ export default function ProjectList (){
         </div>
     );
 }
-
-// const handleSingleCheckboxChange = id => {
-//     let currentChecked = [...checked];
-//
-//     const singleChecked = checkedStatus.map(function (item) {
-//         return {
-//             id: item.id,
-//             checked: (item.id === id) ? !item.checked : item.checked
-//         }
-//     })
-//     setCheckedStatus(singleChecked)
-// };
-
-
-// Handles checkbox behaviour
-// handleSelectAllChange = () => {
-//     const selectAll = !this.state.selectAll;
-//     this.setState({selectAll: selectAll});
-//     console.log(this.state.selectAll);
-//
-//     const allChecked = this.state.checkedStatus.map(item => ({...item, checked: selectAll}))
-//     console.log(allChecked)
-//     this.setState({checkedStatus: allChecked})
-//     console.log(this.state.checkedStatus);
-// };
-//
