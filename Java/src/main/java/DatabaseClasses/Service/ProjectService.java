@@ -81,7 +81,7 @@ public class ProjectService {
         return devMRs.size();
     }
 
-    @Transactional(timeout = 1200) // 20 min
+    @Transactional(timeout = 1200000)
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
@@ -96,7 +96,7 @@ public class ProjectService {
         }
     }
 
-    @Transactional(timeout = 1200) // 20 min
+    @Transactional(timeout = 1200000) // 20 min
     public void setProjectInfoWithSettings(int projectId, ProjectSettings projectSettings) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
@@ -110,14 +110,14 @@ public class ProjectService {
         mergeRequestRepository.saveAll(projectMergeRequests);
 
         //after all info has been collected we can now query the database to build each developers info
-        List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
-        setDeveloperInfo(projectId, projectSettings, projectDevs);
-        project.setSyncInfo();
-        project.setLastSyncAt();
-
+        setDeveloperInfo(projectId, projectSettings);
     }
+    @Transactional(timeout = 1200000)
+    public void setDeveloperInfo(int projectId, ProjectSettings projectSettings) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+        List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
 
-    private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
         for (Developer dev: projectDevs) {
             List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
                     dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
@@ -170,6 +170,8 @@ public class ProjectService {
             developerRepository.saveDev(dev);
 
         }
+        project.setSyncInfo();
+        project.setLastSyncAt();
         /* TODO I should be able to call developerRepository.saveAll(projectDevs)
             but I get an error saying that this method (.saveAll) does not exist
          */

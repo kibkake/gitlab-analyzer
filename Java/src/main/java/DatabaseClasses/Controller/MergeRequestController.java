@@ -1,6 +1,7 @@
 package main.java.DatabaseClasses.Controller;
 
 import main.java.Collections.Commit;
+import main.java.Collections.ProjectSettings;
 import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
 import main.java.DatabaseClasses.Service.MergeRequestService;
 import main.java.Collections.MergeRequest;
@@ -18,13 +19,11 @@ import java.util.List;
 public class MergeRequestController {
 
     private final MergeRequestService mergeRequestService;
-    private final MergeRequestRepository mergeRequestRepository;
     private String isoEnding = "T00:00:00.000Z";
     
     @Autowired
-    public MergeRequestController(MergeRequestService mergeRequestService, MergeRequestRepository mergeRequestRepository) {
+    public MergeRequestController(MergeRequestService mergeRequestService) {
         this.mergeRequestService = mergeRequestService;
-        this.mergeRequestRepository = mergeRequestRepository;
     }
 
     @GetMapping("projects/{projectId}/MergeRequest/save")

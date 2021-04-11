@@ -65,6 +65,12 @@ public class ProjectController {
         projectService.setProjectInfoWithSettings(projectId, projectSettings);
     }
 
+    @RequestMapping("setDevInfo/{projectId}")
+    public void setDevInfo(@PathVariable int projectId, ProjectSettings projectSettings) {
+        projectSettings.setProjectId(projectId);
+        projectService.setDeveloperInfo(projectId, projectSettings);
+    }
+
     @PostMapping(path = "saveSnapshot")
     public String saveSnapshot(@RequestBody Snapshot snapshot){
         projectService.saveSnapshot(snapshot);
