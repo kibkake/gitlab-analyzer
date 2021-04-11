@@ -112,6 +112,7 @@ public class ProjectService {
         //after all info has been collected we can now query the database to build each developers info
         setDeveloperInfo(projectId, projectSettings);
     }
+
     @Transactional(timeout = 1200000)
     public void setDeveloperInfo(int projectId, ProjectSettings projectSettings) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
@@ -175,6 +176,50 @@ public class ProjectService {
         /* TODO I should be able to call developerRepository.saveAll(projectDevs)
             but I get an error saying that this method (.saveAll) does not exist
          */
+    }
+
+    @Transactional(timeout = 1200000)
+    public void setDeveloperMrs(int projectId, ProjectSettings projectSettings) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+        List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
+
+        for (Developer dev: projectDevs) {
+            List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+            dev.setDbKey(Integer.toString(projectId) +  String.valueOf(dev.getDevId()));
+            dev.setMergeRequestsAndCommits(devMergeRequests);
+            developerRepository.saveDev(dev);
+        }
+    }
+
+    @Transactional(timeout = 1200000)
+    public void setDeveloperCommits(int projectId, ProjectSettings projectSettings) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+        List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
+
+        for (Developer dev: projectDevs) {
+            //https://www.javaprogramto.com/2020/12/java-convert-localdate-to-date.html
+            ZoneId systemTimeZone = ZoneId.systemDefault();
+            ZonedDateTime zonedStartTime = projectSettings.getStartDate().atStartOfDay(systemTimeZone);
+            ZonedDateTime zonedEndTime = projectSettings.getEndDate().atStartOfDay(systemTimeZone);
+            Date startDate = Date.from(zonedStartTime.toInstant());
+            Date endDate = Date.from(zonedEndTime.toInstant());
+
+            List<Commit> devCommitsByUsername = commitRepository.findByProjectIdAndAndAuthorNameAndDateBetween(projectId,
+                    dev.getUsername(), startDate, endDate);
+            List<Commit> devCommitsByName = commitRepository.findByProjectIdAndAndAuthorNameAndDateBetween(projectId,
+                    dev.getName(), startDate, endDate);
+
+            List<Commit> devCommits = new ArrayList<>();
+            devCommits.addAll(devCommitsByUsername);
+            devCommits.addAll(devCommitsByName);
+
+            dev.setDbKey(Integer.toString(projectId) +  String.valueOf(dev.getDevId()));
+            dev.setCommits(devCommits);
+            developerRepository.saveDev(dev);
+        }
     }
 
     @Transactional(timeout = 1200) // 20 min
