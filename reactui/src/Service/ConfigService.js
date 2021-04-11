@@ -8,13 +8,17 @@ export default class ConfigService {
         return axios.get(REST_API+"getConfig/"+configId);
     }
 
-
-    static deleteConfig(configId){
-        return axios.get(REST_API+"deleteCongif/"+configId);
+    static getConfigs(){
+        return axios.get(REST_API+"getConfigs/");
     }
 
-    static saveConfig(startDate,endDate){
-        const configInfo = JSON.stringify({ 'startDate':startDate,'endDate':endDate,'languageScale':sessionStorage.getItem('languageScale')});
+    static deleteConfig(configId){
+        console.log(configId);
+        return axios.get(REST_API+"deleteConfig/"+configId);
+    }
+
+    static saveConfig(name,startDate,endDate){
+        const configInfo = JSON.stringify({ 'name':name,'startDate':startDate,'endDate':endDate,'languageScale':sessionStorage.getItem('languageScale')});
         console.log(configInfo);
         return axios.post(REST_API+"saveConfig",configInfo, {
             headers: {

@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component,useContext } from 'react';
 import { Button,Table,Modal, Form} from 'react-bootstrap';
-import CongifService from "../../Service/ConfigService";
+import ConfigService from "../../Service/ConfigService";
 
 
 class LanguageScaleTable extends Component{
 
     constructor() {
         super();
-        const me=this
         this.state = {
             LanguageScale:[],
             newScaleIsShown:false,
@@ -114,12 +113,6 @@ class LanguageScaleTable extends Component{
         });
     }
 
-    saveConfig(){
-        await ConfigService.saveConfig(                 // current user
-            sessionStorage.getItem('startdate'),            // chosen snapshot date
-            sessionStorage.getItem('enddate'),              // "                  "
-        );
-    }
 
 
     render(){
@@ -137,7 +130,7 @@ class LanguageScaleTable extends Component{
                             Add new language multiplier
                         </Button>
                     </div>
-                    <Modal className="NewScaleModal" show={this.state.newScaleIsShown}>
+                    <Modal className="NewScaleModal" show={this.state.newScaleIsShown} onHide={this.closeModal}>
                         <Modal.Header closeButton>
                             <Modal.Title>Add a new multiplier</Modal.Title>
                         </Modal.Header>
@@ -165,7 +158,7 @@ class LanguageScaleTable extends Component{
                         </Form>
                     </Modal>
 
-                    <Modal className="EditScaleModal" show={this.state.editScaleIsShown}>
+                    <Modal className="EditScaleModal" show={this.state.editScaleIsShown} onHide={this.closeModal}>
                         <Modal.Header closeButton>
                             <Modal.Title>Add a new multiplier</Modal.Title>
                         </Modal.Header>

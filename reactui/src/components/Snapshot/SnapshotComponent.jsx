@@ -42,7 +42,15 @@ export default class SnapshotComponent extends Component {
         sessionStorage.setItem("CurrentDeveloper",this.state.snapshot.dev)
         sessionStorage.setItem("startdate",this.state.snapshot.startDate)
         sessionStorage.setItem("enddate",this.state.snapshot.endDate)
-        sessionStorage.setItem("languageScale",this.state.snapshot.languageScale)
+        if(this.state.snapshot.languageScale==null){
+            sessionStorage.setItem("languageScale",JSON.stringify([{
+                name:'Default',
+                extension:"",
+                multiplier:1,
+            }]))
+        }else{
+            sessionStorage.setItem("languageScale",this.state.snapshot.languageScale)
+        }
         window.location.href="/Repo/"+this.state.snapshot.projectId + "/Developers/"+this.state.snapshot.dev+"/"+this.state.snapshot.page
     }
 
