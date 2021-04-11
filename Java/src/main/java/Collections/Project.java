@@ -47,8 +47,8 @@ public class Project {
         issues = new ArrayList<>();
         commits = new ArrayList<>();
         developers = new ArrayList<>();
-        lastSyncAt = "never";
-        infoSet = false;
+        lastSyncAt = getLastSyncAt();
+        infoSet = isInfoSet();
         // The point of initializing them to empty arraylists is that, if they're not ever
         // given values, they will be empty lists instead of equaling null.
     }
@@ -97,6 +97,8 @@ public class Project {
         if (infoSetDate != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
             this.lastSyncAt = formatter.format(this.infoSetDate);
+        }else {
+            this.lastSyncAt = "never";
         }
     }
 
