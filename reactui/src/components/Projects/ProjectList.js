@@ -8,7 +8,7 @@ import {ProgressBar} from "react-bootstrap";
 import UpdatePopup from "./UpdatePopUp";
 import {CircularProgress, Modal} from "@material-ui/core";
 import Button from "react-bootstrap/Button";
-import UpdateModal from "./UpdateModal";
+
 
 //[https://mdbootstrap.com/docs/react/tables/datatables/]
 export default function ProjectList (){
@@ -20,21 +20,23 @@ export default function ProjectList (){
 
     //TODO: prevent infinite rerendering
     //[https://dmitripavlutin.com/react-useeffect-infinite-loop/#:~:text=The%20infinite%20loop%20is%20fixed,callback%2C%20dependencies)%20dependencies%20argument.&text=Adding%20%5Bvalue%5D%20as%20a%20dependency,so%20solves%20the%20infinite%20loop.]
-    useEffect(()=>{
+    useEffect(()=> {
         axios.get('/api/v1/projects')
             .then(response => {
                 getProjects(response.data)
-                console.log(projects)
-
-                const array = projects.map(item => ({...item, checked: areAllChecked}))
-                const checkedStatusArray = array.map(({id, checked}) => ({id, checked}))
-                setChecked(checkedStatusArray)
             })
             .catch((error) => {
                 console.error(error);
             })
-    })
+    }, [projects])
 
+    const openUpdate =() => {
+        setUpdatePopup(true)
+    }
+
+    const array = projects.map(item => ({...item, checked: areAllChecked}))
+    const checkedStatusArray = array.map(({id, checked}) => ({id, checked}))
+    setChecked(checkedStatusArray)
     //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
     const handleSelectAllChange = () => {setAreAllChecked(areAllChecked ? false : true)}
 
@@ -50,13 +52,10 @@ export default function ProjectList (){
     }
 
 
-    function handleUpdateRepos() {
-        setUpdatePopup(true)
+    const handleUpdateRepos = () => {
+        openUpdate()
 
-        const projectIdToUpdate = checked.reduce((result, {
-            id,
-            checked
-        }) => [...result, ...checked ? [id] : []], []);
+        const projectIdToUpdate = checked.reduce((result, {id, checked}) => [...result, ...checked ? [id] : []], []);
         console.log(projectIdToUpdate);
 
         axios.post("/api/v1/setProjectInfoWithSettings", projectIdToUpdate, {
@@ -67,7 +66,6 @@ export default function ProjectList (){
                 .catch((error) => {
                     console.error(error);
                 })
-
     }
 
     //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
@@ -89,7 +87,7 @@ export default function ProjectList (){
                 window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.description}</MDBBtn>,
             created: dateStringCreated,
             updated: (item.last_sync_at === "never" || item.last_sync_at === null) ? "Not Available" : dateStringUpdated,
-            syncing: <ProgressBar animated now={45} />,
+            syncing: updatePopup ? <CircularProgress/> : <ProgressBar animated now={45} />,
         }
     })
 
@@ -103,7 +101,7 @@ export default function ProjectList (){
             {label: 'CreatedAt', field: 'created', sort: 'asc', width: 150},
             {label: 'UpdatedAt', field: 'updated', sort: 'asc', width: 150},
             {label: 'Sync Progress', field: 'syncing', sort: 'asc', width: 150},
-            {label: <MDBInput label=" " type="checkbox" valueDefault={areAllChecked} onChange={handleSelectAllChange}/>,
+            {label: <MDBInput label=" " type="checkbox" valueDefault={areAllChecked} onChange={() => handleSelectAllChange}/>,
                 // <FormCheck class="form-check-inline"> <FormCheck.Label>
                 //     <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
                 // </FormCheck.Label>
@@ -116,11 +114,14 @@ export default function ProjectList (){
     return (
         <div>
             <div align="center" style={{padding: '20px'}}>
-                <button type="button" className="btn btn-secondary" onClick={() => {handleUpdateRepos(); setUpdatePopup(true);}}>Update Selected Projects</button>
-                <UpdateModal show={updatePopup} onHide={setUpdatePopup(false)}>
-
-            </UpdateModal>
-                {/*<UpdatePopup closeOnOutsideClick={true} trigger={updatePopup} setTrigger={setUpdatePopup} transparent={false}/>*/}
+                <button type="button" className="btn btn-secondary" onClick={() => {handleUpdateRepos(); openUpdate();}}>Update Selected Projects</button>
+                {/*<Modal show={updatePopup} onHide={setUpdatePopup(false)}>*/}
+                {/*    <Modal.Header> <Modal.Title>Updating in Progress...</Modal.Title> </Modal.Header>*/}
+                {/*    <Modal.Body> <CircularProgress/> </Modal.Body>*/}
+                {/*    <Modal.Footer>*/}
+                {/*        <Button variant="primary" onClick={setUpdatePopup(false)}>CANCEL UPDATE </Button>*/}
+                {/*    </Modal.Footer>*/}
+                {/*</Modal>*/}
             </div>
             <MDBDataTable hover btn sortable pagesAmount={20}
                 searchLabel="Search By Project Name/Month"
