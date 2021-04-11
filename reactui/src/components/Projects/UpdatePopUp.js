@@ -7,8 +7,10 @@ export default function UpdatePopup(props) {
     return(props.trigger) ? (
         <div className="popup">
             <div className="popup-inner">
-                <button className="close-btn" onClick={() => props.triggerUpdatePopup(false)}>CANCEL</button>
-                <CircularProgress></CircularProgress>
+                <CircularProgress> </CircularProgress>
+                <br></br>
+                <h4>Updating...</h4>
+                <button className="close-btn" onClick={() => props.setTrigger(false)}>CANCEL</button>
             </div>
         </div>
     ):"";
