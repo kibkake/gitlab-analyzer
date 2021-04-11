@@ -6,42 +6,41 @@ import FormCheck from 'react-bootstrap/FormCheck'
 import {MDBBtn, MDBDataTable, MDBInput,  MDBCard, MDBCardBody, MDBCardHeader, MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
 import {ProgressBar} from "react-bootstrap";
 import UpdatePopup from "./UpdatePopUp";
-import {CircularProgress, Modal} from "@material-ui/core";
-import Button from "react-bootstrap/Button";
-
-
+import {CircularProgress} from "@material-ui/core";
 //[https://mdbootstrap.com/docs/react/tables/datatables/]
 export default function ProjectList (){
-
     const [projects,getProjects]= useState([]);
-    const [checked, setChecked] = useState([]);
+    const [checked, setChecked] = useState([{id: null, checked: true}]);
     const [updatePopup, setUpdatePopup] = useState(false);
-    const [areAllChecked, setAreAllChecked] = useState(false)
+    const [areAllChecked, setAreAllChecked] = useState(true)
 
-    //TODO: prevent infinite rerendering
-    //[https://dmitripavlutin.com/react-useeffect-infinite-loop/#:~:text=The%20infinite%20loop%20is%20fixed,callback%2C%20dependencies)%20dependencies%20argument.&text=Adding%20%5Bvalue%5D%20as%20a%20dependency,so%20solves%20the%20infinite%20loop.]
-    useEffect(()=> {
+    useEffect(()=>{
         axios.get('/api/v1/projects')
             .then(response => {
                 getProjects(response.data)
+                console.log(projects)
             })
             .catch((error) => {
                 console.error(error);
             })
     }, [projects])
 
-    const openUpdate =() => {
-        setUpdatePopup(true)
+    //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
+    const handleSelectAllChange = () => {
+
+        setAreAllChecked(!areAllChecked)
+
+        const array = projects.map(item => ({...item, checked: areAllChecked}))
+        const checkedStatusArray = array.map(({id, checked}) => ({id, checked}))
+        setChecked(checkedStatusArray);
+        console.log(checked)
     }
 
-    const array = projects.map(item => ({...item, checked: areAllChecked}))
-    const checkedStatusArray = array.map(({id, checked}) => ({id, checked}))
-    setChecked(checkedStatusArray)
-    //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
-    const handleSelectAllChange = () => {setAreAllChecked(areAllChecked ? false : true)}
-
     const handleSingleCheckboxChange = id => {
-        let currentChecked = [...checked];
+        // let currentChecked = [...checked];
+        const array = projects.map((item, index) => ({...item, checked: checked.checked}))
+        const currentChecked = array.map(({id, checked}) => ({id, checked}))
+
         currentChecked.map((item) => {
             if ((item.id) === id){
                 item.checked = !item.checked;
@@ -49,8 +48,8 @@ export default function ProjectList (){
             return item;
         })
         setChecked(currentChecked);
+        setAreAllChecked(!areAllChecked)
     }
-
 
     const handleUpdateRepos = () => {
         openUpdate()
@@ -60,25 +59,32 @@ export default function ProjectList (){
 
         axios.post("/api/v1/setProjectInfoWithSettings", projectIdToUpdate, {
             headers: {'Content-Type': 'application/json'}})
-                .then(response => {
-                    console.log("Id array sent successfully")
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
+            .then(response => {
+                console.log("Id array sent successfully")
+            })
+            .catch((error) => {
+                console.error(error);
+            })
     }
 
-    //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
+    const openUpdate =() => {
+        setUpdatePopup(true)
+    }
 
+    const closeUpdate =() => {
+        setUpdatePopup(false)
+    }
+
+
+    //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
     const output = projects.map(function (item, index) {
         let currentYear = new Date().getFullYear();
         let dateStringCreated = moment(item.created_at).format('ll').replace(", "+currentYear, "")
         let dateStringUpdated = moment(item.last_sync_at).format('lll').replace(currentYear, "")
         return {
-            check: <input type="checkbox" checked={areAllChecked  ? true : false} //>/checked[index].checked}
-                        onClick={() => handleSingleCheckboxChange(item.id)}/>,
+            check: <input type="checkbox" checked={areAllChecked ? true : checked.checked}
+                          onClick={() => handleSingleCheckboxChange(item.id)}/>,
             // <MDBInput label=' ' checked={this.state.selectAll ? true : checked[1].checked} type='checkbox' id='checkbox7' onChange={() => checkHandler(2)}/>,
-
             //<MDBInput label=' ' checked={areAllChecked  ? true : checked[1].checked} type='checkbox' id='checkbox7'  onClick={() => checkHandler(2)}/>
             id: <button color="purple" onClick={(e) => { e.preventDefault();
                 window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.id}</button>,
@@ -87,21 +93,19 @@ export default function ProjectList (){
                 window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.description}</MDBBtn>,
             created: dateStringCreated,
             updated: (item.last_sync_at === "never" || item.last_sync_at === null) ? "Not Available" : dateStringUpdated,
-            syncing: updatePopup ? <CircularProgress/> : <ProgressBar animated now={45} />,
+            syncing: (updatePopup && checked.checked) ? <CircularProgress/> : <ProgressBar animated now={45} />,
         }
     })
-
     // console.log (this.state.checked)
-
     const data = {
         columns: [
             {label: 'ID', field: 'id', sort: 'asc', width: 150},
             {label: 'Project Name', field: 'name', sort: 'asc', width: 150},
             {label: 'Description', field: 'des', sort: 'asc', width: 400},
-            {label: 'CreatedAt', field: 'created', sort: 'asc', width: 150},
-            {label: 'UpdatedAt', field: 'updated', sort: 'asc', width: 150},
-            {label: 'Sync Progress', field: 'syncing', sort: 'asc', width: 150},
-            {label: <MDBInput label=" " type="checkbox" valueDefault={areAllChecked} onChange={() => handleSelectAllChange}/>,
+            {label: 'Created', field: 'created', sort: 'asc', width: 150},
+            {label: 'Updated', field: 'updated', sort: 'asc', width: 150},
+            {label: 'Sync Status', field: 'syncing', sort: 'asc', width: 150},
+            {label: <MDBInput label=" " type="checkbox" valueDefault={areAllChecked} onChange={handleSelectAllChange}/>,
                 // <FormCheck class="form-check-inline"> <FormCheck.Label>
                 //     <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
                 // </FormCheck.Label>
@@ -110,23 +114,15 @@ export default function ProjectList (){
         ],
         rows: output,
     }
-
     return (
         <div>
             <div align="center" style={{padding: '20px'}}>
-                <button type="button" className="btn btn-secondary" onClick={() => {handleUpdateRepos(); openUpdate();}}>Update Selected Projects</button>
-                {/*<Modal show={updatePopup} onHide={setUpdatePopup(false)}>*/}
-                {/*    <Modal.Header> <Modal.Title>Updating in Progress...</Modal.Title> </Modal.Header>*/}
-                {/*    <Modal.Body> <CircularProgress/> </Modal.Body>*/}
-                {/*    <Modal.Footer>*/}
-                {/*        <Button variant="primary" onClick={setUpdatePopup(false)}>CANCEL UPDATE </Button>*/}
-                {/*    </Modal.Footer>*/}
-                {/*</Modal>*/}
+                <button type="button" className="btn btn-secondary" onClick={() => {handleUpdateRepos(); setUpdatePopup(true);}}>Update Selected Projects</button>
             </div>
             <MDBDataTable hover btn sortable pagesAmount={20}
-                searchLabel="Search By Project Name/Month"
-                small
-                data={data}
+                          searchLabel="Search By Project Name/Month"
+                          small
+                          data={data}
             />
         </div>
     );
