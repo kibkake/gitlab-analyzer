@@ -76,7 +76,7 @@ function DropDownMenuSummary ({listOfDevelopers}) {
 
     return (
 
-        <div>
+        <div classname='CodeDiff'>
             <Navbar_Developers devName = {selectedValue}/>
 
             <div className="box-container">
