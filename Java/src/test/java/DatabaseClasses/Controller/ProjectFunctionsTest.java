@@ -52,6 +52,7 @@ import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
 import main.java.Main;
 import main.java.DatabaseClasses.Service.ProjectService;
 import main.java.DatabaseClasses.Scores.DateScore;
+import main.java.Collections.DateScoreDiff;
 import main.java.Collections.Note;
 import main.java.Collections.Developer;
 import org.junit.Test;
@@ -62,6 +63,8 @@ import org.junit.runner.RunWith;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -259,7 +262,107 @@ public class ProjectFunctionsTest {
         }
     }
 
+    @Test
+    public void testMRsAndCommitScoresPerDay() {
+        ProjectService projectService = createProjectServiceObject();
+        ProjectController projectController = new ProjectController(projectService);
+        List<DateScore> scores = projectController.getDevMRsAndCommitScorePerDay(
+                6, "user2", "2021-01-01", "2021-04-10", "either");
+        assertEquals(5, scores.size());
+
+        String expectedDateAsString = null;
+        double expectedCommitScore;
+        double expectedMRScore;
+        int expectedNumCommits;
+        int expectedNumMRs;
+        List<DateScoreDiff> expectedCommitDiffs = null;
+        List<DateScoreDiff> expectedMRDiffs = null;
+
+        for (int i = 0; i < scores.size(); i++) {
+            if (i == 0) {
+                expectedDateAsString = "2021-01-24";
+                expectedCommitScore = 0.6;
+                expectedMRScore = 0.6;
+                expectedNumCommits = 2;
+                expectedNumMRs = 1;
+                expectedCommitDiffs = new ArrayList<>(
+                        Arrays.asList(new DateScoreDiff("src/Main.java", 0.0), new DateScoreDiff("src/Main.java", 0.2),
+                                new DateScoreDiff("src/NewClass.java", 0.4)));
+                expectedMRDiffs = new ArrayList<>(
+                        Arrays.asList(new DateScoreDiff("src/Main.java", 0.2), new DateScoreDiff("src/NewClass.java", 0.4)));
+            }
+            else if (i == 1) {
+                expectedDateAsString = "2021-02-20";
+                expectedCommitScore = 120.8;
+                expectedMRScore = 60.4;
+                expectedNumCommits = 6;
+                expectedNumMRs = 3;
+                expectedCommitDiffs = new ArrayList<>(
+                        Arrays.asList(new DateScoreDiff("src/Main.java", 16.4), new DateScoreDiff("src/NewClass.java", 14.8),
+                                new DateScoreDiff("src/Main.java", 16.4), new DateScoreDiff("src/NewClass.java", 14.8),
+                                new DateScoreDiff("src/Main.java", 11.8), new DateScoreDiff("src/NewClass.java", 9.2),
+                                new DateScoreDiff("src/Main.java", 11.8), new DateScoreDiff("src/NewClass.java", 9.2),
+                                new DateScoreDiff("src/Main.java", 8.2), new DateScoreDiff("src/Main.java", 8.2)));
+                expectedMRDiffs = new ArrayList<>(
+                        Arrays.asList(new DateScoreDiff("src/Main.java", 16.4), new DateScoreDiff("src/NewClass.java", 14.8),
+                                new DateScoreDiff("src/Main.java", 11.8), new DateScoreDiff("src/NewClass.java", 9.2),
+                                new DateScoreDiff("src/Main.java", 8.2)));
+            }
+            else if (i == 2) {
+                expectedDateAsString = "2021-02-18";
+                expectedCommitScore = 32.8;
+                expectedMRScore = 16.4;
+                expectedNumCommits = 4;
+                expectedNumMRs = 2;
+                expectedCommitDiffs = new ArrayList<>(
+                        Arrays.asList(new DateScoreDiff("src/NewClass.java", 9.4), new DateScoreDiff("src/NewClass.java", 9.4),
+                                new DateScoreDiff("src/Main.java", 7.0), new DateScoreDiff("src/Main.java", 7.0)));
+                expectedMRDiffs = new ArrayList<>(
+                        Arrays.asList(new DateScoreDiff("src/NewClass.java", 9.4), new DateScoreDiff("src/Main.java", 7.0)));
+            }
+            else if (i == 3) {
+                expectedDateAsString = "2021-02-19";
+                expectedCommitScore = 39.6;
+                expectedMRScore = 19.8;
+                expectedNumCommits = 2;
+                expectedNumMRs = 1;
+                expectedCommitDiffs = new ArrayList<>(
+                        Arrays.asList(new DateScoreDiff("src/Main.java", 19.8), new DateScoreDiff("src/Main.java", 19.8)));
+                expectedMRDiffs = new ArrayList<>(
+                        Arrays.asList(new DateScoreDiff("src/Main.java", 19.8)));
+            }
+            else {
+                expectedDateAsString = "2021-02-06";
+                expectedCommitScore = 1.0;
+                expectedMRScore = 0.0;
+                expectedNumCommits = 1;
+                expectedNumMRs = 0;
+                expectedCommitDiffs = new ArrayList<>(
+                        Arrays.asList(new DateScoreDiff("src/Main.java", 1.0)));
+                expectedMRDiffs = new ArrayList<>();
+            }
+
+            DateScore dateScore = scores.get(i);
+            assertEquals(expectedDateAsString, dateScore.getDate().format(dateFormatter));
+            assertEquals(expectedCommitScore, dateScore.getCommitScore(), epsilon);
+            assertEquals(expectedMRScore, dateScore.getMergeRequestScore(), epsilon);
+            assertEquals(expectedNumCommits, dateScore.getNumCommits());
+            assertEquals(expectedNumMRs, dateScore.getNumMergeRequests());
+            assertEquals(expectedCommitDiffs, dateScore.getCommitDiffs());
+            assertEquals(expectedMRDiffs, dateScore.getMergeRequestDiffs());
+            assertEquals("user2", dateScore.getUserName());
+        }
+    }
+
     // Helper functions:
+
+    private void printList(List<DateScoreDiff> list) {
+        System.out.println("{");
+        for (DateScoreDiff current: list) {
+            System.out.println(current.getNew_path() + "," + current.getDiffScore());
+        }
+        System.out.println("}\n\n");
+    }
 
     private boolean isUser2Developer(Developer dev) {
         // This function returns true if developer matches what's expected for user2
