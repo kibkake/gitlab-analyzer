@@ -46,6 +46,12 @@ public class ProjectService {
         this.snapshotRepository = snapshotRepository;
     }
 
+    public void saveProjectIssues(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
+    }
+
     public enum UseWhichDevField {EITHER, NAME, USERNAME};
 
     public List<Project> getAllProjects() {
@@ -106,6 +112,9 @@ public class ProjectService {
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
         setDeveloperInfo(projectId, projectSettings, projectDevs);
+        project.setSyncInfo();
+        project.setLastSyncAt();
+
     }
 
     private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
@@ -159,6 +168,7 @@ public class ProjectService {
             dev.setAllScores(devAllScores);
             dev.setCommits(devCommits);
             developerRepository.saveDev(dev);
+
         }
         /* TODO I should be able to call developerRepository.saveAll(projectDevs)
             but I get an error saying that this method (.saveAll) does not exist

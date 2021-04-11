@@ -1,6 +1,9 @@
 package main.java.DatabaseClasses.Service;
 
 import main.java.Collections.Commit;
+import main.java.Collections.Project;
+import main.java.ConnectToGitlab.DeveloperConnection;
+import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
 import main.java.DatabaseClasses.Scores.CommitDateScore;
 import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
 import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
@@ -16,10 +19,13 @@ import java.util.List;
 public class DeveloperService {
 
     private final DeveloperRepository developerRepository;
+    private final ProjectRepository projectRepository;
+
 
     @Autowired
-    public DeveloperService(DeveloperRepository developerRepository) {
+    public DeveloperService(DeveloperRepository developerRepository, ProjectRepository projectRepository) {
         this.developerRepository = developerRepository;
+        this.projectRepository = projectRepository;
     }
 
     public List<String> getProjectDevUsernames(int projectId) {
@@ -51,5 +57,12 @@ public class DeveloperService {
     public List<Commit> getDevCommits(int projectId, String username) {
         Developer developer = developerRepository.findDeveloperByProjectIdAndUsername(projectId, username);
         return developer.getCommits();
+    }
+
+    public void saveDevs(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        projectRepository.save(project);
     }
 }

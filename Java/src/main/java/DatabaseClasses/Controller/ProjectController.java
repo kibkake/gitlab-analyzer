@@ -1,5 +1,6 @@
 package main.java.DatabaseClasses.Controller;
 
+import main.java.ConnectToGitlab.IssueConnection;
 import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Scores.AllScores;
 import main.java.DatabaseClasses.Scores.DateScore;
@@ -45,6 +46,11 @@ public class ProjectController {
     @Autowired
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+    @GetMapping("projects/{projectId}/issues/save")
+    public void saveProjectIssues(@PathVariable int projectId) {
+        projectService.saveProjectIssues(projectId);
     }
 
     // can only be used on very small projects

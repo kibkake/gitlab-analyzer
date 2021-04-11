@@ -55,4 +55,9 @@ public class DeveloperController {
         return developerService.getDevCommits(projectId, username);
     }
 
+    @GetMapping("save")
+    public void saveDevs (@PathVariable int projectId) {
+        developerService.saveDevs(projectId);
+    }
+
 }
