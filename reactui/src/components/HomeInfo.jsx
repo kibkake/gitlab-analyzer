@@ -26,8 +26,7 @@ export default class HomeInfo extends Component {
         this.showLoadModal=this.showLoadModal.bind(this);
         this.closeModal=this.closeModal.bind(this);
         this.loadConfig=this.loadConfig.bind(this);
-        this.deleteConfig=this.deleteConfig.bind(this);
-        
+        this.deleteConfig=this.deleteConfig.bind(this);   
     }
 
     async componentDidMount() {
@@ -80,6 +79,7 @@ export default class HomeInfo extends Component {
         sessionStorage.setItem("startdate",this.state.configs[index].startDate);
         sessionStorage.setItem("enddate",this.state.configs[index].endDate);
         sessionStorage.setItem("languageScale",JSON.stringify(this.state.configs[index].languageScale));
+        window.location.reload();
         this.closeModal();
     }
 
