@@ -11,7 +11,6 @@ public class DateScoreDiff{
         this.diffScore = diff.getDiffScore();
     }
 
-
     public DateScoreDiff(){
     }
 

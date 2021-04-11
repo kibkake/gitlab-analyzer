@@ -51,6 +51,7 @@ import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
 import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
 import main.java.Main;
 import main.java.DatabaseClasses.Service.ProjectService;
+import main.java.DatabaseClasses.Scores.DateScore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -63,6 +64,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * This class contains JUnit tests for some of the main GET functions in
@@ -92,12 +94,14 @@ public class ProjectFunctionsTest {
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    private double epsilon = 0.00001;
+
+
     @Test
     public void testingFindProjectWithRepositoryAndService() {
         Project testProjFromRepo = projectRepository.findProjectById(6);
         assertEquals(6, testProjFromRepo.getId());
-        ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
+        ProjectService projectService = createProjectServiceObject();
         Project testProjFromService = projectService.getProject(6);
         assertEquals(6, testProjFromService.getId());
         assertEquals(testProjFromRepo, testProjFromService);
@@ -105,8 +109,7 @@ public class ProjectFunctionsTest {
 
     @Test
     public void testScoresPerDay() {
-        ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
+        ProjectService projectService = createProjectServiceObject();
         LocalDate start = LocalDate.parse("2021-01-01");
         LocalDate end = LocalDate.parse("2021-03-19");
         List<DateScore> user2Scores = projectService.getScoresPerDayForMRsAndCommits(
@@ -116,12 +119,40 @@ public class ProjectFunctionsTest {
 
     @Test
     public void testNumMRs() {
-        ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
+        ProjectService projectService = createProjectServiceObject();
         LocalDate start = LocalDate.parse("2021-01-01");
         LocalDate end = LocalDate.parse("2021-02-28");
         int numMRs = projectService.getNumDevMergeRequests(6, "user2",
                 start, end);
-        assertEquals(6, numMRs);
+        assertEquals(7, numMRs);
+    }
+
+    @Test
+    public void testCommitScoresPerDay() {
+        ProjectService projectService = createProjectServiceObject();
+        ProjectController projectController = new ProjectController(projectService);
+        List<DateScore> commitScoresPerDay = projectController.getDevCommitScoresWithDates(
+                6, "user2", "2021-01-01", "2021-04-10", "either");
+        assertEquals(5, commitScoresPerDay.size());
+        DateScore firstElement = commitScoresPerDay.get(0);
+        assertEquals(0.6, firstElement.getCommitScore(), epsilon);
+        assertEquals(2, firstElement.getNumCommits());
+        assertEquals("2021-01-24", firstElement.getDate().format(dateFormatter));
+
+        DateScore lastElement = commitScoresPerDay.get(commitScoresPerDay.size()-1);
+        assertEquals("2021-02-06", lastElement.getDate().format(dateFormatter));
+        assertEquals(0, lastElement.getMergeRequestScore(), epsilon);
+        assertEquals("user2", lastElement.getUserName());
+        assertEquals(1, lastElement.getNumCommits());
+        assertEquals(1.0, lastElement.getCommitScore(), epsilon);
+        assertEquals(1, lastElement.getCommitDiffs());
+    }
+
+    // Helper functions:
+
+    private ProjectService createProjectServiceObject() {
+        ProjectService projectService = new ProjectService(projectRepository,
+                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
+        return projectService;
     }
 }
