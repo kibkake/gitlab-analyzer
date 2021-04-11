@@ -52,11 +52,14 @@ import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
 import main.java.Main;
 import main.java.DatabaseClasses.Service.ProjectService;
 import main.java.DatabaseClasses.Scores.DateScore;
+import main.java.Collections.Note;
+import main.java.Collections.Developer;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -145,10 +148,125 @@ public class ProjectFunctionsTest {
         assertEquals("user2", lastElement.getUserName());
         assertEquals(1, lastElement.getNumCommits());
         assertEquals(1.0, lastElement.getCommitScore(), epsilon);
-        assertEquals(1, lastElement.getCommitDiffs());
+        assertEquals(1, lastElement.getCommitDiffs().size());
+    }
+
+    @Test
+    public void testTopTenDevNotes() throws ParseException {
+        ProjectService projectService = createProjectServiceObject();
+        ProjectController projectController = new ProjectController(projectService);
+        List<Note> topNotes = projectController.getTopTenDevNotes(6, "user2",
+                "2021-01-01", "2021-04-10");
+        assertEquals(10, topNotes.size());
+
+        int expectedId;
+        String expectedBody = null;
+        int expectedScore;
+        int expectedWordCount;
+        boolean expectedIsIssueNote;
+        String expectedFormattedDate = null;
+
+        for (int i = 0; i < topNotes.size(); i++) {
+            if (i == 0) {
+                expectedId = 15;
+                expectedBody = "changed due date to April 30, 2021";
+                expectedScore = 0;
+                expectedWordCount = 7;
+                expectedIsIssueNote = true;
+                expectedFormattedDate = "2021-01-30";
+            }
+            else if (i == 1) {
+                expectedId = 662;
+                expectedBody = "mentioned in commit 711f899062d24c6ede0d0f15e952fa53758b57bf";
+                expectedScore = 0;
+                expectedWordCount = 4;
+                expectedIsIssueNote = false;
+                expectedFormattedDate = "2021-02-18";
+            }
+            else if (i == 2) {
+                expectedId = 663;
+                expectedBody = "mentioned in commit 37bcc2ad306470d6042fdb03a602844e91608474";
+                expectedScore = 0;
+                expectedWordCount = 4;
+                expectedIsIssueNote = false;
+                expectedFormattedDate = "2021-02-18";
+            }
+            else if (i == 3) {
+                expectedId = 668;
+                expectedBody = "mentioned in commit 700740418c15249fce74e4bf4e62c5357f0393ae";
+                expectedScore = 0;
+                expectedWordCount = 4;
+                expectedIsIssueNote = false;
+                expectedFormattedDate = "2021-02-19";
+            }
+            else if (i == 4) {
+                expectedId = 671;
+                expectedBody = "mentioned in commit 0d7966c533d294b94ed371cd6813743441f61c34";
+                expectedScore = 0;
+                expectedWordCount = 4;
+                expectedIsIssueNote = false;
+                expectedFormattedDate = "2021-02-20";
+            }
+            else if (i == 5) {
+                expectedId = 672;
+                expectedBody = "mentioned in commit 3ba4fa806c4ffa225e593646ed6fc5b4ae9694cb";
+                expectedScore = 0;
+                expectedWordCount = 4;
+                expectedIsIssueNote = false;
+                expectedFormattedDate = "2021-02-20";
+            }
+            else if (i == 6) {
+                expectedId = 673;
+                expectedBody = "mentioned in commit 45b56d337b267631f8c0a8397ff6a769b8e2bfe7";
+                expectedScore = 0;
+                expectedWordCount = 4;
+                expectedIsIssueNote = false;
+                expectedFormattedDate = "2021-02-20";
+            }
+            else if (i == 7) {
+                expectedId = 16;
+                expectedBody = "This is note #1";
+                expectedScore = 0;
+                expectedWordCount = 4;
+                expectedIsIssueNote = true;
+                expectedFormattedDate = "2021-02-06";
+            }
+            else if (i == 8) {
+                expectedId = 17;
+                expectedBody = "this is note #2";
+                expectedScore = 0;
+                expectedWordCount = 4;
+                expectedIsIssueNote = true;
+                expectedFormattedDate = "2021-02-06";
+            }
+            else {
+                expectedId = 675;
+                expectedBody = "adding comments in issue";
+                expectedScore = 0;
+                expectedWordCount = 4;
+                expectedIsIssueNote = true;
+                expectedFormattedDate = "2021-02-21";
+            }
+            Note note = topNotes.get(i);
+            assertEquals(expectedId, note.getId());
+            assertEquals(expectedBody, note.getBody());
+            assertEquals(expectedScore, note.getScore());
+            assertEquals(expectedWordCount, note.getWordCount());
+            assertEquals(expectedIsIssueNote, note.getIssueNote());
+            assertEquals(expectedFormattedDate, note.getFormattedDate());
+            Developer authorOfNote = note.getAuthor();
+            assertTrue(isUser2Developer(authorOfNote));
+        }
     }
 
     // Helper functions:
+
+    private boolean isUser2Developer(Developer dev) {
+        // This function returns true if developer matches what's expected for user2
+        // in project 6.
+        return (dev.getProjectId() == 0 && dev.getName().equals("user2 user2")
+                && dev.getUsername().equals("user2") && dev.getDevId() == 11);
+    }
 
     private ProjectService createProjectServiceObject() {
         ProjectService projectService = new ProjectService(projectRepository,
