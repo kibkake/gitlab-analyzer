@@ -43,6 +43,7 @@ public class ProjectController {
     private String startDate = "2021-02-22T13:59:00.000Z";
     private String endDate = "2021-03-15T13:59:00.000Z";
     private Snapshot snapshot;
+    private boolean isUpdated = false;
 
     @Autowired
     public ProjectController(ProjectService projectService) {
@@ -75,11 +76,16 @@ public class ProjectController {
         //took about 5 mins
        }
         System.out.println("update is done");
-
-
+        this.isUpdated = true;
     }
 
+    @GetMapping("projects/updated")
+    public boolean isUpdateDone(){
+        if (this.isUpdated) {
 
+        }
+        return this.isUpdated;
+    }
 
     // can only be used on very small projects
     @GetMapping("setProjectInfo/{projectId}")
@@ -91,15 +97,6 @@ public class ProjectController {
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {
         Project project = projectService.getProject(projectId);
-        // The update should be done once in the repo list page by user's request
-        // rather than done as everytime the user access each project page
-        // commenting this out doesn't affect the current app
-
-//        if (!project.isInfoSet()) {
-//            this.snapshot = new Snapshot(startDate, endDate);
-//            projectService.setProjectInfoWithSettings(projectId, snapshot);
-//            project = projectService.getProject(projectId); // get project now that it has been modified
-//        }
         return project;
     }
 
@@ -371,9 +368,6 @@ public class ProjectController {
     public List<String> getMemberUsernames(@PathVariable("projectId") int projectId) {
 
         Project project = projectService.getProject(projectId);
-        if (!project.isInfoSet()) {
-            projectService.setProjectInfo(projectId);
-        }
 
         List<Developer> members = projectService.getProjectDevelopers(projectId);
         List<String> memberUsernames = new ArrayList<>();
