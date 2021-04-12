@@ -15,7 +15,8 @@ export default class CommitMRScoreChart extends PureComponent {
             codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0,commitIds:[],mergeRequestDiffs:[]}],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
-            endTime: this.props.endTime
+            endTime: this.props.endTime,
+            DatescoreData:[{data:null,commistScore:0,mergeRequestScore: 0}]
         }
     }
 
@@ -45,11 +46,11 @@ export default class CommitMRScoreChart extends PureComponent {
         console.log(score);
         await this.setState({codeScore : score, parentdata: username,startTime: startTm,
             endTime: endTm})
-        this.applyMultipliers();
+        await this.applyMultipliers();
         await console.log(this.state.codeScore)
     }
 
-    applyMultipliers(){
+    async applyMultipliers(){
         var scale = JSON.parse(sessionStorage.getItem('languageScale'));
         var newCodeScore = [...this.state.codeScore];
         for(const k in newCodeScore){
@@ -57,7 +58,7 @@ export default class CommitMRScoreChart extends PureComponent {
             var newMergeScore=0;
             for(const i in newCodeScore[k].commitDiffs){
                 var fileExtension = newCodeScore[k].commitDiffs[i].new_path.split(".").pop();
-                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
                 if(extensionIndex!==-1){
                     var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].commitDiffs[i].diffScore;
                     newCommitScore = newCommitScore+tempCommitScore;
@@ -67,7 +68,7 @@ export default class CommitMRScoreChart extends PureComponent {
             }
             for(const i in newCodeScore[k].mergeRequestDiffs){
                 var fileExtension = newCodeScore[k].mergeRequestDiffs[i].new_path.split(".").pop();
-                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
                 if(extensionIndex!==-1){
                     var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].mergeRequestDiffs[i].diffScore;
                     newMergeScore = newMergeScore+tempCommitScore;
@@ -77,13 +78,36 @@ export default class CommitMRScoreChart extends PureComponent {
             }
             newCodeScore[k].mergeRequestScore=newMergeScore;
             newCodeScore[k].commitScore=newCommitScore;
-            console.log(newCommitScore);
         }
+        var tempDateScore =[]
+        for(const k in newCodeScore){
+            var dateFound = false; 
+            var tempDate = newCodeScore[k].date.split("T")[0];
+            console.log(tempDate)
+            if(tempDateScore.length===0){
+                tempDateScore.push({date:tempDate,commitScore:newCodeScore[k].commitScore,mergeRequestScore:newCodeScore[k].mergeRequestScore});
+                continue;
+            }
+            for(const i in tempDateScore){
+                if (tempDateScore[i].date===tempDate){
+                    var tempObj = tempDateScore[i];
+                    tempObj.commitScore+=newCodeScore[k].commitScore;
+                    tempObj.mergeRequestScore+=newCodeScore[k].mergeRequestScore;
+                    dateFound=true;
+                    break;
+                }
+            }
+            if(dateFound===false){
+                tempDateScore.push({date:tempDate,commitScore:newCodeScore[k].commitScore,mergeRequestScore:newCodeScore[k].mergeRequestScore});
+            }
+        }
+        console.log(tempDateScore)
         this.setState({
             codeScore:newCodeScore,
+            DatescoreData:tempDateScore
         })
     }
-    
+     
 
     async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName ||
@@ -96,9 +120,7 @@ export default class CommitMRScoreChart extends PureComponent {
     CustomToolTip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             const commitVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
-            console.log(commitVal)
             const mrVal = Math.abs(Math.round(payload[1].value * 10)/10.0);
-            console.log(mrVal)
 
             return (
                 <div className="tooltipBox">
@@ -113,7 +135,7 @@ export default class CommitMRScoreChart extends PureComponent {
 
     render() {
         var tickArr = [];
-        var output = this.state.codeScore.map(function(item) {
+        var output = this.state.DatescoreData.map(function(item) {
             tickArr.push((new Date(item.date)).getTime())
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
@@ -121,7 +143,6 @@ export default class CommitMRScoreChart extends PureComponent {
                 mergeScore: +(item.mergeRequestScore + item.commitScore)
             };
         });
-        console.log(output);
         console.log("starttime", this.props.startTime)
         const from = Number(new Date(this.props.startTime));
         const to = Number(new Date(this.props.endTime));

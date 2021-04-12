@@ -7,7 +7,7 @@ import main.java.Collections.Commit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -19,11 +19,11 @@ public class CommitService {
         this.commitRepository = commitRepository;
     }
 
-    public List<CommitDateScore> getUserCommitsArray(int projectId, String authorName, LocalDate startLocalTime, LocalDate endLocalTime) {
+    public List<CommitDateScore> getUserCommitsArray(int projectId, String authorName, LocalDateTime startLocalTime, LocalDateTime endLocalTime) {
         return commitRepository.getCommitsWithEveryDateBetweenRange(projectId, authorName, startLocalTime, endLocalTime);
     }
 
-    public List<Commit> getUserCommits(int projectId, String authorName, Date start, Date end) {
+    public List<Commit> getUserCommits(int projectId, String authorName, LocalDateTime start, LocalDateTime end) {
         return commitRepository.findByProjectIdAndAndAuthorNameAndDateBetween(projectId, authorName, start, end);
     }
 
@@ -35,11 +35,11 @@ public class CommitService {
         return commitRepository.findByProjectIdAndCommitId(projectId, commitHash);
     }
 
-    public List<CommitDateScore> getScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate){
+    public List<CommitDateScore> getScorePerDay(int projectId, String userName, LocalDateTime startDate, LocalDateTime endDate){
         return commitRepository.getDevCommitDateScore(projectId, userName, startDate, endDate);
     }
 
-    public Object getTotalCommitScore(int projectId, String userName, LocalDate startDate, LocalDate endDate) {
+    public Object getTotalCommitScore(int projectId, String userName, LocalDateTime startDate, LocalDateTime endDate) {
         return commitRepository.userTotalCommitScore(projectId, userName, startDate, endDate);
     }
 

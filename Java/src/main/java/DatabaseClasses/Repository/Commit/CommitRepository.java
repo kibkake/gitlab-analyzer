@@ -4,7 +4,7 @@ import main.java.Collections.Commit;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ import java.util.List;
 public interface CommitRepository extends MongoRepository<Commit, String>, CommitRepositoryCustom {
 
     //TODO update to Author_Email when that issue be solved
-    List<Commit> findByProjectIdAndAndAuthorNameAndDateBetween(int projectId, String authorName, Date start, Date end);
+    List<Commit> findByProjectIdAndAndAuthorNameAndDateBetween(int projectId, String authorName, LocalDateTime start, LocalDateTime end);
 
     Commit findByProjectIdAndCommitId(int projectId, String commitHash);
 }

@@ -15,7 +15,8 @@ export default class CommitMRNumChart extends PureComponent {
             frequency:[{date: null, numCommits: 0, numMergeRequest: 0}],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
-            endTime: this.props.endTime
+            endTime: this.props.endTime,
+            dateFrequency:[{date: null, numCommits: 0, numMergeRequest: 0}]
         }
     }
 
@@ -27,7 +28,7 @@ export default class CommitMRNumChart extends PureComponent {
     async getDataFromBackend (username, startTm, endTm) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
-
+        console.log(startTm)
         //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
         await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
@@ -41,6 +42,32 @@ export default class CommitMRNumChart extends PureComponent {
             console.error(error);
         });
 
+        var tempDateFrequency=[];
+        for(const k in this.state.frequency){
+            var dateFound = false; 
+            var tempDate = this.state.frequency[k].date.split("T")[0]
+            console.log(tempDate)
+            if(tempDateFrequency.length===0){
+                tempDateFrequency.push({date:tempDate,numCommits:this.state.frequency[k].numCommits,numMergeRequest:this.state.frequency[k].numMergeRequests});
+                continue;
+            }
+            for(const i in tempDateFrequency){
+                if (tempDateFrequency[i].date===tempDate){
+                    var tempObj = tempDateFrequency[i];
+                    tempObj.numCommits+=this.state.frequency[k].numCommits;
+                    tempObj.numMergeRequest+=this.state.frequency[k].numMergeRequests;
+                    dateFound=true;
+                    break;
+                }
+            }
+            if(dateFound===false){
+                tempDateFrequency.push({date:tempDate,numCommits:this.state.frequency[k].numCommits,numMergeRequest:this.state.frequency[k].numMergeRequests});
+            }
+        }
+        console.log(tempDateFrequency)
+        this.setState({
+            dateFrequency:tempDateFrequency
+        });
     }
 
     async componentDidUpdate(prevProps){
@@ -54,9 +81,9 @@ export default class CommitMRNumChart extends PureComponent {
     CustomToolTip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             const commitVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
-            console.log(commitVal)
+            // console.log(commitVal)
             const mrVal = Math.abs(Math.round(payload[1].value * 10)/10.0);
-            console.log(mrVal)
+            // console.log(mrVal)
 
             return (
                 <div className="tooltipBox">
@@ -70,11 +97,12 @@ export default class CommitMRNumChart extends PureComponent {
     };
 
     render() {
-        var output = this.state.frequency.map(function(item) {
+        console.log(this.state.dateFrequency);
+        var output = this.state.dateFrequency.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
                 commitNum: -item.numCommits,
-                mergeNum: +item.numMergeRequests
+                mergeNum: +item.numMergeRequest
             };
         });
         console.log(output);

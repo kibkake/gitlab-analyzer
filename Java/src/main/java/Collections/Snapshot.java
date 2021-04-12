@@ -17,16 +17,18 @@ public class Snapshot {
     private String projectId;
     private String dev;
     private String page;
+    private String languageScale;
 
     public Snapshot(){}
 
-    public Snapshot(String username, String startDate, String endDate, String projectId, String dev, String page) {
+    public Snapshot(String username, String startDate, String endDate, String projectId, String dev, String page, String languageScale) {
         this.username = username;
         this.startDate = startDate;
         this.endDate = endDate;
         this.projectId = projectId;
         this.dev = dev;
         this.page = page;
+        this.languageScale=languageScale;
     }
 
     public String getId() {
@@ -76,6 +78,10 @@ public class Snapshot {
     public String getPage(){return page;}
 
     public void setPage(String page){this.page = page;  }
+
+    public String getLanguageScale(){ return this.languageScale;}
+
+    public void setLanguageScale(String languageScale){ this.languageScale=languageScale;}
 
     @Override
     public String toString() {

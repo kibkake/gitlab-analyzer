@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -32,16 +32,16 @@ public class MergeRequestController {
     @GetMapping("projects/{projectId}/MergeRequest/scores/{userName}/{startDate}/{endDate}")
     public List<MergeRequestDateScore> getScores(@PathVariable int projectId, @PathVariable String userName,
                                                  @PathVariable String startDate, @PathVariable String endDate) {
-        LocalDate StartLocalTime = LocalDate.parse(startDate);
-        LocalDate endLocalTime = LocalDate.parse(endDate);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(startDate);
+        LocalDateTime endLocalTime = LocalDateTime.parse(endDate);
         return mergeRequestService.getMrScorePerDay(projectId, userName, StartLocalTime, endLocalTime);
     }
 
     @GetMapping("projects/{projectId}/MergeRequest/scores/total/{userName}/{startDate}/{endDate}")
     public Object getTotalMergeRequestScores(@PathVariable int projectId, @PathVariable String userName,
                                            @PathVariable String startDate, @PathVariable String endDate) {
-        LocalDate StartLocalTime = LocalDate.parse(startDate);
-        LocalDate endLocalTime = LocalDate.parse(endDate);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(startDate);
+        LocalDateTime endLocalTime = LocalDateTime.parse(endDate);
         return mergeRequestService.getTotalMergeRequestScore(projectId, userName, StartLocalTime, endLocalTime);
     }
 
@@ -51,8 +51,8 @@ public class MergeRequestController {
                                                               @PathVariable("start") String startDate,
                                                               @PathVariable("end")String endDate) {
 
-        LocalDate StartLocalTime = LocalDate.parse(startDate);
-        LocalDate endLocalTime = LocalDate.parse(endDate);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(startDate);
+        LocalDateTime endLocalTime = LocalDateTime.parse(endDate);
         return mergeRequestService.getUserMergeRequests(projectId, committerName, StartLocalTime, endLocalTime);
     }
 

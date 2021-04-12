@@ -1,8 +1,6 @@
 package main.java.Functions;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,9 +23,9 @@ public class LocalDateFunctions {
 
        Will return an ArrayList containing dates from startDate to endDate, inclusive.
        If startDate is greater than endDate, an empty ArrayList is returned. */
-    public static ArrayList<LocalDate> generateRangeOfDates(LocalDate startDate,
-                                                            LocalDate endDate) {
-        ArrayList<LocalDate> rangeOfDates = new ArrayList<>();
+    public static ArrayList<LocalDateTime> generateRangeOfDates(LocalDateTime startDate,
+                                                            LocalDateTime endDate) {
+        ArrayList<LocalDateTime> rangeOfDates = new ArrayList<>();
 
         if (startDate.compareTo(endDate) > 0) {
             return rangeOfDates;
@@ -44,8 +42,8 @@ public class LocalDateFunctions {
         return rangeOfDates;
     }
 
-    public static LocalDate convertDateToLocalDate(Date date) {
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return localDate;
+    public static LocalDateTime convertDateToLocalDate(Date date) {
+        LocalDateTime LocalDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return LocalDateTime;
     }
 }

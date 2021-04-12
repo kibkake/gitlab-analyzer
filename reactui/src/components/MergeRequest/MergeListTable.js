@@ -20,26 +20,30 @@ export default class MergeListTable  extends PureComponent {
             var newMRScore=0;
             for(var i in newMerges[k].diffs){
                 var fileExtension = newMerges[k].diffs[i].new_path.split(".").pop();
-                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
                 if(extensionIndex!==-1){
                     var newScore = scale[extensionIndex].multiplier * newMerges[k].diffs[i].diffScore;
                     newMerges[k].diffs[i] = {...newMerges[k].diffs[i], diffScore:newScore};
                     newMRScore = newMRScore+newScore;
                 }else{
-                    newMRScore = newMRScore+newMerges[k].diffs[i].diffScore;
+                    const defaultIndex = scale.findIndex(scale => scale.name==='Default');
+                    var newScore = scale[defaultIndex].multiplier * newMerges[k].diffs[i].diffScore;
+                    newMRScore = newMRScore+newScore;
                 }
             }
             for(var p in newMerges[k].commits){
                 var newCommitScore=0;
                 for(var i in newMerges[k].commits[p].diffs){
                     var fileExtension = newMerges[k].commits[p].diffs[i].new_path.split(".").pop();
-                    const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                    const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
                     if(extensionIndex!==-1){
                         var newScore = scale[extensionIndex].multiplier * newMerges[k].commits[p].diffs[i].diffScore;
                         newMerges[k].commits[p].diffs[i] = {...newMerges[k].commits[p].diffs[i], diffScore:newScore};
                         newCommitScore = newCommitScore+newScore;
                     }else{
-                        newCommitScore = newCommitScore+newMerges[k].commits[p].diffs[i].diffScore;
+                        const defaultIndex = scale.findIndex(scale => scale.name==='Default');
+                        var newScore = scale[defaultIndex].multiplier * newMerges[k].commits[p].diffs[i].diffScore;
+                        newCommitScore = newCommitScore+newScore;
                     }
 
                 }
@@ -76,8 +80,9 @@ export default class MergeListTable  extends PureComponent {
                 }
             }
         }
-
-        const response = axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username + "/2021-01-01/2021-05-09")
+        const startDate=sessionStorage.getItem("startdate")
+        const endDate=sessionStorage.getItem("enddate")
+        const response = axios.get("/api/v1/projects/" + id + "/mergeRequests/" + username+'/'+startDate+'/'+endDate )
             .then(res => {
                 this.setState({merges : res.data, parentData: username});
                 this.applyMultipliers();

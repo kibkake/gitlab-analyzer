@@ -1,7 +1,13 @@
 table{
-    width:100%;
+    width:70%;
 }
 th, td {
     padding: 5px;
     text-align: left;
+}
+.repoSelectBtn{
+    width: 50px;
+    max-width: none !important;
+    background-color: cyan;
+
 }

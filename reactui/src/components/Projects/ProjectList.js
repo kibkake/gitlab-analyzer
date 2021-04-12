@@ -90,7 +90,7 @@ export default class ProjectList extends Component {
             let currentYear = new Date().getFullYear();
             let dateString = moment(item.created_at).format('ll').replace(", "+currentYear, "")
             return {
-                id: <button color="purple" onClick={(e) => { e.preventDefault();
+                id: <button color="purple" className= "repoSelectBtn" onClick={(e) => { e.preventDefault();
                     window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.id}</button>,
                 name: item.name,
                 des: <MDBBtn color="purple" size="sm" onClick={(e) => {e.preventDefault();

@@ -85,15 +85,14 @@ class CommitChart extends Component {
             }
         })
         const resp = await result2.json();
-        await this.setState({commits:resp})
-
+        await this.setState({commits:resp});
         var chartArr = [];
         var index = 0;
-
+        console.log(chartArr);
         for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)) {
             chartArr.push(0)
         }
-
+        
         var totalScore1 = 0.0;
 
         for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)){
@@ -106,7 +105,7 @@ class CommitChart extends Component {
 
             await this.state.commits.map(function(item) {
 
-                var time1 = moment(item.committed_date).format('L')
+                var time1 = moment(item.committed_date.split("T")[0]).format('L')
                 const tempMonth = time1.substring(0,2)
                 const tempDay = time1.substring(3,5)
                 const tempYear = time1.substring(6,10)
@@ -119,7 +118,43 @@ class CommitChart extends Component {
             })
             index++
         }
+        
+        for(var k =0;k<chartArr.length;k++){
+            console.log(chartArr[k]);
+        }
         await this.setState({data:chartArr, totalScore: totalScore1})
+        console.log(this.state.data);
+        await this.setState({commits:resp});
+        this.applyMultipliers()
+    }
+
+    applyMultipliers(){
+        var scale = JSON.parse(sessionStorage.getItem('languageScale'));
+        var newCommits= [...this.state.commits];
+        console.log(newCommits);
+        for(const k in newCommits){
+            var newCommitsScore=0;
+            for(var i in newCommits[k].diffs){
+                var fileExtension = newCommits[k].diffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
+                if(extensionIndex!==-1){
+                    var newScore = scale[extensionIndex].multiplier * newCommits[k].diffs[i].diffScore;
+                    newCommits[k].diffs[i] = {...newCommits[k].diffs[i], diffScore:newScore};
+                    newCommitsScore = newCommitsScore+newScore;
+                }else{
+                    const defaultIndex = scale.findIndex(scale => scale.name==='Default');
+                    var newScore = scale[defaultIndex].multiplier * newCommits[k].diffs[i].diffScore;
+                    newCommits[k].diffs[i] = {...newCommits[k].diffs[i], diffScore:newScore};
+                    newCommitsScore = newCommitsScore+newScore;
+                }
+            }
+            newCommits[k].commitScore=newCommitsScore;
+        }
+
+
+        this.setState({
+            commits:newCommits,
+        })
     }
 
     showComponents() {
@@ -142,8 +177,8 @@ class CommitChart extends Component {
                     <AllCommits
                         totalScore = {this.state.totalScore}
                         devName = {this.props.devName}
-                        startTime = {this.props.startTime}
-                        endTime = {this.props.endTime}
+                        startTime = {this.props.startTime.split('T')[0]}
+                        endTime = {this.props.endTime.split('T'[0])}
                         handler = {this.handler}
                         handler3 = {this.handler3}
                         commits={this.state.commits}
@@ -172,22 +207,23 @@ class CommitChart extends Component {
         var blackArr = [];
         var getDaysArray = function(start, end) {
             for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
-
-                var day3temp = new Date(dt).toLocaleDateString().split("/")[1];
-                var month3temp = new Date(dt).toLocaleDateString().split("/")[0];
+                
+                var day3temp = new Date(dt).toLocaleDateString().split("/")[0];
+                var month3temp = new Date(dt).toLocaleDateString().split("/")[1];
                 var year3 = new Date(dt).toLocaleDateString().split("/")[2];
-                var day3;
-                var month3;
-                if(day3temp < 10){
-                    day3 = '0' + day3temp;
-                }else{
-                    day3 = day3temp;
-                }
-                if(month3temp < 10){
-                    month3 = '0' + month3temp;
-                }else{
-                    month3 = month3temp;
-                }
+                var day3 = day3temp;
+                var month3=month3temp;
+                // console.log(day3);
+                // if(day3temp < 10){
+                //     day3 = '0' + day3temp;
+                // }else{
+                //     day3 = day3temp;
+                // }
+                // if(month3temp < 10){
+                //     month3 = '0' + month3temp;
+                // }else{
+                //     month3 = month3temp;
+                // }
                 let currentYear = moment().format("YYYY");
                 var completeDate;
 
@@ -221,8 +257,9 @@ class CommitChart extends Component {
         }
 
         var comarr = this.state.data;
-        const daylist = getDaysArray(new Date(this.props.startTime + "T12:00:00"),new Date(this.props.endTime+ "T12:00:00"));
-        console.log(this.state.childVal)
+        console.log(comarr);
+        const daylist = getDaysArray(new Date(this.props.startTime ),new Date(this.props.endTime));
+        console.log(daylist)
         //height={daylist.length*(500/daylist.length)}
         return (
             <div>
