@@ -125,7 +125,7 @@ class CommitChart extends Component {
         await this.setState({data:chartArr, totalScore: totalScore1})
         console.log(this.state.data);
         await this.setState({commits:resp});
-        this.applyMultipliers()
+        // this.applyMultipliers()
     }
 
     applyMultipliers(){
