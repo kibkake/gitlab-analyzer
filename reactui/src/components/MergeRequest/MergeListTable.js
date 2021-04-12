@@ -11,7 +11,18 @@ import Row from "./MergeListTableRows";
 import './MergeListTable.css'
 import moment from "moment";
 
+
 export default class MergeListTable  extends PureComponent {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            merges:[],
+            parentData: this.props.devName,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
+        }
+    }
 
     applyMultipliers(){
         var scale = JSON.parse(sessionStorage.getItem('languageScale'));
@@ -52,20 +63,12 @@ export default class MergeListTable  extends PureComponent {
         })
     }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            merges:[],
-            parentData: this.props.devName,
-        }
-    }
-
     componentDidMount(){
         const {parentData: parentData} = this.state;
-        this.getDataFromBackend(parentData)
+        this.getDataFromBackend(parentData, this.props.startTime,  this.props.endTime)
     }
 
-    getDataFromBackend (username, startTm, endTm) {
+    async getDataFromBackend (username, startTm, endTm) {
         const pathArray = window.location.pathname.split('/');
         const id = pathArray[2];
         var name = username;
@@ -91,7 +94,7 @@ export default class MergeListTable  extends PureComponent {
         if (this.props.devName !== prevProps.devName ||
             this.props.startTime !== prevProps.startTime ||
             this.props.endTime !== prevProps.endTime){
-            await this.getDataFromBackend(this.props.devName, this.props.startTime,this.props.endTime )
+            await this.getDataFromBackend(this.props.devName, this.props.startTime, this.props.endTime )
         }
     }
 
