@@ -90,6 +90,7 @@ class CommitChart extends Component {
         var index = 0;
         console.log(chartArr);
         for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)) {
+            console.log(dt);
             chartArr.push(0)
         }
         
@@ -97,7 +98,8 @@ class CommitChart extends Component {
 
         for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)){
 
-            var time = moment(dt).format('L')
+            var time = moment(dt).format('YYYY-MM-DD')
+            console.log(time);
             const month = time.substring(0,2)
             const day = time.substring(3,5)
             const year = time.substring(6,10)
@@ -105,7 +107,7 @@ class CommitChart extends Component {
 
             await this.state.commits.map(function(item) {
 
-                var time1 = moment(item.committed_date.split("T")[0]).format('L')
+                var time1 = moment(item.committed_date.split("T")[0]).format('YYYY-MM-DD')
                 const tempMonth = time1.substring(0,2)
                 const tempDay = time1.substring(3,5)
                 const tempYear = time1.substring(6,10)
@@ -207,7 +209,6 @@ class CommitChart extends Component {
         var blackArr = [];
         var getDaysArray = function(start, end) {
             for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
-                
                 var day3temp = new Date(dt).toLocaleDateString().split("/")[0];
                 var month3temp = new Date(dt).toLocaleDateString().split("/")[1];
                 var year3 = new Date(dt).toLocaleDateString().split("/")[2];
