@@ -40,9 +40,9 @@ What to include in parenthesis for @SpringBootTest, to avoid an IllegalStateExce
 */
 package test.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.Repository.Configuration.ConfigurationRepository;
 import main.java.Collections.Project;
 import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
+import main.java.DatabaseClasses.Repository.Configuration.ConfigurationRepository;
 import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
 import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
 import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
@@ -57,7 +57,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -109,8 +109,8 @@ public class ProjectFunctionsTest {
     public void testScoresPerDay() {
         ProjectService projectService = new ProjectService(projectRepository,
                 mergeRequestRepository, commitRepository, developerRepository, snapshotRepository,configurationRepository);
-        LocalDate start = LocalDate.parse("2021-01-01");
-        LocalDate end = LocalDate.parse("2021-03-19");
+        LocalDateTime start = LocalDateTime.parse("2021-01-01");
+        LocalDateTime end = LocalDateTime.parse("2021-03-19");
         List<DateScore> user2Scores = projectService.getScoresPerDayForMRsAndCommits(
                 6, "user2", start, end, ProjectService.UseWhichDevField.USERNAME);
         assertEquals("2021-01-24", user2Scores.get(0).getDate().format(dateFormatter));
@@ -120,8 +120,8 @@ public class ProjectFunctionsTest {
     public void testNumMRs() {
         ProjectService projectService = new ProjectService(projectRepository,
                 mergeRequestRepository, commitRepository, developerRepository, snapshotRepository,configurationRepository);
-        LocalDate start = LocalDate.parse("2021-01-01");
-        LocalDate end = LocalDate.parse("2021-02-28");
+        LocalDateTime start = LocalDateTime.parse("2021-01-01");
+        LocalDateTime end = LocalDateTime.parse("2021-02-28");
         int numMRs = projectService.getNumDevMergeRequests(6, "user2",
                 start, end);
         assertEquals(6, numMRs);

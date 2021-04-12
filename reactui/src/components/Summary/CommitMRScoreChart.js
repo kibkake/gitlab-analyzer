@@ -77,7 +77,6 @@ export default class CommitMRScoreChart extends PureComponent {
             }
             newCodeScore[k].mergeRequestScore=newMergeScore;
             newCodeScore[k].commitScore=newCommitScore;
-            console.log(newCommitScore);
         }
         this.setState({
             codeScore:newCodeScore,
@@ -96,9 +95,7 @@ export default class CommitMRScoreChart extends PureComponent {
     CustomToolTip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             const commitVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
-            console.log(commitVal)
             const mrVal = Math.abs(Math.round(payload[1].value * 10)/10.0);
-            console.log(mrVal)
 
             return (
                 <div className="tooltipBox">
@@ -121,7 +118,6 @@ export default class CommitMRScoreChart extends PureComponent {
                 mergeScore: +item.mergeRequestScore
             };
         });
-        console.log(output);
         console.log("starttime", this.props.startTime)
         const from = Number(new Date(this.props.startTime));
         const to = Number(new Date(this.props.endTime));

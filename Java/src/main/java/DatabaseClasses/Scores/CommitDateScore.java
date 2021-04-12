@@ -1,6 +1,6 @@
 package main.java.DatabaseClasses.Scores;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  *  the name of the user this is for.
  */
 public class CommitDateScore implements Comparable<CommitDateScore>{
-    private LocalDate date;
+    private LocalDateTime date;
     private double commitScore;
     private int numCommits;
     private List<String> commitIds;
@@ -17,7 +17,7 @@ public class CommitDateScore implements Comparable<CommitDateScore>{
     public CommitDateScore() {
     }
 
-    public CommitDateScore(LocalDate date, double commitScore, String id) {
+    public CommitDateScore(LocalDateTime date, double commitScore, String id) {
         this.date = date;
         this.commitScore = commitScore;
         this.numCommits = 0;
@@ -25,13 +25,13 @@ public class CommitDateScore implements Comparable<CommitDateScore>{
         commitIds.add(id);
     }
 
-    public CommitDateScore(LocalDate date, double score, int numCommits) {
+    public CommitDateScore(LocalDateTime date, double score, int numCommits) {
         this.date = date;
         this.commitScore = score;
         this.numCommits = numCommits;
     }
     
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
@@ -39,7 +39,7 @@ public class CommitDateScore implements Comparable<CommitDateScore>{
         return commitScore;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

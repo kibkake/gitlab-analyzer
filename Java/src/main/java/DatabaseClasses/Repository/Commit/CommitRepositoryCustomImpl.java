@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /*** Implements custom quires to get users commits and scores through aggregation and other techniques with
@@ -28,7 +28,7 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
 //  Follows desing patter needed for custom implementation in sprin
     @Override
     public List<CommitDateScore> getDevCommitDateScore(int projectId, String devUserName,
-                                                       LocalDate startDate, LocalDate endDate) {
+                                                       LocalDateTime startDate, LocalDateTime endDate) {
 
         //https://stackoverflow.com/questions/62340986/aggregation-with-multiple-criteria
         final Criteria nameMatchCriteria = Criteria.where("authorName").is(devUserName);
@@ -56,7 +56,7 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
     }
 
     @Override
-    public Double userTotalCommitScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public Double userTotalCommitScore(int projectId, String devUserName, LocalDateTime startDate, LocalDateTime endDate) {
         final Criteria nameMatchCriteria = Criteria.where("authorName").is(devUserName);
         final Criteria projectMatchCriteria = Criteria.where("projectId").is(projectId);
         final Criteria dateMatchCriteria = Criteria.where("date").gte(startDate).lte(endDate);
@@ -75,11 +75,11 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
     }
 
     @Override
-    public List<CommitDateScore> getCommitsWithEveryDateBetweenRange(int projectId, String devUserName, LocalDate startDate, LocalDate endDate) {
+    public List<CommitDateScore> getCommitsWithEveryDateBetweenRange(int projectId, String devUserName, LocalDateTime startDate, LocalDateTime endDate) {
         List<CommitDateScore> userCommitScores = new ArrayList<>(getDevCommitDateScore(projectId, devUserName, startDate, endDate));
 
-        ArrayList<LocalDate> dates = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
-        for(LocalDate date: dates){
+        ArrayList<LocalDateTime> dates = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
+        for(LocalDateTime date: dates){
             if(!containsDate(userCommitScores, date)) {
                 CommitDateScore scoreForDate = new CommitDateScore(date, 0, 0);
                 userCommitScores.add(scoreForDate);
@@ -89,7 +89,7 @@ public class CommitRepositoryCustomImpl implements CommitRepositoryCustom {
         return userCommitScores;
     }
 
-    public boolean containsDate(final List<CommitDateScore> UserScores, final LocalDate date){
+    public boolean containsDate(final List<CommitDateScore> UserScores, final LocalDateTime date){
         return UserScores.stream().anyMatch(scores -> scores.getDate().compareTo(date) == 0);
     }
 

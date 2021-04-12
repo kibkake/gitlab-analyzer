@@ -27,7 +27,7 @@ export default class CommitMRNumChart extends PureComponent {
     async getDataFromBackend (username, startTm, endTm) {
         var pathArray = window.location.pathname.split('/');
         var id = pathArray[2];
-
+        console.log(startTm)
         //request ref: http://localhost:8090/api/v1/projects/6/numCommitsMerge/user2/2021-01-01/2021-02-23
         await axios.get("/api/v1/projects/" + id + "/MRsAndCommitScoresPerDay/" + username + '/' +
             startTm + '/' +
@@ -54,9 +54,9 @@ export default class CommitMRNumChart extends PureComponent {
     CustomToolTip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             const commitVal = Math.abs(Math.round(payload[0].value * 10)/10.0);
-            console.log(commitVal)
+            // console.log(commitVal)
             const mrVal = Math.abs(Math.round(payload[1].value * 10)/10.0);
-            console.log(mrVal)
+            // console.log(mrVal)
 
             return (
                 <div className="tooltipBox">

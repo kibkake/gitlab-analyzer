@@ -1,22 +1,19 @@
 package test.java.DatabaseClasses.Controller;
 
-import main.java.Collections.Commit;
 import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
-import main.java.Main;
-import main.java.DatabaseClasses.Service.CommitService;
 import main.java.DatabaseClasses.Scores.CommitDateScore;
-
+import main.java.DatabaseClasses.Service.CommitService;
+import main.java.Main;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This class will contain JUnit tests for some of the main functions in
@@ -34,13 +31,13 @@ public class CommitFunctionsTest {
 
     @Test
     public void testGetUserCommitsArray() {
-        LocalDate start = LocalDate.parse("2021-01-01");
-        LocalDate end = LocalDate.parse("2021-03-24");
+        LocalDateTime start = LocalDateTime.parse("2021-01-01");
+        LocalDateTime end = LocalDateTime.parse("2021-03-24");
         CommitService commitService = new CommitService(commitRepository);
         List<CommitDateScore> userCommits = commitService.getUserCommitsArray(6,
                 "user2", start, end);
         for (CommitDateScore currentScore: userCommits) {
-            LocalDate date = currentScore.getDate();
+            LocalDateTime date = currentScore.getDate();
             if (date.getDayOfMonth() == 24 && date.getMonthValue() == 1) {
                 assertEquals(0.6, currentScore.getCommitScore(), precisionLevel);
                 assertEquals(2, currentScore.getNumCommits());

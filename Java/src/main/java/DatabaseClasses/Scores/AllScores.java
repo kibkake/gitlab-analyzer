@@ -1,13 +1,13 @@
 package main.java.DatabaseClasses.Scores;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 /**
  * This class stores a user's total commit score, total comment score, and total merge request score
  * over a given time period (from startDate to endDate).
  */
 public class AllScores {
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private Double totalCommitScore;
     private int totalCommentWordCount;
     private Double totalMergeRequestScore;
@@ -16,7 +16,7 @@ public class AllScores {
 
     }
 
-    public AllScores(LocalDate startDate, LocalDate endDate, double totalCommitScore,
+    public AllScores(LocalDateTime startDate, LocalDateTime endDate, double totalCommitScore,
                      int totalCommentWordCount, double totalMergeRequestScore) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -25,26 +25,26 @@ public class AllScores {
         this.totalMergeRequestScore = totalMergeRequestScore;
     }
 
-    public AllScores(LocalDate startDate, LocalDate endDate, Double totalCommitScore, Double totalMergeRequestScore) {
+    public AllScores(LocalDateTime startDate, LocalDateTime endDate, Double totalCommitScore, Double totalMergeRequestScore) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalCommitScore = totalCommitScore;
         this.totalMergeRequestScore = totalMergeRequestScore;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
