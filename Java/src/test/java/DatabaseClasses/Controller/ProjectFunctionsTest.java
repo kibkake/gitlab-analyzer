@@ -55,6 +55,9 @@ import main.java.DatabaseClasses.Scores.DateScore;
 import main.java.Collections.DateScoreDiff;
 import main.java.Collections.Note;
 import main.java.Collections.Developer;
+import main.java.Collections.MergeRequest;
+import main.java.Collections.Commit;
+import main.java.Collections.Diff;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -101,7 +104,6 @@ public class ProjectFunctionsTest {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private double epsilon = 0.00001;
-
 
     @Test
     public void testingFindProjectWithRepositoryAndService() {
@@ -352,6 +354,74 @@ public class ProjectFunctionsTest {
             assertEquals(expectedMRDiffs, dateScore.getMergeRequestDiffs());
             assertEquals("user2", dateScore.getUserName());
         }
+    }
+
+    @Test
+    public void testGetDevMergeRequests() {
+        ProjectService projectService = createProjectServiceObject();
+        ProjectController projectController = new ProjectController(projectService);
+        List<MergeRequest> mergeRequests = projectController.getDevMergeRequests(6, "user2", "2021-01-01", "2021-04-11");
+        assertEquals(7, mergeRequests.size());
+
+        int expectedID = 0;
+        String expectedTitle = null;
+        int expectedNumContributors = 0;
+        List<String> expectedCommitTitles = null;
+        String expectedSHA = null;
+        double expectedMRScore = 0;
+        List<String> expectedNoteBodies = null;
+        List<Double> expectedDiffScores = null;
+        double expectedSumOfCommits = 0;
+        int expectedIID = 0;
+
+        for (int i = 0; i < mergeRequests.size(); i++) {
+            if (i == 0) {
+                expectedID = 59;
+                expectedTitle = "Update src/NewClass.java, src/Main.java files";
+                expectedNumContributors = 1;
+                expectedCommitTitles = new ArrayList<>(
+                        Arrays.asList("Update src/NewClass.java, src/Main.java files"));
+                expectedSHA = "0f0822a97bbb9500e2e682e60a590b9bd4504956";
+                expectedMRScore = 31.2;
+                expectedNoteBodies = new ArrayList<>(
+                        Arrays.asList("mentioned in commit 45b56d337b267631f8c0a8397ff6a769b8e2bfe7"));
+                expectedDiffScores = new ArrayList<>(Arrays.asList(16.4, 14.8));
+                expectedSumOfCommits = 31.2;
+                expectedIID = 12;
+            }
+
+            if (i != 0) {
+                continue; // temporary - just want to test the code below for i = 0, since that's all that's done so far.
+            }
+
+            MergeRequest mergeRequest = mergeRequests.get(i);
+            assertEquals(expectedID, mergeRequest.getId());
+            assertEquals(expectedTitle, mergeRequest.getTitle());
+            assertEquals(expectedNumContributors, mergeRequest.getContributors().size());
+            List<Commit> commits = mergeRequest.getCommits();
+            List<String> commitTitles = new ArrayList<>();
+            for (Commit commit : commits) {
+                commitTitles.add(commit.getTitle());
+            }
+            assertEquals(expectedCommitTitles, commitTitles);
+            assertEquals(expectedSHA, mergeRequest.getSha());
+            assertEquals(expectedMRScore, mergeRequest.getMrScore(), epsilon);
+            List<Note> notes = mergeRequest.getAllNotes();
+            List<String> noteBodies = new ArrayList<>();
+            for (Note note : notes) {
+                noteBodies.add(note.getBody());
+            }
+            assertEquals(expectedNoteBodies, noteBodies);
+            List<Diff> diffs = mergeRequest.getDiffs();
+            List<Double> diffScores = new ArrayList<>();
+            for (Diff diff : diffs) {
+                diffScores.add(diff.getDiffScore());
+            }
+            assertEquals(expectedDiffScores, diffScores);
+            assertEquals(expectedSumOfCommits, mergeRequest.getSumOfCommits(), epsilon);
+            assertEquals(expectedIID, mergeRequest.getMergeRequestIdForASpecificProject());
+        }
+
     }
 
     // Helper functions:
