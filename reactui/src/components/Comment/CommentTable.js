@@ -39,7 +39,7 @@ class CommentTable extends Component{
             comments:[], // Will equal one of the above arrays, and is used for the table.
             issue:true,
             code_rev:true,
-            parentdata: this.props.devName,
+            parentData: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime,
             devs_code_btn_name:"Just the comments on own code in code reviews",
@@ -60,8 +60,8 @@ class CommentTable extends Component{
     }
 
     componentDidMount() {
-        const {parentdata} = this.state;
-        this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime)
+        const {parentData} = this.state;
+        this.getDataFromBackend(parentData, this.props.startTime,  this.props.endTime)
     }
 
     async getDataFromBackend (username, startTm, endTm) {
@@ -69,26 +69,31 @@ class CommentTable extends Component{
         const id = pathArray[2];
         const developer = pathArray[4];
         let shouldFilter = "false";
+        var name = username;
 
-        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/false" + "/2021-01-01/2021-05-09")
+        if(sessionStorage.getItem('DeveloperNames' + id) != null && sessionStorage.getItem('Developers' + id) != null) {
+            for (var i = 0; i < JSON.parse(sessionStorage.getItem('Developers' + id)).length; i++) {
+                if (JSON.stringify(username) === JSON.stringify(JSON.parse(sessionStorage.getItem('Developers' + id))[i])) {
+                    name = JSON.parse(sessionStorage.getItem('DeveloperNames' + id))[i]//use name to retrieve data
+                }
+            }
+        }
+
+        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/false/" + startTm + "/" + endTm)
             .then(response => {
                 const all_comments = response.data
                 const backup_all_comments = all_comments.slice();
                 this.setState({all_comments: all_comments, backup_all_comments: backup_all_comments});
-                console.log(this.state.all_comments);
-                console.log(this.state.backup_all_comments);
             }).catch((error) => {
             console.error(error);
         });
 
-        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/true" + "/2021-01-01/2021-05-09")
+        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/true/" + startTm + "/" + endTm)
             .then(response => {
                 const comments_on_devs_code = response.data
                 const backup_comments_on_devs_code = comments_on_devs_code.slice();
                 this.setState({comments_on_devs_code: comments_on_devs_code,
                     backup_comments_on_devs_code: backup_comments_on_devs_code});
-                console.log(this.state.comments_on_devs_code);
-                console.log(this.state.backup_comments_on_devs_code);
             }).catch((error) => {
             console.error(error);
         });
@@ -99,13 +104,14 @@ class CommentTable extends Component{
         else {
             await this.setState({comments:this.state.comments_on_devs_code.slice()});
         }
-        console.log(this.state.comments);
     }
 
     componentDidUpdate(prevProps){
-        if(this.props.devName !== prevProps.devName){
-            this.setState({parentdata: this.props.devName});
-            this.getDataFromBackend(this.props.devName)
+        if(this.props.devName !== prevProps.devName ||
+            this.props.startTime !== prevProps.startTime ||
+            this.props.endTime !== prevProps.endTime){
+                this.setState({parentData: this.props.devName});
+                this.getDataFromBackend(this.props.devName, this.props.startTime, this.props.endTime)
         }
     }
 

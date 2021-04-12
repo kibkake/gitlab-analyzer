@@ -6,7 +6,6 @@ import './DropDownMenu.css';
 import MergeListTable from "../MergeRequest/MergeListTable";
 import moment from "moment";
 import ProjectService from "../../Service/ProjectService";
-import SummaryScoreTable from "../Summary/SummaryScoreTable";
 
 function DropDownMenuMerge ({listOfDevelopers}) {
 
@@ -27,7 +26,6 @@ function DropDownMenuMerge ({listOfDevelopers}) {
     }
 
     function getInitialStartDate() {
-
         if(sessionStorage.getItem("startdate") != null){
             return new Date (sessionStorage.getItem("startdate") + "T12:00:00")
         }
@@ -70,7 +68,6 @@ function DropDownMenuMerge ({listOfDevelopers}) {
     }
 
     return (
-
         <div classname='CodeDiff'>
             <Navbar_Developers devName = {sessionStorage.getItem("CurrentDeveloper")}/>
             <br>
@@ -85,12 +82,9 @@ function DropDownMenuMerge ({listOfDevelopers}) {
             <br>
             </br>
             <h2> Merge Requests</h2>
-            {/*<NewMergeList  devName = {selectedValue}/>*/}
-
             <MergeListTable  devName = {selectedValue}
                              startTime = {changeDateFormat(getInitialStartDate())}
-                             endTime = {changeDateFormat(getInitialEndDate())}
-            />
+                             endTime = {changeDateFormat(getInitialEndDate())}/>
         </div>
     )
 

@@ -155,7 +155,6 @@ export default class MergeListTable  extends PureComponent {
                             <Row key={merge.date} row={merge}/>
                         ))}
                     </TableBody>
-
                 </Table>
             </TableContainer>
                 </div>
