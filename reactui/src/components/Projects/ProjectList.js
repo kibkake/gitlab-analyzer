@@ -2,13 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import axios from "axios";
 import "./ProjectList.css";
 import moment from "moment";
-import FormCheck from 'react-bootstrap/FormCheck'
 import {MDBBtn, MDBDataTable, MDBInput,  MDBCard, MDBCardBody, MDBCardHeader, MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
-import {ProgressBar} from "react-bootstrap";
-import UpdatePopup from "./UpdatePopUp";
-import {CircularProgress, Modal} from "@material-ui/core";
-import Button from "react-bootstrap/Button";
-import UpdateModal from "./UpdateModal";
 
 //[https://mdbootstrap.com/docs/react/tables/datatables/]
 export default function ProjectList (){
