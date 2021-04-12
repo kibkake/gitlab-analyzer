@@ -1,5 +1,5 @@
 .filters-header-margin{
-    margin-left:39.5%;
+    margin-left:56%;
 }
 
 .sort-header-margin{
@@ -27,7 +27,7 @@
 }
 
 .comments-on-issues-margin{
-    margin-left:-45% !important;
+    margin-left:-30% !important;
 }
 
 .comments-on-code-reviews-margin{
@@ -35,7 +35,7 @@
 }
 
 .comments-on-dev-code-margin{
-    margin-left:-45% !important;
+    margin-left:-30% !important;
 }
 
 .button-colour-when-unsorted{
