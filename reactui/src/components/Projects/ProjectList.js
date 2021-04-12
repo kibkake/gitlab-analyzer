@@ -138,20 +138,19 @@ export default function ProjectList (){
         <div>
             <div align="center" style={{padding: '20px'}}>
                 <button type="button" className="btn btn-secondary" onClick={() => {handleUpdateRepos(); openPopup();}}>Update Selected Projects</button>
-                <Modal show={updatePopup} onHide={closePopup()}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Updating in Progress...</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body> <CircularProgress/> </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="primary" onClick={closePopup()}>
-                            CANCEL UPDATE
-                        </Button>
-                    </Modal.Footer>
-
-                </Modal>
-                {/*<UpdatePopup closeOnOutsideClick={true} trigger={updatePopup} setTrigger={openPopup()} transparent={false}/>*/}
             </div>
+
+                {/*<Modal show={updatePopup} onHide={closePopup()}>*/}
+                {/*    <Modal.Header closeButton>*/}
+                {/*        <Modal.Title>Updating in Progress...</Modal.Title>*/}
+                {/*    </Modal.Header>*/}
+                {/*    <Modal.Body> <CircularProgress/> </Modal.Body>*/}
+                {/*    <Modal.Footer>*/}
+                {/*        <Button variant="primary" onClick={closePopup()}>*/}
+                {/*            CANCEL UPDATE*/}
+                {/*        </Button>*/}
+                {/*    </Modal.Footer>*/}
+
             <MDBDataTable hover btn sortable pagesAmount={20}
                           searchLabel="Search By Project Name/Month"
                           small
