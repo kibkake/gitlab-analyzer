@@ -97,15 +97,17 @@ public class ProjectService {
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
-        if (project.projectHasBeenUpdated()) {
-            project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
-            project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
-            project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
-            project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
-            project.setSyncInfo();
-            project.setLastSyncAt();
-            projectRepository.save(project);
-        }
+
+        //TODO: removed if statement here since an error was found that
+        // the condition doesn't update for newly added project
+        //        if (project.projectHasBeenUpdated()) {
+        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
+        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
+        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
+        project.setSyncInfo();
+        project.setLastSyncAt();
+        projectRepository.save(project);
     }
 
     public void setProjectMrs(int projectId) {
@@ -122,28 +124,18 @@ public class ProjectService {
                 "Project with id " + projectId + " does not exist"));
 
         project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
-        System.out.println("update is doing1");
-
         List<Commit> projectCommits = new CommitConnection().getProjectCommitsFromGitLab(projectId);
-        System.out.println("update is doing2");
-
         List<MergeRequest> projectMergeRequests = new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId);
-        System.out.println("update is doing3");
-
         project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
-        System.out.println("update is doin4g");
-
         projectRepository.save(project);
-        System.out.println("update is doing5");
-
         commitRepository.saveAll(projectCommits);
-        System.out.println("update is doing6");
-
         mergeRequestRepository.saveAll(projectMergeRequests);
 
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
-//        setDeveloperInfoWithSnapshot(projectId, snapshot, projectDevs);
+
+        //commented out the line below since we decided not to use developer collection
+        //setDeveloperInfoWithSnapshot(projectId, snapshot, projectDevs);
     }
 
     @Transactional(timeout = 1200) // 20 min

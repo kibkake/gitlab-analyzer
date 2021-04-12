@@ -169,6 +169,7 @@ public class Project {
         }
     }
 
+    // TODO: commented out the commit date part, since the error regarding that was not fixed
     private Instant lastProjectUpdateDate() {
         Instant mostRecentMergeRequestUpdateDate = new main.java.ConnectToGitlab.MergeRequestConnection().getMostRecentMergeRequestUpdateDate(id);
         Instant mostRecentIssueUpdateDate = new main.java.ConnectToGitlab.IssueConnection().getMostRecentIssueUpdateDate(id);

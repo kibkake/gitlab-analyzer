@@ -17,9 +17,8 @@ export default function ProjectList (){
     const [checked, setChecked] = useState([]);
     const [updatePopup, setUpdatePopup] = useState(false);
     const [areAllChecked, setAreAllChecked] = useState(false)
-    let checkedArray = [];
 
-    //TODO: prevent infinite rerendering
+
     //[https://dmitripavlutin.com/react-useeffect-infinite-loop/#:~:text=The%20infinite%20loop%20is%20fixed,callback%2C%20dependencies)%20dependencies%20argument.&text=Adding%20%5Bvalue%5D%20as%20a%20dependency,so%20solves%20the%20infinite%20loop.]
     useEffect(()=>{
         axios.get('/api/v1/projects')
@@ -77,7 +76,7 @@ export default function ProjectList (){
         }) => [...result, ...checked ? [id] : []], []);
         console.log(projectIdToUpdate);
 
-        const projectUp = [12] //[11, 10, 8, 6, 5, 3, 12]
+        const projectUp = [12, 10] //[11, 10, 8, 6, 5, 3, 12]
 
         axios.post("/api/v1/setProjectInfoWithSettings", projectUp, {
             headers: {'Content-Type': 'application/json'}})

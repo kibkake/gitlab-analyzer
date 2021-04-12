@@ -1,5 +1,4 @@
 package main.java.DatabaseClasses.Controller;
-
 import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Scores.AllScores;
 import main.java.DatabaseClasses.Scores.DateScore;
@@ -8,7 +7,6 @@ import main.java.Collections.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,13 +48,13 @@ public class ProjectController {
     }
 
 
-    //TODO: how to update if the current db is not empty,
-    //and a new project is added? Because the new project isn't getting updated by setProjectInfoWithSetting() call
     @GetMapping("projects")
     public List<Project> getAllProjects() {
         List<Project> projectsInDB = projectService.getAllProjects();
         List<Project> projectsInGitLab = new ProjectConnection().getAllProjectsFromGitLab();
 
+        // TODO: this is not ideal since this can't update newly added project,
+        // but I changed it back in this way to avoid new connection reset the existing repo completely
         if (projectsInDB.size() == 0){ // != projectsInGitLab.size()) {
             projectService.saveNewProjects(projectsInGitLab);
         }
@@ -69,34 +67,23 @@ public class ProjectController {
     @PostMapping("setProjectInfoWithSettings")
     @ResponseStatus(value = HttpStatus.OK)
     public void setProjectInfoWithSettings(@RequestBody int[] projectIds) {
-        Snapshot snapshot = new Snapshot(startDate, endDate);
-        System.out.println(Arrays.toString(projectIds));// array is received properly
+        System.out.println(Arrays.toString(projectIds));
 
         this.snapshot = new Snapshot(startDate, endDate);
-        for (int i=0; i < projectIds.length-1; i++) {
-            projectService.setProjectInfo(projectIds[i]);
+        for (int i = 0; i < projectIds. length-1; i++) {
 
-            projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
-
-//            Project project = projectService.getProject(projectIds[i]);
-//            if (!project.isInfoSet()) {
-//                System.out.println("repo " + projectIds[i] + " is being updated");
-//                projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
-//
-////                projectService.setProjectInfo(projectIds[i]);
-//                System.out.println("repo " + projectIds[i] + " is done");
-       }
-        System.out.println("updated is done");
-
-//        System.out.println("update is done");
-//        this.isUpdated = true;
+            Project project = projectService.getProject(projectIds[i]);
+            if (!project.isInfoSet()) {
+                projectService.setProjectInfo(projectIds[i]);
+                projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
+                System.out.println("repo " + projectIds[i] + " is updated");
+            }
+        }
+        this.isUpdated = true;
     }
 
     @GetMapping("projects/updated")
     public boolean isUpdateDone(){
-        if (this.isUpdated) {
-
-        }
         return this.isUpdated;
     }
 
@@ -105,7 +92,6 @@ public class ProjectController {
     public void setProjectInfo(@PathVariable int projectId) {
         projectService.setProjectInfo(projectId);
     }
-
 
     @GetMapping("projects/{projectId}")
     public Project getProject(@PathVariable("projectId") int projectId) {
@@ -152,8 +138,6 @@ public class ProjectController {
     public void deleteSnapshot(@PathVariable("snapId") String id){
         projectService.deleteSnapshot(id);
     }
-
-
 
     @GetMapping("projects/{projectId}/developers")
     public List<Developer> getProjectDevelopers(@PathVariable("projectId") int projectId) {
