@@ -54,10 +54,13 @@ public class ProjectController {
     //and a new project is added? Because the new project isn't getting updated by setProjectInfoWithSetting() call
     @GetMapping("projects")
     public List<Project> getAllProjects() {
-        if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
-            projectService.saveNewProjects(projects);
+        List<Project> projectsInDB = projectService.getAllProjects();
+        List<Project> projectsInGitLab = new ProjectConnection().getAllProjectsFromGitLab();
+
+        if (projectsInDB.size() != projectsInGitLab.size()) {
+            projectService.saveNewProjects(projectsInGitLab);
         }
+
         return projectService.getAllProjects();
     }
 
