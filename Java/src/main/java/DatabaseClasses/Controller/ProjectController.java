@@ -74,11 +74,12 @@ public class ProjectController {
         this.snapshot = new Snapshot(startDate, endDate);
         for (int i=0; i < projectIds.length-1; i++) {
             System.out.println("update is doing");
-            projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
+            projectService.setProjectInfo(projectIds[i]);
+//            projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
         //took about 5 mins
        }
-        System.out.println("update is done");
-        this.isUpdated = true;
+//        System.out.println("update is done");
+//        this.isUpdated = true;
     }
 
     @GetMapping("projects/updated")

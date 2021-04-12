@@ -49,6 +49,4 @@ public class DeveloperController {
     public List<CommitDateScore> getDevCommitArray(@PathVariable int projectId, @PathVariable int devId) {
         return developerService.getDevCommitScores(projectId, devId);
     }
-
-
 }
