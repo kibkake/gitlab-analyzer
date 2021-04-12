@@ -16,6 +16,7 @@ class AllCommits extends Component{
         super(props);
         this.state={
             data: [],
+            commits:[],
             devName: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime
@@ -27,8 +28,29 @@ class AllCommits extends Component{
         this.props.handler(hash)
     }
 
+    componentDidMount(){
+        var tempCommits=[];
+        for(const k in this.props.commits){
+            tempCommits.push({
+                author_name:this.props.commits[k].author_name,
+                commitScore:this.props.commits[k].commitScore,
+                committed_date:this.props.commits[k].committed_date.split('T')[0],
+                committer_name:this.props.commits[k].committer_name,
+                diffs:this.props.commits[k].diffs,
+                id:this.props.commits[k].id,
+                message:this.props.commits[k].message,
+                projectId:this.props.commits[k].projectId,
+                sha:this.props.commits[k].sha,
+                title:this.props.commits[k].title
+            });
+        }
+        console.log(tempCommits);
+        this.setState({
+            commits:tempCommits
+        });
+    }
     render(){
-
+        console.log(this.props.commits)
         var output = this.state.data.map(function(item) {
             return {
                 id: item.id,
