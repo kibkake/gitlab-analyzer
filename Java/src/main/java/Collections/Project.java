@@ -172,15 +172,15 @@ public class Project {
     private Instant lastProjectUpdateDate() {
         Instant mostRecentMergeRequestUpdateDate = new main.java.ConnectToGitlab.MergeRequestConnection().getMostRecentMergeRequestUpdateDate(id);
         Instant mostRecentIssueUpdateDate = new main.java.ConnectToGitlab.IssueConnection().getMostRecentIssueUpdateDate(id);
-        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
+//        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
 
         Instant mostRecentUpdateDate = mostRecentMergeRequestUpdateDate;
         if (mostRecentIssueUpdateDate.compareTo(mostRecentUpdateDate) > 0) {
             mostRecentUpdateDate = mostRecentIssueUpdateDate;
         }
-        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
-            mostRecentUpdateDate = mostRecentCommitDate;
-        }
+//        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
+//            mostRecentUpdateDate = mostRecentCommitDate;
+//        }
 
         return mostRecentUpdateDate;
     }

@@ -75,9 +75,12 @@ public class ProjectController {
         for (int i=0; i < projectIds.length-1; i++) {
             Project project = projectService.getProject(projectIds[i]);
             if (!project.isInfoSet()) {
+                System.out.println("repo " + projectIds[i] + " is being updated");
                 projectService.setProjectInfo(projectIds[i]);
                 System.out.println("repo " + projectIds[i] + " is being updated");
             }
+            System.out.println("updated is done");
+
 //
 //            System.out.println("update is doing");
 //            projectService.setProjectInfo(projectIds[i]);
