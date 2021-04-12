@@ -15,7 +15,8 @@ export default class CommitMRScoreChart extends PureComponent {
             codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0,commitIds:[],mergeRequestDiffs:[]}],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
-            endTime: this.props.endTime
+            endTime: this.props.endTime,
+            DatescoreData:[{data:null,commistScore:0,mergeRequestScore: 0}]
         }
     }
 
@@ -78,11 +79,35 @@ export default class CommitMRScoreChart extends PureComponent {
             newCodeScore[k].mergeRequestScore=newMergeScore;
             newCodeScore[k].commitScore=newCommitScore;
         }
+        var tempDateScore =[]
+        for(const k in newCodeScore){
+            var dateFound = false; 
+            var tempDate = newCodeScore[k].date.split("T")[0]
+            console.log(tempDate)
+            if(tempDateScore.length===0){
+                tempDateScore.push({date:tempDate,commitScore:newCodeScore[k].commitScore,mergeRequestScore:newCodeScore[k].mergeRequestScore});
+                continue;
+            }
+            for(const i in tempDateScore){
+                if (tempDateScore[i].date===tempDate){
+                    var tempObj = tempDateScore[i];
+                    tempObj.commitScore+=newCodeScore[k].commitScore;
+                    tempObj.mergeRequestScore+=newCodeScore[k].mergeRequestScore;
+                    dateFound=true;
+                    break;
+                }
+            }
+            if(dateFound===false){
+                tempDateScore.push({date:tempDate,commitScore:newCodeScore[k].commitScore,mergeRequestScore:newCodeScore[k].mergeRequestScore});
+            }
+        }
+        console.log(tempDateScore)
         this.setState({
             codeScore:newCodeScore,
+            DatescoreData:tempDateScore
         })
     }
-    
+     
 
     async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName ||
@@ -110,7 +135,7 @@ export default class CommitMRScoreChart extends PureComponent {
 
     render() {
         var tickArr = [];
-        var output = this.state.codeScore.map(function(item) {
+        var output = this.state.DatescoreData.map(function(item) {
             tickArr.push((new Date(item.date)).getTime())
             return {
                 date: (new Date(item.date)).getTime(), //item.date,

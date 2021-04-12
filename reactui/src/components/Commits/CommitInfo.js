@@ -24,7 +24,7 @@ function CommitInfo(props) {
     var numberOfFilesExcluded = CommitService.calculateNumberOfExcludedFilesInCommit(props.commit.diffs, props.commit.id)
     var numberOfFilesInCommit = CommitService.calculateNumberOfFilesInCommit(props.commit.diffs)
 
-    console.log(props.commit)
+    // console.log(props.commit)
 
     return (
         <React.Fragment>
