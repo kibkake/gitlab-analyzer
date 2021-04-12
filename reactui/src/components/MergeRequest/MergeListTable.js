@@ -105,7 +105,7 @@ export default class MergeListTable  extends PureComponent {
                 title: item.title,
                 score: (item.mrScore + item.sumOfCommits).toFixed(1),
                 mrUrl: item.web_url,
-                sum: item.sumOfCommits,
+                sum: (item.sumOfCommits).toFixed(1),
                 diffs: item.diffs.map(function (diffs) {
                     return {
                         path: diffs.new_path,
