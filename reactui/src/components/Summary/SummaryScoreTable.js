@@ -67,13 +67,16 @@ class SummaryScoreTable extends Component{
             var newMRScore=0;
             for(var i in newMerges[k].diffs){
                 var fileExtension = newMerges[k].diffs[i].new_path.split(".").pop();
-                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
                 if(extensionIndex!==-1){
                     var newScore = scale[extensionIndex].multiplier * newMerges[k].diffs[i].diffScore;
                     newMerges[k].diffs[i] = {...newMerges[k].diffs[i], diffScore:newScore};
                     newMRScore = newMRScore+newScore;
                 }else{
-                    newMRScore = newMRScore+newMerges[k].diffs[i].diffScore;
+                    const defaultIndex = scale.findIndex(scale => scale.name==='Default');
+                    var newScore = scale[defaultIndex].multiplier * newMerges[k].diffs[i].diffScore;
+                    newMerges[k].diffs[i] = {...newMerges[k].diffs[i], diffScore:newScore};
+                    newMRScore = newMRScore+newScore;
                 }
             }
             newMerges[k].mrScore=newMRScore;
@@ -94,13 +97,16 @@ class SummaryScoreTable extends Component{
             var newCommitsScore=0;
             for(var i in newCommits[k].diffs){
                 var fileExtension = newCommits[k].diffs[i].new_path.split(".").pop();
-                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
                 if(extensionIndex!==-1){
                     var newScore = scale[extensionIndex].multiplier * newCommits[k].diffs[i].diffScore;
                     newCommits[k].diffs[i] = {...newCommits[k].diffs[i], diffScore:newScore};
                     newCommitsScore = newCommitsScore+newScore;
                 }else{
-                    newCommitsScore = newCommitsScore+newCommits[k].diffs[i].diffScore;
+                    const defaultIndex = scale.findIndex(scale => scale.name==='Default');
+                    var newScore = scale[defaultIndex].multiplier * newCommits[k].diffs[i].diffScore;
+                    newCommits[k].diffs[i] = {...newCommits[k].diffs[i], diffScore:newScore};
+                    newCommitsScore = newCommitsScore+newScore;
                 }
             }
             newCommits[k].commitScore=newCommitsScore;

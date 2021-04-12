@@ -40,29 +40,28 @@ What to include in parenthesis for @SpringBootTest, to avoid an IllegalStateExce
 */
 package test.java.DatabaseClasses.Controller;
 
-import main.java.DatabaseClasses.Controller.ProjectController;
-import main.java.DatabaseClasses.Service.*;
-import main.java.DatabaseClasses.Scores.*;
+import main.java.DatabaseClasses.Repository.Configuration.ConfigurationRepository;
 import main.java.Collections.Project;
-import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
-import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
-import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
 import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
+import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
+import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
+import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
 import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
-import main.java.Main;
+import main.java.DatabaseClasses.Scores.*;
+import main.java.DatabaseClasses.Service.*;
 import main.java.DatabaseClasses.Service.ProjectService;
+import main.java.Main;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This class contains JUnit tests for some of the main GET functions in
@@ -90,6 +89,9 @@ public class ProjectFunctionsTest {
     @Autowired
     private SnapshotRepository snapshotRepository;
 
+    @Autowired
+    private ConfigurationRepository configurationRepository;
+
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Test
@@ -97,7 +99,7 @@ public class ProjectFunctionsTest {
         Project testProjFromRepo = projectRepository.findProjectById(6);
         assertEquals(6, testProjFromRepo.getId());
         ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
+                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository,configurationRepository);
         Project testProjFromService = projectService.getProject(6);
         assertEquals(6, testProjFromService.getId());
         assertEquals(testProjFromRepo, testProjFromService);
@@ -106,7 +108,7 @@ public class ProjectFunctionsTest {
     @Test
     public void testScoresPerDay() {
         ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
+                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository,configurationRepository);
         LocalDate start = LocalDate.parse("2021-01-01");
         LocalDate end = LocalDate.parse("2021-03-19");
         List<DateScore> user2Scores = projectService.getScoresPerDayForMRsAndCommits(
@@ -117,7 +119,7 @@ public class ProjectFunctionsTest {
     @Test
     public void testNumMRs() {
         ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
+                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository,configurationRepository);
         LocalDate start = LocalDate.parse("2021-01-01");
         LocalDate end = LocalDate.parse("2021-02-28");
         int numMRs = projectService.getNumDevMergeRequests(6, "user2",

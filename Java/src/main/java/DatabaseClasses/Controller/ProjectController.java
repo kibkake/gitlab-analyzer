@@ -100,6 +100,24 @@ public class ProjectController {
         return project;
     }
 
+    @PostMapping("saveConfig")
+    public String saveConfig(@RequestBody Configuration config){
+        projectService.saveConfig(config);
+        return config.getId();
+    }
+    @GetMapping("getConfigs")
+    public  List<Configuration> getAllConfigs(){
+        return projectService.getAllConfigs();
+    }
+    @GetMapping("getConfig/{configId}")
+    public Configuration getConfig(@PathVariable("configId") String id){
+        return projectService.getConfig(id);
+    }
+
+    @GetMapping("deleteConfig/{configId}")
+    public void deleteConfig(@PathVariable("configId") String id){
+        projectService.deleteConfig(id);
+    }
     @PostMapping(path = "saveSnapshot")
     public String saveSnapshot(@RequestBody Snapshot snapshot){
         projectService.saveSnapshot(snapshot);

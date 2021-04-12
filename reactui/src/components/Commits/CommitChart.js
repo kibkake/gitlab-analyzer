@@ -120,6 +120,37 @@ class CommitChart extends Component {
             index++
         }
         await this.setState({data:chartArr, totalScore: totalScore1})
+        await this.setState({commits:resp});
+        this.applyMultipliers()
+    }
+
+    applyMultipliers(){
+        var scale = JSON.parse(sessionStorage.getItem('languageScale'));
+        var newCommits= [...this.state.commits];
+        console.log(newCommits);
+        for(const k in newCommits){
+            var newCommitsScore=0;
+            for(var i in newCommits[k].diffs){
+                var fileExtension = newCommits[k].diffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
+                if(extensionIndex!==-1){
+                    var newScore = scale[extensionIndex].multiplier * newCommits[k].diffs[i].diffScore;
+                    newCommits[k].diffs[i] = {...newCommits[k].diffs[i], diffScore:newScore};
+                    newCommitsScore = newCommitsScore+newScore;
+                }else{
+                    const defaultIndex = scale.findIndex(scale => scale.name==='Default');
+                    var newScore = scale[defaultIndex].multiplier * newCommits[k].diffs[i].diffScore;
+                    newCommits[k].diffs[i] = {...newCommits[k].diffs[i], diffScore:newScore};
+                    newCommitsScore = newCommitsScore+newScore;
+                }
+            }
+            newCommits[k].commitScore=newCommitsScore;
+        }
+
+
+        this.setState({
+            data:newCommits,
+        })
     }
 
     showComponents() {

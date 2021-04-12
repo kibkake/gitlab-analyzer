@@ -1,19 +1,20 @@
 package main.java.DatabaseClasses.Service;
 
-import main.java.DatabaseClasses.Scores.CommitDateScore;
-import main.java.DatabaseClasses.Scores.DateScore;
-import main.java.DatabaseClasses.Scores.AllScores;
-import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
-import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
-import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
-import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
-import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
-import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
+import main.java.DatabaseClasses.Repository.Configuration.ConfigurationRepository;
 import main.java.Collections.*;
 import main.java.ConnectToGitlab.CommitConnection;
 import main.java.ConnectToGitlab.DeveloperConnection;
 import main.java.ConnectToGitlab.IssueConnection;
 import main.java.ConnectToGitlab.MergeRequestConnection;
+import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
+import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
+import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
+import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
+import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
+import main.java.DatabaseClasses.Scores.AllScores;
+import main.java.DatabaseClasses.Scores.CommitDateScore;
+import main.java.DatabaseClasses.Scores.DateScore;
+import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
 import org.apache.tomcat.jni.Local;
@@ -37,15 +38,18 @@ public class ProjectService {
     private final CommitRepository commitRepository;
     private final DeveloperRepository developerRepository;
     private final SnapshotRepository snapshotRepository;
+    private final ConfigurationRepository configurationRepository;
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository, MergeRequestRepository mergeRequestRepository,
-                          CommitRepository commitRepository, DeveloperRepository developerRepository, SnapshotRepository snapshotRepository) {
+                          CommitRepository commitRepository, DeveloperRepository developerRepository,
+                          SnapshotRepository snapshotRepository,ConfigurationRepository configurationRepository) {
         this.projectRepository = projectRepository;
         this.mergeRequestRepository = mergeRequestRepository;
         this.commitRepository = commitRepository;
         this.developerRepository = developerRepository;
         this.snapshotRepository = snapshotRepository;
+        this.configurationRepository = configurationRepository;
     }
 
     public enum UseWhichDevField {EITHER, NAME, USERNAME};
@@ -140,6 +144,19 @@ public class ProjectService {
         List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
         setDeveloperInfoWithSnapshot(projectId, snapshot, projectDevs);
     }
+
+    @Transactional(timeout = 1200) // 20 min
+    public void saveConfig(Configuration config){
+        configurationRepository.save(config);
+    }
+
+    public Configuration getConfig(String id){
+        return configurationRepository.findById(id).orElse(null);
+    }
+    public List<Configuration> getAllConfigs(){ return configurationRepository.findAll();}
+
+    @Transactional(timeout = 1200)
+    public void deleteConfig(String id){ configurationRepository.deleteById(id);}
 
     @Transactional(timeout = 1200) // 20 min
     public void saveSnapshot(Snapshot snapshot){

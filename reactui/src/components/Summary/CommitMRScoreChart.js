@@ -57,7 +57,7 @@ export default class CommitMRScoreChart extends PureComponent {
             var newMergeScore=0;
             for(const i in newCodeScore[k].commitDiffs){
                 var fileExtension = newCodeScore[k].commitDiffs[i].new_path.split(".").pop();
-                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
                 if(extensionIndex!==-1){
                     var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].commitDiffs[i].diffScore;
                     newCommitScore = newCommitScore+tempCommitScore;
@@ -67,7 +67,7 @@ export default class CommitMRScoreChart extends PureComponent {
             }
             for(const i in newCodeScore[k].mergeRequestDiffs){
                 var fileExtension = newCodeScore[k].mergeRequestDiffs[i].new_path.split(".").pop();
-                const extensionIndex = scale.findIndex(scale => scale.extention === fileExtension);
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
                 if(extensionIndex!==-1){
                     var tempCommitScore = scale[extensionIndex].multiplier*newCodeScore[k].mergeRequestDiffs[i].diffScore;
                     newMergeScore = newMergeScore+tempCommitScore;

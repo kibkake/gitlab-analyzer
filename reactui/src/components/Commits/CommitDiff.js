@@ -30,6 +30,7 @@ class SingleCommitDiff extends Component{
 
     async componentDidMount() {
         await this.getDataFromBackend();
+        this.applyMultipliersCommits();
     }
 
     async getDataFromBackend(){
@@ -48,9 +49,38 @@ class SingleCommitDiff extends Component{
         await this.setState({data:tempArr})
     }
 
+    applyMultipliersCommits(){
+        var scale = JSON.parse(sessionStorage.getItem('languageScale'));
+        var newCommits = [...this.state.data];
+
+        for(const k in newCommits){
+            var newCommitsScore=0;
+            for(var i in newCommits[k].diffs){
+                var fileExtension = newCommits[k].diffs[i].new_path.split(".").pop();
+                const extensionIndex = scale.findIndex(scale => scale.extension === fileExtension);
+                if(extensionIndex!==-1){
+                    var newScore = scale[extensionIndex].multiplier * newCommits[k].diffs[i].diffScore;
+                    newCommits[k].diffs[i] = {...newCommits[k].diffs[i], diffScore:newScore};
+                    newCommitsScore = newCommitsScore+newScore;
+                }else{
+                    const defaultIndex = scale.findIndex(scale => scale.name==='Default');
+                    var newScore = scale[defaultIndex].multiplier * newCommits[k].diffs[i].diffScore;
+                    newCommits[k].diffs[i] = {...newCommits[k].diffs[i], diffScore:newScore};
+                    newCommitsScore = newCommitsScore+newScore;
+                }
+            }
+            newCommits[k].commitScore=newCommitsScore;
+        }
+
+        console.log(newCommits);
+        this.setState({
+            data:newCommits,
+        })
+    }
     async componentDidUpdate(prevProps){
         if(this.props.hash !== prevProps.hash){
-            await this.getDataFromBackend()
+            await this.getDataFromBackend();
+            this.applyMultipliersCommits();
         }
     }
 

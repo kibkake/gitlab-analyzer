@@ -17,7 +17,7 @@ export default class SnapshotService {
     }
 
     static saveSnapshot(username,startDate,endDate,projectId,dev, page){
-        const snapInfo = JSON.stringify({ 'username':username, 'startDate':startDate,'endDate':endDate,'projectId':projectId,'dev':dev,'page':page});
+        const snapInfo = JSON.stringify({ 'username':username, 'startDate':startDate,'endDate':endDate,'projectId':projectId,'dev':dev,'page':page,'languageScale':sessionStorage.getItem('languageScale')});
         console.log(snapInfo);
         return axios.post(REST_API+"saveSnapshot", snapInfo, {
             headers: {
