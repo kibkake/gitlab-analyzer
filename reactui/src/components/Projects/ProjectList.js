@@ -104,7 +104,8 @@ export default function ProjectList (){
         let dateStringUpdated = moment(item.last_sync_at).format('lll').replace(currentYear, "")
         return {
             check: <input type="checkbox" checked={areAllChecked ? true : checked.checked}
-                          onClick={() => handleSingleCheckboxChange(item.id)}/>,
+                          onClick={() => handleSingleCheckboxChange(item.id)}
+                            disabled={(item.id === 13 || item.id === 14) ? true : false}/>,
             id: <button color="purple" className= "repoSelectBtn" onClick={(e) => { e.preventDefault();
                 window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.id}</button>,
             name: item.name,
