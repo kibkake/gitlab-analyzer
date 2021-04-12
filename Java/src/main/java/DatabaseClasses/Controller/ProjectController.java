@@ -65,6 +65,12 @@ public class ProjectController {
         projectService.setProjectInfoWithSettings(projectId, projectSettings);
     }
 
+    @RequestMapping("setProjectDevs/{projectId}")
+    public void setProjectDevs(@PathVariable int projectId, ProjectSettings projectSettings) {
+        projectSettings.setProjectId(projectId);
+        projectService.setListOfProjectsDevs(projectId);
+    }
+
     @RequestMapping("setDevCommits/{projectId}")
     public void setDevCommits(@PathVariable int projectId, ProjectSettings projectSettings) {
         projectSettings.setProjectId(projectId);
@@ -75,6 +81,12 @@ public class ProjectController {
     public void setDevMrs(@PathVariable int projectId, ProjectSettings projectSettings) {
         projectSettings.setProjectId(projectId);
         projectService.setDeveloperMrs(projectId, projectSettings);
+    }
+
+    @RequestMapping("setDevScores/{projectId}")
+    public void setDevScores(@PathVariable int projectId, ProjectSettings projectSettings) {
+        projectSettings.setProjectId(projectId);
+        projectService.setDevScores(projectId, projectSettings);
     }
 
     @RequestMapping("setDevInfo/{projectId}")

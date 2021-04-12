@@ -96,6 +96,16 @@ public class ProjectService {
         }
     }
 
+    @Transactional(timeout = 1200000)
+    public void setListOfProjectsDevs(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        projectRepository.save(project);
+
+    }
+
+
     @Transactional(timeout = 1200000) // 20 min
     public void setProjectInfoWithSettings(int projectId, ProjectSettings projectSettings) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
@@ -188,6 +198,7 @@ public class ProjectService {
             List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
                     dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
             dev.setDbKey(Integer.toString(projectId) +  String.valueOf(dev.getDevId()));
+            dev.setProjectId(projectId);
             dev.setMergeRequestsAndCommits(devMergeRequests);
             developerRepository.saveDev(dev);
         }
@@ -199,6 +210,7 @@ public class ProjectService {
                 "Project with id " + projectId + " does not exist"));
         List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
 
+        System.out.println(projectDevs);
         for (Developer dev: projectDevs) {
             //https://www.javaprogramto.com/2020/12/java-convert-localdate-to-date.html
             ZoneId systemTimeZone = ZoneId.systemDefault();
@@ -217,7 +229,39 @@ public class ProjectService {
             devCommits.addAll(devCommitsByName);
 
             dev.setDbKey(Integer.toString(projectId) +  String.valueOf(dev.getDevId()));
+            dev.setProjectId(projectId);
             dev.setCommits(devCommits);
+            developerRepository.saveDev(dev);
+        }
+    }
+
+    @Transactional(timeout = 1200000)
+    public void setDevScores(int projectId, ProjectSettings projectSettings) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
+                "Project with id " + projectId + " does not exist"));
+        List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
+
+        for (Developer dev: projectDevs) {
+            List<CommitDateScore> devCommitScores = commitRepository.getDevCommitDateScore(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            List<MergeRequestDateScore> devMergeRequestDateScores = mergeRequestRepository.getDevsMrsScoreADay(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId,
+                    dev.getUsername(), projectSettings.getStartDate(), projectSettings.getEndDate());
+
+            AllScores devAllScores = new AllScores(projectSettings.getStartDate(), projectSettings.getEndDate(), devTotalCommitScore,
+                    devTotalMergeRequestScore);
+
+            dev.setDbKey(Integer.toString(projectId) +  String.valueOf(dev.getDevId()));
+            dev.setProjectId(projectId);
+            dev.setMergeRequestDateScores(devMergeRequestDateScores);
+            dev.setCommitDateScores(devCommitScores);
+            dev.setAllScores(devAllScores);
             developerRepository.saveDev(dev);
         }
     }

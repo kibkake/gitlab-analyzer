@@ -50,7 +50,7 @@ public class DeveloperController {
         return developerService.getDevCommitScores(projectId, username);
     }
 
-    @GetMapping("{username}/commits")
+    @GetMapping("{username}/DevCommits")
     public List<Commit> getDevCommits(@PathVariable int projectId, @PathVariable String username) {
         return developerService.getDevCommits(projectId, username);
     }
