@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -51,10 +53,12 @@ public class IssueConnection {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Issue>>() {
                 });
         issues.addAll(Objects.requireNonNull(issueResponse.getBody()));
+        if(issues.size() != 0) {
         Issue issue = issues.get(0);
         String dateString = issue.getUpdatedAt();
-
         return Instant.parse(dateString);
+        }
+        return Instant.now();
     }
 
     private static List<Note> getIssueNotes(int projectId , int issueIForProject) {

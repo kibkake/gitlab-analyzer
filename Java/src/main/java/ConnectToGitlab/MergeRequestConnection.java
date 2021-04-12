@@ -2,6 +2,7 @@ package main.java.ConnectToGitlab;//package main.java.ConnectToGitlab.MergeReque
 
 import main.java.Collections.*;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -62,9 +63,12 @@ public class MergeRequestConnection {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<MergeRequest>>() {
                 });
         mergeRequests.addAll(Objects.requireNonNull(mergeRequestsResponse.getBody()));
+
+        if(mergeRequests.isEmpty()) {
+            return Instant.now();
+        }
         MergeRequest mergeRequest = mergeRequests.get(0);
         String dateString = mergeRequest.getUpdatedAt();
-
         return Instant.parse(dateString);
     }
 

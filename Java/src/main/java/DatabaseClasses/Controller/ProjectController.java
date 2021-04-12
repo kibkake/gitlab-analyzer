@@ -239,7 +239,6 @@ public class ProjectController {
     }
 
     // TODO: should be checked, doesn't return data.
-    // TODO: Change "topTenUserNotes" to "topTenDevNotes".
     @GetMapping("projects/{projectId}/topTenUserNotes/{committerName}/{start}/{end}")
     public List<Note> getTopTenDevNotes(@PathVariable("projectId") int projectId,
                                         @PathVariable("committerName") String committerName,
