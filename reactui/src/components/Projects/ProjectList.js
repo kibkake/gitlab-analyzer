@@ -58,7 +58,7 @@ export default function ProjectList (){
             checked
         }) => [...result, ...checked ? [id] : []], []);
         console.log(projectIdToUpdate);
-        const projectUp = [12, 5]
+        const projectUp = [5, 10, 8, 5, 3, 14, 13]
         axios.post("/api/v1/setProjectInfoWithSettings", projectUp, {
             headers: {'Content-Type': 'application/json'}})
             .then(response => {
@@ -82,14 +82,13 @@ export default function ProjectList (){
             // <MDBInput label=' ' checked={this.state.selectAll ? true : checked[1].checked} type='checkbox' id='checkbox7' onChange={() => checkHandler(2)}/>,
 
             //<MDBInput label=' ' checked={areAllChecked  ? true : checked[1].checked} type='checkbox' id='checkbox7'  onClick={() => checkHandler(2)}/>
-            id: <button color="purple" onClick={(e) => { e.preventDefault();
+            id: <button color="purple" className= "repoSelectBtn" onClick={(e) => { e.preventDefault();
                 window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.id}</button>,
             name: item.name,
             des: <MDBBtn color="purple" size="sm" onClick={(e) => {e.preventDefault();
                 window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.description}</MDBBtn>,
             created: dateStringCreated,
             updated: (item.last_sync_at === "never" || item.last_sync_at === null) ? "Not Available" : dateStringUpdated,
-            syncing: <ProgressBar animated now={45} />,
         }
     })
 
@@ -102,7 +101,6 @@ export default function ProjectList (){
             {label: 'Description', field: 'des', sort: 'asc', width: 400},
             {label: 'CreatedAt', field: 'created', sort: 'asc', width: 150},
             {label: 'UpdatedAt', field: 'updated', sort: 'asc', width: 150},
-            {label: 'Sync Progress', field: 'syncing', sort: 'asc', width: 150},
             {label: <MDBInput label=" " type="checkbox" valueDefault={areAllChecked} onChange={handleSelectAllChange}/>,
                 // <FormCheck class="form-check-inline"> <FormCheck.Label>
                 //     <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>

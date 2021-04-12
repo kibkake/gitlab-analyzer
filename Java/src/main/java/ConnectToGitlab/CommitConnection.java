@@ -1,6 +1,7 @@
 package main.java.ConnectToGitlab;
 import main.java.Collections.Commit;
 import main.java.Collections.Diff;
+import main.java.Collections.Issue;
 import main.java.Collections.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -53,9 +54,13 @@ public class CommitConnection {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Commit>>() {
                 });
         commits.addAll(Objects.requireNonNull(commitJSON.getBody()));
-        Commit commit = commits.get(0);
 
-        return commit.getDate().toInstant();
+        if (commits.size() != 0) {
+            Commit commit = commits.get(0);
+            String dateString = commit.getUpdatedAt();
+            return Instant.parse(dateString);
+        }
+        return Instant.now();
     }
 
     public static List<Diff> getSingleCommitDiffs(Integer projectId, String commitHash) {

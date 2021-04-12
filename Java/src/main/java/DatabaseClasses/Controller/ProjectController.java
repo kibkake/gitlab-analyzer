@@ -73,8 +73,14 @@ public class ProjectController {
 
         this.snapshot = new Snapshot(startDate, endDate);
         for (int i=0; i < projectIds.length-1; i++) {
-            System.out.println("update is doing");
-            projectService.setProjectInfo(projectIds[i]);
+            Project project = projectService.getProject(projectIds[i]);
+            if (!project.isInfoSet()) {
+                projectService.setProjectInfo(projectIds[i]);
+                System.out.println("repo " + projectIds[i] + " is being updated");
+            }
+//
+//            System.out.println("update is doing");
+//            projectService.setProjectInfo(projectIds[i]);
 //            projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
         //took about 5 mins
        }
