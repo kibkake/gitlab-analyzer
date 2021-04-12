@@ -19,7 +19,15 @@ public class DateScore {
     private List<Integer> mergeRequestId;
     private List<DateScoreDiff> commitDiffs;
     private ArrayList<DateScoreDiff> mergeRequestDiffs;
+    private double sumOfCommits;
 
+    public double getSumOfCommits() {
+        return sumOfCommits;
+    }
+
+    public void setSumOfCommits(double sumOfCommits) {
+        this.sumOfCommits = sumOfCommits;
+    }
 
     public DateScore(LocalDateTime date, double commitScore, String userName, List<Diff> commit) {
         this.date = date;
@@ -34,7 +42,7 @@ public class DateScore {
         }
     }
 
-    public DateScore(LocalDateTime date, double score, String userName, Integer numMergeRequests, List<Diff> mergeRequest) {
+    public DateScore(LocalDateTime date, double score, String userName, Integer numMergeRequests, List<Diff> mergeRequest, double sumOfCommits) {
         this.date = date;
         this.mergeRequestScore = score;
         this.userName = userName;
@@ -45,6 +53,7 @@ public class DateScore {
             DateScoreDiff diff = new DateScoreDiff(d);
             this.mergeRequestDiffs.add(diff);
         }
+        this.sumOfCommits = sumOfCommits;
     }
 
     public DateScore(LocalDateTime date, String userName, DateScoreDiff commitDiffScore) {

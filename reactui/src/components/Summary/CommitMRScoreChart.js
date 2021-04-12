@@ -12,11 +12,11 @@ export default class CommitMRScoreChart extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0,commitIds:[],mergeRequestDiffs:[]}],
+            codeScore:[{date: null, commitScore: 0, mergeRequestScore: 0, sumOfCommits: 0, commitIds:[],mergeRequestDiffs:[]}],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
             endTime: this.props.endTime,
-            DatescoreData:[{data:null,commistScore:0,mergeRequestScore: 0}]
+            DatescoreData:[{data:null,commistScore:0,mergeRequestScore: 0, sumOfCommits: 0}]
         }
     }
 
@@ -44,7 +44,7 @@ export default class CommitMRScoreChart extends PureComponent {
         const score = await response.data
         console.log("scores");
         console.log(score);
-        await this.setState({codeScore : score, parentdata: username,startTime: startTm,
+        await this.setState({codeScore : score, parentdata: username, startTime: startTm,
             endTime: endTm})
         await this.applyMultipliers();
         await console.log(this.state.codeScore)
@@ -85,7 +85,7 @@ export default class CommitMRScoreChart extends PureComponent {
             var tempDate = newCodeScore[k].date.split("T")[0];
             console.log(tempDate)
             if(tempDateScore.length===0){
-                tempDateScore.push({date:tempDate,commitScore:newCodeScore[k].commitScore,mergeRequestScore:newCodeScore[k].mergeRequestScore});
+                tempDateScore.push({date:tempDate,commitScore:newCodeScore[k].commitScore,mergeRequestScore:newCodeScore[k].mergeRequestScore, sumOfCommits:newCodeScore[k].sumOfCommits});
                 continue;
             }
             for(const i in tempDateScore){
@@ -98,7 +98,7 @@ export default class CommitMRScoreChart extends PureComponent {
                 }
             }
             if(dateFound===false){
-                tempDateScore.push({date:tempDate,commitScore:newCodeScore[k].commitScore,mergeRequestScore:newCodeScore[k].mergeRequestScore});
+                tempDateScore.push({date:tempDate,commitScore:newCodeScore[k].commitScore,mergeRequestScore:newCodeScore[k].mergeRequestScore, sumOfCommits:newCodeScore[k].sumOfCommits});
             }
         }
         console.log(tempDateScore)
@@ -140,7 +140,12 @@ export default class CommitMRScoreChart extends PureComponent {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
                 commitScore: -item.commitScore,
-                mergeScore: +(item.mergeRequestScore)
+                mergeScore : +(item.mergeRequestScore + item.sumOfCommits),//item.sumOfCommits),
+                // commits: item.commitDiffs.map(function(diffs) {
+                //     return {
+                //         diffScore: diffs.diffScore
+                //     }
+                // }
             };
         });
         console.log("starttime", this.props.startTime)

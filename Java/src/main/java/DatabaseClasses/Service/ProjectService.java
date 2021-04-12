@@ -294,13 +294,14 @@ public class ProjectService {
 
             if (!dateMap.containsKey(mergedDate.toString())) {
                 DateScore dateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
-                        username, 1, mergeRequest.getDiffs());
+                        username, 1, mergeRequest.getDiffs(), mergeRequest.getSumOfCommits());
                 dateMap.put(mergedDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(mergedDate.toString());
                 dateScore.addToMergeRequestScore(mergeRequest.getMrScore());
                 dateScore.incrementNumMergeRequests();
                 dateScore.addMergeRequestDiffs(mergeRequest);
+                dateScore.setSumOfCommits(mergeRequest.getSumOfCommits());
             }
         }
         List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devFieldForGettingCommits);
