@@ -67,8 +67,9 @@ class CommentTable extends Component{
         const id = pathArray[2];
         const developer = pathArray[4];
         let shouldFilter = "false";
-
-        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/false" + "/2021-01-01/2021-05-09")
+        const startDate = sessionStorage.getItem("startdate");
+        const endDate = sessionStorage.getItem("enddate");
+        await axios.get("/api/v1/projects/" + id + "/allUserNotes/" + username + "/false/" +startDate+'/'+endDate)
             .then(response => {
                 const all_comments = response.data
                 const backup_all_comments = all_comments.slice();
