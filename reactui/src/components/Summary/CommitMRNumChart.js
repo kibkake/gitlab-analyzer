@@ -15,7 +15,8 @@ export default class CommitMRNumChart extends PureComponent {
             frequency:[{date: null, numCommits: 0, numMergeRequest: 0}],
             parentdata: this.props.devName,
             startTime: this.props.startTime,
-            endTime: this.props.endTime
+            endTime: this.props.endTime,
+            dateFrequency:[{date: null, numCommits: 0, numMergeRequest: 0}]
         }
     }
 
@@ -41,6 +42,32 @@ export default class CommitMRNumChart extends PureComponent {
             console.error(error);
         });
 
+        var tempDateFrequency=[];
+        for(const k in this.state.frequency){
+            var dateFound = false; 
+            var tempDate = this.state.frequency[k].date.split("T")[0]
+            console.log(tempDate)
+            if(tempDateFrequency.length===0){
+                tempDateFrequency.push({date:tempDate,numCommits:this.state.frequency[k].numCommits,numMergeRequest:this.state.frequency[k].numMergeRequests});
+                continue;
+            }
+            for(const i in tempDateFrequency){
+                if (tempDateFrequency[i].date===tempDate){
+                    var tempObj = tempDateFrequency[i];
+                    tempObj.numCommits+=this.state.frequency[k].numCommits;
+                    tempObj.numMergeRequest+=this.state.frequency[k].numMergeRequests;
+                    dateFound=true;
+                    break;
+                }
+            }
+            if(dateFound===false){
+                tempDateFrequency.push({date:tempDate,numCommits:this.state.frequency[k].numCommits,numMergeRequest:this.state.frequency[k].numMergeRequests});
+            }
+        }
+        console.log(tempDateFrequency)
+        this.setState({
+            dateFrequency:tempDateFrequency
+        });
     }
 
     async componentDidUpdate(prevProps){
@@ -70,11 +97,11 @@ export default class CommitMRNumChart extends PureComponent {
     };
 
     render() {
-        var output = this.state.frequency.map(function(item) {
+        var output = this.state.dateFrequency.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
                 commitNum: -item.numCommits,
-                mergeNum: +item.numMergeRequests
+                mergeNum: +item.numMergeRequest
             };
         });
         console.log(output);

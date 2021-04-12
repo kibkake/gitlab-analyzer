@@ -252,7 +252,7 @@ class CommitChart extends Component {
         }
 
         var comarr = this.state.data;
-        const daylist = getDaysArray(new Date(this.props.startTime + "T12:00:00"),new Date(this.props.endTime+ "T12:00:00"));
+        const daylist = getDaysArray(new Date(this.props.startTime ),new Date(this.props.endTime));
         console.log(this.state.childVal)
         //height={daylist.length*(500/daylist.length)}
         return (
