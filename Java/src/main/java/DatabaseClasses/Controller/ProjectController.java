@@ -1,5 +1,4 @@
 package main.java.DatabaseClasses.Controller;
-
 import main.java.ConnectToGitlab.ProjectConnection;
 import main.java.DatabaseClasses.Scores.AllScores;
 import main.java.DatabaseClasses.Scores.DateScore;
@@ -8,7 +7,6 @@ import main.java.Collections.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,10 +39,53 @@ public class ProjectController {
     private final ProjectService projectService;
     private String startDate = "2021-02-22T13:59:00.000Z";
     private String endDate = "2021-03-15T13:59:00.000Z";
+    private Snapshot snapshot;
+    private boolean isUpdated = false;
 
     @Autowired
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+
+    @GetMapping("projects")
+    public List<Project> getAllProjects() {
+        List<Project> projectsInDB = projectService.getAllProjects();
+        List<Project> projectsInGitLab = new ProjectConnection().getAllProjectsFromGitLab();
+
+        // TODO: this is not accurate way to update since this can't update newly added project,
+        // but I changed it back in this way to avoid new connection reset the existing repo completely
+        if (projectsInDB.size() == 0){ // != projectsInGitLab.size()) {
+            projectService.saveNewProjects(projectsInGitLab);
+        }
+
+        return projectService.getAllProjects();
+    }
+
+    // Let user sync the data of repositories of interest at once in the Repository list page by the request from the UI
+    // changed input argument from ProjectSetting to Snapshot
+    @PostMapping("setProjectInfoWithSettings")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void setProjectInfoWithSettings(@RequestBody int[] projectIds) {
+        System.out.println(Arrays.toString(projectIds));
+
+        this.snapshot = new Snapshot(startDate, endDate);
+        for (int i = 0; i < projectIds. length-1; i++) {
+
+            Project project = projectService.getProject(projectIds[i]);
+            if (!project.isInfoSet()) {
+                projectService.setProjectInfo(projectIds[i]);
+                projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
+                System.out.println("repo " + projectIds[i] + " is updated");
+            }
+        }
+        System.out.println("Update is done");
+        this.isUpdated = true;
+    }
+
+    @GetMapping("projects/updated")
+    public boolean isUpdateDone(){
+        return this.isUpdated;
     }
 
     // can only be used on very small projects
@@ -53,10 +94,10 @@ public class ProjectController {
         projectService.setProjectInfo(projectId);
     }
 
-    @RequestMapping("setProjectInfoWithSettings/{projectId}")
-    public void setProjectInfoWithSettings(@PathVariable int projectId, ProjectSettings projectSettings) {
-        projectSettings.setProjectId(projectId);
-        projectService.setProjectInfoWithSettings(projectId, projectSettings);
+    @GetMapping("projects/{projectId}")
+    public Project getProject(@PathVariable("projectId") int projectId) {
+        Project project = projectService.getProject(projectId);
+        return project;
     }
 
     @PostMapping("saveConfig")
@@ -85,7 +126,8 @@ public class ProjectController {
 
     @GetMapping("getSnapshot/{snapId}")
     public Snapshot getSnapshot(@PathVariable("snapId") String id){
-        return projectService.getSnapshot(id);
+        this.snapshot = projectService.getSnapshot(id);
+        return snapshot;
     }
 
     @GetMapping("getSnapshots/{username}")
@@ -96,41 +138,6 @@ public class ProjectController {
     @GetMapping(path = "deleteSnapshot/{snapId}")
     public void deleteSnapshot(@PathVariable("snapId") String id){
         projectService.deleteSnapshot(id);
-    }
-
-    //TODO: how to update if the current db is not empty,
-    //and a new project is added? Because the new project isn't getting updated by setProjectInfo() call
-    @GetMapping("projects")
-    public List<Project> getAllProjects() {
-        if(projectService.getAllProjects().isEmpty()) {
-            List<Project> projects = new ProjectConnection().getAllProjectsFromGitLab();
-            projectService.saveNewProjects(projects);
-        }
-
-        return projectService.getAllProjects();
-    }
-
-    // Let user sync the data of repositories of interest at once in the Repository list page
-    //  by the request from the UI
-    //TODO: setProjectInfo testing
-    @PostMapping("/updateRepo")
-    @ResponseStatus(value = HttpStatus.OK)
-    public void updateProjectDB(@RequestBody int projectId) {
-        projectService.setProjectInfo(projectId);
-    }
-
-    @GetMapping("projects/{projectId}")
-    public Project getProject(@PathVariable("projectId") int projectId) {
-        Project project = projectService.getProject(projectId);
-        // The update should be done once in the repo list page by user's request
-        // rather than done as everytime the user access each project page
-        // commenting this out doesn't affect the current app
-
-//        if (!project.isInfoSet()) {
-//            projectService.setProjectInfo(projectId);
-//            project = projectService.getProject(projectId); // get project now that it has been modified
-//        }
-        return project;
     }
 
     @GetMapping("projects/{projectId}/developers")
@@ -376,9 +383,6 @@ public class ProjectController {
     public List<String> getMemberUsernames(@PathVariable("projectId") int projectId) {
 
         Project project = projectService.getProject(projectId);
-        if (!project.isInfoSet()) {
-            projectService.setProjectInfo(projectId);
-        }
 
         List<Developer> members = projectService.getProjectDevelopers(projectId);
         List<String> memberUsernames = new ArrayList<>();

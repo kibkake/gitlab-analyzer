@@ -47,8 +47,8 @@ public class Project {
         issues = new ArrayList<>();
         commits = new ArrayList<>();
         developers = new ArrayList<>();
-        lastSyncAt = "never";
-        infoSet = false;
+        lastSyncAt = getLastSyncAt();
+        infoSet = isInfoSet();
         // The point of initializing them to empty arraylists is that, if they're not ever
         // given values, they will be empty lists instead of equaling null.
     }
@@ -97,6 +97,8 @@ public class Project {
         if (infoSetDate != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
             this.lastSyncAt = formatter.format(this.infoSetDate);
+        }else {
+            this.lastSyncAt = "never";
         }
     }
 
@@ -167,18 +169,19 @@ public class Project {
         }
     }
 
+    // TODO: commented out the commit date part, since the error regarding that was not fixed
     private Instant lastProjectUpdateDate() {
         Instant mostRecentMergeRequestUpdateDate = new main.java.ConnectToGitlab.MergeRequestConnection().getMostRecentMergeRequestUpdateDate(id);
         Instant mostRecentIssueUpdateDate = new main.java.ConnectToGitlab.IssueConnection().getMostRecentIssueUpdateDate(id);
-        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
+//        Instant mostRecentCommitDate = new main.java.ConnectToGitlab.CommitConnection().getMostRecentCommitDate(id);
 
         Instant mostRecentUpdateDate = mostRecentMergeRequestUpdateDate;
         if (mostRecentIssueUpdateDate.compareTo(mostRecentUpdateDate) > 0) {
             mostRecentUpdateDate = mostRecentIssueUpdateDate;
         }
-        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
-            mostRecentUpdateDate = mostRecentCommitDate;
-        }
+//        if (mostRecentCommitDate.compareTo(mostRecentUpdateDate) > 0) {
+//            mostRecentUpdateDate = mostRecentCommitDate;
+//        }
 
         return mostRecentUpdateDate;
     }

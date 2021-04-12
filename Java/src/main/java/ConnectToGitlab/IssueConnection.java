@@ -54,9 +54,9 @@ public class IssueConnection {
                 });
         issues.addAll(Objects.requireNonNull(issueResponse.getBody()));
         if(issues.size() != 0) {
-        Issue issue = issues.get(0);
-        String dateString = issue.getUpdatedAt();
-        return Instant.parse(dateString);
+            Issue issue = issues.get(0);
+            String dateString = issue.getUpdatedAt();
+            return Instant.parse(dateString);
         }
         return Instant.now();
     }

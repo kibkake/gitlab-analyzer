@@ -1,220 +1,156 @@
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import axios from "axios";
 import "./ProjectList.css";
 import moment from "moment";
-import FormCheck from 'react-bootstrap/FormCheck'
 import {MDBBtn, MDBDataTable, MDBInput,  MDBCard, MDBCardBody, MDBCardHeader, MDBTable, MDBTableBody, MDBTableHead  } from 'mdbreact';
 
 //[https://mdbootstrap.com/docs/react/tables/datatables/]
-export default class ProjectList extends Component {
+export default function ProjectList (){
 
-    constructor() {
-        super();
-        this.state = {
-            projects: [],
-            selectAll: true,
-        }
-        this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
-        this.handleSingleCheckboxChange = this.handleSingleCheckboxChange.bind(this);
-        // this.handleRowClick = this.handleRowClick(this);
-    }
+    const [projects,getProjects]= useState([]);
+    const [checked, setChecked] = useState([]);
+    const [updatePopup, setUpdatePopup] = useState(false);
+    const [areAllChecked, setAreAllChecked] = useState(false)
 
-    componentDidMount() {
+
+    //[https://dmitripavlutin.com/react-useeffect-infinite-loop/#:~:text=The%20infinite%20loop%20is%20fixed,callback%2C%20dependencies)%20dependencies%20argument.&text=Adding%20%5Bvalue%5D%20as%20a%20dependency,so%20solves%20the%20infinite%20loop.]
+    useEffect(()=>{
         axios.get('/api/v1/projects')
             .then(response => {
-                const projects = response.data
-                this.setState({projects: projects})
-                console.log(this.state.projects)
+                getProjects(response.data)
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    })
+
+    //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
+    const handleSelectAllChange = () => {
+        const changed = !areAllChecked
+        setAreAllChecked(changed)
+
+        let currentChecked = [...checked];
+        const array = projects.map(item =>
+            ({...item, checked: changed}))
+        let changedChecked = array.map(({id, checked}) => ({id, checked}))
+        setChecked(changedChecked);
+        console.log(changedChecked)
+        console.log(checked)
+    }
+
+    const handleSingleCheckboxChange = id => {
+        console.log(checked)
+        let currentChecked = [...checked];
+        const array = projects.map(item =>
+            ({...item, checked: (currentChecked.checked == null) ? false : currentChecked.checked}))
+        let currentCheckedChanged = array.map(({id, checked}) => ({id, checked}))
+
+        const changed = currentCheckedChanged.map((item) => {
+            return {
+                id: item.id,
+                checked: (item.id === id) ? !item.checked : item.checked
+            }
+        })
+
+        setChecked(changed);
+        console.log(checked)
+        console.log(changed)
+
+    }
+
+
+    function handleUpdateRepos() {
+        console.log(checked)
+
+        const projectIdToUpdate = checked.reduce((result, {
+            id,
+            checked
+        }) => [...result, ...checked ? [id] : []], []);
+
+        // const projectUp = [11, 10, 8, 6, 5, 3, 12]
+
+        axios.post("/api/v1/setProjectInfoWithSettings", projectIdToUpdate, {
+            headers: {'Content-Type': 'application/json'}})
+            .then(response => {
+                console.log("Id array sent successfully")
             })
             .catch((error) => {
                 console.error(error);
             })
     }
 
-    // checkAllHandler = () => {
-    //     setAreAllChecked(areAllChecked ? false : true);
-    // };
-    // Handles checkbox behaviour
-    handleSelectAllChange = () => {
-        const selectAll = !this.state.selectAll;
-        this.setState({selectAll: selectAll});
-
-        const changed = this.state.projects.map(function (item) {
-            return {
-                id: item.id,
-                name: item.name,
-                description: item.description,
-                last_sync_at: item.last_sync_at,
-                created_at: item.created_at,
-                checked: selectAll,
-            }
-        });
-        this.setState({projects: changed})
-        console.log(this.state.projects);
-    };
-
-    handleSingleCheckboxChange = id => {
-        const changed = this.state.projects.map(function (item) {
-            return {
-                id: item.id,
-                name: item.name,
-                description: item.description,
-                last_sync_at: item.last_sync_at,
-                created_at: item.created_at,
-                checked: (item.id === id) ? !item.checked : item.checked
-            }
-        })
-
-        this.setState({projects: changed});
-    };
-
-    // Handles Update button onclick behavior, but the update function in the backend isn't working yet so commented out.
-
-    updateRepos() {
-        // this.state.projects.map(item => {
-        //     if (item.checked) {
-        //         ProjectService.sendUpdateDecision(item.id);
-        //     }
-        // })
+    const openPopup = () => {
+        setUpdatePopup(true)
     }
-    //
-    // handleRowClick(e, props)  {
-    //         e.preventDefault();
-    //         window.location.href= window.location.pathname + "/" + props + "/Developers";
-    // }
+
+    const closePopup = () => {
+        if (isUpdateFinished()) {
+            setUpdatePopup(false)
+        }
+    }
+
+    function isUpdateFinished() {
+        let close = false
+        axios.get("/api/v1/projects/updated").then(response => {close = response.data})
+            .catch((error) => {console.error(error);})
+        return {close}
+    }
+
 
     //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
-    render() {
-
-        const output = this.state.projects.map(function (item) {
-            let currentYear = new Date().getFullYear();
-            let dateString = moment(item.created_at).format('ll').replace(", "+currentYear, "")
-            return {
-                id: <button color="purple" className= "repoSelectBtn" onClick={(e) => { e.preventDefault();
-                    window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.id}</button>,
-                name: item.name,
-                des: <MDBBtn color="purple" size="sm" onClick={(e) => {e.preventDefault();
-                    window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.description}</MDBBtn>,
-                created: dateString,
-                updated: "null", //item.lastProjectUpdateAt,
-                check: <input type="checkbox" defaultChecked={true}/>,
-            }
-        })
-
-        const data = {
-            columns: [
-                {
-                    label: 'ID',
-                    field: 'id',
-                    sort: 'asc',
-                    width: 150
-                },
-                {
-                    label: 'Project Name',
-                    field: 'name',
-                    sort: 'asc',
-                    width: 150
-                },
-                {
-                    label: 'Description',
-                    field: 'des',
-                    sort: 'asc',
-                    width: 400
-                },
-                {
-                    label: 'CreatedAt',
-                    field: 'created',
-                    sort: 'asc',
-                    width: 150
-                },
-                {
-                    label: 'UpdatedAt',
-                    field: 'updated',
-                    sort: 'asc',
-                    width: 150
-                },
-                {
-                    label: <FormCheck class="form-check-inline"> <FormCheck.Label>
-                        <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
-                        Sync Data</FormCheck.Label>
-                    </FormCheck>, //<MDBInput label=" " type="checkbox" id="checkbox5"/>,
-                    field: 'check',
-                    sort: 'asc',
-                    width: 50
-                },
-            ],
-            rows: output,
+    const output = projects.map(function (item, index) {
+        let currentYear = new Date().getFullYear();
+        let dateStringCreated = moment(item.created_at).format('ll').replace(", "+currentYear, "")
+        let dateStringUpdated = moment(item.last_sync_at).format('lll').replace(currentYear, "")
+        return {
+            check: <input type="checkbox" checked={areAllChecked ? true : checked.checked}
+                          onClick={() => handleSingleCheckboxChange(item.id)}
+                            disabled={(item.id === 13 || item.id === 14) ? true : false}/>,
+            id: <button color="purple" className= "repoSelectBtn" onClick={(e) => { e.preventDefault();
+                window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.id}</button>,
+            name: item.name,
+            des: <MDBBtn color="purple" size="sm" onClick={(e) => {e.preventDefault();
+                window.location.href= window.location.pathname + "/" + item.id + "/Developers";}}>{item.description}</MDBBtn>,
+            created: dateStringCreated,
+            updated: (item.last_sync_at === "never" || item.last_sync_at === null) ? "Not Available" : dateStringUpdated,
         }
+    })
 
-        return (
-            <div>
-                <div align="center" style={{padding: '20px'}}>
-                    <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
-                </div>
-                <MDBDataTable hover
-                    searchLabel="Search By Project Name/Month"
-                    striped
-                    small
-                    data={data}
-                />
+    const data = {
+        columns: [
+            {label: 'ID', field: 'id', sort: 'asc', width: 150},
+            {label: 'Project Name', field: 'name', sort: 'asc', width: 150},
+            {label: 'Description', field: 'des', sort: 'asc', width: 400},
+            {label: 'CreatedAt', field: 'created', sort: 'asc', width: 150},
+            {label: 'UpdatedAt', field: 'updated', sort: 'asc', width: 150},
+            {label: <MDBInput label=" " type="checkbox" valueDefault={areAllChecked} onChange={handleSelectAllChange}/>,
+                field: 'check', sort: 'asc', width: 10},
+        ],
+        rows: output,
+    }
+
+    return (
+        <div>
+            <div align="center" style={{padding: '20px'}}>
+                <button type="button" className="btn btn-secondary" onClick={() => {handleUpdateRepos(); openPopup();}}>Update Selected Projects</button>
             </div>
-        );
 
-            // <div>
-            //     <div>
-            //         <h1>Clear search bar and filter</h1>
-            //         <ToolkitProvider
-            //             bootstrap4
-            //             keyField="name"
-            //             data={output}
-            //             columns={this.columns}
-            //             search
-            //         >
-            //         <div align="center" style={{padding: '20px'}}>
-            //             <button type="button" className="btn btn-secondary" onClick={this.updateRepos()}>Update Selected Projects</button>
-            //         </div>
-            //         <Table striped borded hover style={{margin: 'auto', width: '85%'}}>
-            //             <thead>
-            //             <tr>
-            //                 <th>ID</th>
-            //                 <th>Name</th>
-            //                 <th>Description</th>
-            //                 <th>Last Updated</th>
-            //                 <th><FormCheck class="form-check-inline">
-            //                     <FormCheck.Label>
-            //                         <FormCheck.Input type="checkbox" defaultChecked={this.state.selectAll} onChange={this.handleSelectAllChange}/>
-            //                         Sync Data</FormCheck.Label>
-            //                 </FormCheck>
-            //                 </th>
-            //                 <th>Created</th>
-            //             </tr>
-            //             </thead>
-            //             <tbody>
-            //             { this.state.projects.map(projects =>
-            //                 <tr>
-            //                     <button className="Button" to={projects.url}
-            //                             type="button"
-            //                             onClick={(e) => {
-            //                                 e.preventDefault();
-            //                                 window.location.href= window.location.pathname + "/" + projects.id + "/Developers";
-            //
-            //                             }}>{projects.id}</button>
-            //
-            //                     <td>{projects.name}</td>
-            //                     <td>{projects.description}</td>
-            //                     <td>{(projects.last_sync_at === "never") ? "Not Available" : moment(projects.last_sync_at).format('lll')}</td>
-            //                     <td>
-            //                         <input type="checkbox" defaultChecked={!projects.checked}
-            //                                checked={projects.checked}
-            //                                onChange={() => this.handleSingleCheckboxChange(projects.id)}/>
-            //                     </td>
-            //                     <td>{moment(projects.created_at).format('ll')}</td>
-            //
-            //                 </tr>
-            //             )}
-            //             </tbody>
-            //         </Table>
-            //         </ToolkitProvider>
-            // </div>
-        }
+                {/*<Modal show={updatePopup} onHide={closePopup()}>*/}
+                {/*    <Modal.Header closeButton>*/}
+                {/*        <Modal.Title>Updating in Progress...</Modal.Title>*/}
+                {/*    </Modal.Header>*/}
+                {/*    <Modal.Body> <CircularProgress/> </Modal.Body>*/}
+                {/*    <Modal.Footer>*/}
+                {/*        <Button variant="primary" onClick={closePopup()}>*/}
+                {/*            CANCEL UPDATE*/}
+                {/*        </Button>*/}
+                {/*    </Modal.Footer>*/}
+
+            <MDBDataTable hover btn sortable pagesAmount={20}
+                          searchLabel="Search By Project Name/Month"
+                          small
+                          data={data}/>
+        </div>
+    );
 }
+

@@ -32,10 +32,10 @@ export default function DiffRow (props) {
         <React.Fragment>
             <TableRow>
                 <TableCell align="left" component="th" scope="row">
-                    <h6><u>{diff.path}</u></h6>
+                    <h6><u>{(diff.path === null) ? "" : diff.path}</u></h6>
                 </TableCell>
                 <TableCell>
-                    <h6>+{diff.diffScore}</h6>
+                    <h6>+{(diff.path === null) ? "" : diff.diffScore}</h6>
                 </TableCell>
                 <TableCell align="right">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>

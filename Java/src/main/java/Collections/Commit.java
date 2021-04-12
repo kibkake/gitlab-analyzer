@@ -22,6 +22,9 @@ public class Commit {
     private Date date;
     private String sha;
     private int projectId;
+    private String createdAt;
+    private String modifiedAt;
+    private String updatedAt;
     private double commitScore;
 
     public Commit() {
@@ -50,6 +53,32 @@ public class Commit {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @JsonProperty("modified_at")
+    public String getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(String modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    @JsonProperty("updated_at")
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @JsonProperty("committer_name")

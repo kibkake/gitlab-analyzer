@@ -17,12 +17,17 @@ import main.java.DatabaseClasses.Scores.DateScore;
 import main.java.DatabaseClasses.Scores.MergeRequestDateScore;
 import main.java.Functions.LocalDateFunctions;
 import main.java.Functions.StringFunctions;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -92,15 +97,16 @@ public class ProjectService {
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
-        if (project.projectHasBeenUpdated()) {
-            project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
-            project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
-            project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
-            project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
-            project.setSyncInfo();
-            project.setLastSyncAt();
-            projectRepository.save(project);
-        }
+        //TODO: removed if statement here since an error was found that
+        // the condition doesn't update for newly added project
+        //        if (project.projectHasBeenUpdated()) {
+        project.setDevelopers(new DeveloperConnection().getProjectDevelopersFromGitLab(projectId));
+        project.setCommits(new CommitConnection().getProjectCommitsFromGitLab(projectId));
+        project.setMergedRequests(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
+        project.setIssues(new IssueConnection().getProjectIssuesFromGitLab(projectId));
+        project.setSyncInfo();
+        project.setLastSyncAt();
+        projectRepository.save(project);
     }
 
     public void setProjectMrs(int projectId) {
@@ -112,7 +118,7 @@ public class ProjectService {
     }
 
     @Transactional(timeout = 1200) // 20 min
-    public void setProjectInfoWithSettings(int projectId, ProjectSettings projectSettings) {
+    public void setProjectInfoWithSettings(int projectId, Snapshot snapshot) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
 
@@ -126,7 +132,9 @@ public class ProjectService {
 
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
-        setDeveloperInfo(projectId, projectSettings, projectDevs);
+
+        //commented out the line below since we decided not to use developer collection
+        //setDeveloperInfoWithSnapshot(projectId, snapshot, projectDevs);
     }
 
     @Transactional(timeout = 1200) // 20 min
@@ -158,6 +166,48 @@ public class ProjectService {
     @Transactional(timeout = 1200) // 20 min
     public void deleteSnapshot(String id){
         snapshotRepository.deleteById(id);
+    }
+
+    //added to change argument to snapshot instead of projectSetting
+    private void setDeveloperInfoWithSnapshot(int projectId, Snapshot snapshot, List<Developer> projectDevs) {
+
+        for (Developer dev: projectDevs) {
+            List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
+
+            List<MergeRequestDateScore> devMergeRequestDateScores = mergeRequestRepository.getDevsMrsScoreADay(projectId,
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
+
+            List<CommitDateScore> devCommitScores = commitRepository.getDevCommitDateScore(projectId,
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
+
+            List<CommitDateScore> devCommitScoresWithEveryDay = commitRepository.getCommitsWithEveryDateBetweenRange(projectId,
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
+
+            Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId,
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
+
+            Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId,
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
+
+            AllScores devAllScores = new AllScores((ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(),(ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime(), devTotalCommitScore,
+                    devTotalMergeRequestScore);
+
+            /* Because spring generates the user object we have to make our own custom key and it cant be done in a
+               constructor because of spring
+             */
+            dev.setDbKey(Integer.toString(projectId) +  String.valueOf(dev.getDevId()));
+            dev.setProjectId(projectId);
+            dev.setMergeRequestsAndCommits(devMergeRequests);
+            dev.setMergeRequestDateScores(devMergeRequestDateScores);
+            dev.setCommitDateScores(devCommitScores);
+            dev.setCommitArray(devCommitScoresWithEveryDay);
+            dev.setAllScores(devAllScores);
+            developerRepository.saveDev(dev);
+        }
+        /* TODO I should be able to call developerRepository.saveAll(projectDevs)
+            but I get an error saying that this method (.saveAll) does not exist
+         */
     }
 
     private void setDeveloperInfo(int projectId, ProjectSettings projectSettings, List<Developer> projectDevs) {
@@ -244,13 +294,14 @@ public class ProjectService {
 
             if (!dateMap.containsKey(mergedDate.toString())) {
                 DateScore dateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
-                        username, 1, mergeRequest.getDiffs());
+                        username, 1, mergeRequest.getDiffs(), mergeRequest.getSumOfCommits());
                 dateMap.put(mergedDate.toString(), dateScore);
             } else {
                 DateScore dateScore = dateMap.get(mergedDate.toString());
                 dateScore.addToMergeRequestScore(mergeRequest.getMrScore());
                 dateScore.incrementNumMergeRequests();
                 dateScore.addMergeRequestDiffs(mergeRequest);
+                dateScore.setSumOfCommits(mergeRequest.getSumOfCommits());
             }
         }
         List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devFieldForGettingCommits);
