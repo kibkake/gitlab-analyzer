@@ -143,7 +143,7 @@ public class ProjectService {
 
         //after all info has been collected we can now query the database to build each developers info
         List<Developer> projectDevs = new ArrayList<>(project.getDevelopers());
-        setDeveloperInfoWithSnapshot(projectId, snapshot, projectDevs);
+//        setDeveloperInfoWithSnapshot(projectId, snapshot, projectDevs);
     }
 
     @Transactional(timeout = 1200) // 20 min
