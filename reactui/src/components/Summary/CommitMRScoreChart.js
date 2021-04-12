@@ -52,8 +52,7 @@ export default class CommitMRScoreChart extends PureComponent {
 
     async applyMultipliers(){
         var scale = JSON.parse(sessionStorage.getItem('languageScale'));
-        var newCodeScore = [];
-        newCodeScore = [...this.state.codeScore];
+        var newCodeScore = [...this.state.codeScore];
         for(const k in newCodeScore){
             var newCommitScore=0;
             var newMergeScore=0;
