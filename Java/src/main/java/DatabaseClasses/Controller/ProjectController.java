@@ -358,10 +358,10 @@ public class ProjectController {
     @GetMapping("/getusernames/{projectId}")
     public List<String> getMemberUsernames(@PathVariable("projectId") int projectId) {
 
-        Project project = projectService.getProject(projectId);
-        if (!project.isInfoSet()) {
-            projectService.setProjectInfo(projectId);
-        }
+//        Project project = projectService.getProject(projectId);
+//        if (!project.isInfoSet()) {
+//            projectService.setProjectInfo(projectId);
+//        }
 
         List<Developer> members = projectService.getProjectDevelopers(projectId);
         List<String> memberUsernames = new ArrayList<>();

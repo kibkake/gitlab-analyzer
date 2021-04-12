@@ -40,6 +40,8 @@ class CommentTable extends Component{
             issue:true,
             code_rev:true,
             parentdata: this.props.devName,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime,
             devs_code_btn_name:"Just the comments on own code in code reviews",
             // For the following variables, 0 means unsorted, 1 means sorted in ascending
             // order, and 2 means sorted in descending order.
@@ -59,10 +61,10 @@ class CommentTable extends Component{
 
     componentDidMount() {
         const {parentdata} = this.state;
-        this.getDataFromBackend(parentdata)
+        this.getDataFromBackend(parentdata, this.props.startTime,  this.props.endTime)
     }
 
-    async getDataFromBackend (username) {
+    async getDataFromBackend (username, startTm, endTm) {
         const pathArray = window.location.pathname.split('/');
         const id = pathArray[2];
         const developer = pathArray[4];
