@@ -97,6 +97,7 @@ export default class CommitMRNumChart extends PureComponent {
     };
 
     render() {
+        console.log(this.state.dateFrequency);
         var output = this.state.dateFrequency.map(function(item) {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
