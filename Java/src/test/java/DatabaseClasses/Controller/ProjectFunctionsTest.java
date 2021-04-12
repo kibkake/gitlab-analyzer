@@ -363,16 +363,16 @@ public class ProjectFunctionsTest {
         List<MergeRequest> mergeRequests = projectController.getDevMergeRequests(6, "user2", "2021-01-01", "2021-04-11");
         assertEquals(7, mergeRequests.size());
 
-        int expectedID = 0;
+        int expectedID;
         String expectedTitle = null;
-        int expectedNumContributors = 0;
+        int expectedNumContributors;
         List<String> expectedCommitTitles = null;
         String expectedSHA = null;
-        double expectedMRScore = 0;
+        double expectedMRScore;
         List<String> expectedNoteBodies = null;
         List<Double> expectedDiffScores = null;
-        double expectedSumOfCommits = 0;
-        int expectedIID = 0;
+        double expectedSumOfCommits;
+        int expectedIID;
 
         for (int i = 0; i < mergeRequests.size(); i++) {
             if (i == 0) {
@@ -389,9 +389,89 @@ public class ProjectFunctionsTest {
                 expectedSumOfCommits = 31.2;
                 expectedIID = 12;
             }
-
-            if (i != 0) {
-                continue; // temporary - just want to test the code below for i = 0, since that's all that's done so far.
+            else if (i == 1) {
+                expectedID = 58;
+                expectedTitle = "Update src/NewClass.java, src/Main.java files";
+                expectedNumContributors = 1;
+                expectedCommitTitles = new ArrayList<>(
+                        Arrays.asList("Update src/NewClass.java, src/Main.java files"));
+                expectedSHA = "3206cc8d46bd4c28ca24d6c9b29309e87ba50d09";
+                expectedMRScore = 21.0;
+                expectedNoteBodies = new ArrayList<>(
+                        Arrays.asList("mentioned in commit 3ba4fa806c4ffa225e593646ed6fc5b4ae9694cb"));
+                expectedDiffScores = new ArrayList<>(Arrays.asList(11.8, 9.2));
+                expectedSumOfCommits = 21.0;
+                expectedIID = 11;
+            }
+            else if (i == 2) {
+                expectedID = 57;
+                expectedTitle = "Update src/Main.java";
+                expectedNumContributors = 2;
+                expectedCommitTitles = new ArrayList<>(
+                        Arrays.asList("Update src/Main.java"));
+                expectedSHA = "a6395a545cf9ef9751258c73803076a19628b36e";
+                expectedMRScore = 8.2;
+                expectedNoteBodies = new ArrayList<>(
+                        Arrays.asList("Bump", "mentioned in commit 0d7966c533d294b94ed371cd6813743441f61c34"));
+                expectedDiffScores = new ArrayList<>(Arrays.asList(8.2));
+                expectedSumOfCommits = 8.2;
+                expectedIID = 10;
+            }
+            else if (i == 3) {
+                expectedID = 54;
+                expectedTitle = "Update src/Main.java";
+                expectedNumContributors = 2;
+                expectedCommitTitles = new ArrayList<>(
+                        Arrays.asList("Update src/Main.java"));
+                expectedSHA = "50ceff672341fa23e126a654e0629e71506af05b";
+                expectedMRScore = 19.8;
+                expectedNoteBodies = new ArrayList<>(
+                        Arrays.asList("Bump", "Bump", "Bump", "Bump", "mentioned in commit 700740418c15249fce74e4bf4e62c5357f0393ae"));
+                expectedDiffScores = new ArrayList<>(Arrays.asList(19.8));
+                expectedSumOfCommits = 19.8;
+                expectedIID = 7;
+            }
+            else if (i == 4) {
+                expectedID = 52;
+                expectedTitle = "Update src/NewClass.java";
+                expectedNumContributors = 1;
+                expectedCommitTitles = new ArrayList<>(
+                        Arrays.asList("Update src/NewClass.java"));
+                expectedSHA = "84eb119d48db386938df72b8c2452cf882e8c802";
+                expectedMRScore = 9.4;
+                expectedNoteBodies = new ArrayList<>(
+                        Arrays.asList("mentioned in commit 37bcc2ad306470d6042fdb03a602844e91608474"));
+                expectedDiffScores = new ArrayList<>(Arrays.asList(9.4));
+                expectedSumOfCommits = 9.4;
+                expectedIID = 5;
+            }
+            else if (i == 5) {
+                expectedID = 51;
+                expectedTitle = "Update src/Main.java";
+                expectedNumContributors = 1;
+                expectedCommitTitles = new ArrayList<>(
+                        Arrays.asList("Update src/Main.java"));
+                expectedSHA = "073bcbb678ce6b652f9e2c72ccabead01c17e165";
+                expectedMRScore = 7.0;
+                expectedNoteBodies = new ArrayList<>(
+                        Arrays.asList("mentioned in commit 711f899062d24c6ede0d0f15e952fa53758b57bf"));
+                expectedDiffScores = new ArrayList<>(Arrays.asList(7.0));
+                expectedSumOfCommits = 7.0;
+                expectedIID = 4;
+            }
+            else {
+                expectedID = 6;
+                expectedTitle = "Feature2";
+                expectedNumContributors = 1;
+                expectedCommitTitles = new ArrayList<>(
+                        Arrays.asList("f1-3a commit", "f2-2u", "f2-1u"));
+                expectedSHA = "39979003d3aeb6aa8fd832d7a89e34d5272e4e3a";
+                expectedMRScore = 0.6;
+                expectedNoteBodies = new ArrayList<>(
+                        Arrays.asList("mentioned in commit af214df90061d1ede4f98bc246d834d80cc3a99d"));
+                expectedDiffScores = new ArrayList<>(Arrays.asList(0.2, 0.4));
+                expectedSumOfCommits = 0.6;
+                expectedIID = 2;
             }
 
             MergeRequest mergeRequest = mergeRequests.get(i);
@@ -421,7 +501,6 @@ public class ProjectFunctionsTest {
             assertEquals(expectedSumOfCommits, mergeRequest.getSumOfCommits(), epsilon);
             assertEquals(expectedIID, mergeRequest.getMergeRequestIdForASpecificProject());
         }
-
     }
 
     // Helper functions:
