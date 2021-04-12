@@ -98,7 +98,7 @@ class CommitChart extends Component {
 
         for(var arr=[],dt=new Date(moment(startTm)); dt<=new Date(moment(endTm)); dt.setDate(dt.getDate()+1)){
 
-            var time = moment(dt).format('YYYY-MM-DD')
+            var time = moment(dt).format('L')
             console.log(time);
             const month = time.substring(0,2)
             const day = time.substring(3,5)
@@ -107,7 +107,7 @@ class CommitChart extends Component {
 
             await this.state.commits.map(function(item) {
 
-                var time1 = moment(item.committed_date.split("T")[0]).format('YYYY-MM-DD')
+                var time1 = moment(item.committed_date.split("T")[0]).format('L')
                 const tempMonth = time1.substring(0,2)
                 const tempDay = time1.substring(3,5)
                 const tempYear = time1.substring(6,10)
