@@ -77,7 +77,7 @@ export default function ProjectList (){
         }) => [...result, ...checked ? [id] : []], []);
         console.log(projectIdToUpdate);
 
-        const projectUp = [11, 10, 8, 6, 5, 3, 12]
+        const projectUp = [12] //[11, 10, 8, 6, 5, 3, 12]
 
         axios.post("/api/v1/setProjectInfoWithSettings", projectUp, {
             headers: {'Content-Type': 'application/json'}})

@@ -57,7 +57,7 @@ public class ProjectController {
         List<Project> projectsInDB = projectService.getAllProjects();
         List<Project> projectsInGitLab = new ProjectConnection().getAllProjectsFromGitLab();
 
-        if (projectsInDB.size() != projectsInGitLab.size()) {
+        if (projectsInDB.size() == 0){ // != projectsInGitLab.size()) {
             projectService.saveNewProjects(projectsInGitLab);
         }
 
@@ -69,24 +69,25 @@ public class ProjectController {
     @PostMapping("setProjectInfoWithSettings")
     @ResponseStatus(value = HttpStatus.OK)
     public void setProjectInfoWithSettings(@RequestBody int[] projectIds) {
+        Snapshot snapshot = new Snapshot(startDate, endDate);
         System.out.println(Arrays.toString(projectIds));// array is received properly
 
         this.snapshot = new Snapshot(startDate, endDate);
         for (int i=0; i < projectIds.length-1; i++) {
-            Project project = projectService.getProject(projectIds[i]);
-            if (!project.isInfoSet()) {
-                System.out.println("repo " + projectIds[i] + " is being updated");
-                projectService.setProjectInfo(projectIds[i]);
-                System.out.println("repo " + projectIds[i] + " is being updated");
-            }
-            System.out.println("updated is done");
+            projectService.setProjectInfo(projectIds[i]);
 
+            projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
+
+//            Project project = projectService.getProject(projectIds[i]);
+//            if (!project.isInfoSet()) {
+//                System.out.println("repo " + projectIds[i] + " is being updated");
+//                projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
 //
-//            System.out.println("update is doing");
-//            projectService.setProjectInfo(projectIds[i]);
-//            projectService.setProjectInfoWithSettings(projectIds[i], snapshot);
-        //took about 5 mins
+////                projectService.setProjectInfo(projectIds[i]);
+//                System.out.println("repo " + projectIds[i] + " is done");
        }
+        System.out.println("updated is done");
+
 //        System.out.println("update is done");
 //        this.isUpdated = true;
     }
