@@ -13,7 +13,7 @@ import main.java.Functions.LocalDateFunctions;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.and;
@@ -224,17 +224,17 @@ public class DatabaseFunctions {
      * @param endDate The maximum date attribute for documents.
      * @return The total number of commits between startDate and endDate.
      */
-    public static int numCommits(String username, LocalDate startDate, LocalDate endDate) {
+    public static int numCommits(String username, LocalDateTime startDate, LocalDateTime endDate) {
         MongoCollection<Document> usersCollection = gitlabDB.getCollection("commits");
 
         int numTotalCommits = 0;
 
-        List<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
+        List<LocalDateTime> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
 
         /* Run through all dates in this list. For each of them, search the DB for that
            user and that date, adding the # commits to the sum? */
 
-        for (LocalDate currentDate : datesToExamine) {
+        for (LocalDateTime currentDate : datesToExamine) {
             Document user = usersCollection.find(and(
                     eq("username", username),
                     eq("year", currentDate.getYear()),
@@ -262,7 +262,7 @@ public class DatabaseFunctions {
      * @param numCommits Specifies the number of commits (an int value) to store. If it is
      *                   a negative value, the function throws an Exception.
      */
-    public static void setNumCommits(String username, LocalDate date, int numCommits) throws IllegalArgumentException {
+    public static void setNumCommits(String username, LocalDateTime date, int numCommits) throws IllegalArgumentException {
         if (numCommits < 0) {
             throw new IllegalArgumentException("numCommits param is negative in the setNumCommits() function");
         }
@@ -290,14 +290,14 @@ public class DatabaseFunctions {
      * @param endDate The latest date we're looking at.
      * @return The number of merge requests.
      */
-    public static int numMergeRequests(String username, LocalDate startDate, LocalDate endDate) {
+    public static int numMergeRequests(String username, LocalDateTime startDate, LocalDateTime endDate) {
         MongoCollection<Document> usersCollection = gitlabDB.getCollection("mergeRequests");
 
         int numTotalMergeRequests = 0;
 
-        List<LocalDate> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
+        List<LocalDateTime> datesToExamine = LocalDateFunctions.generateRangeOfDates(startDate, endDate);
 
-        for (LocalDate currentDate : datesToExamine) {
+        for (LocalDateTime currentDate : datesToExamine) {
             Document user = usersCollection.find(and(
                     eq("username", username),
                     eq("year", currentDate.getYear()),
@@ -323,7 +323,7 @@ public class DatabaseFunctions {
      * @param numMergeRequests An int storing the number of MRs.
      * @throws IllegalArgumentException
      */
-    public static void setNumMergeRequests(String username, LocalDate date,
+    public static void setNumMergeRequests(String username, LocalDateTime date,
                                            int numMergeRequests) throws IllegalArgumentException{
         if (numMergeRequests < 0) {
             throw new IllegalArgumentException("numMergeRequests param is negative in the setNumMergeRequests() function");

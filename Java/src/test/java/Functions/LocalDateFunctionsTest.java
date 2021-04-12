@@ -2,11 +2,11 @@ package test.java.Functions;
 
 import org.junit.Test;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static main.java.Functions.LocalDateFunctions.generateRangeOfDates;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class does JUnit tests for the functions in the LocalDateFunctions class.
@@ -16,20 +16,20 @@ public class LocalDateFunctionsTest {
 
     @Test
     public void testRangeOfDatesBiggerStartDate() {
-        LocalDate start = LocalDate.of(2021, 1, 1);
-        LocalDate end = LocalDate.of(2020, 12, 31);
+        LocalDateTime start = LocalDateTime.of(2021, 1, 1,0,0);
+        LocalDateTime end = LocalDateTime.of(2020, 12, 31,0,0);
 
-        ArrayList<LocalDate> emptyList = new ArrayList<>();
+        ArrayList<LocalDateTime> emptyList = new ArrayList<>();
 
         assertTrue(emptyList.equals(generateRangeOfDates(start, end)));
     }
 
     @Test
     public void testSameDate() {
-        LocalDate start = LocalDate.of(1999, 5, 5);
-        LocalDate end = LocalDate.of(1999, 5, 5);
+        LocalDateTime start = LocalDateTime.of(1999, 5, 5,0,0);
+        LocalDateTime end = LocalDateTime.of(1999, 5, 5,0,0);
 
-        ArrayList<LocalDate> singleton = new ArrayList<>();
+        ArrayList<LocalDateTime> singleton = new ArrayList<>();
         singleton.add(start);
 
         assertTrue(singleton.equals(generateRangeOfDates(start, end)));
@@ -41,31 +41,31 @@ public class LocalDateFunctionsTest {
            LocalDate objects. */
 
         // Non-leap year:
-        LocalDate start2010 = LocalDate.of(2010, 1, 1);
-        LocalDate end2010 = LocalDate.of(2010, 12, 31);
+        LocalDateTime start2010 = LocalDateTime.of(2010, 1, 1,0,0);
+        LocalDateTime end2010 = LocalDateTime.of(2010, 12, 31,0,0);
 
-        ArrayList<LocalDate> list2010 = generateRangeOfDates(start2010, end2010);
+        ArrayList<LocalDateTime> list2010 = generateRangeOfDates(start2010, end2010);
 
-        assertTrue((list2010.size() == 365 && !start2010.isLeapYear()) ||
-                   (list2010.size() == 366 && start2010.isLeapYear()));
+        assertTrue((list2010.size() == 365 && !start2010.toLocalDate().isLeapYear()) ||
+                   (list2010.size() == 366 && start2010.toLocalDate().isLeapYear()));
         assertTrue(list2010.get(0).getDayOfYear() == 1);
         assertTrue(list2010.get(list2010.size()-1).getDayOfYear() == list2010.size());
 
-        assertTrue(allDaysInOrder(list2010, start2010.isLeapYear()));
+        assertTrue(allDaysInOrder(list2010, start2010.toLocalDate().isLeapYear()));
 
         // Leap year:
 
-        LocalDate start2012 = LocalDate.of(2012, 1, 1);
-        LocalDate end2012 = LocalDate.of(2012, 12, 31);
+        LocalDateTime start2012 = LocalDateTime.of(2012, 1, 1,0,0);
+        LocalDateTime end2012 = LocalDateTime.of(2012, 12, 31,0,0);
 
-        ArrayList<LocalDate> list2012 = generateRangeOfDates(start2012, end2012);
+        ArrayList<LocalDateTime> list2012 = generateRangeOfDates(start2012, end2012);
 
-        assertTrue((list2012.size() == 365 && !start2012.isLeapYear()) ||
-                   (list2012.size() == 366 && start2012.isLeapYear()));
+        assertTrue((list2012.size() == 365 && !start2012.toLocalDate().isLeapYear()) ||
+                   (list2012.size() == 366 && start2012.toLocalDate().isLeapYear()));
         assertTrue(list2012.get(0).getDayOfYear() == 1);
         assertTrue(list2012.get(list2012.size()-1).getDayOfYear() == list2012.size());
 
-        assertTrue(allDaysInOrder(list2012, start2012.isLeapYear()));
+        assertTrue(allDaysInOrder(list2012, start2012.toLocalDate().isLeapYear()));
     }
 
     // Helper functions for testing:
@@ -85,7 +85,7 @@ public class LocalDateFunctionsTest {
                 dayNumber == 335;
     }
 
-    public boolean allDaysInOrder(ArrayList<LocalDate> list, boolean isLeapYear) {
+    public boolean allDaysInOrder(ArrayList<LocalDateTime> list, boolean isLeapYear) {
         int dayCounter = 0;
         int monthCounter = 0;
 

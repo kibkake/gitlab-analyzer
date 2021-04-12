@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,7 +27,7 @@ public class MergeRequestService {
         mergeRequestRepository.saveAll(new MergeRequestConnection().getProjectMergeRequestsFromGitLab(projectId));
     }
 
-    public List<MergeRequestDateScore> getMrScorePerDay(int projectId, String userName, LocalDate startDate, LocalDate endDate) {
+    public List<MergeRequestDateScore> getMrScorePerDay(int projectId, String userName, LocalDateTime startDate, LocalDateTime endDate) {
         return mergeRequestRepository.getDevsMrsScoreADay(projectId, userName, startDate, endDate);
     }
 
@@ -39,14 +39,14 @@ public class MergeRequestService {
         return mergeRequestRepository.findByProjectId(projectId);
     }
 
-    public List<MergeRequest> getUserMergeRequests(int projectId, String authorName, LocalDate startLocalTime,
-                                                   LocalDate endLocalTime) {
+    public List<MergeRequest> getUserMergeRequests(int projectId, String authorName, LocalDateTime startLocalTime,
+                                                   LocalDateTime endLocalTime) {
         return mergeRequestRepository.getDevMergeRequests(projectId, authorName,
                 startLocalTime, endLocalTime);
     }
 
-    public Object getTotalMergeRequestScore(int projectId, String authorName, LocalDate startLocalTime,
-                                                  LocalDate endLocalTime) {
+    public Object getTotalMergeRequestScore(int projectId, String authorName, LocalDateTime startLocalTime,
+                                            LocalDateTime endLocalTime) {
         return mergeRequestRepository.getUserTotalMergeRequestScore(projectId, authorName,
                 startLocalTime, endLocalTime);
     }

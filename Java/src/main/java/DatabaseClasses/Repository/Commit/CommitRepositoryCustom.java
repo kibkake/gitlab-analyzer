@@ -2,7 +2,7 @@ package main.java.DatabaseClasses.Repository.Commit;
 
 import main.java.DatabaseClasses.Scores.CommitDateScore;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface CommitRepositoryCustom {
 
-    List<CommitDateScore> getDevCommitDateScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+    List<CommitDateScore> getDevCommitDateScore(int projectId, String devUserName, LocalDateTime startDate, LocalDateTime endDate);
 
-    Double userTotalCommitScore(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+    Double userTotalCommitScore(int projectId, String devUserName, LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CommitDateScore> getCommitsWithEveryDateBetweenRange(int projectId, String devUserName, LocalDate startDate, LocalDate endDate);
+    List<CommitDateScore> getCommitsWithEveryDateBetweenRange(int projectId, String devUserName, LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -1,16 +1,16 @@
 package test.java.DatabaseClasses;
 
-import main.java.DatabaseClasses.DatabaseFunctions;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import main.java.Collections.User;
+import main.java.DatabaseClasses.DatabaseFunctions;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
 
-import org.slf4j.LoggerFactory;
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-
-import java.time.LocalDate;
 /**
  * JUnit test class to test DatabaseFunctions class
  */
@@ -78,10 +78,10 @@ public class DatabaseFunctionsTest{
      */
     @Test
     public void testNumCommits() {
-        DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 10, 15), 6);
-        DatabaseFunctions.setNumCommits("Bob", LocalDate.of(2020, 2, 3), 150);
-        assertEquals(156, DatabaseFunctions.numCommits("Bob", LocalDate.of(2020, 1, 1),
-                LocalDate.of(2021, 1, 2)));
+        DatabaseFunctions.setNumCommits("Bob", LocalDateTime.of(2020, 10, 15,0,0), 6);
+        DatabaseFunctions.setNumCommits("Bob", LocalDateTime.of(2020, 2, 3,0,0), 150);
+        assertEquals(156, DatabaseFunctions.numCommits("Bob", LocalDateTime.of(2020, 1, 1,0,0),
+                LocalDateTime.of(2021, 1, 2,0,0)));
     }
 
     /**
@@ -90,12 +90,12 @@ public class DatabaseFunctionsTest{
      */
     @Test
     public void testNumMergeRequests() {
-        DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 2);
-        DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 5, 17), 3);
+        DatabaseFunctions.setNumMergeRequests("Bob", LocalDateTime.of(2021, 5, 17,0,0), 2);
+        DatabaseFunctions.setNumMergeRequests("Bob", LocalDateTime.of(2021, 5, 17,0,0), 3);
         // should overwrite.
-        DatabaseFunctions.setNumMergeRequests("Bob", LocalDate.of(2021, 6, 20), 1);
-        assertEquals(4, DatabaseFunctions.numMergeRequests("Bob", LocalDate.of(2021, 1, 1),
-                LocalDate.of(2021, 12, 31)));
+        DatabaseFunctions.setNumMergeRequests("Bob", LocalDateTime.of(2021, 6, 20,0,0), 1);
+        assertEquals(4, DatabaseFunctions.numMergeRequests("Bob", LocalDateTime.of(2021, 1, 1,0,0),
+                LocalDateTime.of(2021, 12, 31,0,0)));
     }
 }
 

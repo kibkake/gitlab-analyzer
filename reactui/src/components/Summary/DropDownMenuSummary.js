@@ -34,43 +34,44 @@ function DropDownMenuSummary ({listOfDevelopers}) {
     function getInitialStartDate() {
 
         if(sessionStorage.getItem("startdate") != null){
-            return new Date (sessionStorage.getItem("startdate") + "T12:00:00")
+            return new Date (sessionStorage.getItem("startdate"))
         }
         else if(localStorage.getItem("startdate") != null){
             sessionStorage.setItem("startdate", localStorage.getItem("startdate"))
-            return new Date (localStorage.getItem("startdate") + "T12:00:00")
+            return new Date (localStorage.getItem("startdate"))
         }
         else {
             sessionStorage.setItem("startdate", "2021-01-20")
-            return new Date (sessionStorage.getItem("startdate") + "T12:00:00")
+            return new Date (sessionStorage.getItem("startdate"))
         }
     }
 
     function getInitialEndDate() {
 
         if(sessionStorage.getItem("enddate") != null){
-            return new Date (sessionStorage.getItem("enddate") + "T12:00:00")
+            return new Date (sessionStorage.getItem("enddate"))
         }
         else if(localStorage.getItem("enddate") != null){
             sessionStorage.setItem("enddate", localStorage.getItem("enddate"))
-            return new Date (localStorage.getItem("enddate") + "T12:00:00")
+            return new Date (localStorage.getItem("enddate"))
         }
         else {
             let currentDate = moment().format("YYYY-MM-DD");
             sessionStorage.setItem("enddate", currentDate)
-            return new Date (sessionStorage.getItem("enddate") + "T12:00:00")
+            return new Date (sessionStorage.getItem("enddate"))
         }
     }
 
     function changeDateFormat(time) {
 
-        var startDateArr = (time.toDateString()).split(" ");
-
+        var startDateArr = (time.toString()).split(" ");
         var monthLetter = startDateArr[1];
         var month = ProjectService.convertMonthToNumber(monthLetter);
         var day = startDateArr[2];
         var year = startDateArr[3];
-        var completeDate = year + "-" + month + "-" + day;
+        var Time = startDateArr[4];
+        console.log(Time)
+        var completeDate = year + "-" + month + "-" + day+"T"+Time;
         return completeDate;
     }
 

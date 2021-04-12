@@ -2,7 +2,7 @@ package main.java.Collections;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Used to store the setting that a user wants. This allows us to pass less args around aswell since we often need these
@@ -12,8 +12,8 @@ import java.time.LocalDate;
 public class ProjectSettings {
 
     private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private int projectId;
 
     public String getName() {
@@ -24,19 +24,19 @@ public class ProjectSettings {
         this.name = name;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

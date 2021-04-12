@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -77,13 +77,13 @@ public class ProjectService {
         return project.getMergedRequests();
     }
 
-    public int getNumDevCommits(int projectId, String username, LocalDate start, LocalDate end,
+    public int getNumDevCommits(int projectId, String username, LocalDateTime start, LocalDateTime end,
                                 UseWhichDevField devField) {
         List<Commit> allCommits = this.getDevCommits(projectId, username, start, end, devField);
         return allCommits.size();
     }
 
-    public int getNumDevMergeRequests(int projectId, String username, LocalDate start, LocalDate end) {
+    public int getNumDevMergeRequests(int projectId, String username, LocalDateTime start, LocalDateTime end) {
         List<MergeRequest> devMRs = getDevMergeRequests(projectId, username, start, end);
         return devMRs.size();
     }
@@ -200,13 +200,13 @@ public class ProjectService {
          */
     }
 
-    public List<DateScore> getDevCommitScoresPerDay(int projectId, String username, LocalDate start,
-                                                    LocalDate end, UseWhichDevField devField) {
+    public List<DateScore> getDevCommitScoresPerDay(int projectId, String username, LocalDateTime start,
+                                                    LocalDateTime end, UseWhichDevField devField) {
         List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devField);
         HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
 
         for (Commit currentCommit: allDevCommits) {
-            LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+            LocalDateTime commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
                         username, currentCommit.getDiffs());
@@ -223,8 +223,8 @@ public class ProjectService {
         return dateScores;
     }
 
-    public double getTotalDevCommitScore(int projectId, String username, LocalDate start,
-                                         LocalDate end, UseWhichDevField devField) {
+    public double getTotalDevCommitScore(int projectId, String username, LocalDateTime start,
+                                         LocalDateTime end, UseWhichDevField devField) {
         List<DateScore> individualDateScores = this.getDevCommitScoresPerDay(projectId, username,
                                                                                 start, end, devField);
         double totalCommitScore = 0;
@@ -234,13 +234,13 @@ public class ProjectService {
         return totalCommitScore;
     }
 
-    public List<DateScore> getScoresPerDayForMRsAndCommits(int projectId, String username, LocalDate start,
-                                                           LocalDate end, UseWhichDevField devFieldForGettingCommits) {
+    public List<DateScore> getScoresPerDayForMRsAndCommits(int projectId, String username, LocalDateTime start,
+                                                           LocalDateTime end, UseWhichDevField devFieldForGettingCommits) {
         List<MergeRequest> devMergeRequest = this.getDevMergeRequests(projectId, username, start, end);
         HashMap<String, DateScore> dateMap = new HashMap<String, DateScore>();
 
         for (MergeRequest mergeRequest : devMergeRequest) {
-            LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
+            LocalDateTime mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
 
             if (!dateMap.containsKey(mergedDate.toString())) {
                 DateScore dateScore = new DateScore(mergedDate, mergeRequest.getMrScore(),
@@ -255,7 +255,7 @@ public class ProjectService {
         }
         List<Commit> allDevCommits = this.getDevCommits(projectId, username, start, end, devFieldForGettingCommits);
         for (Commit currentCommit: allDevCommits) {
-            LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+            LocalDateTime commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if(!dateMap.containsKey(commitDate.toString())) {
                 DateScore dateScore = new DateScore(commitDate, currentCommit.getCommitScore(),
                         username, currentCommit.getDiffs());
@@ -314,7 +314,7 @@ public class ProjectService {
         }
     }
 
-    public List<Commit> getDevCommits(int projectId, String username, LocalDate start, LocalDate end,
+    public List<Commit> getDevCommits(int projectId, String username, LocalDateTime start, LocalDateTime end,
                                       UseWhichDevField devField) {
         // For anyone calling this function, the username parameter should be equal
         // to the username field of the dev you're talking about.
@@ -325,7 +325,7 @@ public class ProjectService {
         List<Commit> devCommits = new ArrayList<Commit>();
         List<Commit> projectCommits = project.getCommits();
         for (Commit currentCommit : projectCommits) {
-            LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+            LocalDateTime commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
             if (commitDate.compareTo(start) >= 0 && commitDate.compareTo(end) <= 0) {
                 if (!StringFunctions.inList(commitIds, currentCommit.getCommitId())
                     && didDeveloperAuthorCommit(currentCommit, developer, devField)) {
@@ -337,15 +337,15 @@ public class ProjectService {
         return devCommits;
     }
 
-    public List<String> getAllDevCommitsArray(int projectId, String username, LocalDate start,
-                                              LocalDate end, UseWhichDevField devField) {
+    public List<String> getAllDevCommitsArray(int projectId, String username, LocalDateTime start,
+                                              LocalDateTime end, UseWhichDevField devField) {
         List<Commit> allDevCommits = getDevCommits(projectId, username, start, end, devField);
         List<String> commitsArray = new ArrayList<String>();
         // Each element of commitsArray will store the number of commits (as a string) on a date.
-        for (LocalDate time = start; time.isBefore(end.plusDays(1)); time = time.plusDays(1)) {
+        for (LocalDateTime time = start; time.isBefore(end.plusDays(1)); time = time.plusDays(1)) {
             List<Commit> commitsThisDay = new ArrayList<Commit>();
             for (Commit currentCommit : allDevCommits) {
-                LocalDate commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
+                LocalDateTime commitDate = LocalDateFunctions.convertDateToLocalDate(currentCommit.getDate());
                 if (commitDate.compareTo(time) == 0) {
                     commitsThisDay.add(currentCommit);
                 }
@@ -374,7 +374,7 @@ public class ProjectService {
 
     // TODO - For this, currently it looks like MRs that the dev only commented
     // on are returned as well. This should be fixed for calculating the score.
-    public List<MergeRequest> getDevMergeRequests(int projectId, String username, LocalDate start, LocalDate end) {
+    public List<MergeRequest> getDevMergeRequests(int projectId, String username, LocalDateTime start, LocalDateTime end) {
         Project project = projectRepository.findProjectById(projectId);
         List<MergeRequest> mergeRequests = project.getMergedRequests();
         List<MergeRequest> devMergeRequests = new ArrayList<>();
@@ -387,7 +387,7 @@ public class ProjectService {
         }
         assert(dev != null);
         for (MergeRequest mergeRequest : mergeRequests) {
-            LocalDate mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
+            LocalDateTime mergedDate = LocalDateFunctions.convertDateToLocalDate(mergeRequest.getMergedDate());
             if (mergedDate.compareTo(start) >= 0 && mergedDate.compareTo(end) <= 0
                 && didDevContributeCodeToMR(mergeRequest, dev)) {
                 devMergeRequests.add(mergeRequest);
@@ -396,15 +396,15 @@ public class ProjectService {
         return devMergeRequests;
     }
 
-    public List<Issue> getDevIssues(int projectId, String username, LocalDate start, LocalDate end) {
+    public List<Issue> getDevIssues(int projectId, String username, LocalDateTime start, LocalDateTime end) {
         Project project = projectRepository.findProjectById(projectId);
         List<Issue> issues = project.getIssues();
         List<Issue> devIssues = new ArrayList<>();
         for (Issue issue : issues) {
-            LocalDate modifiedDate = null;
+            LocalDateTime modifiedDate = null;
             String whenIssueModified = issue.getModifiedAt();
             if (whenIssueModified != null && whenIssueModified != "") {
-                modifiedDate = LocalDate.parse(whenIssueModified);
+                modifiedDate = LocalDateTime.parse(whenIssueModified);
             }
             // At this point, it's fine if modifiedDate is still null, since the
             // issue may have never been modified.
@@ -415,9 +415,9 @@ public class ProjectService {
             // From my tests, it seems like sometimes createdAt is neither null nor
             // an empty string, but instead some other bad string that parse dislikes.
 
-            LocalDate createdAt;
+            LocalDateTime createdAt;
             try {
-                createdAt = LocalDate.parse(issue.getCreatedAt());
+                createdAt = LocalDateTime.parse(issue.getCreatedAt());
             }
             catch (Exception e) {
                 continue;
@@ -437,7 +437,7 @@ public class ProjectService {
     }
 
     public List<Note> getTopDevNotes(int projectID, String username, boolean filterByDevsCode,
-                                     LocalDate start, LocalDate end, int limit, boolean applyLimit) {
+                                     LocalDateTime start, LocalDateTime end, int limit, boolean applyLimit) {
         List<Note> devNotes = getDevNotes(projectID, username, filterByDevsCode, start, end);
         devNotes.sort(Comparator.comparingInt(Note::getWordCount));
         Collections.reverse(devNotes);
@@ -464,7 +464,7 @@ public class ProjectService {
         return false;
     }
 
-    public List<Note> getDevNotes(int projectId, String username, boolean filterByDevsCode, LocalDate start, LocalDate end) {
+    public List<Note> getDevNotes(int projectId, String username, boolean filterByDevsCode, LocalDateTime start, LocalDateTime end) {
         Project project = projectRepository.findProjectById(projectId);
         List<Issue> issues = project.getIssues();
         List<Note> devNotes = new ArrayList<>();
@@ -472,7 +472,7 @@ public class ProjectService {
             List<Note> issueNotes = issue.getNotes();
             if (issueNotes != null) {
                 for (Note note : issueNotes) {
-                    LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
+                    LocalDateTime createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
                     if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
                         && didDeveloperWriteNote(note, username)) {
                         devNotes.add(note);
@@ -489,7 +489,7 @@ public class ProjectService {
             List<Note> mrNotes = mergeRequest.getAllNotes();
             if (mrNotes != null) {
                 for (Note note : mrNotes) {
-                    LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
+                    LocalDateTime createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
                     if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
                         && didDeveloperWriteNote(note, username)) {
                         devNotes.add(note);
@@ -526,7 +526,7 @@ public class ProjectService {
     }
 
     public double getTotalDevMRScore(int projectId, String username,
-                                       LocalDate start, LocalDate end) {
+                                     LocalDateTime start, LocalDateTime end) {
         double totalMRScore = 0.0;
         List<MergeRequest> devMRs = this.getDevMergeRequests(projectId, username, start, end);
         for (MergeRequest currentMR: devMRs) {
@@ -536,7 +536,7 @@ public class ProjectService {
     }
 
     public int getTotalDevCommentWordCount(int projectId, String username, boolean filterByDevsCode,
-                                            LocalDate start, LocalDate end) {
+                                            LocalDateTime start, LocalDateTime end) {
         List<Note> devNotes = this.getTopDevNotes(projectId, username, filterByDevsCode, start, end, 100000, false);
         int totalCommentWordCount = 0;
         for (Note currentNote: devNotes) {
@@ -545,8 +545,8 @@ public class ProjectService {
         return totalCommentWordCount;
     }
 
-    public AllScores getAllScores(int projectId, String username, boolean filterByDevsCodeForCountingComments, LocalDate startDate,
-                                  LocalDate endDate, UseWhichDevField devFieldToUseForGettingCommits) {
+    public AllScores getAllScores(int projectId, String username, boolean filterByDevsCodeForCountingComments, LocalDateTime startDate,
+                                  LocalDateTime endDate, UseWhichDevField devFieldToUseForGettingCommits) {
         AllScores allScores = new AllScores(startDate, endDate, 0, 0, 0);
         double totalCommitScore = this.getTotalDevCommitScore(projectId, username, startDate,
                                                               endDate, devFieldToUseForGettingCommits);
@@ -566,7 +566,7 @@ public class ProjectService {
         return project.getDevelopers();
     }
 
-    public List<Note> getDevNotesForChart(int projectId, String username, LocalDate start, LocalDate end)
+    public List<Note> getDevNotesForChart(int projectId, String username, LocalDateTime start, LocalDateTime end)
             throws ParseException {
         Project project = projectRepository.findProjectById(projectId);
         List<Issue> issues = project.getIssues();
@@ -575,7 +575,7 @@ public class ProjectService {
             List<Note> issueNotes = issue.getNotes();
             if (issueNotes != null) {
                 for (Note note : issueNotes) {
-                    LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
+                    LocalDateTime createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
                     if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
                             && didDeveloperWriteNote(note, username)) {
                         boolean dateAlreadyExists = false;
@@ -597,7 +597,7 @@ public class ProjectService {
             List<Note> mrNotes = mergeRequest.getAllNotes();
             if (mrNotes != null) {
                 for (Note note : mrNotes) {
-                    LocalDate createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
+                    LocalDateTime createdDate = LocalDateFunctions.convertDateToLocalDate(note.getCreatedDate());
                     if (createdDate.compareTo(start) >= 0 && createdDate.compareTo(end) <= 0
                             && didDeveloperWriteNote(note, username)) {
                         boolean dateAlreadyExists = false;

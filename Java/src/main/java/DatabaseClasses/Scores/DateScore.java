@@ -1,7 +1,7 @@
 package main.java.DatabaseClasses.Scores;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import main.java.Collections.*;
@@ -10,7 +10,7 @@ import main.java.Collections.*;
  *  the name of the user this is for.
  */
 public class DateScore {
-    private LocalDate date;
+    private LocalDateTime date;
     private double commitScore;
     private double mergeRequestScore;
     private String userName;
@@ -21,7 +21,7 @@ public class DateScore {
     private ArrayList<DateScoreDiff> mergeRequestDiffs;
 
 
-    public DateScore(LocalDate date, double commitScore, String userName, List<Diff> commit) {
+    public DateScore(LocalDateTime date, double commitScore, String userName, List<Diff> commit) {
         this.date = date;
         this.commitScore = commitScore;
         this.userName = userName;
@@ -34,7 +34,7 @@ public class DateScore {
         }
     }
 
-    public DateScore(LocalDate date, double score, String userName, Integer numMergeRequests, List<Diff> mergeRequest) {
+    public DateScore(LocalDateTime date, double score, String userName, Integer numMergeRequests, List<Diff> mergeRequest) {
         this.date = date;
         this.mergeRequestScore = score;
         this.userName = userName;
@@ -47,7 +47,7 @@ public class DateScore {
         }
     }
 
-    public DateScore(LocalDate date, String userName, DateScoreDiff commitDiffScore) {
+    public DateScore(LocalDateTime date, String userName, DateScoreDiff commitDiffScore) {
         this.date = date;
         this.commitScore = commitScore;
         this.userName = userName;
@@ -57,7 +57,7 @@ public class DateScore {
         commitDiffs.add(commitDiffScore);
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
@@ -69,7 +69,7 @@ public class DateScore {
         return userName;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

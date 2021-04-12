@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -146,8 +146,8 @@ public class ProjectController {
     @GetMapping("projects/{projectId}/issues/{userName}/{start}/{end}")
     public List<Issue> getDevIssues(@PathVariable("projectId") int projectId, @PathVariable String end,
                                     @PathVariable String start, @PathVariable String userName) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(start);
+        LocalDateTime endLocalTime = LocalDateTime.parse(end);
         return projectService.getDevIssues(projectId, userName, StartLocalTime, endLocalTime);
     }
 
@@ -163,8 +163,8 @@ public class ProjectController {
                                                   @PathVariable("userName") String userName,
                                                   @PathVariable("start") String start,
                                                   @PathVariable("end") String end) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(start);
+        LocalDateTime endLocalTime = LocalDateTime.parse(end);
         return projectService.getDevMergeRequests(projectId, userName, StartLocalTime, endLocalTime);
     }
 
@@ -186,8 +186,8 @@ public class ProjectController {
                                                          @PathVariable("start") String start,
                                                          @PathVariable("end")String end,
                                                          @PathVariable("whichDevField")String whichDevField) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(start);
+        LocalDateTime endLocalTime = LocalDateTime.parse(end);
         return projectService.getScoresPerDayForMRsAndCommits(projectId, committerName, StartLocalTime, endLocalTime,
                 whichDevFieldIsString(whichDevField));
     }
@@ -198,8 +198,8 @@ public class ProjectController {
                                          @PathVariable("start") String start,
                                          @PathVariable("end")String end,
                                          @PathVariable("whichDevField")String whichDevField) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(start);
+        LocalDateTime endLocalTime = LocalDateTime.parse(end);
         return projectService.getDevCommits(projectId, committerName, StartLocalTime, endLocalTime,
                 whichDevFieldIsString(whichDevField));
     }
@@ -210,8 +210,8 @@ public class ProjectController {
                                         @PathVariable("start") String start,
                                         @PathVariable("end")String end,
                                         @PathVariable("whichDevField")String whichDevField) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(start);
+        LocalDateTime endLocalTime = LocalDateTime.parse(end);
         List<String> commitsArray = new ArrayList<>();
         commitsArray = projectService.getAllDevCommitsArray(projectId, committerName, StartLocalTime, endLocalTime,
                 whichDevFieldIsString(whichDevField));
@@ -232,8 +232,8 @@ public class ProjectController {
                                                        @PathVariable("end")String end,
                                                        @PathVariable("whichDevField")String whichDevField) {
 
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(start);
+        LocalDateTime endLocalTime = LocalDateTime.parse(end);
         return projectService.getDevCommitScoresPerDay(projectId, committerName, StartLocalTime, endLocalTime,
                 whichDevFieldIsString(whichDevField));
     }
@@ -245,8 +245,8 @@ public class ProjectController {
                                         @PathVariable("committerName") String committerName,
                                         @PathVariable("start") String start,
                                         @PathVariable("end")String end) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(start);
+        LocalDateTime endLocalTime = LocalDateTime.parse(end);
         // TODO - Add in a path variable for filterByDevsCode. Right now sending a default value of
         // false to ProjectService.
         return projectService.getTopDevNotes(projectId, committerName, false, StartLocalTime, endLocalTime, 10, true);
@@ -259,8 +259,8 @@ public class ProjectController {
                                      @PathVariable("shouldFilter") String shouldFilter,
                                      @PathVariable("start") String start,
                                      @PathVariable("end")String end) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(start);
+        LocalDateTime endLocalTime = LocalDateTime.parse(end);
         return projectService.getDevNotes(projectId, committerName, shouldFilter.equals("true"), StartLocalTime, endLocalTime);
     }
 
@@ -270,8 +270,8 @@ public class ProjectController {
                                    @PathVariable("start") String start,
                                    @PathVariable("end") String end,
                                    @PathVariable("whichDevField") String whichDevField) {
-        LocalDate startLocalDate = LocalDate.parse(start);
-        LocalDate endLocalDate = LocalDate.parse(end);
+        LocalDateTime startLocalDate = LocalDateTime.parse(start);
+        LocalDateTime endLocalDate = LocalDateTime.parse(end);
         return projectService.getTotalDevCommitScore(projectId, committerName, startLocalDate,
                 endLocalDate, whichDevFieldIsString(whichDevField));
     }
@@ -298,8 +298,8 @@ public class ProjectController {
                                     @PathVariable ("end") String end,
                                     @PathVariable ("whichDevField") String whichDevField) {
 
-        LocalDate startDate = LocalDate.parse(start);
-        LocalDate endDate = LocalDate.parse(end);
+        LocalDateTime startDate = LocalDateTime.parse(start);
+        LocalDateTime endDate = LocalDateTime.parse(end);
         // TODO - Add a path variable for the filterByDevsCodeForCountingComments argument
         // that's sent to ProjectService.
         return projectService.getAllScores(projectId, username, false, startDate, endDate,
@@ -396,8 +396,8 @@ public class ProjectController {
                                      @PathVariable("committerName") String committerName,
                                      @PathVariable("start") String start,
                                      @PathVariable("end")String end) {
-        LocalDate StartLocalTime = LocalDate.parse(start);
-        LocalDate endLocalTime = LocalDate.parse(end);
+        LocalDateTime StartLocalTime = LocalDateTime.parse(start);
+        LocalDateTime endLocalTime = LocalDateTime.parse(end);
         try {
             return projectService.getDevNotesForChart(projectId, committerName, StartLocalTime, endLocalTime);
         }catch(ParseException exception){
