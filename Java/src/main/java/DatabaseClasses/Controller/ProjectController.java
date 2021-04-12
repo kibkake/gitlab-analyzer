@@ -53,7 +53,7 @@ public class ProjectController {
         List<Project> projectsInDB = projectService.getAllProjects();
         List<Project> projectsInGitLab = new ProjectConnection().getAllProjectsFromGitLab();
 
-        // TODO: this is not ideal since this can't update newly added project,
+        // TODO: this is not accurate way to update since this can't update newly added project,
         // but I changed it back in this way to avoid new connection reset the existing repo completely
         if (projectsInDB.size() == 0){ // != projectsInGitLab.size()) {
             projectService.saveNewProjects(projectsInGitLab);
@@ -79,6 +79,7 @@ public class ProjectController {
                 System.out.println("repo " + projectIds[i] + " is updated");
             }
         }
+        System.out.println("Update is done");
         this.isUpdated = true;
     }
 

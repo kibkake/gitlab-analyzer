@@ -24,7 +24,6 @@ export default function ProjectList (){
         axios.get('/api/v1/projects')
             .then(response => {
                 getProjects(response.data)
-                console.log(projects)
             })
             .catch((error) => {
                 console.error(error);
@@ -47,11 +46,9 @@ export default function ProjectList (){
 
     const handleSingleCheckboxChange = id => {
         console.log(checked)
-
         let currentChecked = [...checked];
-
         const array = projects.map(item =>
-            ({...item, checked: (checked.checked == null) ? false : checked.checked}))
+            ({...item, checked: (currentChecked.checked == null) ? false : currentChecked.checked}))
         let currentCheckedChanged = array.map(({id, checked}) => ({id, checked}))
 
         const changed = currentCheckedChanged.map((item) => {
@@ -60,10 +57,11 @@ export default function ProjectList (){
                 checked: (item.id === id) ? !item.checked : item.checked
             }
         })
-        console.log(changed)
 
         setChecked(changed);
         console.log(checked)
+        console.log(changed)
+
     }
 
 
@@ -74,11 +72,10 @@ export default function ProjectList (){
             id,
             checked
         }) => [...result, ...checked ? [id] : []], []);
-        console.log(projectIdToUpdate);
 
-        const projectUp = [12, 10] //[11, 10, 8, 6, 5, 3, 12]
+        // const projectUp = [11, 10, 8, 6, 5, 3, 12]
 
-        axios.post("/api/v1/setProjectInfoWithSettings", projectUp, {
+        axios.post("/api/v1/setProjectInfoWithSettings", projectIdToUpdate, {
             headers: {'Content-Type': 'application/json'}})
             .then(response => {
                 console.log("Id array sent successfully")
@@ -87,6 +84,24 @@ export default function ProjectList (){
                 console.error(error);
             })
     }
+
+    const openPopup = () => {
+        setUpdatePopup(true)
+    }
+
+    const closePopup = () => {
+        if (isUpdateFinished()) {
+            setUpdatePopup(false)
+        }
+    }
+
+    function isUpdateFinished() {
+        let close = false
+        axios.get("/api/v1/projects/updated").then(response => {close = response.data})
+            .catch((error) => {console.error(error);})
+        return {close}
+    }
+
 
     //[https://mdbootstrap.com/support/react/how-to-select-all-check-box-in-mdb-react-table/]
     const output = projects.map(function (item, index) {
@@ -122,17 +137,25 @@ export default function ProjectList (){
     return (
         <div>
             <div align="center" style={{padding: '20px'}}>
-                <button type="button" className="btn btn-secondary" onClick={() => {handleUpdateRepos(); setUpdatePopup(true);}}>Update Selected Projects</button>
-                {/*<UpdateModal show={updatePopup} onHide={setUpdatePopup(false)}>*/}
+                <button type="button" className="btn btn-secondary" onClick={() => {handleUpdateRepos(); openPopup();}}>Update Selected Projects</button>
+                <Modal show={updatePopup} onHide={closePopup()}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Updating in Progress...</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body> <CircularProgress/> </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={closePopup()}>
+                            CANCEL UPDATE
+                        </Button>
+                    </Modal.Footer>
 
-                {/*</UpdateModal>*/}
-                {/*<UpdatePopup closeOnOutsideClick={true} trigger={updatePopup} setTrigger={setUpdatePopup} transparent={false}/>*/}
+                </Modal>
+                {/*<UpdatePopup closeOnOutsideClick={true} trigger={updatePopup} setTrigger={openPopup()} transparent={false}/>*/}
             </div>
             <MDBDataTable hover btn sortable pagesAmount={20}
                           searchLabel="Search By Project Name/Month"
                           small
-                          data={data}
-            />
+                          data={data}/>
         </div>
     );
 }

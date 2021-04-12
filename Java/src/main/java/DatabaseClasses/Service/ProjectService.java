@@ -97,7 +97,6 @@ public class ProjectService {
     public void setProjectInfo(int projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalStateException(
                 "Project with id " + projectId + " does not exist"));
-
         //TODO: removed if statement here since an error was found that
         // the condition doesn't update for newly added project
         //        if (project.projectHasBeenUpdated()) {

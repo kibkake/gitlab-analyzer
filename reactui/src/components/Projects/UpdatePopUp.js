@@ -1,7 +1,6 @@
 import React from "react";
 import './Popup.css'
 import {CircularProgress} from "@material-ui/core";
-// import Progress from "./CircleUpdating";
 
 export default function UpdatePopup(props) {
     return(props.trigger) ? (
@@ -10,7 +9,7 @@ export default function UpdatePopup(props) {
                 <CircularProgress> </CircularProgress>
                 <br></br>
                 <h4>Updating...</h4>
-                <button className="close-btn" onClick={() => props.setTrigger(false)}>CANCEL</button>
+                {/*<button className="close-btn" onClick={() => props.setTrigger(false)}>CANCEL</button>*/}
             </div>
         </div>
     ):"";
