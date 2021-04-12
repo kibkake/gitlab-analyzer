@@ -46,11 +46,11 @@ export default class CommitMRScoreChart extends PureComponent {
         console.log(score);
         await this.setState({codeScore : score, parentdata: username,startTime: startTm,
             endTime: endTm})
-        this.applyMultipliers();
+        await this.applyMultipliers();
         await console.log(this.state.codeScore)
     }
 
-    applyMultipliers(){
+    async applyMultipliers(){
         var scale = JSON.parse(sessionStorage.getItem('languageScale'));
         var newCodeScore = [...this.state.codeScore];
         for(const k in newCodeScore){
@@ -82,7 +82,7 @@ export default class CommitMRScoreChart extends PureComponent {
         var tempDateScore =[]
         for(const k in newCodeScore){
             var dateFound = false; 
-            var tempDate = newCodeScore[k].date.split("T")[0]
+            var tempDate = newCodeScore[k].date.split("T")[0];
             console.log(tempDate)
             if(tempDateScore.length===0){
                 tempDateScore.push({date:tempDate,commitScore:newCodeScore[k].commitScore,mergeRequestScore:newCodeScore[k].mergeRequestScore});
