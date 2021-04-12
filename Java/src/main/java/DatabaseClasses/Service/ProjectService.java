@@ -182,24 +182,24 @@ public class ProjectService {
 
         for (Developer dev: projectDevs) {
             List<MergeRequest> devMergeRequests = mergeRequestRepository.getDevMergeRequests(projectId,
-                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
 
             List<MergeRequestDateScore> devMergeRequestDateScores = mergeRequestRepository.getDevsMrsScoreADay(projectId,
-                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
 
             List<CommitDateScore> devCommitScores = commitRepository.getDevCommitDateScore(projectId,
-                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
 
             List<CommitDateScore> devCommitScoresWithEveryDay = commitRepository.getCommitsWithEveryDateBetweenRange(projectId,
-                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
 
             Double devTotalCommitScore = commitRepository.userTotalCommitScore(projectId,
-                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
 
             Double devTotalMergeRequestScore = mergeRequestRepository.getUserTotalMergeRequestScore(projectId,
-                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate());
+                    dev.getUsername(), (ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(), (ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime());
 
-            AllScores devAllScores = new AllScores((ZonedDateTime.parse(snapshot.getStartDate())).toLocalDate(),(ZonedDateTime.parse(snapshot.getEndDate())).toLocalDate(), devTotalCommitScore,
+            AllScores devAllScores = new AllScores((ZonedDateTime.parse(snapshot.getStartDate())).toLocalDateTime(),(ZonedDateTime.parse(snapshot.getEndDate())).toLocalDateTime(), devTotalCommitScore,
                     devTotalMergeRequestScore);
 
             /* Because spring generates the user object we have to make our own custom key and it cant be done in a
