@@ -118,7 +118,7 @@ export default class CommitMRScoreChart extends PureComponent {
             return {
                 date: (new Date(item.date)).getTime(), //item.date,
                 commitScore: -item.commitScore,
-                mergeScore: +item.mergeRequestScore
+                mergeScore: +(item.mergeRequestScore + item.commitScore)
             };
         });
         console.log(output);
