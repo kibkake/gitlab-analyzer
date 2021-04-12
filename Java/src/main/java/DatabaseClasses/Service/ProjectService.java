@@ -581,7 +581,7 @@ public class ProjectService {
         double totalMRScore = 0.0;
         List<MergeRequest> devMRs = this.getDevMergeRequests(projectId, username, start, end);
         for (MergeRequest currentMR: devMRs) {
-            totalMRScore += currentMR.getMrScore();
+            totalMRScore += currentMR.getMrScore() + currentMR.getSumOfCommits();
         }
         return totalMRScore;
     }

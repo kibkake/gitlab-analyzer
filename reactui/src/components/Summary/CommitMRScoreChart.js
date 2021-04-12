@@ -138,20 +138,14 @@ export default class CommitMRScoreChart extends PureComponent {
         var output = this.state.DatescoreData.map(function(item) {
             tickArr.push((new Date(item.date)).getTime())
             return {
-                date: (new Date(item.date)).getTime(), //item.date,
+                date: (new Date(item.date)).getTime(),
                 commitScore: -item.commitScore,
-                mergeScore : +(item.mergeRequestScore + item.sumOfCommits),//item.sumOfCommits),
-                // commits: item.commitDiffs.map(function(diffs) {
-                //     return {
-                //         diffScore: diffs.diffScore
-                //     }
-                // }
+                mergeScore : +(item.mergeRequestScore + item.sumOfCommits),
             };
         });
         console.log("starttime", this.props.startTime)
         const from = Number(new Date(this.props.startTime));
         const to = Number(new Date(this.props.endTime));
-//ceil
 
         return (
             <div>

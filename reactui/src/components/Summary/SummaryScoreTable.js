@@ -120,7 +120,6 @@ class SummaryScoreTable extends Component{
         })
     }
 
-
     async componentDidUpdate(prevProps){
         if(this.props.devName !== prevProps.devName || this.props.startTime !== prevProps.startTime ||
             this.props.endTime !== prevProps.endTime){
@@ -170,7 +169,7 @@ class SummaryScoreTable extends Component{
                     <tbody>
                         <tr>
                             <td>{Math.round(totalCommitSc * 10) / 10}</td>
-                            <td>{Math.round(totalMergeRequestSc * 10 + totalCommitSc * 10) / 10}</td>
+                            <td>{Math.round(totalMergeRequestSc * 10) / 10}</td>
                             <td>{Math.round(totalCommentWordCt * 10) / 10}</td>
                             <td><button onClick={()=>copyToClipboard(toCopy)}> Copy Fields</button></td>
                         </tr>

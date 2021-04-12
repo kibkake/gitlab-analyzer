@@ -55,7 +55,9 @@ public class ProjectController {
 
         // TODO: this is not accurate way to update since this can't update newly added project,
         // but I changed it back in this way to avoid new connection reset the existing repo completely
-        if (projectsInDB.size() == 0){ // != projectsInGitLab.size()) {
+        // For proper use in case new user logs in, use the following instead of the current if statement
+        // if (projectsInDB.size() != projectsInGitLab.size()) {
+        if (projectsInDB.size() == 0){
             projectService.saveNewProjects(projectsInGitLab);
         }
 
