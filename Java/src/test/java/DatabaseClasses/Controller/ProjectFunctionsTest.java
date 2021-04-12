@@ -40,45 +40,34 @@ What to include in parenthesis for @SpringBootTest, to avoid an IllegalStateExce
 */
 package test.java.DatabaseClasses.Controller;
 
-import main.java.Collections.Project;
-import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
-import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
-import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
+import main.java.Collections.*;
 import main.java.DatabaseClasses.Repository.Commit.CommitRepository;
+import main.java.DatabaseClasses.Repository.Configuration.ConfigurationRepository;
+import main.java.DatabaseClasses.Repository.Developer.DeveloperRepository;
+import main.java.DatabaseClasses.Repository.MergeRequest.MergeRequestRepository;
+import main.java.DatabaseClasses.Repository.Project.ProjectRepository;
 import main.java.DatabaseClasses.Repository.Snapshot.SnapshotRepository;
 import main.java.DatabaseClasses.Scores.*;
+import main.java.DatabaseClasses.Scores.DateScore;
 import main.java.DatabaseClasses.Service.*;
 import main.java.DatabaseClasses.Service.ProjectService;
-import main.java.DatabaseClasses.Scores.DateScore;
-import main.java.Collections.DateScoreDiff;
-import main.java.Collections.Note;
-import main.java.Collections.Developer;
-import main.java.Collections.MergeRequest;
-import main.java.Collections.Commit;
-import main.java.Collections.Diff;
+import main.java.DatabaseClasses.Controller.*;
 import main.java.Main;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class contains JUnit tests for some of the main GET functions in
@@ -126,10 +115,6 @@ public class ProjectFunctionsTest {
     @Test
     public void testScoresPerDay() {
         ProjectService projectService = createProjectServiceObject();
-        LocalDate start = LocalDate.parse("2021-01-01");
-        LocalDate end = LocalDate.parse("2021-03-19");
-        ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository,configurationRepository);
         LocalDateTime start = LocalDateTime.parse("2021-01-01");
         LocalDateTime end = LocalDateTime.parse("2021-03-19");
         List<DateScore> user2Scores = projectService.getScoresPerDayForMRsAndCommits(
@@ -140,10 +125,6 @@ public class ProjectFunctionsTest {
     @Test
     public void testNumMRs() {
         ProjectService projectService = createProjectServiceObject();
-        LocalDate start = LocalDate.parse("2021-01-01");
-        LocalDate end = LocalDate.parse("2021-02-28");
-        ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository,configurationRepository);
         LocalDateTime start = LocalDateTime.parse("2021-01-01");
         LocalDateTime end = LocalDateTime.parse("2021-02-28");
         int numMRs = projectService.getNumDevMergeRequests(6, "user2",
@@ -538,7 +519,7 @@ public class ProjectFunctionsTest {
 
     private ProjectService createProjectServiceObject() {
         ProjectService projectService = new ProjectService(projectRepository,
-                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository);
+                mergeRequestRepository, commitRepository, developerRepository, snapshotRepository,configurationRepository);
         return projectService;
     }
 }
